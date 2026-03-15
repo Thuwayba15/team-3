@@ -3,6 +3,7 @@ using Abp.Modules;
 using Abp.Reflection.Extensions;
 using Abp.Zero.EntityFrameworkCore;
 using Team3.EntityFrameworkCore.Seed;
+using System;
 
 namespace Team3.EntityFrameworkCore;
 
@@ -18,6 +19,7 @@ public class Team3EntityFrameworkModule : AbpModule
 
     public override void PreInitialize()
     {
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         if (!SkipDbContextRegistration)
         {
             Configuration.Modules.AbpEfCore().AddDbContext<Team3DbContext>(options =>
@@ -36,6 +38,7 @@ public class Team3EntityFrameworkModule : AbpModule
 
     public override void Initialize()
     {
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         IocManager.RegisterAssemblyByConvention(typeof(Team3EntityFrameworkModule).GetAssembly());
     }
 

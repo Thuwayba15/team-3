@@ -254,3 +254,5 @@ paket-files/
 src/Team3.Web.Mvc/secrets.json
 src/Team3.Web.Host/secrets.json
 src/Team3.Migrator/secrets.json
+
+.env*
