@@ -256,3 +256,7 @@ src/Team3.Web.Host/secrets.json
 src/Team3.Migrator/secrets.json
 
 .env*
+
+backend/**/Logs.txt
+backend/**/logs/
+*.log
