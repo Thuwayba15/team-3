@@ -9,3 +9,9 @@ export const DEFAULT_TENANT_ID = "1";
 
 /** ABP token-auth endpoint path. */
 export const TOKEN_AUTH_ENDPOINT = "/api/TokenAuth/Authenticate";
+
+/** Clears the HttpOnly auth cookie on the backend. */
+export const LOGOUT_ENDPOINT = "/api/TokenAuth/Logout";
+
+/** Returns the authenticated user's id; used to rehydrate state on page load. */
+export const ME_ENDPOINT = "/api/TokenAuth/Me";

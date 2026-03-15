@@ -17,7 +17,6 @@ export const authReducer = (
                 ...state,
                 isLoading: false,
                 isAuthenticated: true,
-                accessToken: action.payload.accessToken,
                 userId: action.payload.userId,
                 errorMessage: null,
             };
@@ -27,7 +26,6 @@ export const authReducer = (
                 ...state,
                 isLoading: false,
                 isAuthenticated: false,
-                accessToken: null,
                 userId: null,
                 errorMessage: null,
             };

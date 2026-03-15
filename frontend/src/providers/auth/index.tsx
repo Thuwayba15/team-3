@@ -4,6 +4,7 @@ import {
     createContext,
     ReactNode,
     useContext,
+    useEffect,
     useMemo,
     useReducer,
 } from "react";
@@ -23,7 +24,6 @@ import {
 } from "./context";
 import { authReducer } from "./reducer";
 import { authService } from "@/services/auth/authService";
-import { authStorage } from "@/lib/auth/authStorage";
 
 // Contexts
 
@@ -43,6 +43,19 @@ interface IAuthProviderProps {
 export const AuthProvider = ({ children }: IAuthProviderProps) => {
     const [state, dispatch] = useReducer(authReducer, INITIAL_STATE);
 
+    /**
+     * On mount, call the Me endpoint to check whether the browser still holds
+     * a valid HttpOnly auth cookie. If so, rehydrate the auth state so the
+     * user is not signed out on a page refresh.
+     */
+    useEffect(() => {
+        dispatch(setLoading(true));
+        authService
+            .getMe()
+            .then((me) => dispatch(setAuthenticated({ userId: me.userId })))
+            .catch(() => dispatch(setLoading(false)));
+    }, []);
+
     const login = async (values: ILoginValues): Promise<void> => {
         dispatch(setLoading(true));
 
@@ -53,14 +66,7 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
                 rememberClient: values.rememberClient,
             });
 
-            authStorage.saveAuthData(response.accessToken, response.userId);
-
-            dispatch(
-                setAuthenticated({
-                    accessToken: response.accessToken,
-                    userId: response.userId,
-                })
-            );
+            dispatch(setAuthenticated({ userId: response.userId }));
         } catch (error) {
             const message = resolveErrorMessage(error);
             dispatch(setError(message));
@@ -68,7 +74,8 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
     };
 
     const logout = (): void => {
-        authStorage.clearAuthData();
+        // Fire-and-forget: clear the cookie server-side; client state is cleared immediately.
+        authService.logout().catch(() => {});
         dispatch(setUnauthenticated());
     };
 

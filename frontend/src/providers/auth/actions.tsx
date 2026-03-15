@@ -15,7 +15,6 @@ export interface ISetLoadingAction {
 }
 
 export interface ISetAuthenticatedPayload {
-    accessToken: string;
     userId: number;
 }
 

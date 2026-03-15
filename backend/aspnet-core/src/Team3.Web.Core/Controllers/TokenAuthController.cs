@@ -8,6 +8,10 @@ using Team3.Authorization.Users;
 using Team3.Models.TokenAuth;
 using Team3.MultiTenancy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -24,17 +28,20 @@ namespace Team3.Controllers
         private readonly ITenantCache _tenantCache;
         private readonly AbpLoginResultTypeHelper _abpLoginResultTypeHelper;
         private readonly TokenAuthConfiguration _configuration;
+        private readonly IWebHostEnvironment _hostingEnvironment;
 
         public TokenAuthController(
             LogInManager logInManager,
             ITenantCache tenantCache,
             AbpLoginResultTypeHelper abpLoginResultTypeHelper,
-            TokenAuthConfiguration configuration)
+            TokenAuthConfiguration configuration,
+            IWebHostEnvironment hostingEnvironment)
         {
             _logInManager = logInManager;
             _tenantCache = tenantCache;
             _abpLoginResultTypeHelper = abpLoginResultTypeHelper;
             _configuration = configuration;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         [HttpPost]
@@ -47,14 +54,39 @@ namespace Team3.Controllers
             );
 
             var accessToken = CreateAccessToken(CreateJwtClaims(loginResult.Identity));
+            var expireInSeconds = (int)_configuration.Expiration.TotalSeconds;
+
+            var cookieOptions = CreateAuthCookieOptions();
+            cookieOptions.Expires = DateTimeOffset.UtcNow.AddSeconds(expireInSeconds);
+
+            // Store JWT in an HttpOnly cookie so client-side JavaScript cannot read it.
+            Response.Cookies.Append("access_token", accessToken, cookieOptions);
 
             return new AuthenticateResultModel
             {
-                AccessToken = accessToken,
-                EncryptedAccessToken = GetEncryptedAccessToken(accessToken),
-                ExpireInSeconds = (int)_configuration.Expiration.TotalSeconds,
+                ExpireInSeconds = expireInSeconds,
                 UserId = loginResult.User.Id
             };
+        }
+
+        [HttpPost]
+        public IActionResult Logout()
+        {
+            Response.Cookies.Delete("access_token", CreateAuthCookieOptions());
+
+            return Ok();
+        }
+
+        [HttpGet]
+        [Authorize]
+        public IActionResult Me()
+        {
+            if (!AbpSession.UserId.HasValue)
+            {
+                return Unauthorized();
+            }
+
+            return Ok(new { UserId = AbpSession.UserId.Value });
         }
 
         private string GetTenancyNameOrNull()
@@ -115,6 +147,24 @@ namespace Team3.Controllers
         private string GetEncryptedAccessToken(string accessToken)
         {
             return SimpleStringCipher.Instance.Encrypt(accessToken);
+        }
+
+        private CookieOptions CreateAuthCookieOptions()
+        {
+            // Dev: frontend and API typically run on different localhost origins,
+            // so SameSite=None is needed for credentialed cross-origin requests.
+            // Non-dev: default to Lax to reduce cross-site cookie exposure.
+            var sameSite = _hostingEnvironment.IsDevelopment()
+                ? SameSiteMode.None
+                : SameSiteMode.Lax;
+
+            return new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = sameSite,
+                Path = "/"
+            };
         }
     }
 }
