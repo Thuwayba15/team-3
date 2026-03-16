@@ -54,7 +54,7 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           source: "backend/aspnet-core/docker/mvc/docker-compose.yml"
           target: "/opt/team3"
-          strip_components: 2
+          strip_components: 4
 
       - name: Install dependencies, configure Nginx, and deploy
         uses: appleboy/ssh-action@v1.0.3
@@ -113,13 +113,13 @@ jobs:
             sudo systemctl reload nginx
 
             # ── Write env file ────────────────────────────────────────
-            cat > /opt/team3/.env <<ENVEOF
-            ASPNETCORE_ENVIRONMENT=Production
-            ConnectionStrings__Default=${{ secrets.DB_CONNECTION_STRING }}
-            Authentication__JwtBearer__SecurityKey=${{ secrets.JWT_SECURITY_KEY }}
-            Authentication__JwtBearer__Issuer=Team3
-            Authentication__JwtBearer__Audience=Team3
-            ENVEOF
+            cat > /opt/team3/.env <<'ENVEOF'
+ASPNETCORE_ENVIRONMENT=Production
+ConnectionStrings__Default=${{ secrets.DB_CONNECTION_STRING }}
+Authentication__JwtBearer__SecurityKey=${{ secrets.JWT_SECURITY_KEY }}
+Authentication__JwtBearer__Issuer=Team3
+Authentication__JwtBearer__Audience=Team3
+ENVEOF
 
             # ── Deploy ────────────────────────────────────────────────
             sudo docker compose -f /opt/team3/docker-compose.yml --project-directory /opt/team3 down || true
