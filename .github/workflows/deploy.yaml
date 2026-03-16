@@ -2,7 +2,7 @@ name: Deploy
 
 on:
   push:
-    branches: [main]
+    branches: [dev]
 
 jobs:
   build:
@@ -24,8 +24,8 @@ jobs:
       - name: Build and push MVC image
         uses: docker/build-push-action@v5
         with:
-          context: .
-          file: src/Team3.Web.Mvc/Dockerfile
+          context: team-3/backend/aspnet-core
+          file: team-3/backend/aspnet-core/src/Team3.Web.Mvc/Dockerfile
           push: true
           tags: ghcr.io/teboho02/team3-mvc:latest
 
