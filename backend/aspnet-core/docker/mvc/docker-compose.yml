@@ -3,10 +3,10 @@ version: '3'
 services:
 
   abp_host:
-    image: abp/mvc
+    image: ghcr.io/teboho02/team3-mvc:latest
+    env_file:
+      - .env
     environment:
-      ASPNETCORE_ENVIRONMENT: "Staging"
-      ConnectionStrings__Default: "Server=10.0.75.1; Database=Team3Db; User=sa; Password=123qwe;TrustServerCertificate=True;"
       TZ: "America/Toronto"
       Kestrel__Endpoints__Http__Url: "http://+:80"
     ports:

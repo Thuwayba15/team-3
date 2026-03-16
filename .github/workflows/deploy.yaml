@@ -1,0 +1,128 @@
+name: Deploy
+
+on:
+  push:
+    branches: [dev]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push MVC image
+        uses: docker/build-push-action@v5
+        with:
+          context: team-3/backend/aspnet-core
+          file: team-3/backend/aspnet-core/src/Team3.Web.Mvc/Dockerfile
+          push: true
+          tags: ghcr.io/teboho02/team3-mvc:latest
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create deployment directory on VPS
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            sudo mkdir -p /opt/team3 && sudo chown $USER:$USER /opt/team3
+
+      - name: Copy docker-compose to VPS
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          source: "docker/mvc/docker-compose.yml"
+          target: "/opt/team3"
+          strip_components: 2
+
+      - name: Install dependencies, configure Nginx, and deploy
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          command_timeout: 5m
+          script: |
+            set -e
+
+            # ── Docker ────────────────────────────────────────────────
+            if ! command -v docker &> /dev/null; then
+              echo "Installing Docker..."
+              curl -fsSL https://get.docker.com | sudo sh
+              sudo systemctl enable docker
+              sudo systemctl start docker
+            fi
+
+            if ! groups $USER | grep -q docker; then
+              sudo usermod -aG docker $USER
+            fi
+
+            # ── Nginx ─────────────────────────────────────────────────
+            if ! command -v nginx &> /dev/null; then
+              echo "Installing Nginx..."
+              sudo apt-get update -y
+              sudo apt-get install -y nginx
+              sudo systemctl enable nginx
+              sudo systemctl start nginx
+            fi
+
+            # ── Nginx config ──────────────────────────────────────────
+            sudo tee /etc/nginx/sites-available/team3 > /dev/null <<'EOF'
+            server {
+                listen 80;
+                server_name _;
+
+                location / {
+                    proxy_pass http://localhost:44312;
+                    proxy_http_version 1.1;
+                    proxy_set_header Upgrade $http_upgrade;
+                    proxy_set_header Connection "keep-alive";
+                    proxy_set_header Host $host;
+                    proxy_set_header X-Real-IP $remote_addr;
+                    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                    proxy_set_header X-Forwarded-Proto $scheme;
+                    proxy_cache_bypass $http_upgrade;
+                }
+            }
+            EOF
+
+            sudo ln -sf /etc/nginx/sites-available/team3 /etc/nginx/sites-enabled/team3
+            sudo rm -f /etc/nginx/sites-enabled/default
+            sudo nginx -t
+            sudo systemctl reload nginx
+
+            # ── Write env file ────────────────────────────────────────
+            cat > /opt/team3/.env <<ENVEOF
+            ASPNETCORE_ENVIRONMENT=Production
+            ConnectionStrings__Default=${{ secrets.DB_CONNECTION_STRING }}
+            Authentication__JwtBearer__SecurityKey=${{ secrets.JWT_SECURITY_KEY }}
+            Authentication__JwtBearer__Issuer=Team3
+            Authentication__JwtBearer__Audience=Team3
+            ENVEOF
+
+            # ── Deploy ────────────────────────────────────────────────
+            sudo docker compose -f /opt/team3/docker-compose.yml --project-directory /opt/team3 down || true
+            sudo docker compose -f /opt/team3/docker-compose.yml --project-directory /opt/team3 pull
+            sudo docker compose -f /opt/team3/docker-compose.yml --project-directory /opt/team3 up -d
+            sudo docker image prune -f
