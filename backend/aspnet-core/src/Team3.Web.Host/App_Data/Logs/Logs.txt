@@ -505,3 +505,41 @@ INFO  2026-03-15 10:49:24,051 [21   ] .Mvc.Infrastructure.ObjectResultExecutor -
 INFO  2026-03-15 10:49:24,053 [21   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.MultiTenancy.TenantAppService.GetAllAsync (Team3.Application) in 4063.3495ms
 INFO  2026-03-15 10:49:24,053 [21   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.MultiTenancy.TenantAppService.GetAllAsync (Team3.Application)'
 INFO  2026-03-15 10:49:24,053 [21   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/api/services/app/Tenant/GetAll - 200 - application/json;+charset=utf-8 4069.6815ms
+DEBUG 2026-03-16 10:38:42,798 [2    ] Abp.Modules.AbpModuleManager             - Loading Abp modules...
+DEBUG 2026-03-16 10:38:49,390 [2    ] Abp.Modules.AbpModuleManager             - Found 15 ABP modules in total.
+DEBUG 2026-03-16 10:38:49,450 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Web.Host.Startup.Team3WebHostModule, Team3.Web.Host, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-16 10:38:49,457 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3WebCoreModule, Team3.Web.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-16 10:38:49,459 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3ApplicationModule, Team3.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-16 10:38:49,460 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3CoreModule, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-16 10:38:49,462 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCoreModule, Abp.ZeroCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-16 10:38:49,463 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCommonModule, Abp.Zero.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-16 10:38:49,465 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AbpKernelModule, Abp, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-16 10:38:49,468 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AutoMapper.AbpAutoMapperModule, Abp.AutoMapper, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-16 10:38:49,470 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.EntityFrameworkCore.Team3EntityFrameworkModule, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-16 10:38:49,471 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.EntityFrameworkCore.AbpZeroCoreEntityFrameworkCoreModule, Abp.ZeroCore.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-16 10:38:49,472 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFrameworkCore.AbpEntityFrameworkCoreModule, Abp.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-16 10:38:49,473 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFramework.AbpEntityFrameworkCommonModule, Abp.EntityFramework.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-16 10:38:49,475 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.AbpAspNetCoreModule, Abp.AspNetCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-16 10:38:49,476 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Web.AbpWebCommonModule, Abp.Web.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-16 10:38:49,477 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.SignalR.AbpAspNetCoreSignalRModule, Abp.AspNetCore.SignalR, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-16 10:38:49,482 [2    ] Abp.Modules.AbpModuleManager             - 15 modules loaded.
+DEBUG 2026-03-16 10:38:50,174 [2    ] o.Configuration.LanguageManagementConfig - Converted Abp (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-16 10:38:50,174 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpZero (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-16 10:38:50,174 [2    ] o.Configuration.LanguageManagementConfig - Converted Team3 (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-16 10:38:50,174 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpWeb (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-16 10:38:51,793 [2    ] ameworkCore.AbpEntityFrameworkCoreModule - Registering DbContext: Team3.EntityFrameworkCore.Team3DbContext, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-16 10:38:52,094 [2    ] Abp.Localization.LocalizationManager     - Initializing 4 localization sources.
+DEBUG 2026-03-16 10:38:52,205 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Abp
+DEBUG 2026-03-16 10:38:52,223 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpZero
+DEBUG 2026-03-16 10:38:52,235 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Team3
+DEBUG 2026-03-16 10:38:52,242 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpWeb
+DEBUG 2026-03-16 10:38:52,266 [2    ] Abp.BackgroundJobs.BackgroundJobManager  - Start background worker: Abp.BackgroundJobs.BackgroundJobManager
+DEBUG 2026-03-16 10:38:52,286 [2    ] , Culture=neutral, PublicKeyToken=null]] - Start background worker: Abp.Authorization.Users.UserTokenExpirationWorker`2[[Team3.MultiTenancy.Tenant, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Team3.Authorization.Users.User, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]
+DEBUG 2026-03-16 10:38:52,337 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Found 7 classes define auto mapping attributes
+DEBUG 2026-03-16 10:38:52,337 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.CreateUserDto
+DEBUG 2026-03-16 10:38:52,349 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.UserDto
+DEBUG 2026-03-16 10:38:52,350 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.TenantLoginInfoDto
+DEBUG 2026-03-16 10:38:52,351 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.UserLoginInfoDto
+DEBUG 2026-03-16 10:38:52,351 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Roles.Dto.PermissionDto
+DEBUG 2026-03-16 10:38:52,351 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.CreateTenantDto
+DEBUG 2026-03-16 10:38:52,351 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.TenantDto

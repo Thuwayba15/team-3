@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 
 WORKDIR /src
 COPY ["src/Team3.Web.Host/Team3.Web.Host.csproj", "src/Team3.Web.Host/"]
@@ -18,7 +18,7 @@ COPY ["src/Team3.EntityFrameworkCore", "src/Team3.EntityFrameworkCore"]
 WORKDIR "/src/src/Team3.Web.Host"
 RUN dotnet publish -c Release -o /publish --no-restore
 
-FROM mcr.microsoft.com/dotnet/aspnet:8.0
+FROM mcr.microsoft.com/dotnet/aspnet:9.0
 EXPOSE 80
 WORKDIR /app
 COPY --from=build /publish .

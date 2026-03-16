@@ -1,16 +1,23 @@
-version: '3'
-
 services:
 
-  abp_host:
-    image: abp/mvc
+  abp_mvc:
+    container_name: team3_mvc
+
+    build:
+      context: ../../
+      dockerfile: src/Team3.Web.Mvc/Dockerfile
+
+    env_file:
+      - ../../.env
+
     environment:
-      ASPNETCORE_ENVIRONMENT: "Staging"
-      ConnectionStrings__Default: "Server=10.0.75.1; Database=Team3Db; User=sa; Password=123qwe;TrustServerCertificate=True;"
-      TZ: "America/Toronto"
-      Kestrel__Endpoints__Http__Url: "http://+:80"
+      TZ: America/Toronto
+      Kestrel__Endpoints__Http__Url: http://+:80
+
     ports:
       - "44312:80"
+
     volumes:
-      - "./Mvc-Logs:/app/App_Data/Logs"
-    restart: always
+      - ../../Mvc-Logs:/app/App_Data/Logs
+
+    restart: unless-stopped
