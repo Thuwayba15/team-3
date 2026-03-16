@@ -27,7 +27,7 @@ jobs:
           context: backend/aspnet-core
           file: backend/aspnet-core/src/Team3.Web.Mvc/Dockerfile
           push: true
-          tags: ghcr.io/thuwayba15/team3-mvc:latest
+          tags: ghcr.io/Thuwayba15/team3-mvc:latest
 
   deploy:
     runs-on: ubuntu-latest
