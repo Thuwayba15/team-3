@@ -110,13 +110,15 @@ jobs:
             COMPOSEEOF
 
             # ── Write env file ────────────────────────────────────────
-            cat > /opt/team3/.env <<ENVEOF
-            ASPNETCORE_ENVIRONMENT=Production
-            ConnectionStrings__Default=${{ secrets.DB_CONNECTION_STRING }}
-            Authentication__JwtBearer__SecurityKey=${{ secrets.JWT_SECURITY_KEY }}
-            Authentication__JwtBearer__Issuer=Team3
-            Authentication__JwtBearer__Audience=Team3
-            ENVEOF
+            # Using printf per-line avoids heredoc breakage if a secret
+            # contains newlines or special shell characters.
+            {
+              printf 'ASPNETCORE_ENVIRONMENT=Production\n'
+              printf 'ConnectionStrings__Default=%s\n' '${{ secrets.DB_CONNECTION_STRING }}'
+              printf 'Authentication__JwtBearer__SecurityKey=%s\n' '${{ secrets.JWT_SECURITY_KEY }}'
+              printf 'Authentication__JwtBearer__Issuer=Team3\n'
+              printf 'Authentication__JwtBearer__Audience=Team3\n'
+            } > /opt/team3/.env
 
             # ── Deploy ────────────────────────────────────────────────
             echo "${{ secrets.GITHUB_TOKEN }}" | sudo docker login ghcr.io -u thuwayba15 --password-stdin
