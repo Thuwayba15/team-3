@@ -2,7 +2,7 @@ name: Deploy
 
 on:
   push:
-    branches: [main]
+    branches: [feature-https-host-deploy]
 
 jobs:
   build:
@@ -56,73 +56,26 @@ jobs:
               sudo usermod -aG docker $USER
             fi
 
-            # ── Nginx & Certbot ───────────────────────────────────────
-            if ! command -v nginx &> /dev/null; then
-              sudo apt-get update -y
-              sudo apt-get install -y nginx
-              sudo systemctl enable nginx
-              sudo systemctl start nginx
-            fi
-
-            if ! command -v certbot &> /dev/null; then
-              sudo apt-get update -y
-              sudo apt-get install -y certbot python3-certbot-nginx
-            fi
-
-            # Write HTTP config first (needed for certbot HTTP-01 challenge)
-            sudo tee /etc/nginx/sites-available/team3 > /dev/null <<'NGINXEOF'
-server {
-  listen 80;
-  server_name themathgenie.com;
-
-  location / {
-    proxy_pass         http://localhost:44312;
-    proxy_http_version 1.1;
-    proxy_set_header   Upgrade           $http_upgrade;
-    proxy_set_header   Connection        "keep-alive";
-    proxy_set_header   Host              $host;
-    proxy_set_header   X-Real-IP         $remote_addr;
-    proxy_set_header   X-Forwarded-For   $proxy_add_x_forwarded_for;
-    proxy_set_header   X-Forwarded-Proto $scheme;
-    proxy_cache_bypass $http_upgrade;
-  }
-}
-NGINXEOF
-
-            sudo ln -sf /etc/nginx/sites-available/team3 /etc/nginx/sites-enabled/team3
-            sudo rm -f /etc/nginx/sites-enabled/default
-            sudo nginx -t
-            sudo systemctl reload nginx
-
-            # ── TLS certificate (only obtain if not already present) ───
-            if [ ! -f /etc/letsencrypt/live/themathgenie.com/fullchain.pem ]; then
-              sudo certbot --nginx -d themathgenie.com \
-                --non-interactive --agree-tos \
-                -m moloiteboho0209@gmail.com
-            else
-              sudo certbot renew --quiet
-            fi
-
             # ── Deployment directory ──────────────────────────────────
             sudo mkdir -p /opt/team3 && sudo chown $USER:$USER /opt/team3
 
             # ── Write docker-compose ──────────────────────────────────
             cat > /opt/team3/docker-compose.yml <<'COMPOSEEOF'
-version: '3'
-services:
-  abp_host:
-    image: ghcr.io/thuwayba15/team3-host:latest
-    env_file:
-      - .env
-    environment:
-      TZ: "America/Toronto"
-      Kestrel__Endpoints__Http__Url: "http://+:80"
-    ports:
-      - "44312:80"
-    volumes:
-      - "./Host-Logs:/app/App_Data/Logs"
-    restart: always
-COMPOSEEOF
+            version: '3'
+            services:
+              abp_host:
+                image: ghcr.io/thuwayba15/team3-host:latest
+                env_file:
+                  - .env
+                environment:
+                  TZ: "America/Toronto"
+                  Kestrel__Endpoints__Http__Url: "http://+:80"
+                ports:
+                  - "44312:80"
+                volumes:
+                  - "./Host-Logs:/app/App_Data/Logs"
+                restart: always
+            COMPOSEEOF
 
             # ── Write env file ────────────────────────────────────────
             {
