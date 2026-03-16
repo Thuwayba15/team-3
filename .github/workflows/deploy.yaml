@@ -52,7 +52,7 @@ jobs:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
-          source: "backend/aspnet-core/docker/mvc/docker-compose.yml"
+          source: "docker/mvc/docker-compose.yml"
           target: "/opt/team3"
           strip_components: 2
 
