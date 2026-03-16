@@ -2,7 +2,7 @@ name: Deploy
 
 on:
   push:
-    branches: [feature-https-host-deploy]
+    branches: [main]
 
 jobs:
   build:
