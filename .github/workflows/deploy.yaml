@@ -2,7 +2,7 @@ name: Deploy
 
 on:
   push:
-    branches: [Config]
+    branches: [main]
 
 jobs:
   build:
@@ -10,6 +10,7 @@ jobs:
     permissions:
       contents: read
       packages: write
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -34,28 +35,6 @@ jobs:
     needs: build
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Create deployment directory on VPS
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_SSH_KEY }}
-          script: |
-            sudo mkdir -p /opt/team3 && sudo chown $USER:$USER /opt/team3
-
-      - name: Copy docker-compose to VPS
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.VPS_HOST }}
-          username: ${{ secrets.VPS_USER }}
-          key: ${{ secrets.VPS_SSH_KEY }}
-          source: "docker/mvc/docker-compose.yml"
-          target: "/opt/team3"
-          strip_components: 2
-
       - name: Install dependencies, configure Nginx, and deploy
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -68,7 +47,6 @@ jobs:
 
             # ── Docker ────────────────────────────────────────────────
             if ! command -v docker &> /dev/null; then
-              echo "Installing Docker..."
               curl -fsSL https://get.docker.com | sudo sh
               sudo systemctl enable docker
               sudo systemctl start docker
@@ -80,37 +58,56 @@ jobs:
 
             # ── Nginx ─────────────────────────────────────────────────
             if ! command -v nginx &> /dev/null; then
-              echo "Installing Nginx..."
               sudo apt-get update -y
               sudo apt-get install -y nginx
               sudo systemctl enable nginx
               sudo systemctl start nginx
             fi
 
-            # ── Nginx config ──────────────────────────────────────────
-            sudo tee /etc/nginx/sites-available/team3 > /dev/null <<'EOF'
+            sudo tee /etc/nginx/sites-available/team3 > /dev/null <<'NGINXEOF'
             server {
-                listen 80;
-                server_name _;
+              listen 80;
+              server_name _;
 
-                location / {
-                    proxy_pass http://localhost:44312;
-                    proxy_http_version 1.1;
-                    proxy_set_header Upgrade $http_upgrade;
-                    proxy_set_header Connection "keep-alive";
-                    proxy_set_header Host $host;
-                    proxy_set_header X-Real-IP $remote_addr;
-                    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-                    proxy_set_header X-Forwarded-Proto $scheme;
-                    proxy_cache_bypass $http_upgrade;
-                }
+              location / {
+                proxy_pass         http://localhost:44312;
+                proxy_http_version 1.1;
+                proxy_set_header   Upgrade           $http_upgrade;
+                proxy_set_header   Connection        "keep-alive";
+                proxy_set_header   Host              $host;
+                proxy_set_header   X-Real-IP         $remote_addr;
+                proxy_set_header   X-Forwarded-For   $proxy_add_x_forwarded_for;
+                proxy_set_header   X-Forwarded-Proto $scheme;
+                proxy_cache_bypass $http_upgrade;
+              }
             }
-            EOF
+            NGINXEOF
 
             sudo ln -sf /etc/nginx/sites-available/team3 /etc/nginx/sites-enabled/team3
             sudo rm -f /etc/nginx/sites-enabled/default
             sudo nginx -t
             sudo systemctl reload nginx
+
+            # ── Deployment directory ──────────────────────────────────
+            sudo mkdir -p /opt/team3 && sudo chown $USER:$USER /opt/team3
+
+            # ── Write docker-compose ──────────────────────────────────
+            cat > /opt/team3/docker-compose.yml <<'COMPOSEEOF'
+            version: '3'
+            services:
+              abp_host:
+                image: ghcr.io/thuwayba15/team3-mvc:latest
+                env_file:
+                  - .env
+                environment:
+                  TZ: "America/Toronto"
+                  Kestrel__Endpoints__Http__Url: "http://+:80"
+                ports:
+                  - "44312:80"
+                volumes:
+                  - "./Mvc-Logs:/app/App_Data/Logs"
+                restart: always
+            COMPOSEEOF
 
             # ── Write env file ────────────────────────────────────────
             cat > /opt/team3/.env <<ENVEOF
@@ -122,6 +119,7 @@ jobs:
             ENVEOF
 
             # ── Deploy ────────────────────────────────────────────────
+            echo "${{ secrets.GITHUB_TOKEN }}" | sudo docker login ghcr.io -u thuwayba15 --password-stdin
             sudo docker compose -f /opt/team3/docker-compose.yml --project-directory /opt/team3 down || true
             sudo docker compose -f /opt/team3/docker-compose.yml --project-directory /opt/team3 pull
             sudo docker compose -f /opt/team3/docker-compose.yml --project-directory /opt/team3 up -d
