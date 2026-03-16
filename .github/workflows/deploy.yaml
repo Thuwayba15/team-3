@@ -27,7 +27,7 @@ jobs:
           context: backend/aspnet-core
           file: backend/aspnet-core/src/Team3.Web.Mvc/Dockerfile
           push: true
-          tags: ghcr.io/teboho02/team3-mvc:latest
+          tags: ghcr.io/thuwayba15/team3-mvc:latest
 
   deploy:
     runs-on: ubuntu-latest
@@ -52,7 +52,7 @@ jobs:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
-          source: "docker/mvc/docker-compose.yml"
+          source: "backend/aspnet-core/docker/mvc/docker-compose.yml"
           target: "/opt/team3"
           strip_components: 2
 
