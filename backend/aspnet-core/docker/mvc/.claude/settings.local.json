@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(docker compose:*)",
+      "Read(//c/Users/Teboho/Downloads/team-3-main \\(1\\)/team-3-main/backend/aspnet-core/**)",
+      "Bash(docker build -t abp/mvc -f src/Team3.Web.Mvc/Dockerfile .)",
+      "Bash(netstat:*)"
+    ]
+  }
+}
