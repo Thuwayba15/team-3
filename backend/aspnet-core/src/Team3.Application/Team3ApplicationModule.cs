@@ -3,12 +3,13 @@ using Abp.Modules;
 using Abp.Reflection.Extensions;
 using Castle.MicroKernel.Registration;
 using FluentValidation;
+using System.Globalization;
 using System.Linq;
 using Team3.Authorization;
 using Team3.Domain.Subjects;
+using Team3.Services.Subjects;
 using Team3.Services.Subjects.Dto;
 using Team3.Users.Dto;
-using System.Globalization;
 
 namespace Team3;
 
@@ -41,6 +42,18 @@ public class Team3ApplicationModule : AbpModule
         Configuration.Modules.AbpAutoMapper().Configurators.Add(cfg =>
         {
             cfg.AddMaps(thisAssembly);
+
+            cfg.CreateMap<Topic, TopicDto>()
+                .ForMember(dest => dest.Title, opt => opt.MapFrom(src =>
+                    src.Translations.Any(t => t.Language == CultureInfo.CurrentUICulture.Name)
+                        ? src.Translations.First(t => t.Language == CultureInfo.CurrentUICulture.Name).Title
+                        : src.Translations.Select(t => t.Title).FirstOrDefault() ?? string.Empty
+                ))
+                .ForMember(dest => dest.Summary, opt => opt.MapFrom(src =>
+                    src.Translations.Any(t => t.Language == CultureInfo.CurrentUICulture.Name)
+                        ? src.Translations.First(t => t.Language == CultureInfo.CurrentUICulture.Name).Summary
+                        : src.Translations.Select(t => t.Summary).FirstOrDefault() ?? string.Empty
+                ));
 
             cfg.CreateMap<Subject, SubjectDto>()
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src =>
