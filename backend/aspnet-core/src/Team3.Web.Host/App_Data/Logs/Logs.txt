@@ -2646,3 +2646,889 @@ INFO  2026-03-17 13:47:15,045 [23   ] .Mvc.Infrastructure.ObjectResultExecutor -
 INFO  2026-03-17 13:47:15,050 [23   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Users.UserAppService.CreateAsync (Team3.Application) in 1129.6707ms
 INFO  2026-03-17 13:47:15,050 [23   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Users.UserAppService.CreateAsync (Team3.Application)'
 INFO  2026-03-17 13:47:15,051 [23   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 POST https://localhost:44311/api/services/app/User/Create - 401 - application/json;+charset=utf-8 1161.4888ms
+DEBUG 2026-03-17 23:46:42,422 [2    ] Abp.Modules.AbpModuleManager             - Loading Abp modules...
+DEBUG 2026-03-17 23:46:43,165 [2    ] Abp.Modules.AbpModuleManager             - Found 15 ABP modules in total.
+DEBUG 2026-03-17 23:46:43,182 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Web.Host.Startup.Team3WebHostModule, Team3.Web.Host, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-17 23:46:43,183 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3WebCoreModule, Team3.Web.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-17 23:46:43,183 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3ApplicationModule, Team3.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-17 23:46:43,183 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3CoreModule, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-17 23:46:43,183 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCoreModule, Abp.ZeroCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-17 23:46:43,184 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCommonModule, Abp.Zero.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-17 23:46:43,184 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AbpKernelModule, Abp, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-17 23:46:43,184 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AutoMapper.AbpAutoMapperModule, Abp.AutoMapper, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-17 23:46:43,185 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.EntityFrameworkCore.Team3EntityFrameworkModule, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-17 23:46:43,185 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.EntityFrameworkCore.AbpZeroCoreEntityFrameworkCoreModule, Abp.ZeroCore.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-17 23:46:43,185 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFrameworkCore.AbpEntityFrameworkCoreModule, Abp.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-17 23:46:43,185 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFramework.AbpEntityFrameworkCommonModule, Abp.EntityFramework.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-17 23:46:43,185 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.AbpAspNetCoreModule, Abp.AspNetCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-17 23:46:43,185 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Web.AbpWebCommonModule, Abp.Web.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-17 23:46:43,186 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.SignalR.AbpAspNetCoreSignalRModule, Abp.AspNetCore.SignalR, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-17 23:46:43,186 [2    ] Abp.Modules.AbpModuleManager             - 15 modules loaded.
+DEBUG 2026-03-17 23:46:43,390 [2    ] o.Configuration.LanguageManagementConfig - Converted Abp (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-17 23:46:43,390 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpZero (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-17 23:46:43,390 [2    ] o.Configuration.LanguageManagementConfig - Converted Team3 (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-17 23:46:43,390 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpWeb (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-17 23:46:43,980 [2    ] ameworkCore.AbpEntityFrameworkCoreModule - Registering DbContext: Team3.EntityFrameworkCore.Team3DbContext, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-17 23:46:44,087 [2    ] Abp.Localization.LocalizationManager     - Initializing 4 localization sources.
+DEBUG 2026-03-17 23:46:44,108 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Abp
+DEBUG 2026-03-17 23:46:44,114 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpZero
+DEBUG 2026-03-17 23:46:44,116 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Team3
+DEBUG 2026-03-17 23:46:44,118 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpWeb
+DEBUG 2026-03-17 23:46:44,123 [2    ] Abp.BackgroundJobs.BackgroundJobManager  - Start background worker: Abp.BackgroundJobs.BackgroundJobManager
+DEBUG 2026-03-17 23:46:44,131 [2    ] , Culture=neutral, PublicKeyToken=null]] - Start background worker: Abp.Authorization.Users.UserTokenExpirationWorker`2[[Team3.MultiTenancy.Tenant, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Team3.Authorization.Users.User, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]
+DEBUG 2026-03-17 23:46:44,143 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Found 7 classes define auto mapping attributes
+DEBUG 2026-03-17 23:46:44,143 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.CreateUserDto
+DEBUG 2026-03-17 23:46:44,145 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.UserDto
+DEBUG 2026-03-17 23:46:44,145 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.TenantLoginInfoDto
+DEBUG 2026-03-17 23:46:44,145 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.UserLoginInfoDto
+DEBUG 2026-03-17 23:46:44,145 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Roles.Dto.PermissionDto
+DEBUG 2026-03-17 23:46:44,145 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.CreateTenantDto
+DEBUG 2026-03-17 23:46:44,146 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.TenantDto
+WARN  2026-03-17 23:46:45,551 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'CurriculumExtractionJob' has a global query filter defined and is the required end of a relationship with the entity 'ParsedStructureNode'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+INFO  2026-03-17 23:46:58,811 [2    ] tCore.Builder.RequestLocalizationOptions - Supported Request Localization Cultures: en,es-MX,fr,de,it,nl,pt-BR,tr,ru,ar,fa,ja,zh-Hans
+DEBUG 2026-03-17 23:46:59,085 [2    ] .BrowserRefresh.BrowserRefreshMiddleware - Middleware loaded: DOTNET_MODIFIABLE_ASSEMBLIES=debug, __ASPNETCORE_BROWSER_TOOLS=true
+WARN  2026-03-17 23:46:59,234 [2    ] Microsoft.AspNetCore.Server.Kestrel      - Overriding address(es) 'https://localhost:44311/'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+INFO  2026-03-17 23:46:59,267 [2    ] Microsoft.Hosting.Lifetime               - Now listening on: https://localhost:44311
+INFO  2026-03-17 23:46:59,343 [2    ] Microsoft.Hosting.Lifetime               - Application started. Press Ctrl+C to shut down.
+INFO  2026-03-17 23:46:59,347 [2    ] Microsoft.Hosting.Lifetime               - Hosting environment: Development
+INFO  2026-03-17 23:46:59,383 [2    ] Microsoft.Hosting.Lifetime               - Content root path: C:\Users\Rusell\Desktop\Dev\GradProgram\GroupProject\team-3\backend\aspnet-core\src\Team3.Web.Host
+INFO  2026-03-17 23:46:59,878 [7    ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/ - - -
+INFO  2026-03-17 23:47:01,647 [16   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host)'
+INFO  2026-03-17 23:47:01,880 [16   ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "Index", controller = "Home", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller Team3.Web.Host.Controllers.HomeController (Team3.Web.Host).
+INFO  2026-03-17 23:47:03,237 [16   ] vc.Infrastructure.RedirectResultExecutor - Executing RedirectResult, redirecting to /swagger.
+INFO  2026-03-17 23:47:03,269 [16   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host) in 1362.1477ms
+INFO  2026-03-17 23:47:03,276 [16   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host)'
+INFO  2026-03-17 23:47:03,310 [16   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/ - 302 - - 3451.5132ms
+INFO  2026-03-17 23:47:03,334 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/swagger/ui/abp.swagger.js - - -
+INFO  2026-03-17 23:47:03,339 [16   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/swagger/ui/abp.js - - -
+INFO  2026-03-17 23:47:03,336 [11   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/_framework/aspnetcore-browser-refresh.js - - -
+INFO  2026-03-17 23:47:03,351 [17   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/_vs/browserLink - - -
+INFO  2026-03-17 23:47:03,365 [16   ] NetCore.StaticFiles.StaticFileMiddleware - The file /swagger/ui/abp.js was not modified
+INFO  2026-03-17 23:47:03,368 [15   ] NetCore.StaticFiles.StaticFileMiddleware - The file /swagger/ui/abp.swagger.js was not modified
+INFO  2026-03-17 23:47:03,375 [16   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/swagger/ui/abp.js - 304 - text/javascript 42.3859ms
+INFO  2026-03-17 23:47:03,378 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/swagger/ui/abp.swagger.js - 304 - text/javascript 42.3715ms
+DEBUG 2026-03-17 23:47:03,397 [9    ] h.BrowserRefresh.BrowserScriptMiddleware - Script injected: /_framework/aspnetcore-browser-refresh.js
+INFO  2026-03-17 23:47:03,403 [9    ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/_framework/aspnetcore-browser-refresh.js - 200 16513 application/javascript;+charset=utf-8 70.0653ms
+INFO  2026-03-17 23:47:03,527 [9    ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/_vs/browserLink - 200 - text/javascript;+charset=UTF-8 176.2672ms
+INFO  2026-03-17 23:47:03,549 [17   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/AntiForgery/SetCookie - - -
+INFO  2026-03-17 23:47:03,561 [17   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host)'
+INFO  2026-03-17 23:47:03,602 [11   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/swagger/v1/swagger.json - - -
+INFO  2026-03-17 23:47:03,609 [17   ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "SetCookie", controller = "AntiForgery", area = ""}. Executing controller action with signature Void SetCookie() on controller Team3.Web.Host.Controllers.AntiForgeryController (Team3.Web.Host).
+INFO  2026-03-17 23:47:03,726 [17   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/swagger/v1/swagger.json - 200 - application/json;charset=utf-8 155.8827ms
+INFO  2026-03-17 23:47:04,626 [17   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-17 23:47:04,687 [17   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host) in 1045.654ms
+INFO  2026-03-17 23:47:04,691 [17   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host)'
+INFO  2026-03-17 23:47:04,700 [17   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/AntiForgery/SetCookie - 200 - application/json;+charset=utf-8 1147.0099ms
+INFO  2026-03-18 00:02:45,197 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 POST https://localhost:44311/api/TokenAuth/Authenticate - application/json 54
+INFO  2026-03-18 00:02:45,233 [15   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution failed.
+INFO  2026-03-18 00:02:45,239 [15   ] pNetCore.Cors.Infrastructure.CorsService - Request origin https://localhost:44311 does not have permission to access the resource.
+INFO  2026-03-18 00:02:45,256 [15   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Controllers.TokenAuthController.Authenticate (Team3.Web.Core)'
+INFO  2026-03-18 00:02:45,318 [15   ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "Authenticate", controller = "TokenAuth", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Team3.Models.TokenAuth.AuthenticateResultModel] Authenticate(Team3.Models.TokenAuth.AuthenticateModel) on controller Team3.Controllers.TokenAuthController (Team3.Web.Core).
+INFO  2026-03-18 00:02:51,109 [16   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-18 00:02:51,124 [16   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Controllers.TokenAuthController.Authenticate (Team3.Web.Core) in 5800.827ms
+INFO  2026-03-18 00:02:51,130 [16   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Controllers.TokenAuthController.Authenticate (Team3.Web.Core)'
+INFO  2026-03-18 00:02:51,136 [16   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 POST https://localhost:44311/api/TokenAuth/Authenticate - 200 - application/json;+charset=utf-8 5940.7214ms
+INFO  2026-03-18 00:02:51,157 [16   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/swagger/index.html - - -
+DEBUG 2026-03-18 00:02:51,442 [16   ] .BrowserRefresh.BrowserRefreshMiddleware - Response markup is scheduled to include browser refresh script injection.
+DEBUG 2026-03-18 00:02:51,509 [16   ] .BrowserRefresh.BrowserRefreshMiddleware - Response markup was updated to include browser refresh script injection.
+INFO  2026-03-18 00:02:51,513 [16   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/swagger/index.html - 200 - text/html;charset=utf-8 356.8500ms
+INFO  2026-03-18 00:02:51,577 [16   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/_framework/aspnetcore-browser-refresh.js - - -
+INFO  2026-03-18 00:02:51,580 [19   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/_vs/browserLink - - -
+DEBUG 2026-03-18 00:02:51,585 [21   ] h.BrowserRefresh.BrowserScriptMiddleware - Script injected: /_framework/aspnetcore-browser-refresh.js
+INFO  2026-03-18 00:02:51,590 [21   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/_framework/aspnetcore-browser-refresh.js - 200 16513 application/javascript;+charset=utf-8 12.8518ms
+INFO  2026-03-18 00:02:51,612 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/_vs/browserLink - 200 - text/javascript;+charset=UTF-8 35.0748ms
+INFO  2026-03-18 00:02:51,626 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/AntiForgery/SetCookie - - -
+INFO  2026-03-18 00:02:51,633 [15   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host)'
+INFO  2026-03-18 00:02:51,641 [15   ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "SetCookie", controller = "AntiForgery", area = ""}. Executing controller action with signature Void SetCookie() on controller Team3.Web.Host.Controllers.AntiForgeryController (Team3.Web.Host).
+INFO  2026-03-18 00:02:51,658 [21   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/swagger/v1/swagger.json - - -
+INFO  2026-03-18 00:02:51,750 [17   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/swagger/v1/swagger.json - 200 - application/json;charset=utf-8 91.4986ms
+INFO  2026-03-18 00:02:52,588 [17   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-18 00:02:52,593 [17   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host) in 946.9468ms
+INFO  2026-03-18 00:02:52,597 [17   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host)'
+INFO  2026-03-18 00:02:52,602 [17   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/AntiForgery/SetCookie - 200 - application/json;+charset=utf-8 975.6654ms
+DEBUG 2026-03-18 00:18:11,991 [2    ] Abp.Modules.AbpModuleManager             - Loading Abp modules...
+DEBUG 2026-03-18 00:18:12,940 [2    ] Abp.Modules.AbpModuleManager             - Found 15 ABP modules in total.
+DEBUG 2026-03-18 00:18:13,002 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Web.Host.Startup.Team3WebHostModule, Team3.Web.Host, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:18:13,008 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3WebCoreModule, Team3.Web.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:18:13,010 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3ApplicationModule, Team3.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:18:13,012 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3CoreModule, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:18:13,013 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCoreModule, Abp.ZeroCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:18:13,015 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCommonModule, Abp.Zero.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:18:13,017 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AbpKernelModule, Abp, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:18:13,021 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AutoMapper.AbpAutoMapperModule, Abp.AutoMapper, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:18:13,023 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.EntityFrameworkCore.Team3EntityFrameworkModule, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:18:13,025 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.EntityFrameworkCore.AbpZeroCoreEntityFrameworkCoreModule, Abp.ZeroCore.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:18:13,027 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFrameworkCore.AbpEntityFrameworkCoreModule, Abp.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:18:13,029 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFramework.AbpEntityFrameworkCommonModule, Abp.EntityFramework.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:18:13,031 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.AbpAspNetCoreModule, Abp.AspNetCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:18:13,033 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Web.AbpWebCommonModule, Abp.Web.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:18:13,035 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.SignalR.AbpAspNetCoreSignalRModule, Abp.AspNetCore.SignalR, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:18:13,042 [2    ] Abp.Modules.AbpModuleManager             - 15 modules loaded.
+DEBUG 2026-03-18 00:18:13,536 [2    ] o.Configuration.LanguageManagementConfig - Converted Abp (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-18 00:18:13,537 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpZero (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-18 00:18:13,537 [2    ] o.Configuration.LanguageManagementConfig - Converted Team3 (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-18 00:18:13,538 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpWeb (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-18 00:18:14,940 [2    ] ameworkCore.AbpEntityFrameworkCoreModule - Registering DbContext: Team3.EntityFrameworkCore.Team3DbContext, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:18:15,683 [2    ] Abp.Localization.LocalizationManager     - Initializing 4 localization sources.
+DEBUG 2026-03-18 00:18:15,819 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Abp
+DEBUG 2026-03-18 00:18:15,851 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpZero
+DEBUG 2026-03-18 00:18:15,877 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Team3
+DEBUG 2026-03-18 00:18:15,891 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpWeb
+DEBUG 2026-03-18 00:18:15,922 [2    ] Abp.BackgroundJobs.BackgroundJobManager  - Start background worker: Abp.BackgroundJobs.BackgroundJobManager
+DEBUG 2026-03-18 00:18:15,942 [2    ] , Culture=neutral, PublicKeyToken=null]] - Start background worker: Abp.Authorization.Users.UserTokenExpirationWorker`2[[Team3.MultiTenancy.Tenant, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Team3.Authorization.Users.User, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]
+DEBUG 2026-03-18 00:18:16,011 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Found 7 classes define auto mapping attributes
+DEBUG 2026-03-18 00:18:16,011 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.CreateUserDto
+DEBUG 2026-03-18 00:18:16,024 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.UserDto
+DEBUG 2026-03-18 00:18:16,026 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.TenantLoginInfoDto
+DEBUG 2026-03-18 00:18:16,027 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.UserLoginInfoDto
+DEBUG 2026-03-18 00:18:16,027 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Roles.Dto.PermissionDto
+DEBUG 2026-03-18 00:18:16,028 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.CreateTenantDto
+DEBUG 2026-03-18 00:18:16,028 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.TenantDto
+WARN  2026-03-18 00:18:21,345 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'CurriculumExtractionJob' has a global query filter defined and is the required end of a relationship with the entity 'ParsedStructureNode'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+INFO  2026-03-18 00:18:37,474 [2    ] tCore.Builder.RequestLocalizationOptions - Supported Request Localization Cultures: en,es-MX,fr,de,it,nl,pt-BR,tr,ru,ar,fa,ja,zh-Hans
+DEBUG 2026-03-18 00:18:38,241 [2    ] .BrowserRefresh.BrowserRefreshMiddleware - Middleware loaded: DOTNET_MODIFIABLE_ASSEMBLIES=debug, __ASPNETCORE_BROWSER_TOOLS=true
+WARN  2026-03-18 00:18:38,354 [2    ] Microsoft.AspNetCore.Server.Kestrel      - Overriding address(es) 'https://localhost:44311/'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+INFO  2026-03-18 00:18:38,450 [2    ] Microsoft.Hosting.Lifetime               - Now listening on: https://localhost:44311
+INFO  2026-03-18 00:18:38,789 [2    ] Microsoft.Hosting.Lifetime               - Application started. Press Ctrl+C to shut down.
+INFO  2026-03-18 00:18:38,793 [2    ] Microsoft.Hosting.Lifetime               - Hosting environment: Development
+INFO  2026-03-18 00:18:38,798 [2    ] Microsoft.Hosting.Lifetime               - Content root path: C:\Users\Rusell\Desktop\Dev\GradProgram\GroupProject\team-3\backend\aspnet-core\src\Team3.Web.Host
+INFO  2026-03-18 00:18:38,915 [7    ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/ - - -
+INFO  2026-03-18 00:18:40,640 [11   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host)'
+INFO  2026-03-18 00:18:40,796 [11   ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "Index", controller = "Home", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller Team3.Web.Host.Controllers.HomeController (Team3.Web.Host).
+INFO  2026-03-18 00:18:42,101 [18   ] vc.Infrastructure.RedirectResultExecutor - Executing RedirectResult, redirecting to /swagger.
+INFO  2026-03-18 00:18:42,133 [18   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host) in 1310.5139ms
+INFO  2026-03-18 00:18:42,139 [18   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host)'
+INFO  2026-03-18 00:18:42,200 [18   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/ - 302 - - 3277.8311ms
+INFO  2026-03-18 00:18:42,207 [9    ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/_framework/aspnetcore-browser-refresh.js - - -
+INFO  2026-03-18 00:18:42,224 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/_vs/browserLink - - -
+DEBUG 2026-03-18 00:18:42,241 [10   ] h.BrowserRefresh.BrowserScriptMiddleware - Script injected: /_framework/aspnetcore-browser-refresh.js
+INFO  2026-03-18 00:18:42,283 [10   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/_framework/aspnetcore-browser-refresh.js - 200 16513 application/javascript;+charset=utf-8 38.7044ms
+INFO  2026-03-18 00:18:42,384 [18   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/_vs/browserLink - 200 - text/javascript;+charset=UTF-8 137.0064ms
+INFO  2026-03-18 00:18:42,407 [18   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/AntiForgery/SetCookie - - -
+INFO  2026-03-18 00:18:42,416 [18   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host)'
+INFO  2026-03-18 00:18:42,453 [18   ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "SetCookie", controller = "AntiForgery", area = ""}. Executing controller action with signature Void SetCookie() on controller Team3.Web.Host.Controllers.AntiForgeryController (Team3.Web.Host).
+INFO  2026-03-18 00:18:42,458 [9    ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/swagger/v1/swagger.json - - -
+INFO  2026-03-18 00:18:42,583 [11   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/swagger/v1/swagger.json - 200 - application/json;charset=utf-8 124.8895ms
+INFO  2026-03-18 00:18:43,474 [11   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-18 00:18:43,520 [11   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host) in 1040.3613ms
+INFO  2026-03-18 00:18:43,525 [11   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host)'
+INFO  2026-03-18 00:18:43,530 [11   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/AntiForgery/SetCookie - 200 - application/json;+charset=utf-8 1120.6479ms
+DEBUG 2026-03-18 00:29:41,246 [2    ] Abp.Modules.AbpModuleManager             - Loading Abp modules...
+DEBUG 2026-03-18 00:29:41,703 [2    ] Abp.Modules.AbpModuleManager             - Found 15 ABP modules in total.
+DEBUG 2026-03-18 00:29:41,715 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Web.Host.Startup.Team3WebHostModule, Team3.Web.Host, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:29:41,716 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3WebCoreModule, Team3.Web.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:29:41,717 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3ApplicationModule, Team3.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:29:41,717 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3CoreModule, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:29:41,717 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCoreModule, Abp.ZeroCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:29:41,717 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCommonModule, Abp.Zero.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:29:41,717 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AbpKernelModule, Abp, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:29:41,718 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AutoMapper.AbpAutoMapperModule, Abp.AutoMapper, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:29:41,718 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.EntityFrameworkCore.Team3EntityFrameworkModule, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:29:41,719 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.EntityFrameworkCore.AbpZeroCoreEntityFrameworkCoreModule, Abp.ZeroCore.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:29:41,719 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFrameworkCore.AbpEntityFrameworkCoreModule, Abp.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:29:41,719 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFramework.AbpEntityFrameworkCommonModule, Abp.EntityFramework.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:29:41,719 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.AbpAspNetCoreModule, Abp.AspNetCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:29:41,720 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Web.AbpWebCommonModule, Abp.Web.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:29:41,720 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.SignalR.AbpAspNetCoreSignalRModule, Abp.AspNetCore.SignalR, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:29:41,721 [2    ] Abp.Modules.AbpModuleManager             - 15 modules loaded.
+DEBUG 2026-03-18 00:29:41,759 [2    ] o.Configuration.LanguageManagementConfig - Converted Abp (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-18 00:29:41,759 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpZero (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-18 00:29:41,759 [2    ] o.Configuration.LanguageManagementConfig - Converted Team3 (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-18 00:29:41,759 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpWeb (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-18 00:29:41,974 [2    ] ameworkCore.AbpEntityFrameworkCoreModule - Registering DbContext: Team3.EntityFrameworkCore.Team3DbContext, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:29:42,124 [2    ] Abp.Localization.LocalizationManager     - Initializing 4 localization sources.
+DEBUG 2026-03-18 00:29:42,146 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Abp
+DEBUG 2026-03-18 00:29:42,151 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpZero
+DEBUG 2026-03-18 00:29:42,156 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Team3
+DEBUG 2026-03-18 00:29:42,159 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpWeb
+DEBUG 2026-03-18 00:29:42,164 [2    ] Abp.BackgroundJobs.BackgroundJobManager  - Start background worker: Abp.BackgroundJobs.BackgroundJobManager
+DEBUG 2026-03-18 00:29:42,170 [2    ] , Culture=neutral, PublicKeyToken=null]] - Start background worker: Abp.Authorization.Users.UserTokenExpirationWorker`2[[Team3.MultiTenancy.Tenant, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Team3.Authorization.Users.User, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]
+DEBUG 2026-03-18 00:29:42,241 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Found 7 classes define auto mapping attributes
+DEBUG 2026-03-18 00:29:42,241 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.CreateUserDto
+DEBUG 2026-03-18 00:29:42,252 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.UserDto
+DEBUG 2026-03-18 00:29:42,255 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.TenantLoginInfoDto
+DEBUG 2026-03-18 00:29:42,256 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.UserLoginInfoDto
+DEBUG 2026-03-18 00:29:42,257 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Roles.Dto.PermissionDto
+DEBUG 2026-03-18 00:29:42,258 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.CreateTenantDto
+DEBUG 2026-03-18 00:29:42,258 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.TenantDto
+WARN  2026-03-18 00:29:46,742 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'CurriculumExtractionJob' has a global query filter defined and is the required end of a relationship with the entity 'ParsedStructureNode'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+INFO  2026-03-18 00:30:03,883 [2    ] tCore.Builder.RequestLocalizationOptions - Supported Request Localization Cultures: en,es-MX,fr,de,it,nl,pt-BR,tr,ru,ar,fa,ja,zh-Hans
+DEBUG 2026-03-18 00:30:04,888 [2    ] .BrowserRefresh.BrowserRefreshMiddleware - Middleware loaded: DOTNET_MODIFIABLE_ASSEMBLIES=debug, __ASPNETCORE_BROWSER_TOOLS=true
+WARN  2026-03-18 00:30:04,982 [2    ] Microsoft.AspNetCore.Server.Kestrel      - Overriding address(es) 'https://localhost:44311/'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+INFO  2026-03-18 00:30:05,183 [2    ] Microsoft.Hosting.Lifetime               - Now listening on: https://localhost:44311
+INFO  2026-03-18 00:30:05,387 [2    ] Microsoft.Hosting.Lifetime               - Application started. Press Ctrl+C to shut down.
+INFO  2026-03-18 00:30:05,390 [2    ] Microsoft.Hosting.Lifetime               - Hosting environment: Development
+INFO  2026-03-18 00:30:05,394 [2    ] Microsoft.Hosting.Lifetime               - Content root path: C:\Users\Rusell\Desktop\Dev\GradProgram\GroupProject\team-3\backend\aspnet-core\src\Team3.Web.Host
+INFO  2026-03-18 00:30:05,453 [9    ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/ - - -
+INFO  2026-03-18 00:30:07,102 [15   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host)'
+INFO  2026-03-18 00:30:07,295 [15   ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "Index", controller = "Home", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller Team3.Web.Host.Controllers.HomeController (Team3.Web.Host).
+INFO  2026-03-18 00:30:08,665 [15   ] vc.Infrastructure.RedirectResultExecutor - Executing RedirectResult, redirecting to /swagger.
+INFO  2026-03-18 00:30:08,699 [15   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host) in 1377.5272ms
+INFO  2026-03-18 00:30:08,706 [15   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host)'
+INFO  2026-03-18 00:30:08,744 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/ - 302 - - 3310.4330ms
+INFO  2026-03-18 00:30:08,805 [10   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/_framework/aspnetcore-browser-refresh.js - - -
+INFO  2026-03-18 00:30:08,810 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/_vs/browserLink - - -
+DEBUG 2026-03-18 00:30:08,870 [10   ] h.BrowserRefresh.BrowserScriptMiddleware - Script injected: /_framework/aspnetcore-browser-refresh.js
+INFO  2026-03-18 00:30:08,899 [10   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/_framework/aspnetcore-browser-refresh.js - 200 16513 application/javascript;+charset=utf-8 101.8077ms
+INFO  2026-03-18 00:30:08,979 [9    ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/_vs/browserLink - 200 - text/javascript;+charset=UTF-8 168.5190ms
+INFO  2026-03-18 00:30:08,998 [20   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/AntiForgery/SetCookie - - -
+INFO  2026-03-18 00:30:09,012 [20   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host)'
+INFO  2026-03-18 00:30:09,021 [9    ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/swagger/v1/swagger.json - - -
+INFO  2026-03-18 00:30:09,027 [20   ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "SetCookie", controller = "AntiForgery", area = ""}. Executing controller action with signature Void SetCookie() on controller Team3.Web.Host.Controllers.AntiForgeryController (Team3.Web.Host).
+INFO  2026-03-18 00:30:09,148 [16   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/swagger/v1/swagger.json - 200 - application/json;charset=utf-8 124.7841ms
+INFO  2026-03-18 00:30:10,014 [20   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-18 00:30:10,043 [20   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host) in 1009.4156ms
+INFO  2026-03-18 00:30:10,048 [20   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host)'
+INFO  2026-03-18 00:30:10,054 [20   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/AntiForgery/SetCookie - 200 - application/json;+charset=utf-8 1054.7673ms
+DEBUG 2026-03-18 00:39:53,705 [2    ] Abp.Modules.AbpModuleManager             - Loading Abp modules...
+DEBUG 2026-03-18 00:39:54,179 [2    ] Abp.Modules.AbpModuleManager             - Found 15 ABP modules in total.
+DEBUG 2026-03-18 00:39:54,192 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Web.Host.Startup.Team3WebHostModule, Team3.Web.Host, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:39:54,194 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3WebCoreModule, Team3.Web.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:39:54,194 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3ApplicationModule, Team3.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:39:54,194 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3CoreModule, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:39:54,195 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCoreModule, Abp.ZeroCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:39:54,195 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCommonModule, Abp.Zero.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:39:54,195 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AbpKernelModule, Abp, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:39:54,196 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AutoMapper.AbpAutoMapperModule, Abp.AutoMapper, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:39:54,196 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.EntityFrameworkCore.Team3EntityFrameworkModule, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:39:54,197 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.EntityFrameworkCore.AbpZeroCoreEntityFrameworkCoreModule, Abp.ZeroCore.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:39:54,197 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFrameworkCore.AbpEntityFrameworkCoreModule, Abp.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:39:54,197 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFramework.AbpEntityFrameworkCommonModule, Abp.EntityFramework.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:39:54,198 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.AbpAspNetCoreModule, Abp.AspNetCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:39:54,198 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Web.AbpWebCommonModule, Abp.Web.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:39:54,198 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.SignalR.AbpAspNetCoreSignalRModule, Abp.AspNetCore.SignalR, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:39:54,200 [2    ] Abp.Modules.AbpModuleManager             - 15 modules loaded.
+DEBUG 2026-03-18 00:39:54,259 [2    ] o.Configuration.LanguageManagementConfig - Converted Abp (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-18 00:39:54,259 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpZero (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-18 00:39:54,259 [2    ] o.Configuration.LanguageManagementConfig - Converted Team3 (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-18 00:39:54,259 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpWeb (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-18 00:39:55,017 [2    ] ameworkCore.AbpEntityFrameworkCoreModule - Registering DbContext: Team3.EntityFrameworkCore.Team3DbContext, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:39:56,034 [2    ] Abp.Localization.LocalizationManager     - Initializing 4 localization sources.
+DEBUG 2026-03-18 00:39:56,192 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Abp
+DEBUG 2026-03-18 00:39:56,230 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpZero
+DEBUG 2026-03-18 00:39:56,265 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Team3
+DEBUG 2026-03-18 00:39:56,285 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpWeb
+DEBUG 2026-03-18 00:39:56,336 [2    ] Abp.BackgroundJobs.BackgroundJobManager  - Start background worker: Abp.BackgroundJobs.BackgroundJobManager
+DEBUG 2026-03-18 00:39:56,366 [2    ] , Culture=neutral, PublicKeyToken=null]] - Start background worker: Abp.Authorization.Users.UserTokenExpirationWorker`2[[Team3.MultiTenancy.Tenant, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Team3.Authorization.Users.User, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]
+DEBUG 2026-03-18 00:39:56,438 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Found 7 classes define auto mapping attributes
+DEBUG 2026-03-18 00:39:56,439 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.CreateUserDto
+DEBUG 2026-03-18 00:39:56,449 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.UserDto
+DEBUG 2026-03-18 00:39:56,455 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.TenantLoginInfoDto
+DEBUG 2026-03-18 00:39:56,456 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.UserLoginInfoDto
+DEBUG 2026-03-18 00:39:56,456 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Roles.Dto.PermissionDto
+DEBUG 2026-03-18 00:39:56,457 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.CreateTenantDto
+DEBUG 2026-03-18 00:39:56,457 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.TenantDto
+WARN  2026-03-18 00:40:01,593 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'CurriculumExtractionJob' has a global query filter defined and is the required end of a relationship with the entity 'ParsedStructureNode'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+INFO  2026-03-18 00:40:17,894 [2    ] tCore.Builder.RequestLocalizationOptions - Supported Request Localization Cultures: en,es-MX,fr,de,it,nl,pt-BR,tr,ru,ar,fa,ja,zh-Hans
+DEBUG 2026-03-18 00:40:18,718 [2    ] .BrowserRefresh.BrowserRefreshMiddleware - Middleware loaded: DOTNET_MODIFIABLE_ASSEMBLIES=debug, __ASPNETCORE_BROWSER_TOOLS=true
+WARN  2026-03-18 00:40:18,814 [2    ] Microsoft.AspNetCore.Server.Kestrel      - Overriding address(es) 'https://localhost:44311/'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+INFO  2026-03-18 00:40:18,931 [2    ] Microsoft.Hosting.Lifetime               - Now listening on: https://localhost:44311
+INFO  2026-03-18 00:40:19,248 [2    ] Microsoft.Hosting.Lifetime               - Application started. Press Ctrl+C to shut down.
+INFO  2026-03-18 00:40:19,286 [2    ] Microsoft.Hosting.Lifetime               - Hosting environment: Development
+INFO  2026-03-18 00:40:19,317 [2    ] Microsoft.Hosting.Lifetime               - Content root path: C:\Users\Rusell\Desktop\Dev\GradProgram\GroupProject\team-3\backend\aspnet-core\src\Team3.Web.Host
+INFO  2026-03-18 00:40:19,604 [12   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/ - - -
+INFO  2026-03-18 00:40:21,321 [18   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host)'
+INFO  2026-03-18 00:40:21,534 [18   ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "Index", controller = "Home", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller Team3.Web.Host.Controllers.HomeController (Team3.Web.Host).
+INFO  2026-03-18 00:40:23,018 [17   ] vc.Infrastructure.RedirectResultExecutor - Executing RedirectResult, redirecting to /swagger.
+INFO  2026-03-18 00:40:23,051 [17   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host) in 1489.1954ms
+INFO  2026-03-18 00:40:23,058 [17   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host)'
+INFO  2026-03-18 00:40:23,101 [17   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/ - 302 - - 3512.1011ms
+INFO  2026-03-18 00:40:23,129 [18   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/_framework/aspnetcore-browser-refresh.js - - -
+INFO  2026-03-18 00:40:23,147 [16   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/_vs/browserLink - - -
+DEBUG 2026-03-18 00:40:23,158 [10   ] h.BrowserRefresh.BrowserScriptMiddleware - Script injected: /_framework/aspnetcore-browser-refresh.js
+INFO  2026-03-18 00:40:23,164 [10   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/_framework/aspnetcore-browser-refresh.js - 200 16513 application/javascript;+charset=utf-8 35.6645ms
+INFO  2026-03-18 00:40:23,270 [16   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/_vs/browserLink - 200 - text/javascript;+charset=UTF-8 106.6830ms
+INFO  2026-03-18 00:40:23,293 [16   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/AntiForgery/SetCookie - - -
+INFO  2026-03-18 00:40:23,304 [16   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host)'
+INFO  2026-03-18 00:40:23,349 [10   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/swagger/v1/swagger.json - - -
+INFO  2026-03-18 00:40:23,355 [16   ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "SetCookie", controller = "AntiForgery", area = ""}. Executing controller action with signature Void SetCookie() on controller Team3.Web.Host.Controllers.AntiForgeryController (Team3.Web.Host).
+ERROR 2026-03-18 00:40:23,429 [10   ] Microsoft.AspNetCore.Server.Kestrel      - Connection id "0HNK4EOLDS7EA", Request id "0HNK4EOLDS7EA:00000009": An unhandled exception was thrown by the application.
+Swashbuckle.AspNetCore.SwaggerGen.SwaggerGeneratorException: Failed to generate Operation for action - Team3.Web.Host.Controllers.CurriculumController.UploadSourceDocument (Team3.Web.Host). See inner exception
+ ---> Swashbuckle.AspNetCore.SwaggerGen.SwaggerGeneratorException: Error reading parameter(s) for action Team3.Web.Host.Controllers.CurriculumController.UploadSourceDocument (Team3.Web.Host) as [FromForm] attribute used with IFormFile. Please refer to https://github.com/domaindrivendev/Swashbuckle.AspNetCore#handle-forms-and-file-uploads for more information
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateParametersAsync(ApiDescription apiDescription, SchemaRepository schemaRespository, Func`3 parameterGenerator)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateParametersAsync(ApiDescription apiDescription, SchemaRepository schemaRespository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateOperationAsync(OpenApiDocument document, ApiDescription apiDescription, SchemaRepository schemaRepository, Func`3 parametersGenerator, Func`3 bodyGenerator, Func`3 applyFilters)
+   --- End of inner exception stack trace ---
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateOperationAsync(OpenApiDocument document, ApiDescription apiDescription, SchemaRepository schemaRepository, Func`3 parametersGenerator, Func`3 bodyGenerator, Func`3 applyFilters)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateOperationAsync(OpenApiDocument document, ApiDescription apiDescription, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateOperationsAsync(OpenApiDocument document, IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GeneratePathsAsync(OpenApiDocument document, IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository, Func`4 operationsGenerator)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GeneratePathsAsync(OpenApiDocument document, IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GetSwaggerAsync(String documentName, String host, String basePath)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Localization.RequestLocalizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Abp.AspNetCore.Security.AbpSecurityHeadersMiddleware.Invoke(HttpContext httpContext)
+   at Microsoft.WebTools.BrowserLink.Net.BrowserLinkMiddleware.InvokeAsync(HttpContext context)
+   at Microsoft.AspNetCore.Watch.BrowserRefresh.BrowserRefreshMiddleware.InvokeAsync(HttpContext context)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpProtocol.ProcessRequests[TContext](IHttpApplication`1 application)
+INFO  2026-03-18 00:40:23,438 [10   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/swagger/v1/swagger.json - 500 0 - 121.2675ms
+INFO  2026-03-18 00:40:24,362 [10   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-18 00:40:24,413 [10   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host) in 1026.9548ms
+INFO  2026-03-18 00:40:24,417 [10   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host)'
+INFO  2026-03-18 00:40:24,424 [10   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/AntiForgery/SetCookie - 200 - application/json;+charset=utf-8 1128.3409ms
+DEBUG 2026-03-18 00:41:28,465 [2    ] Abp.Modules.AbpModuleManager             - Loading Abp modules...
+DEBUG 2026-03-18 00:41:28,816 [2    ] Abp.Modules.AbpModuleManager             - Found 15 ABP modules in total.
+DEBUG 2026-03-18 00:41:28,828 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Web.Host.Startup.Team3WebHostModule, Team3.Web.Host, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:41:28,829 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3WebCoreModule, Team3.Web.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:41:28,829 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3ApplicationModule, Team3.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:41:28,829 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3CoreModule, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:41:28,829 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCoreModule, Abp.ZeroCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:41:28,829 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCommonModule, Abp.Zero.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:41:28,830 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AbpKernelModule, Abp, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:41:28,830 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AutoMapper.AbpAutoMapperModule, Abp.AutoMapper, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:41:28,830 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.EntityFrameworkCore.Team3EntityFrameworkModule, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:41:28,830 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.EntityFrameworkCore.AbpZeroCoreEntityFrameworkCoreModule, Abp.ZeroCore.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:41:28,831 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFrameworkCore.AbpEntityFrameworkCoreModule, Abp.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:41:28,831 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFramework.AbpEntityFrameworkCommonModule, Abp.EntityFramework.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:41:28,831 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.AbpAspNetCoreModule, Abp.AspNetCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:41:28,831 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Web.AbpWebCommonModule, Abp.Web.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:41:28,831 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.SignalR.AbpAspNetCoreSignalRModule, Abp.AspNetCore.SignalR, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:41:28,832 [2    ] Abp.Modules.AbpModuleManager             - 15 modules loaded.
+DEBUG 2026-03-18 00:41:28,857 [2    ] o.Configuration.LanguageManagementConfig - Converted Abp (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-18 00:41:28,857 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpZero (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-18 00:41:28,857 [2    ] o.Configuration.LanguageManagementConfig - Converted Team3 (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-18 00:41:28,857 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpWeb (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-18 00:41:29,020 [2    ] ameworkCore.AbpEntityFrameworkCoreModule - Registering DbContext: Team3.EntityFrameworkCore.Team3DbContext, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:41:29,153 [2    ] Abp.Localization.LocalizationManager     - Initializing 4 localization sources.
+DEBUG 2026-03-18 00:41:29,174 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Abp
+DEBUG 2026-03-18 00:41:29,179 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpZero
+DEBUG 2026-03-18 00:41:29,183 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Team3
+DEBUG 2026-03-18 00:41:29,185 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpWeb
+DEBUG 2026-03-18 00:41:29,190 [2    ] Abp.BackgroundJobs.BackgroundJobManager  - Start background worker: Abp.BackgroundJobs.BackgroundJobManager
+DEBUG 2026-03-18 00:41:29,192 [2    ] , Culture=neutral, PublicKeyToken=null]] - Start background worker: Abp.Authorization.Users.UserTokenExpirationWorker`2[[Team3.MultiTenancy.Tenant, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Team3.Authorization.Users.User, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]
+DEBUG 2026-03-18 00:41:29,202 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Found 7 classes define auto mapping attributes
+DEBUG 2026-03-18 00:41:29,202 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.CreateUserDto
+DEBUG 2026-03-18 00:41:29,204 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.UserDto
+DEBUG 2026-03-18 00:41:29,204 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.TenantLoginInfoDto
+DEBUG 2026-03-18 00:41:29,204 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.UserLoginInfoDto
+DEBUG 2026-03-18 00:41:29,205 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Roles.Dto.PermissionDto
+DEBUG 2026-03-18 00:41:29,205 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.CreateTenantDto
+DEBUG 2026-03-18 00:41:29,205 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.TenantDto
+WARN  2026-03-18 00:41:29,783 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'CurriculumExtractionJob' has a global query filter defined and is the required end of a relationship with the entity 'ParsedStructureNode'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+INFO  2026-03-18 00:41:41,790 [2    ] tCore.Builder.RequestLocalizationOptions - Supported Request Localization Cultures: en,es-MX,fr,de,it,nl,pt-BR,tr,ru,ar,fa,ja,zh-Hans
+WARN  2026-03-18 00:41:41,882 [2    ] Microsoft.AspNetCore.Server.Kestrel      - Overriding address(es) 'https://localhost:44311/'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+INFO  2026-03-18 00:41:41,892 [2    ] Microsoft.Hosting.Lifetime               - Now listening on: https://localhost:44311
+INFO  2026-03-18 00:41:41,893 [2    ] Microsoft.Hosting.Lifetime               - Application started. Press Ctrl+C to shut down.
+INFO  2026-03-18 00:41:41,893 [2    ] Microsoft.Hosting.Lifetime               - Hosting environment: Development
+INFO  2026-03-18 00:41:41,893 [2    ] Microsoft.Hosting.Lifetime               - Content root path: C:\Users\Rusell\Desktop\Dev\GradProgram\GroupProject\team-3\backend\aspnet-core\src\Team3.Web.Host
+DEBUG 2026-03-18 00:43:31,786 [2    ] Abp.Modules.AbpModuleManager             - Loading Abp modules...
+DEBUG 2026-03-18 00:43:32,207 [2    ] Abp.Modules.AbpModuleManager             - Found 15 ABP modules in total.
+DEBUG 2026-03-18 00:43:32,219 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Web.Host.Startup.Team3WebHostModule, Team3.Web.Host, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:43:32,220 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3WebCoreModule, Team3.Web.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:43:32,220 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3ApplicationModule, Team3.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:43:32,220 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3CoreModule, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:43:32,220 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCoreModule, Abp.ZeroCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:43:32,220 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCommonModule, Abp.Zero.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:43:32,221 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AbpKernelModule, Abp, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:43:32,221 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AutoMapper.AbpAutoMapperModule, Abp.AutoMapper, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:43:32,221 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.EntityFrameworkCore.Team3EntityFrameworkModule, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:43:32,222 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.EntityFrameworkCore.AbpZeroCoreEntityFrameworkCoreModule, Abp.ZeroCore.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:43:32,222 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFrameworkCore.AbpEntityFrameworkCoreModule, Abp.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:43:32,222 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFramework.AbpEntityFrameworkCommonModule, Abp.EntityFramework.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:43:32,222 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.AbpAspNetCoreModule, Abp.AspNetCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:43:32,222 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Web.AbpWebCommonModule, Abp.Web.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:43:32,223 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.SignalR.AbpAspNetCoreSignalRModule, Abp.AspNetCore.SignalR, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:43:32,224 [2    ] Abp.Modules.AbpModuleManager             - 15 modules loaded.
+DEBUG 2026-03-18 00:43:32,261 [2    ] o.Configuration.LanguageManagementConfig - Converted Abp (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-18 00:43:32,261 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpZero (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-18 00:43:32,261 [2    ] o.Configuration.LanguageManagementConfig - Converted Team3 (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-18 00:43:32,261 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpWeb (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-18 00:43:32,478 [2    ] ameworkCore.AbpEntityFrameworkCoreModule - Registering DbContext: Team3.EntityFrameworkCore.Team3DbContext, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:43:32,624 [2    ] Abp.Localization.LocalizationManager     - Initializing 4 localization sources.
+DEBUG 2026-03-18 00:43:32,648 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Abp
+DEBUG 2026-03-18 00:43:32,654 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpZero
+DEBUG 2026-03-18 00:43:32,658 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Team3
+DEBUG 2026-03-18 00:43:32,661 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpWeb
+DEBUG 2026-03-18 00:43:32,666 [2    ] Abp.BackgroundJobs.BackgroundJobManager  - Start background worker: Abp.BackgroundJobs.BackgroundJobManager
+DEBUG 2026-03-18 00:43:32,671 [2    ] , Culture=neutral, PublicKeyToken=null]] - Start background worker: Abp.Authorization.Users.UserTokenExpirationWorker`2[[Team3.MultiTenancy.Tenant, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Team3.Authorization.Users.User, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]
+DEBUG 2026-03-18 00:43:32,684 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Found 7 classes define auto mapping attributes
+DEBUG 2026-03-18 00:43:32,685 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.CreateUserDto
+DEBUG 2026-03-18 00:43:32,686 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.UserDto
+DEBUG 2026-03-18 00:43:32,687 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.TenantLoginInfoDto
+DEBUG 2026-03-18 00:43:32,687 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.UserLoginInfoDto
+DEBUG 2026-03-18 00:43:32,687 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Roles.Dto.PermissionDto
+DEBUG 2026-03-18 00:43:32,687 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.CreateTenantDto
+DEBUG 2026-03-18 00:43:32,687 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.TenantDto
+WARN  2026-03-18 00:43:36,170 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'CurriculumExtractionJob' has a global query filter defined and is the required end of a relationship with the entity 'ParsedStructureNode'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+INFO  2026-03-18 00:43:54,188 [2    ] tCore.Builder.RequestLocalizationOptions - Supported Request Localization Cultures: en,es-MX,fr,de,it,nl,pt-BR,tr,ru,ar,fa,ja,zh-Hans
+DEBUG 2026-03-18 00:43:54,994 [2    ] .BrowserRefresh.BrowserRefreshMiddleware - Middleware loaded: DOTNET_MODIFIABLE_ASSEMBLIES=debug, __ASPNETCORE_BROWSER_TOOLS=true
+WARN  2026-03-18 00:43:55,065 [2    ] Microsoft.AspNetCore.Server.Kestrel      - Overriding address(es) 'https://localhost:44311/'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+INFO  2026-03-18 00:43:55,190 [2    ] Microsoft.Hosting.Lifetime               - Now listening on: https://localhost:44311
+INFO  2026-03-18 00:43:55,452 [2    ] Microsoft.Hosting.Lifetime               - Application started. Press Ctrl+C to shut down.
+INFO  2026-03-18 00:43:55,462 [2    ] Microsoft.Hosting.Lifetime               - Hosting environment: Development
+INFO  2026-03-18 00:43:55,471 [2    ] Microsoft.Hosting.Lifetime               - Content root path: C:\Users\Rusell\Desktop\Dev\GradProgram\GroupProject\team-3\backend\aspnet-core\src\Team3.Web.Host
+INFO  2026-03-18 00:43:55,724 [11   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/ - - -
+INFO  2026-03-18 00:43:57,284 [17   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host)'
+INFO  2026-03-18 00:43:57,487 [17   ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "Index", controller = "Home", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller Team3.Web.Host.Controllers.HomeController (Team3.Web.Host).
+INFO  2026-03-18 00:43:58,757 [17   ] vc.Infrastructure.RedirectResultExecutor - Executing RedirectResult, redirecting to /swagger.
+INFO  2026-03-18 00:43:58,789 [17   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host) in 1275.5158ms
+INFO  2026-03-18 00:43:58,797 [17   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host)'
+INFO  2026-03-18 00:43:58,836 [17   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/ - 302 - - 3125.1681ms
+INFO  2026-03-18 00:43:58,851 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/_framework/aspnetcore-browser-refresh.js - - -
+INFO  2026-03-18 00:43:58,867 [16   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/_vs/browserLink - - -
+DEBUG 2026-03-18 00:43:58,883 [15   ] h.BrowserRefresh.BrowserScriptMiddleware - Script injected: /_framework/aspnetcore-browser-refresh.js
+INFO  2026-03-18 00:43:58,888 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/_framework/aspnetcore-browser-refresh.js - 200 16513 application/javascript;+charset=utf-8 36.8625ms
+INFO  2026-03-18 00:43:58,979 [16   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/_vs/browserLink - 200 - text/javascript;+charset=UTF-8 110.6211ms
+INFO  2026-03-18 00:43:58,999 [7    ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/AntiForgery/SetCookie - - -
+INFO  2026-03-18 00:43:59,012 [7    ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host)'
+INFO  2026-03-18 00:43:59,025 [7    ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "SetCookie", controller = "AntiForgery", area = ""}. Executing controller action with signature Void SetCookie() on controller Team3.Web.Host.Controllers.AntiForgeryController (Team3.Web.Host).
+INFO  2026-03-18 00:43:59,032 [11   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/swagger/v1/swagger.json - - -
+ERROR 2026-03-18 00:43:59,102 [11   ] Microsoft.AspNetCore.Server.Kestrel      - Connection id "0HNK4EQLRB220", Request id "0HNK4EQLRB220:00000009": An unhandled exception was thrown by the application.
+Swashbuckle.AspNetCore.SwaggerGen.SwaggerGeneratorException: Failed to generate Operation for action - Team3.Web.Host.Controllers.CurriculumController.UploadSourceDocument (Team3.Web.Host). See inner exception
+ ---> Swashbuckle.AspNetCore.SwaggerGen.SwaggerGeneratorException: Error reading parameter(s) for action Team3.Web.Host.Controllers.CurriculumController.UploadSourceDocument (Team3.Web.Host) as [FromForm] attribute used with IFormFile. Please refer to https://github.com/domaindrivendev/Swashbuckle.AspNetCore#handle-forms-and-file-uploads for more information
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateParametersAsync(ApiDescription apiDescription, SchemaRepository schemaRespository, Func`3 parameterGenerator)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateParametersAsync(ApiDescription apiDescription, SchemaRepository schemaRespository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateOperationAsync(OpenApiDocument document, ApiDescription apiDescription, SchemaRepository schemaRepository, Func`3 parametersGenerator, Func`3 bodyGenerator, Func`3 applyFilters)
+   --- End of inner exception stack trace ---
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateOperationAsync(OpenApiDocument document, ApiDescription apiDescription, SchemaRepository schemaRepository, Func`3 parametersGenerator, Func`3 bodyGenerator, Func`3 applyFilters)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateOperationAsync(OpenApiDocument document, ApiDescription apiDescription, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateOperationsAsync(OpenApiDocument document, IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GeneratePathsAsync(OpenApiDocument document, IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository, Func`4 operationsGenerator)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GeneratePathsAsync(OpenApiDocument document, IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GetSwaggerAsync(String documentName, String host, String basePath)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Localization.RequestLocalizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Abp.AspNetCore.Security.AbpSecurityHeadersMiddleware.Invoke(HttpContext httpContext)
+   at Microsoft.WebTools.BrowserLink.Net.BrowserLinkMiddleware.InvokeAsync(HttpContext context)
+   at Microsoft.AspNetCore.Watch.BrowserRefresh.BrowserRefreshMiddleware.InvokeAsync(HttpContext context)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpProtocol.ProcessRequests[TContext](IHttpApplication`1 application)
+INFO  2026-03-18 00:43:59,109 [11   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/swagger/v1/swagger.json - 500 0 - 77.1335ms
+INFO  2026-03-18 00:44:00,045 [17   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-18 00:44:00,079 [17   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host) in 1049.3131ms
+INFO  2026-03-18 00:44:00,084 [17   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host)'
+INFO  2026-03-18 00:44:00,090 [17   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/AntiForgery/SetCookie - 200 - application/json;+charset=utf-8 1089.1013ms
+DEBUG 2026-03-18 00:45:45,793 [2    ] Abp.Modules.AbpModuleManager             - Loading Abp modules...
+DEBUG 2026-03-18 00:45:46,249 [2    ] Abp.Modules.AbpModuleManager             - Found 15 ABP modules in total.
+DEBUG 2026-03-18 00:45:46,261 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Web.Host.Startup.Team3WebHostModule, Team3.Web.Host, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:45:46,262 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3WebCoreModule, Team3.Web.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:45:46,263 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3ApplicationModule, Team3.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:45:46,263 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3CoreModule, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:45:46,263 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCoreModule, Abp.ZeroCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:45:46,263 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCommonModule, Abp.Zero.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:45:46,263 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AbpKernelModule, Abp, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:45:46,264 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AutoMapper.AbpAutoMapperModule, Abp.AutoMapper, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:45:46,264 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.EntityFrameworkCore.Team3EntityFrameworkModule, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:45:46,264 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.EntityFrameworkCore.AbpZeroCoreEntityFrameworkCoreModule, Abp.ZeroCore.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:45:46,265 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFrameworkCore.AbpEntityFrameworkCoreModule, Abp.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:45:46,265 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFramework.AbpEntityFrameworkCommonModule, Abp.EntityFramework.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:45:46,265 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.AbpAspNetCoreModule, Abp.AspNetCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:45:46,265 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Web.AbpWebCommonModule, Abp.Web.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:45:46,265 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.SignalR.AbpAspNetCoreSignalRModule, Abp.AspNetCore.SignalR, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:45:46,266 [2    ] Abp.Modules.AbpModuleManager             - 15 modules loaded.
+DEBUG 2026-03-18 00:45:46,307 [2    ] o.Configuration.LanguageManagementConfig - Converted Abp (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-18 00:45:46,308 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpZero (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-18 00:45:46,308 [2    ] o.Configuration.LanguageManagementConfig - Converted Team3 (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-18 00:45:46,308 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpWeb (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-18 00:45:46,519 [2    ] ameworkCore.AbpEntityFrameworkCoreModule - Registering DbContext: Team3.EntityFrameworkCore.Team3DbContext, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:45:46,663 [2    ] Abp.Localization.LocalizationManager     - Initializing 4 localization sources.
+DEBUG 2026-03-18 00:45:46,682 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Abp
+DEBUG 2026-03-18 00:45:46,687 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpZero
+DEBUG 2026-03-18 00:45:46,691 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Team3
+DEBUG 2026-03-18 00:45:46,693 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpWeb
+DEBUG 2026-03-18 00:45:46,697 [2    ] Abp.BackgroundJobs.BackgroundJobManager  - Start background worker: Abp.BackgroundJobs.BackgroundJobManager
+DEBUG 2026-03-18 00:45:46,702 [2    ] , Culture=neutral, PublicKeyToken=null]] - Start background worker: Abp.Authorization.Users.UserTokenExpirationWorker`2[[Team3.MultiTenancy.Tenant, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Team3.Authorization.Users.User, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]
+DEBUG 2026-03-18 00:45:46,715 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Found 7 classes define auto mapping attributes
+DEBUG 2026-03-18 00:45:46,715 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.CreateUserDto
+DEBUG 2026-03-18 00:45:46,717 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.UserDto
+DEBUG 2026-03-18 00:45:46,718 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.TenantLoginInfoDto
+DEBUG 2026-03-18 00:45:46,718 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.UserLoginInfoDto
+DEBUG 2026-03-18 00:45:46,718 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Roles.Dto.PermissionDto
+DEBUG 2026-03-18 00:45:46,718 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.CreateTenantDto
+DEBUG 2026-03-18 00:45:46,718 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.TenantDto
+WARN  2026-03-18 00:45:50,560 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'CurriculumExtractionJob' has a global query filter defined and is the required end of a relationship with the entity 'ParsedStructureNode'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+INFO  2026-03-18 00:46:07,055 [2    ] tCore.Builder.RequestLocalizationOptions - Supported Request Localization Cultures: en,es-MX,fr,de,it,nl,pt-BR,tr,ru,ar,fa,ja,zh-Hans
+DEBUG 2026-03-18 00:46:08,212 [2    ] .BrowserRefresh.BrowserRefreshMiddleware - Middleware loaded: DOTNET_MODIFIABLE_ASSEMBLIES=debug, __ASPNETCORE_BROWSER_TOOLS=true
+WARN  2026-03-18 00:46:08,360 [2    ] Microsoft.AspNetCore.Server.Kestrel      - Overriding address(es) 'https://localhost:44311/'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+INFO  2026-03-18 00:46:08,550 [2    ] Microsoft.Hosting.Lifetime               - Now listening on: https://localhost:44311
+INFO  2026-03-18 00:46:08,869 [2    ] Microsoft.Hosting.Lifetime               - Application started. Press Ctrl+C to shut down.
+INFO  2026-03-18 00:46:08,872 [2    ] Microsoft.Hosting.Lifetime               - Hosting environment: Development
+INFO  2026-03-18 00:46:08,878 [2    ] Microsoft.Hosting.Lifetime               - Content root path: C:\Users\Rusell\Desktop\Dev\GradProgram\GroupProject\team-3\backend\aspnet-core\src\Team3.Web.Host
+INFO  2026-03-18 00:46:09,304 [7    ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/ - - -
+INFO  2026-03-18 00:46:11,108 [18   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host)'
+INFO  2026-03-18 00:46:11,301 [18   ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "Index", controller = "Home", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller Team3.Web.Host.Controllers.HomeController (Team3.Web.Host).
+INFO  2026-03-18 00:46:12,617 [19   ] vc.Infrastructure.RedirectResultExecutor - Executing RedirectResult, redirecting to /swagger.
+INFO  2026-03-18 00:46:12,654 [19   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host) in 1320.9467ms
+INFO  2026-03-18 00:46:12,663 [19   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host)'
+INFO  2026-03-18 00:46:12,701 [19   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/ - 302 - - 3417.3760ms
+INFO  2026-03-18 00:46:12,721 [19   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/_framework/aspnetcore-browser-refresh.js - - -
+INFO  2026-03-18 00:46:12,733 [17   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/_vs/browserLink - - -
+DEBUG 2026-03-18 00:46:12,751 [19   ] h.BrowserRefresh.BrowserScriptMiddleware - Script injected: /_framework/aspnetcore-browser-refresh.js
+INFO  2026-03-18 00:46:12,784 [19   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/_framework/aspnetcore-browser-refresh.js - 200 16513 application/javascript;+charset=utf-8 37.0427ms
+INFO  2026-03-18 00:46:12,898 [19   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/_vs/browserLink - 200 - text/javascript;+charset=UTF-8 130.2405ms
+INFO  2026-03-18 00:46:12,920 [10   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/AntiForgery/SetCookie - - -
+INFO  2026-03-18 00:46:12,931 [10   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host)'
+INFO  2026-03-18 00:46:12,968 [7    ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/swagger/v1/swagger.json - - -
+INFO  2026-03-18 00:46:12,978 [10   ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "SetCookie", controller = "AntiForgery", area = ""}. Executing controller action with signature Void SetCookie() on controller Team3.Web.Host.Controllers.AntiForgeryController (Team3.Web.Host).
+ERROR 2026-03-18 00:46:13,057 [7    ] Microsoft.AspNetCore.Server.Kestrel      - Connection id "0HNK4ERTJBPLN", Request id "0HNK4ERTJBPLN:00000009": An unhandled exception was thrown by the application.
+Swashbuckle.AspNetCore.SwaggerGen.SwaggerGeneratorException: Failed to generate Operation for action - Team3.Web.Host.Controllers.CurriculumController.UploadSourceDocument (Team3.Web.Host). See inner exception
+ ---> Swashbuckle.AspNetCore.SwaggerGen.SwaggerGeneratorException: Error reading parameter(s) for action Team3.Web.Host.Controllers.CurriculumController.UploadSourceDocument (Team3.Web.Host) as [FromForm] attribute used with IFormFile. Please refer to https://github.com/domaindrivendev/Swashbuckle.AspNetCore#handle-forms-and-file-uploads for more information
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateParametersAsync(ApiDescription apiDescription, SchemaRepository schemaRespository, Func`3 parameterGenerator)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateParametersAsync(ApiDescription apiDescription, SchemaRepository schemaRespository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateOperationAsync(OpenApiDocument document, ApiDescription apiDescription, SchemaRepository schemaRepository, Func`3 parametersGenerator, Func`3 bodyGenerator, Func`3 applyFilters)
+   --- End of inner exception stack trace ---
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateOperationAsync(OpenApiDocument document, ApiDescription apiDescription, SchemaRepository schemaRepository, Func`3 parametersGenerator, Func`3 bodyGenerator, Func`3 applyFilters)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateOperationAsync(OpenApiDocument document, ApiDescription apiDescription, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateOperationsAsync(OpenApiDocument document, IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GeneratePathsAsync(OpenApiDocument document, IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository, Func`4 operationsGenerator)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GeneratePathsAsync(OpenApiDocument document, IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GetSwaggerAsync(String documentName, String host, String basePath)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Localization.RequestLocalizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Abp.AspNetCore.Security.AbpSecurityHeadersMiddleware.Invoke(HttpContext httpContext)
+   at Microsoft.WebTools.BrowserLink.Net.BrowserLinkMiddleware.InvokeAsync(HttpContext context)
+   at Microsoft.AspNetCore.Watch.BrowserRefresh.BrowserRefreshMiddleware.InvokeAsync(HttpContext context)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpProtocol.ProcessRequests[TContext](IHttpApplication`1 application)
+INFO  2026-03-18 00:46:13,066 [7    ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/swagger/v1/swagger.json - 500 0 - 125.6020ms
+INFO  2026-03-18 00:46:13,982 [7    ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-18 00:46:14,036 [7    ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host) in 1026.1208ms
+INFO  2026-03-18 00:46:14,041 [7    ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host)'
+INFO  2026-03-18 00:46:14,048 [7    ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/AntiForgery/SetCookie - 200 - application/json;+charset=utf-8 1128.1599ms
+DEBUG 2026-03-18 00:50:19,780 [2    ] Abp.Modules.AbpModuleManager             - Loading Abp modules...
+DEBUG 2026-03-18 00:50:19,814 [2    ] Abp.Modules.AbpModuleManager             - Found 15 ABP modules in total.
+DEBUG 2026-03-18 00:50:19,821 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Web.Host.Startup.Team3WebHostModule, Team3.Web.Host, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:50:19,822 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3WebCoreModule, Team3.Web.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:50:19,822 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3ApplicationModule, Team3.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:50:19,822 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3CoreModule, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:50:19,822 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCoreModule, Abp.ZeroCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:50:19,823 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCommonModule, Abp.Zero.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:50:19,823 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AbpKernelModule, Abp, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:50:19,823 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AutoMapper.AbpAutoMapperModule, Abp.AutoMapper, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:50:19,823 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.EntityFrameworkCore.Team3EntityFrameworkModule, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:50:19,824 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.EntityFrameworkCore.AbpZeroCoreEntityFrameworkCoreModule, Abp.ZeroCore.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:50:19,824 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFrameworkCore.AbpEntityFrameworkCoreModule, Abp.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:50:19,824 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFramework.AbpEntityFrameworkCommonModule, Abp.EntityFramework.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:50:19,824 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.AbpAspNetCoreModule, Abp.AspNetCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:50:19,824 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Web.AbpWebCommonModule, Abp.Web.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:50:19,824 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.SignalR.AbpAspNetCoreSignalRModule, Abp.AspNetCore.SignalR, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:50:19,825 [2    ] Abp.Modules.AbpModuleManager             - 15 modules loaded.
+DEBUG 2026-03-18 00:50:19,858 [2    ] o.Configuration.LanguageManagementConfig - Converted Abp (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-18 00:50:19,858 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpZero (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-18 00:50:19,858 [2    ] o.Configuration.LanguageManagementConfig - Converted Team3 (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-18 00:50:19,858 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpWeb (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-18 00:50:20,042 [2    ] ameworkCore.AbpEntityFrameworkCoreModule - Registering DbContext: Team3.EntityFrameworkCore.Team3DbContext, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:50:20,135 [2    ] Abp.Localization.LocalizationManager     - Initializing 4 localization sources.
+DEBUG 2026-03-18 00:50:20,153 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Abp
+DEBUG 2026-03-18 00:50:20,157 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpZero
+DEBUG 2026-03-18 00:50:20,159 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Team3
+DEBUG 2026-03-18 00:50:20,160 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpWeb
+DEBUG 2026-03-18 00:50:20,165 [2    ] Abp.BackgroundJobs.BackgroundJobManager  - Start background worker: Abp.BackgroundJobs.BackgroundJobManager
+DEBUG 2026-03-18 00:50:20,170 [2    ] , Culture=neutral, PublicKeyToken=null]] - Start background worker: Abp.Authorization.Users.UserTokenExpirationWorker`2[[Team3.MultiTenancy.Tenant, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Team3.Authorization.Users.User, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]
+DEBUG 2026-03-18 00:50:20,181 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Found 7 classes define auto mapping attributes
+DEBUG 2026-03-18 00:50:20,181 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.CreateUserDto
+DEBUG 2026-03-18 00:50:20,183 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.UserDto
+DEBUG 2026-03-18 00:50:20,183 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.TenantLoginInfoDto
+DEBUG 2026-03-18 00:50:20,183 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.UserLoginInfoDto
+DEBUG 2026-03-18 00:50:20,183 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Roles.Dto.PermissionDto
+DEBUG 2026-03-18 00:50:20,183 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.CreateTenantDto
+DEBUG 2026-03-18 00:50:20,184 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.TenantDto
+WARN  2026-03-18 00:50:20,784 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'CurriculumExtractionJob' has a global query filter defined and is the required end of a relationship with the entity 'ParsedStructureNode'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+INFO  2026-03-18 00:50:37,212 [2    ] tCore.Builder.RequestLocalizationOptions - Supported Request Localization Cultures: en,es-MX,fr,de,it,nl,pt-BR,tr,ru,ar,fa,ja,zh-Hans
+DEBUG 2026-03-18 00:50:38,059 [2    ] .BrowserRefresh.BrowserRefreshMiddleware - Middleware loaded: DOTNET_MODIFIABLE_ASSEMBLIES=debug, __ASPNETCORE_BROWSER_TOOLS=true
+WARN  2026-03-18 00:50:38,134 [2    ] Microsoft.AspNetCore.Server.Kestrel      - Overriding address(es) 'https://localhost:44311/'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+INFO  2026-03-18 00:50:38,268 [2    ] Microsoft.Hosting.Lifetime               - Now listening on: https://localhost:44311
+INFO  2026-03-18 00:50:38,596 [2    ] Microsoft.Hosting.Lifetime               - Application started. Press Ctrl+C to shut down.
+INFO  2026-03-18 00:50:38,629 [2    ] Microsoft.Hosting.Lifetime               - Hosting environment: Development
+INFO  2026-03-18 00:50:38,660 [2    ] Microsoft.Hosting.Lifetime               - Content root path: C:\Users\Rusell\Desktop\Dev\GradProgram\GroupProject\team-3\backend\aspnet-core\src\Team3.Web.Host
+INFO  2026-03-18 00:50:38,847 [11   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/ - - -
+INFO  2026-03-18 00:50:40,485 [15   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host)'
+INFO  2026-03-18 00:50:40,674 [15   ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "Index", controller = "Home", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller Team3.Web.Host.Controllers.HomeController (Team3.Web.Host).
+INFO  2026-03-18 00:50:41,990 [18   ] vc.Infrastructure.RedirectResultExecutor - Executing RedirectResult, redirecting to /swagger.
+INFO  2026-03-18 00:50:42,029 [18   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host) in 1323.3064ms
+INFO  2026-03-18 00:50:42,036 [18   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host)'
+INFO  2026-03-18 00:50:42,074 [18   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/ - 302 - - 3241.2350ms
+INFO  2026-03-18 00:50:42,084 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/_framework/aspnetcore-browser-refresh.js - - -
+INFO  2026-03-18 00:50:42,097 [18   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/_vs/browserLink - - -
+DEBUG 2026-03-18 00:50:42,108 [10   ] h.BrowserRefresh.BrowserScriptMiddleware - Script injected: /_framework/aspnetcore-browser-refresh.js
+INFO  2026-03-18 00:50:42,114 [10   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/_framework/aspnetcore-browser-refresh.js - 200 16513 application/javascript;+charset=utf-8 27.9805ms
+INFO  2026-03-18 00:50:42,207 [18   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/_vs/browserLink - 200 - text/javascript;+charset=UTF-8 108.6416ms
+INFO  2026-03-18 00:50:42,227 [17   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/AntiForgery/SetCookie - - -
+INFO  2026-03-18 00:50:42,265 [17   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host)'
+INFO  2026-03-18 00:50:42,301 [9    ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/swagger/v1/swagger.json - - -
+INFO  2026-03-18 00:50:42,316 [17   ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "SetCookie", controller = "AntiForgery", area = ""}. Executing controller action with signature Void SetCookie() on controller Team3.Web.Host.Controllers.AntiForgeryController (Team3.Web.Host).
+ERROR 2026-03-18 00:50:42,409 [9    ] Microsoft.AspNetCore.Server.Kestrel      - Connection id "0HNK4EUDVDE4Q", Request id "0HNK4EUDVDE4Q:00000009": An unhandled exception was thrown by the application.
+Swashbuckle.AspNetCore.SwaggerGen.SwaggerGeneratorException: Failed to generate Operation for action - Team3.Web.Host.Controllers.CurriculumController.UploadSourceDocument (Team3.Web.Host). See inner exception
+ ---> Swashbuckle.AspNetCore.SwaggerGen.SwaggerGeneratorException: Error reading parameter(s) for action Team3.Web.Host.Controllers.CurriculumController.UploadSourceDocument (Team3.Web.Host) as [FromForm] attribute used with IFormFile. Please refer to https://github.com/domaindrivendev/Swashbuckle.AspNetCore#handle-forms-and-file-uploads for more information
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateParametersAsync(ApiDescription apiDescription, SchemaRepository schemaRespository, Func`3 parameterGenerator)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateParametersAsync(ApiDescription apiDescription, SchemaRepository schemaRespository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateOperationAsync(OpenApiDocument document, ApiDescription apiDescription, SchemaRepository schemaRepository, Func`3 parametersGenerator, Func`3 bodyGenerator, Func`3 applyFilters)
+   --- End of inner exception stack trace ---
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateOperationAsync(OpenApiDocument document, ApiDescription apiDescription, SchemaRepository schemaRepository, Func`3 parametersGenerator, Func`3 bodyGenerator, Func`3 applyFilters)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateOperationAsync(OpenApiDocument document, ApiDescription apiDescription, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateOperationsAsync(OpenApiDocument document, IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GeneratePathsAsync(OpenApiDocument document, IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository, Func`4 operationsGenerator)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GeneratePathsAsync(OpenApiDocument document, IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GetSwaggerAsync(String documentName, String host, String basePath)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Localization.RequestLocalizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Abp.AspNetCore.Security.AbpSecurityHeadersMiddleware.Invoke(HttpContext httpContext)
+   at Microsoft.WebTools.BrowserLink.Net.BrowserLinkMiddleware.InvokeAsync(HttpContext context)
+   at Microsoft.AspNetCore.Watch.BrowserRefresh.BrowserRefreshMiddleware.InvokeAsync(HttpContext context)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpProtocol.ProcessRequests[TContext](IHttpApplication`1 application)
+INFO  2026-03-18 00:50:42,418 [9    ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/swagger/v1/swagger.json - 500 0 - 147.3779ms
+INFO  2026-03-18 00:50:43,363 [9    ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-18 00:50:43,390 [9    ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host) in 1068.2047ms
+INFO  2026-03-18 00:50:43,395 [9    ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host)'
+INFO  2026-03-18 00:50:43,400 [9    ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/AntiForgery/SetCookie - 200 - application/json;+charset=utf-8 1172.2934ms
+DEBUG 2026-03-18 00:51:10,031 [2    ] Abp.Modules.AbpModuleManager             - Loading Abp modules...
+DEBUG 2026-03-18 00:51:10,064 [2    ] Abp.Modules.AbpModuleManager             - Found 15 ABP modules in total.
+DEBUG 2026-03-18 00:51:10,070 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Web.Host.Startup.Team3WebHostModule, Team3.Web.Host, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:51:10,072 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3WebCoreModule, Team3.Web.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:51:10,072 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3ApplicationModule, Team3.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:51:10,072 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3CoreModule, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:51:10,072 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCoreModule, Abp.ZeroCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:51:10,072 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCommonModule, Abp.Zero.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:51:10,072 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AbpKernelModule, Abp, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:51:10,073 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AutoMapper.AbpAutoMapperModule, Abp.AutoMapper, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:51:10,073 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.EntityFrameworkCore.Team3EntityFrameworkModule, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:51:10,073 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.EntityFrameworkCore.AbpZeroCoreEntityFrameworkCoreModule, Abp.ZeroCore.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:51:10,074 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFrameworkCore.AbpEntityFrameworkCoreModule, Abp.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:51:10,074 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFramework.AbpEntityFrameworkCommonModule, Abp.EntityFramework.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:51:10,074 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.AbpAspNetCoreModule, Abp.AspNetCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:51:10,074 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Web.AbpWebCommonModule, Abp.Web.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:51:10,074 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.SignalR.AbpAspNetCoreSignalRModule, Abp.AspNetCore.SignalR, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:51:10,075 [2    ] Abp.Modules.AbpModuleManager             - 15 modules loaded.
+DEBUG 2026-03-18 00:51:10,110 [2    ] o.Configuration.LanguageManagementConfig - Converted Abp (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-18 00:51:10,110 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpZero (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-18 00:51:10,110 [2    ] o.Configuration.LanguageManagementConfig - Converted Team3 (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-18 00:51:10,110 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpWeb (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-18 00:51:10,297 [2    ] ameworkCore.AbpEntityFrameworkCoreModule - Registering DbContext: Team3.EntityFrameworkCore.Team3DbContext, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:51:10,393 [2    ] Abp.Localization.LocalizationManager     - Initializing 4 localization sources.
+DEBUG 2026-03-18 00:51:10,411 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Abp
+DEBUG 2026-03-18 00:51:10,414 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpZero
+DEBUG 2026-03-18 00:51:10,417 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Team3
+DEBUG 2026-03-18 00:51:10,418 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpWeb
+DEBUG 2026-03-18 00:51:10,422 [2    ] Abp.BackgroundJobs.BackgroundJobManager  - Start background worker: Abp.BackgroundJobs.BackgroundJobManager
+DEBUG 2026-03-18 00:51:10,428 [2    ] , Culture=neutral, PublicKeyToken=null]] - Start background worker: Abp.Authorization.Users.UserTokenExpirationWorker`2[[Team3.MultiTenancy.Tenant, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Team3.Authorization.Users.User, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]
+DEBUG 2026-03-18 00:51:10,439 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Found 7 classes define auto mapping attributes
+DEBUG 2026-03-18 00:51:10,439 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.CreateUserDto
+DEBUG 2026-03-18 00:51:10,441 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.UserDto
+DEBUG 2026-03-18 00:51:10,441 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.TenantLoginInfoDto
+DEBUG 2026-03-18 00:51:10,441 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.UserLoginInfoDto
+DEBUG 2026-03-18 00:51:10,441 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Roles.Dto.PermissionDto
+DEBUG 2026-03-18 00:51:10,441 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.CreateTenantDto
+DEBUG 2026-03-18 00:51:10,441 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.TenantDto
+WARN  2026-03-18 00:51:11,043 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'CurriculumExtractionJob' has a global query filter defined and is the required end of a relationship with the entity 'ParsedStructureNode'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+INFO  2026-03-18 00:51:26,591 [2    ] tCore.Builder.RequestLocalizationOptions - Supported Request Localization Cultures: en,es-MX,fr,de,it,nl,pt-BR,tr,ru,ar,fa,ja,zh-Hans
+DEBUG 2026-03-18 00:51:27,396 [2    ] .BrowserRefresh.BrowserRefreshMiddleware - Middleware loaded: DOTNET_MODIFIABLE_ASSEMBLIES=debug, __ASPNETCORE_BROWSER_TOOLS=true
+WARN  2026-03-18 00:51:27,487 [2    ] Microsoft.AspNetCore.Server.Kestrel      - Overriding address(es) 'https://localhost:44311/'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+INFO  2026-03-18 00:51:27,712 [2    ] Microsoft.Hosting.Lifetime               - Now listening on: https://localhost:44311
+INFO  2026-03-18 00:51:27,990 [2    ] Microsoft.Hosting.Lifetime               - Application started. Press Ctrl+C to shut down.
+INFO  2026-03-18 00:51:27,996 [2    ] Microsoft.Hosting.Lifetime               - Hosting environment: Development
+INFO  2026-03-18 00:51:27,998 [2    ] Microsoft.Hosting.Lifetime               - Content root path: C:\Users\Rusell\Desktop\Dev\GradProgram\GroupProject\team-3\backend\aspnet-core\src\Team3.Web.Host
+INFO  2026-03-18 00:51:28,298 [17   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/ - - -
+INFO  2026-03-18 00:51:30,007 [18   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host)'
+INFO  2026-03-18 00:51:30,208 [18   ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "Index", controller = "Home", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller Team3.Web.Host.Controllers.HomeController (Team3.Web.Host).
+INFO  2026-03-18 00:51:31,517 [18   ] vc.Infrastructure.RedirectResultExecutor - Executing RedirectResult, redirecting to /swagger.
+INFO  2026-03-18 00:51:31,552 [18   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host) in 1313.84ms
+INFO  2026-03-18 00:51:31,559 [18   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host)'
+INFO  2026-03-18 00:51:31,598 [18   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/ - 302 - - 3309.9152ms
+INFO  2026-03-18 00:51:31,629 [17   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/_framework/aspnetcore-browser-refresh.js - - -
+INFO  2026-03-18 00:51:31,646 [16   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/_vs/browserLink - - -
+DEBUG 2026-03-18 00:51:31,689 [17   ] h.BrowserRefresh.BrowserScriptMiddleware - Script injected: /_framework/aspnetcore-browser-refresh.js
+INFO  2026-03-18 00:51:31,696 [17   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/_framework/aspnetcore-browser-refresh.js - 200 16513 application/javascript;+charset=utf-8 66.0168ms
+INFO  2026-03-18 00:51:31,815 [16   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/_vs/browserLink - 200 - text/javascript;+charset=UTF-8 145.2698ms
+INFO  2026-03-18 00:51:31,819 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/AntiForgery/SetCookie - - -
+INFO  2026-03-18 00:51:31,825 [17   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/swagger/v1/swagger.json - - -
+INFO  2026-03-18 00:51:31,853 [15   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host)'
+INFO  2026-03-18 00:51:31,877 [15   ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "SetCookie", controller = "AntiForgery", area = ""}. Executing controller action with signature Void SetCookie() on controller Team3.Web.Host.Controllers.AntiForgeryController (Team3.Web.Host).
+ERROR 2026-03-18 00:51:31,939 [17   ] Microsoft.AspNetCore.Server.Kestrel      - Connection id "0HNK4EUSM5UAO", Request id "0HNK4EUSM5UAO:00000009": An unhandled exception was thrown by the application.
+Swashbuckle.AspNetCore.SwaggerGen.SwaggerGeneratorException: Failed to generate Operation for action - Team3.Web.Host.Controllers.CurriculumController.UploadSourceDocument (Team3.Web.Host). See inner exception
+ ---> Swashbuckle.AspNetCore.SwaggerGen.SwaggerGeneratorException: Error reading parameter(s) for action Team3.Web.Host.Controllers.CurriculumController.UploadSourceDocument (Team3.Web.Host) as [FromForm] attribute used with IFormFile. Please refer to https://github.com/domaindrivendev/Swashbuckle.AspNetCore#handle-forms-and-file-uploads for more information
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateParametersAsync(ApiDescription apiDescription, SchemaRepository schemaRespository, Func`3 parameterGenerator)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateParametersAsync(ApiDescription apiDescription, SchemaRepository schemaRespository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateOperationAsync(OpenApiDocument document, ApiDescription apiDescription, SchemaRepository schemaRepository, Func`3 parametersGenerator, Func`3 bodyGenerator, Func`3 applyFilters)
+   --- End of inner exception stack trace ---
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateOperationAsync(OpenApiDocument document, ApiDescription apiDescription, SchemaRepository schemaRepository, Func`3 parametersGenerator, Func`3 bodyGenerator, Func`3 applyFilters)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateOperationAsync(OpenApiDocument document, ApiDescription apiDescription, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GenerateOperationsAsync(OpenApiDocument document, IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GeneratePathsAsync(OpenApiDocument document, IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository, Func`4 operationsGenerator)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GeneratePathsAsync(OpenApiDocument document, IEnumerable`1 apiDescriptions, SchemaRepository schemaRepository)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GetSwaggerAsync(String documentName, String host, String basePath)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.Localization.RequestLocalizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authorization.AuthorizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Abp.AspNetCore.Security.AbpSecurityHeadersMiddleware.Invoke(HttpContext httpContext)
+   at Microsoft.WebTools.BrowserLink.Net.BrowserLinkMiddleware.InvokeAsync(HttpContext context)
+   at Microsoft.AspNetCore.Watch.BrowserRefresh.BrowserRefreshMiddleware.InvokeAsync(HttpContext context)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpProtocol.ProcessRequests[TContext](IHttpApplication`1 application)
+INFO  2026-03-18 00:51:31,949 [17   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/swagger/v1/swagger.json - 500 0 - 121.5184ms
+INFO  2026-03-18 00:51:32,911 [15   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-18 00:51:32,944 [15   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host) in 1063.5133ms
+INFO  2026-03-18 00:51:32,949 [15   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host)'
+INFO  2026-03-18 00:51:32,954 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/AntiForgery/SetCookie - 200 - application/json;+charset=utf-8 1134.1163ms
+INFO  2026-03-18 00:51:41,940 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/.well-known/appspecific/com.chrome.devtools.json - - -
+INFO  2026-03-18 00:51:41,956 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/.well-known/appspecific/com.chrome.devtools.json - 404 0 - 18.2850ms
+INFO  2026-03-18 00:51:41,960 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:44311/.well-known/appspecific/com.chrome.devtools.json, Response status code: 404
+DEBUG 2026-03-18 00:54:47,568 [2    ] Abp.Modules.AbpModuleManager             - Loading Abp modules...
+DEBUG 2026-03-18 00:54:48,026 [2    ] Abp.Modules.AbpModuleManager             - Found 15 ABP modules in total.
+DEBUG 2026-03-18 00:54:48,033 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Web.Host.Startup.Team3WebHostModule, Team3.Web.Host, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:54:48,034 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3WebCoreModule, Team3.Web.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:54:48,034 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3ApplicationModule, Team3.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:54:48,035 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3CoreModule, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:54:48,035 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCoreModule, Abp.ZeroCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:54:48,035 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCommonModule, Abp.Zero.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:54:48,035 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AbpKernelModule, Abp, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:54:48,036 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AutoMapper.AbpAutoMapperModule, Abp.AutoMapper, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:54:48,036 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.EntityFrameworkCore.Team3EntityFrameworkModule, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:54:48,036 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.EntityFrameworkCore.AbpZeroCoreEntityFrameworkCoreModule, Abp.ZeroCore.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:54:48,037 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFrameworkCore.AbpEntityFrameworkCoreModule, Abp.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:54:48,037 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFramework.AbpEntityFrameworkCommonModule, Abp.EntityFramework.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:54:48,037 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.AbpAspNetCoreModule, Abp.AspNetCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:54:48,037 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Web.AbpWebCommonModule, Abp.Web.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:54:48,037 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.SignalR.AbpAspNetCoreSignalRModule, Abp.AspNetCore.SignalR, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:54:48,038 [2    ] Abp.Modules.AbpModuleManager             - 15 modules loaded.
+DEBUG 2026-03-18 00:54:48,072 [2    ] o.Configuration.LanguageManagementConfig - Converted Abp (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-18 00:54:48,072 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpZero (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-18 00:54:48,072 [2    ] o.Configuration.LanguageManagementConfig - Converted Team3 (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-18 00:54:48,072 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpWeb (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-18 00:54:48,262 [2    ] ameworkCore.AbpEntityFrameworkCoreModule - Registering DbContext: Team3.EntityFrameworkCore.Team3DbContext, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-18 00:54:48,375 [2    ] Abp.Localization.LocalizationManager     - Initializing 4 localization sources.
+DEBUG 2026-03-18 00:54:48,393 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Abp
+DEBUG 2026-03-18 00:54:48,397 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpZero
+DEBUG 2026-03-18 00:54:48,400 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Team3
+DEBUG 2026-03-18 00:54:48,401 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpWeb
+DEBUG 2026-03-18 00:54:48,406 [2    ] Abp.BackgroundJobs.BackgroundJobManager  - Start background worker: Abp.BackgroundJobs.BackgroundJobManager
+DEBUG 2026-03-18 00:54:48,410 [2    ] , Culture=neutral, PublicKeyToken=null]] - Start background worker: Abp.Authorization.Users.UserTokenExpirationWorker`2[[Team3.MultiTenancy.Tenant, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Team3.Authorization.Users.User, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]
+DEBUG 2026-03-18 00:54:48,421 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Found 7 classes define auto mapping attributes
+DEBUG 2026-03-18 00:54:48,421 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.CreateUserDto
+DEBUG 2026-03-18 00:54:48,423 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.UserDto
+DEBUG 2026-03-18 00:54:48,423 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.TenantLoginInfoDto
+DEBUG 2026-03-18 00:54:48,423 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.UserLoginInfoDto
+DEBUG 2026-03-18 00:54:48,423 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Roles.Dto.PermissionDto
+DEBUG 2026-03-18 00:54:48,423 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.CreateTenantDto
+DEBUG 2026-03-18 00:54:48,423 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.TenantDto
+WARN  2026-03-18 00:54:53,365 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'CurriculumExtractionJob' has a global query filter defined and is the required end of a relationship with the entity 'ParsedStructureNode'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+INFO  2026-03-18 00:55:10,632 [2    ] tCore.Builder.RequestLocalizationOptions - Supported Request Localization Cultures: en,es-MX,fr,de,it,nl,pt-BR,tr,ru,ar,fa,ja,zh-Hans
+DEBUG 2026-03-18 00:55:11,739 [2    ] .BrowserRefresh.BrowserRefreshMiddleware - Middleware loaded: DOTNET_MODIFIABLE_ASSEMBLIES=debug, __ASPNETCORE_BROWSER_TOOLS=true
+WARN  2026-03-18 00:55:11,950 [2    ] Microsoft.AspNetCore.Server.Kestrel      - Overriding address(es) 'https://localhost:44311/'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+INFO  2026-03-18 00:55:12,100 [2    ] Microsoft.Hosting.Lifetime               - Now listening on: https://localhost:44311
+INFO  2026-03-18 00:55:12,333 [2    ] Microsoft.Hosting.Lifetime               - Application started. Press Ctrl+C to shut down.
+INFO  2026-03-18 00:55:12,359 [2    ] Microsoft.Hosting.Lifetime               - Hosting environment: Development
+INFO  2026-03-18 00:55:12,362 [2    ] Microsoft.Hosting.Lifetime               - Content root path: C:\Users\Rusell\Desktop\Dev\GradProgram\GroupProject\team-3\backend\aspnet-core\src\Team3.Web.Host
+INFO  2026-03-18 00:55:12,476 [11   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/ - - -
+INFO  2026-03-18 00:55:14,381 [15   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host)'
+INFO  2026-03-18 00:55:14,667 [15   ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "Index", controller = "Home", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller Team3.Web.Host.Controllers.HomeController (Team3.Web.Host).
+INFO  2026-03-18 00:55:16,084 [11   ] vc.Infrastructure.RedirectResultExecutor - Executing RedirectResult, redirecting to /swagger.
+INFO  2026-03-18 00:55:16,125 [11   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host) in 1424.515ms
+INFO  2026-03-18 00:55:16,131 [11   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host)'
+INFO  2026-03-18 00:55:16,168 [11   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/ - 302 - - 3710.9825ms
+INFO  2026-03-18 00:55:16,201 [18   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/_framework/aspnetcore-browser-refresh.js - - -
+INFO  2026-03-18 00:55:16,214 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/_vs/browserLink - - -
+DEBUG 2026-03-18 00:55:16,246 [18   ] h.BrowserRefresh.BrowserScriptMiddleware - Script injected: /_framework/aspnetcore-browser-refresh.js
+INFO  2026-03-18 00:55:16,252 [18   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/_framework/aspnetcore-browser-refresh.js - 200 16513 application/javascript;+charset=utf-8 50.2522ms
+INFO  2026-03-18 00:55:16,328 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/_vs/browserLink - 200 - text/javascript;+charset=UTF-8 111.9610ms
+INFO  2026-03-18 00:55:16,347 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/AntiForgery/SetCookie - - -
+INFO  2026-03-18 00:55:16,360 [15   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host)'
+INFO  2026-03-18 00:55:16,392 [7    ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/swagger/v1/swagger.json - - -
+INFO  2026-03-18 00:55:16,414 [15   ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "SetCookie", controller = "AntiForgery", area = ""}. Executing controller action with signature Void SetCookie() on controller Team3.Web.Host.Controllers.AntiForgeryController (Team3.Web.Host).
+INFO  2026-03-18 00:55:16,571 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/swagger/v1/swagger.json - 200 - application/json;charset=utf-8 203.4867ms
+INFO  2026-03-18 00:55:17,421 [15   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-18 00:55:17,448 [15   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host) in 1029.5557ms
+INFO  2026-03-18 00:55:17,454 [15   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host)'
+INFO  2026-03-18 00:55:17,460 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/AntiForgery/SetCookie - 200 - application/json;+charset=utf-8 1112.1444ms
+INFO  2026-03-18 01:00:03,645 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 POST https://localhost:44311/api/curriculum/upload - - 0
+INFO  2026-03-18 01:00:03,682 [15   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Web.Host.Controllers.CurriculumController.UploadSourceDocument (Team3.Web.Host)'
+INFO  2026-03-18 01:00:03,730 [15   ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "UploadSourceDocument", controller = "Curriculum", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] UploadSourceDocument(System.String, System.String, System.String, Microsoft.AspNetCore.Http.IFormFile) on controller Team3.Web.Host.Controllers.CurriculumController (Team3.Web.Host).
+WARN  2026-03-18 01:00:04,772 [15   ] Mvc.Authorization.AbpAuthorizationFilter - Abp.Authorization.AbpAuthorizationException: Current user did not login to the application!
+   at Abp.Authorization.AuthorizationHelper.AuthorizeAsync(IEnumerable`1 authorizeAttributes)
+   at Abp.Authorization.AuthorizationHelper.CheckPermissionsAsync(MethodInfo methodInfo, Type type)
+   at Abp.Authorization.AuthorizationHelper.AuthorizeAsync(MethodInfo methodInfo, Type type)
+   at Abp.AspNetCore.Mvc.Authorization.AbpAuthorizationFilter.OnAuthorizationAsync(AuthorizationFilterContext context)
+Abp.Authorization.AbpAuthorizationException: Current user did not login to the application!
+   at Abp.Authorization.AuthorizationHelper.AuthorizeAsync(IEnumerable`1 authorizeAttributes)
+   at Abp.Authorization.AuthorizationHelper.CheckPermissionsAsync(MethodInfo methodInfo, Type type)
+   at Abp.Authorization.AuthorizationHelper.AuthorizeAsync(MethodInfo methodInfo, Type type)
+   at Abp.AspNetCore.Mvc.Authorization.AbpAuthorizationFilter.OnAuthorizationAsync(AuthorizationFilterContext context)
+INFO  2026-03-18 01:00:04,802 [15   ] c.Infrastructure.ControllerActionInvoker - Authorization failed for the request at filter 'Abp.AspNetCore.Mvc.Authorization.AbpAuthorizationFilter'.
+INFO  2026-03-18 01:00:04,812 [15   ] Microsoft.AspNetCore.Mvc.ChallengeResult - Executing ChallengeResult with authentication schemes ().
+INFO  2026-03-18 01:00:04,824 [15   ] uthentication.JwtBearer.JwtBearerHandler - AuthenticationScheme: JwtBearer was challenged.
+INFO  2026-03-18 01:00:04,828 [15   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Web.Host.Controllers.CurriculumController.UploadSourceDocument (Team3.Web.Host) in 1094.7097ms
+INFO  2026-03-18 01:00:04,831 [15   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Web.Host.Controllers.CurriculumController.UploadSourceDocument (Team3.Web.Host)'
+INFO  2026-03-18 01:00:04,869 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 POST https://localhost:44311/api/curriculum/upload - 401 0 - 1194.3414ms
+INFO  2026-03-18 01:00:43,722 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 POST https://localhost:44311/api/curriculum/upload - - 0
+INFO  2026-03-18 01:00:43,729 [15   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Web.Host.Controllers.CurriculumController.UploadSourceDocument (Team3.Web.Host)'
+INFO  2026-03-18 01:00:43,739 [15   ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "UploadSourceDocument", controller = "Curriculum", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] UploadSourceDocument(System.String, System.String, System.String, Microsoft.AspNetCore.Http.IFormFile) on controller Team3.Web.Host.Controllers.CurriculumController (Team3.Web.Host).
+WARN  2026-03-18 01:00:43,743 [15   ] Mvc.Authorization.AbpAuthorizationFilter - Abp.Authorization.AbpAuthorizationException: Current user did not login to the application!
+   at Abp.Authorization.AuthorizationHelper.AuthorizeAsync(IEnumerable`1 authorizeAttributes)
+   at Abp.Authorization.AuthorizationHelper.CheckPermissionsAsync(MethodInfo methodInfo, Type type)
+   at Abp.Authorization.AuthorizationHelper.AuthorizeAsync(MethodInfo methodInfo, Type type)
+   at Abp.AspNetCore.Mvc.Authorization.AbpAuthorizationFilter.OnAuthorizationAsync(AuthorizationFilterContext context)
+Abp.Authorization.AbpAuthorizationException: Current user did not login to the application!
+   at Abp.Authorization.AuthorizationHelper.AuthorizeAsync(IEnumerable`1 authorizeAttributes)
+   at Abp.Authorization.AuthorizationHelper.CheckPermissionsAsync(MethodInfo methodInfo, Type type)
+   at Abp.Authorization.AuthorizationHelper.AuthorizeAsync(MethodInfo methodInfo, Type type)
+   at Abp.AspNetCore.Mvc.Authorization.AbpAuthorizationFilter.OnAuthorizationAsync(AuthorizationFilterContext context)
+INFO  2026-03-18 01:00:43,747 [15   ] c.Infrastructure.ControllerActionInvoker - Authorization failed for the request at filter 'Abp.AspNetCore.Mvc.Authorization.AbpAuthorizationFilter'.
+INFO  2026-03-18 01:00:43,751 [15   ] Microsoft.AspNetCore.Mvc.ChallengeResult - Executing ChallengeResult with authentication schemes ().
+INFO  2026-03-18 01:00:43,755 [15   ] uthentication.JwtBearer.JwtBearerHandler - AuthenticationScheme: JwtBearer was challenged.
+INFO  2026-03-18 01:00:43,758 [15   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Web.Host.Controllers.CurriculumController.UploadSourceDocument (Team3.Web.Host) in 15.7097ms
+INFO  2026-03-18 01:00:43,761 [15   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Web.Host.Controllers.CurriculumController.UploadSourceDocument (Team3.Web.Host)'
+INFO  2026-03-18 01:00:43,796 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 POST https://localhost:44311/api/curriculum/upload - 401 0 - 42.6331ms
+INFO  2026-03-18 01:01:03,873 [20   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 POST https://localhost:44311/api/curriculum/upload - - 0
+INFO  2026-03-18 01:01:03,877 [20   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Web.Host.Controllers.CurriculumController.UploadSourceDocument (Team3.Web.Host)'
+INFO  2026-03-18 01:01:03,887 [20   ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "UploadSourceDocument", controller = "Curriculum", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] UploadSourceDocument(System.String, System.String, System.String, Microsoft.AspNetCore.Http.IFormFile) on controller Team3.Web.Host.Controllers.CurriculumController (Team3.Web.Host).
+WARN  2026-03-18 01:01:03,900 [20   ] Mvc.Authorization.AbpAuthorizationFilter - Abp.Authorization.AbpAuthorizationException: Current user did not login to the application!
+   at Abp.Authorization.AuthorizationHelper.AuthorizeAsync(IEnumerable`1 authorizeAttributes)
+   at Abp.Authorization.AuthorizationHelper.CheckPermissionsAsync(MethodInfo methodInfo, Type type)
+   at Abp.Authorization.AuthorizationHelper.AuthorizeAsync(MethodInfo methodInfo, Type type)
+   at Abp.AspNetCore.Mvc.Authorization.AbpAuthorizationFilter.OnAuthorizationAsync(AuthorizationFilterContext context)
+Abp.Authorization.AbpAuthorizationException: Current user did not login to the application!
+   at Abp.Authorization.AuthorizationHelper.AuthorizeAsync(IEnumerable`1 authorizeAttributes)
+   at Abp.Authorization.AuthorizationHelper.CheckPermissionsAsync(MethodInfo methodInfo, Type type)
+   at Abp.Authorization.AuthorizationHelper.AuthorizeAsync(MethodInfo methodInfo, Type type)
+   at Abp.AspNetCore.Mvc.Authorization.AbpAuthorizationFilter.OnAuthorizationAsync(AuthorizationFilterContext context)
+INFO  2026-03-18 01:01:03,914 [20   ] c.Infrastructure.ControllerActionInvoker - Authorization failed for the request at filter 'Abp.AspNetCore.Mvc.Authorization.AbpAuthorizationFilter'.
+INFO  2026-03-18 01:01:03,920 [20   ] Microsoft.AspNetCore.Mvc.ChallengeResult - Executing ChallengeResult with authentication schemes ().
+INFO  2026-03-18 01:01:03,924 [20   ] uthentication.JwtBearer.JwtBearerHandler - AuthenticationScheme: JwtBearer was challenged.
+INFO  2026-03-18 01:01:03,929 [20   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Web.Host.Controllers.CurriculumController.UploadSourceDocument (Team3.Web.Host) in 36.5613ms
+INFO  2026-03-18 01:01:03,933 [20   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Web.Host.Controllers.CurriculumController.UploadSourceDocument (Team3.Web.Host)'
+INFO  2026-03-18 01:01:03,937 [20   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 POST https://localhost:44311/api/curriculum/upload - 401 0 - 63.6775ms
+INFO  2026-03-18 01:03:15,744 [25   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 POST https://localhost:44311/api/curriculum/upload?file - multipart/form-data;+boundary=--------------------------559976105462841066746164 16650674
+INFO  2026-03-18 01:03:15,757 [25   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Web.Host.Controllers.CurriculumController.UploadSourceDocument (Team3.Web.Host)'
+INFO  2026-03-18 01:03:15,792 [25   ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "UploadSourceDocument", controller = "Curriculum", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] UploadSourceDocument(System.String, System.String, System.String, Microsoft.AspNetCore.Http.IFormFile) on controller Team3.Web.Host.Controllers.CurriculumController (Team3.Web.Host).
+WARN  2026-03-18 01:03:15,796 [25   ] Mvc.Authorization.AbpAuthorizationFilter - Abp.Authorization.AbpAuthorizationException: Current user did not login to the application!
+   at Abp.Authorization.AuthorizationHelper.AuthorizeAsync(IEnumerable`1 authorizeAttributes)
+   at Abp.Authorization.AuthorizationHelper.CheckPermissionsAsync(MethodInfo methodInfo, Type type)
+   at Abp.Authorization.AuthorizationHelper.AuthorizeAsync(MethodInfo methodInfo, Type type)
+   at Abp.AspNetCore.Mvc.Authorization.AbpAuthorizationFilter.OnAuthorizationAsync(AuthorizationFilterContext context)
+Abp.Authorization.AbpAuthorizationException: Current user did not login to the application!
+   at Abp.Authorization.AuthorizationHelper.AuthorizeAsync(IEnumerable`1 authorizeAttributes)
+   at Abp.Authorization.AuthorizationHelper.CheckPermissionsAsync(MethodInfo methodInfo, Type type)
+   at Abp.Authorization.AuthorizationHelper.AuthorizeAsync(MethodInfo methodInfo, Type type)
+   at Abp.AspNetCore.Mvc.Authorization.AbpAuthorizationFilter.OnAuthorizationAsync(AuthorizationFilterContext context)
+INFO  2026-03-18 01:03:15,799 [25   ] c.Infrastructure.ControllerActionInvoker - Authorization failed for the request at filter 'Abp.AspNetCore.Mvc.Authorization.AbpAuthorizationFilter'.
+INFO  2026-03-18 01:03:15,823 [25   ] Microsoft.AspNetCore.Mvc.ChallengeResult - Executing ChallengeResult with authentication schemes ().
+INFO  2026-03-18 01:03:15,827 [25   ] uthentication.JwtBearer.JwtBearerHandler - AuthenticationScheme: JwtBearer was challenged.
+INFO  2026-03-18 01:03:15,857 [25   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Web.Host.Controllers.CurriculumController.UploadSourceDocument (Team3.Web.Host) in 34.9859ms
+INFO  2026-03-18 01:03:15,862 [25   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Web.Host.Controllers.CurriculumController.UploadSourceDocument (Team3.Web.Host)'
+INFO  2026-03-18 01:03:15,892 [25   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 POST https://localhost:44311/api/curriculum/upload?file - 401 0 - 122.0776ms
+INFO  2026-03-18 01:03:15,899 [25   ] Microsoft.AspNetCore.Server.Kestrel      - Connection id "0HNK4F0VGO3IM", Request id "0HNK4F0VGO3IM:00000001": the application completed without reading the entire request body.
+INFO  2026-03-18 01:08:02,367 [18   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 POST https://localhost:44311/api/curriculum/upload?file - multipart/form-data;+boundary=--------------------------874317479952596664535358 8388819
+INFO  2026-03-18 01:08:02,372 [18   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Web.Host.Controllers.CurriculumController.UploadSourceDocument (Team3.Web.Host)'
+INFO  2026-03-18 01:08:02,393 [18   ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "UploadSourceDocument", controller = "Curriculum", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] UploadSourceDocument(System.String, System.String, System.String, Microsoft.AspNetCore.Http.IFormFile) on controller Team3.Web.Host.Controllers.CurriculumController (Team3.Web.Host).
+WARN  2026-03-18 01:08:02,397 [18   ] Mvc.Authorization.AbpAuthorizationFilter - Abp.Authorization.AbpAuthorizationException: Current user did not login to the application!
+   at Abp.Authorization.AuthorizationHelper.AuthorizeAsync(IEnumerable`1 authorizeAttributes)
+   at Abp.Authorization.AuthorizationHelper.CheckPermissionsAsync(MethodInfo methodInfo, Type type)
+   at Abp.Authorization.AuthorizationHelper.AuthorizeAsync(MethodInfo methodInfo, Type type)
+   at Abp.AspNetCore.Mvc.Authorization.AbpAuthorizationFilter.OnAuthorizationAsync(AuthorizationFilterContext context)
+Abp.Authorization.AbpAuthorizationException: Current user did not login to the application!
+   at Abp.Authorization.AuthorizationHelper.AuthorizeAsync(IEnumerable`1 authorizeAttributes)
+   at Abp.Authorization.AuthorizationHelper.CheckPermissionsAsync(MethodInfo methodInfo, Type type)
+   at Abp.Authorization.AuthorizationHelper.AuthorizeAsync(MethodInfo methodInfo, Type type)
+   at Abp.AspNetCore.Mvc.Authorization.AbpAuthorizationFilter.OnAuthorizationAsync(AuthorizationFilterContext context)
+INFO  2026-03-18 01:08:02,401 [18   ] c.Infrastructure.ControllerActionInvoker - Authorization failed for the request at filter 'Abp.AspNetCore.Mvc.Authorization.AbpAuthorizationFilter'.
+INFO  2026-03-18 01:08:02,405 [18   ] Microsoft.AspNetCore.Mvc.ChallengeResult - Executing ChallengeResult with authentication schemes ().
+INFO  2026-03-18 01:08:02,409 [18   ] uthentication.JwtBearer.JwtBearerHandler - AuthenticationScheme: JwtBearer was challenged.
+INFO  2026-03-18 01:08:02,412 [18   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Web.Host.Controllers.CurriculumController.UploadSourceDocument (Team3.Web.Host) in 15.926ms
+INFO  2026-03-18 01:08:02,416 [18   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Web.Host.Controllers.CurriculumController.UploadSourceDocument (Team3.Web.Host)'
+INFO  2026-03-18 01:08:02,420 [18   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 POST https://localhost:44311/api/curriculum/upload?file - 401 0 - 52.6695ms
+INFO  2026-03-18 01:08:02,423 [18   ] Microsoft.AspNetCore.Server.Kestrel      - Connection id "0HNK4F0VGO3IO", Request id "0HNK4F0VGO3IO:00000001": the application completed without reading the entire request body.

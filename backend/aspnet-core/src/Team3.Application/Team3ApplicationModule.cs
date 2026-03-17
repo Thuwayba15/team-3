@@ -6,6 +6,7 @@ using Team3.Authorization;
 using Castle.MicroKernel.Registration;
 using FluentValidation;
 using Team3.Users.Dto;
+using Team3.Curriculum.Dto;
 
 namespace Team3;
 
@@ -32,6 +33,18 @@ public class Team3ApplicationModule : AbpModule
 
             Component.For<IValidator<UpdateMyProfileInput>>()
                 .ImplementedBy<UpdateMyProfileInputValidator>()
+                .LifestyleTransient(),
+
+            Component.For<IValidator<UploadSourceDocumentInput>>()
+                .ImplementedBy<UploadSourceDocumentInputValidator>()
+                .LifestyleTransient(),
+
+            Component.For<IValidator<StartExtractionJobInput>>()
+                .ImplementedBy<StartExtractionJobInputValidator>()
+                .LifestyleTransient(),
+
+            Component.For<IValidator<PublishCurriculumInput>>()
+                .ImplementedBy<PublishCurriculumInputValidator>()
                 .LifestyleTransient()
         );
 
