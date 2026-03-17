@@ -53,7 +53,21 @@ public class Team3ApplicationModule : AbpModule
                     src.Translations.Any(t => t.Language == CultureInfo.CurrentUICulture.Name)
                         ? src.Translations.First(t => t.Language == CultureInfo.CurrentUICulture.Name).Summary
                         : src.Translations.Select(t => t.Summary).FirstOrDefault() ?? string.Empty
-                ));
+             ));
+
+            cfg.CreateMap<Lesson, LessonDto>()
+                .ForMember(dest => dest.Title, opt => opt.MapFrom(src =>
+                    src.Translations.Any(t => t.Language == CultureInfo.CurrentUICulture.Name)
+                        ? src.Translations.First(t => t.Language == CultureInfo.CurrentUICulture.Name).Title
+                        : src.Translations.Select(t => t.Title).FirstOrDefault() ?? string.Empty
+                ))
+                .ForMember(dest => dest.Content, opt => opt.MapFrom(src =>
+                    src.Translations.Any(t => t.Language == CultureInfo.CurrentUICulture.Name)
+                        ? src.Translations.First(t => t.Language == CultureInfo.CurrentUICulture.Name).Content
+                        : src.Translations.Select(t => t.Content).FirstOrDefault() ?? string.Empty
+            ));
+
+            cfg.CreateMap<LessonMaterial, LessonMaterialDto>();
 
             cfg.CreateMap<Subject, SubjectDto>()
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src =>
