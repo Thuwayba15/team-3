@@ -43,23 +43,34 @@ export const useStyles = createStyles(({ css, token }) => ({
   `,
   brandSection: css`
     position: absolute;
-    top: 35%;
+    top: 25%;
     left: 12%;
     z-index: 5;
+    /* Add these lines below */
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    text-align: center;
   `,
+
   mainLogo: css`
-    width: 260px;
+    width: 150px;
+    /* Remove any default margins if they exist or use this to be safe */
+    display: block;
   `,
+
   title: css`
     font-size: 64px;
     font-weight: 400;
     color: #1a1a1a;
-    margin: 30px 0 0 0;
+    margin: 20px 0 0 0; /* Reduced top margin slightly for a tighter look */
   `,
+
   subtitle: css`
     font-size: 24px;
     color: #999;
     letter-spacing: 2px;
+    margin: 5px 0 0 0; /* Added a small top margin for spacing */
   `,
   actionSection: css`
     position: absolute;

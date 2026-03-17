@@ -77,20 +77,20 @@ export default function UbuntuLearn() {
       </div>
 
       <nav className={styles.glassNav}>
-        <a href="#">Login</a>
+        <a href="/login">Login</a>
         <a href="#">About</a>
         <a href="#">Contact Us</a>
       </nav>
 
       <div className={styles.brandSection}>
-        <img src="/logo-placeholder.png" alt="Logo" className={styles.mainLogo} />
+        <img src="https://firebasestorage.googleapis.com/v0/b/grade-12-life-sciences-st.firebasestorage.app/o/image.png?alt=media&token=7477da80-3128-4dc8-833b-92c432ea71b1" alt="Logo" className={styles.mainLogo} />
         <h1 className={styles.title}>Ubuntu Learn</h1>
         <p className={styles.subtitle}>Learn • Funda • Bala • Leer</p>
       </div>
 
       <div className={styles.actionSection}>
         <motion.img 
-          src="/robot-placeholder.png" 
+          src="https://firebasestorage.googleapis.com/v0/b/grade-12-life-sciences-st.firebasestorage.app/o/download.png?alt=media&token=c48ad801-ecfe-4435-9cf8-753a94ecc303" 
           className={styles.robotImg}
           animate={{ y: [0, -15, 0] }}
           transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
@@ -99,7 +99,7 @@ export default function UbuntuLearn() {
           <p className={styles.placeholderText}>
             Personalized learning paths designed to help you excel in your matric year and beyond.
           </p>
-          <Button className={styles.dashboardBtn} size="large">Dashboard</Button>
+          {/* <Button className={styles.dashboardBtn} size="large">Dashboard</Button> */}
         </div>
       </div>
 
