@@ -1,8 +1,10 @@
 "use client";
 
-import { Layout, Menu } from "antd";
+import { QuestionCircleOutlined } from "@ant-design/icons";
+import { Button, Layout, Menu, Typography } from "antd";
 import { usePathname, useRouter } from "next/navigation";
 import { NAVIGATION_BY_ROLE } from "@/config/navigation";
+import { ROLE_LABELS } from "@/config/roles";
 import type { AppRole } from "@/types/navigation";
 import { useStyles } from "./AppSidebar.style";
 
@@ -12,6 +14,7 @@ interface IAppSidebarProps {
 
 /**
  * Role-aware sidebar that reads items from centralized navigation config.
+ * Includes a role label at the top and a Help Center section at the bottom.
  */
 export const AppSidebar = ({ role }: IAppSidebarProps) => {
     const { styles } = useStyles();
@@ -25,6 +28,12 @@ export const AppSidebar = ({ role }: IAppSidebarProps) => {
 
     return (
         <Layout.Sider width={260} className={styles.sidebar}>
+            <div className={styles.roleLabel}>
+                <Typography.Text className={styles.roleLabelText}>
+                    {ROLE_LABELS[role].toLowerCase()} &nbsp; Menu
+                </Typography.Text>
+            </div>
+
             <Menu
                 mode="inline"
                 className={styles.menu}
@@ -45,6 +54,13 @@ export const AppSidebar = ({ role }: IAppSidebarProps) => {
                     }
                 }}
             />
+
+            <div className={styles.helpSection}>
+                <QuestionCircleOutlined className={styles.helpIcon} />
+                <Typography.Text strong className={styles.helpTitle}>Need Help?</Typography.Text>
+                <Typography.Text className={styles.helpSubtitle}>Contact support or view guides.</Typography.Text>
+                <Button block className={styles.helpButton}>Help Center</Button>
+            </div>
         </Layout.Sider>
     );
 };
