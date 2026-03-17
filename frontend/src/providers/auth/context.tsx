@@ -11,10 +11,21 @@ export interface ILoginValues {
     rememberClient: boolean;
 }
 
+export interface IRegisterValues {
+    userName: string;
+    name: string;
+    surname: string;
+    emailAddress: string;
+    isActive: boolean;
+    roleNames: string[];
+    password: string;
+}
+
 export type IAuthContextState = IAuthState;
 
 export interface IAuthContextActions {
     login(values: ILoginValues): Promise<void>;
+    register(values: IRegisterValues): Promise<void>; // Add this
     logout(): void;
     clearAuthError(): void;
 }

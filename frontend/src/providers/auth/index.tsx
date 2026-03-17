@@ -21,20 +21,17 @@ import {
     IAuthContextState,
     ILoginValues,
     INITIAL_STATE,
+    IRegisterValues,
 } from "./context";
 import { authReducer } from "./reducer";
 import { authService } from "@/services/auth/authService";
 
-// Contexts
+// --- Contexts ---
 
-const AuthStateContext = createContext<IAuthContextState | undefined>(
-    undefined
-);
-const AuthActionsContext = createContext<IAuthContextActions | undefined>(
-    undefined
-);
+const AuthStateContext = createContext<IAuthContextState | undefined>(undefined);
+const AuthActionsContext = createContext<IAuthContextActions | undefined>(undefined);
 
-// Provider
+// --- Provider ---
 
 interface IAuthProviderProps {
     children: ReactNode;
@@ -44,9 +41,7 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
     const [state, dispatch] = useReducer(authReducer, INITIAL_STATE);
 
     /**
-     * On mount, call the Me endpoint to check whether the browser still holds
-     * a valid HttpOnly auth cookie. If so, rehydrate the auth state so the
-     * user is not signed out on a page refresh.
+     * On mount, check if the user has an active session (HttpOnly cookie).
      */
     useEffect(() => {
         dispatch(setLoading(true));
@@ -58,7 +53,6 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
 
     const login = async (values: ILoginValues): Promise<void> => {
         dispatch(setLoading(true));
-
         try {
             const response = await authService.login({
                 userNameOrEmailAddress: values.userNameOrEmailAddress,
@@ -73,8 +67,23 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
         }
     };
 
+    const register = async (values: IRegisterValues): Promise<void> => {
+        dispatch(setLoading(true));
+        try {
+            await authService.register(values);
+            // Auto-login after successful registration
+            await login({
+                userNameOrEmailAddress: values.userName,
+                password: values.password,
+                rememberClient: false,
+            });
+        } catch (error) {
+            const message = resolveErrorMessage(error);
+            dispatch(setError(message));
+        }
+    };
+
     const logout = (): void => {
-        // Fire-and-forget: clear the cookie server-side; client state is cleared immediately.
         authService.logout().catch(() => {});
         dispatch(setUnauthenticated());
     };
@@ -83,8 +92,9 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
         dispatch(clearError());
     };
 
+    // Memoize actions to prevent unnecessary re-renders of consuming components
     const actionsValue = useMemo<IAuthContextActions>(
-        () => ({ login, logout, clearAuthError }),
+        () => ({ login, register, logout, clearAuthError }),
         []
     );
 
@@ -97,34 +107,29 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
     );
 };
 
-// Hooks
+// --- Hooks ---
 
-/** Returns the current auth state. Must be used inside <AuthProvider>. */
 export const useAuthState = (): IAuthContextState => {
     const context = useContext(AuthStateContext);
-
     if (!context) {
         throw new Error("useAuthState must be used within AuthProvider.");
     }
-
     return context;
 };
 
-/** Returns auth action methods. Must be used inside <AuthProvider>. */
 export const useAuthActions = (): IAuthContextActions => {
     const context = useContext(AuthActionsContext);
-
     if (!context) {
         throw new Error("useAuthActions must be used within AuthProvider.");
     }
-
     return context;
 };
 
+// --- Helpers ---
+
 function resolveErrorMessage(error: unknown): string {
     if (axios.isAxiosError(error)) {
-        const abpMessage: string | undefined =
-            error.response?.data?.error?.message;
+        const abpMessage: string | undefined = error.response?.data?.error?.message;
         if (abpMessage) {
             return abpMessage;
         }
