@@ -3,6 +3,10 @@ using Abp.Modules;
 using Abp.Reflection.Extensions;
 using Team3.Authorization;
 
+using Castle.MicroKernel.Registration;
+using FluentValidation;
+using Team3.Users.Dto;
+
 namespace Team3;
 
 [DependsOn(
@@ -21,8 +25,17 @@ public class Team3ApplicationModule : AbpModule
 
         IocManager.RegisterAssemblyByConvention(thisAssembly);
 
+        IocManager.IocContainer.Register(
+            Component.For<IValidator<RegisterUserInput>>()
+                .ImplementedBy<RegisterUserInputValidator>()
+                .LifestyleTransient(),
+
+            Component.For<IValidator<UpdateMyProfileInput>>()
+                .ImplementedBy<UpdateMyProfileInputValidator>()
+                .LifestyleTransient()
+        );
+
         Configuration.Modules.AbpAutoMapper().Configurators.Add(
-            // Scan the assembly for classes which inherit from AutoMapper.Profile
             cfg => cfg.AddMaps(thisAssembly)
         );
     }

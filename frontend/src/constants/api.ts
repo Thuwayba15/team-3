@@ -15,3 +15,5 @@ export const LOGOUT_ENDPOINT = "/api/TokenAuth/Logout";
 
 /** Returns the authenticated user's id; used to rehydrate state on page load. */
 export const ME_ENDPOINT = "/api/TokenAuth/Me";
+
+export const REGISTER_ENDPOINT = "/api/services/app/Account/Register";
