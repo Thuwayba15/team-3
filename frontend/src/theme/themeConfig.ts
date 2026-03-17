@@ -5,7 +5,7 @@ import type { ThemeConfig } from "antd";
  */
 const themeConfig: ThemeConfig = {
     token: {
-        colorPrimary: "#4f46e5",
+        colorPrimary: "#0f766e",
         colorBgLayout: "#f5f5f5",
         borderRadius: 8,
         fontFamily:
