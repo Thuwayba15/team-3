@@ -4078,3 +4078,119 @@ INFO  2026-03-17 20:50:10,470 [32   ] .Mvc.Infrastructure.ObjectResultExecutor -
 INFO  2026-03-17 20:50:10,476 [32   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Services.Subjects.Team3.Services.Subjects.SubjectAppService.EnrollInSubjectAsync (Team3.Application) in 3380.8216ms
 INFO  2026-03-17 20:50:10,485 [32   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Services.Subjects.Team3.Services.Subjects.SubjectAppService.EnrollInSubjectAsync (Team3.Application)'
 INFO  2026-03-17 20:50:10,494 [32   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 POST https://localhost:44311/api/services/app/Subject/EnrollInSubject?subjectId=019cfc9b-a5ac-7230-bd97-d914e136b559 - 200 - application/json;+charset=utf-8 3466.2297ms
+DEBUG 2026-03-17 21:09:14,986 [2    ] Abp.Modules.AbpModuleManager             - Loading Abp modules...
+DEBUG 2026-03-17 21:09:17,363 [2    ] Abp.Modules.AbpModuleManager             - Found 15 ABP modules in total.
+DEBUG 2026-03-17 21:09:17,419 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Web.Host.Startup.Team3WebHostModule, Team3.Web.Host, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-17 21:09:17,427 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3WebCoreModule, Team3.Web.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-17 21:09:17,429 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3ApplicationModule, Team3.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-17 21:09:17,431 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3CoreModule, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-17 21:09:17,433 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCoreModule, Abp.ZeroCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-17 21:09:17,435 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCommonModule, Abp.Zero.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-17 21:09:17,437 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AbpKernelModule, Abp, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-17 21:09:17,443 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AutoMapper.AbpAutoMapperModule, Abp.AutoMapper, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-17 21:09:17,444 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.EntityFrameworkCore.Team3EntityFrameworkModule, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-17 21:09:17,446 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.EntityFrameworkCore.AbpZeroCoreEntityFrameworkCoreModule, Abp.ZeroCore.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-17 21:09:17,447 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFrameworkCore.AbpEntityFrameworkCoreModule, Abp.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-17 21:09:17,448 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFramework.AbpEntityFrameworkCommonModule, Abp.EntityFramework.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-17 21:09:17,450 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.AbpAspNetCoreModule, Abp.AspNetCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-17 21:09:17,451 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Web.AbpWebCommonModule, Abp.Web.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-17 21:09:17,452 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.SignalR.AbpAspNetCoreSignalRModule, Abp.AspNetCore.SignalR, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-17 21:09:17,457 [2    ] Abp.Modules.AbpModuleManager             - 15 modules loaded.
+DEBUG 2026-03-17 21:09:17,660 [2    ] o.Configuration.LanguageManagementConfig - Converted Abp (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-17 21:09:17,660 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpZero (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-17 21:09:17,660 [2    ] o.Configuration.LanguageManagementConfig - Converted Team3 (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-17 21:09:17,660 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpWeb (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-17 21:09:19,008 [2    ] ameworkCore.AbpEntityFrameworkCoreModule - Registering DbContext: Team3.EntityFrameworkCore.Team3DbContext, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-17 21:09:19,506 [2    ] Abp.Localization.LocalizationManager     - Initializing 4 localization sources.
+DEBUG 2026-03-17 21:09:19,611 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Abp
+DEBUG 2026-03-17 21:09:19,635 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpZero
+DEBUG 2026-03-17 21:09:19,648 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Team3
+DEBUG 2026-03-17 21:09:19,656 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpWeb
+DEBUG 2026-03-17 21:09:19,683 [2    ] Abp.BackgroundJobs.BackgroundJobManager  - Start background worker: Abp.BackgroundJobs.BackgroundJobManager
+DEBUG 2026-03-17 21:09:19,708 [2    ] , Culture=neutral, PublicKeyToken=null]] - Start background worker: Abp.Authorization.Users.UserTokenExpirationWorker`2[[Team3.MultiTenancy.Tenant, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Team3.Authorization.Users.User, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]
+DEBUG 2026-03-17 21:09:19,766 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Found 8 classes define auto mapping attributes
+DEBUG 2026-03-17 21:09:19,766 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.CreateUserDto
+DEBUG 2026-03-17 21:09:19,780 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.UserDto
+DEBUG 2026-03-17 21:09:19,784 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.TenantLoginInfoDto
+DEBUG 2026-03-17 21:09:19,785 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.UserLoginInfoDto
+DEBUG 2026-03-17 21:09:19,785 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Services.Subjects.Dto.SubjectDto
+DEBUG 2026-03-17 21:09:19,786 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Roles.Dto.PermissionDto
+DEBUG 2026-03-17 21:09:19,787 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.CreateTenantDto
+DEBUG 2026-03-17 21:09:19,788 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.TenantDto
+WARN  2026-03-17 21:09:22,852 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Lesson' has a global query filter defined and is the required end of a relationship with the entity 'LessonTranslation'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-17 21:09:22,859 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Subject' has a global query filter defined and is the required end of a relationship with the entity 'SubjectTranslation'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-17 21:09:22,866 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Topic' has a global query filter defined and is the required end of a relationship with the entity 'TopicTranslation'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+INFO  2026-03-17 21:09:47,323 [2    ] tCore.Builder.RequestLocalizationOptions - Supported Request Localization Cultures: en,es-MX,fr,de,it,nl,pt-BR,tr,ru,ar,fa,ja,zh-Hans
+INFO  2026-03-17 21:09:48,181 [16   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/ - - -
+INFO  2026-03-17 21:09:48,359 [2    ] Microsoft.Hosting.Lifetime               - Application started. Press Ctrl+C to shut down.
+INFO  2026-03-17 21:09:48,393 [2    ] Microsoft.Hosting.Lifetime               - Hosting environment: Development
+INFO  2026-03-17 21:09:48,399 [2    ] Microsoft.Hosting.Lifetime               - Content root path: C:\Users\Welcome\source\repos\team-3\backend\aspnet-core\src\Team3.Web.Host
+INFO  2026-03-17 21:09:49,897 [7    ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host)'
+INFO  2026-03-17 21:09:50,160 [7    ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "Index", controller = "Home", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller Team3.Web.Host.Controllers.HomeController (Team3.Web.Host).
+INFO  2026-03-17 21:09:51,694 [15   ] vc.Infrastructure.RedirectResultExecutor - Executing RedirectResult, redirecting to /swagger.
+INFO  2026-03-17 21:09:51,742 [15   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host) in 1538.8542ms
+INFO  2026-03-17 21:09:51,748 [15   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host)'
+INFO  2026-03-17 21:09:51,905 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/ - 302 - - 3647.5777ms
+INFO  2026-03-17 21:09:51,935 [16   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/_framework/aspnetcore-browser-refresh.js - - -
+INFO  2026-03-17 21:09:51,941 [11   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/swagger/ui/abp.swagger.js - - -
+INFO  2026-03-17 21:09:51,947 [19   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/_vs/browserLink - - -
+INFO  2026-03-17 21:09:51,954 [20   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/swagger/ui/abp.js - - -
+INFO  2026-03-17 21:09:52,016 [11   ] NetCore.StaticFiles.StaticFileMiddleware - The file /swagger/ui/abp.swagger.js was not modified
+INFO  2026-03-17 21:09:52,022 [20   ] NetCore.StaticFiles.StaticFileMiddleware - The file /swagger/ui/abp.js was not modified
+INFO  2026-03-17 21:09:52,066 [11   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/swagger/ui/abp.swagger.js - 304 - text/javascript 153.7009ms
+INFO  2026-03-17 21:09:52,072 [20   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/swagger/ui/abp.js - 304 - text/javascript 153.0038ms
+INFO  2026-03-17 21:09:52,085 [16   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/_framework/aspnetcore-browser-refresh.js - 200 14933 application/javascript;+charset=utf-8 178.7311ms
+INFO  2026-03-17 21:09:52,176 [26   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/_vs/browserLink - 200 - text/javascript;+charset=UTF-8 271.2002ms
+INFO  2026-03-17 21:09:52,200 [19   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/AntiForgery/SetCookie - - -
+INFO  2026-03-17 21:09:52,219 [19   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host)'
+INFO  2026-03-17 21:09:52,226 [26   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/swagger/v1/swagger.json - - -
+INFO  2026-03-17 21:09:52,241 [19   ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "SetCookie", controller = "AntiForgery", area = ""}. Executing controller action with signature Void SetCookie() on controller Team3.Web.Host.Controllers.AntiForgeryController (Team3.Web.Host).
+INFO  2026-03-17 21:09:52,351 [26   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/swagger/v1/swagger.json - 200 - application/json;charset=utf-8 125.9444ms
+INFO  2026-03-17 21:09:53,573 [26   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-17 21:09:53,596 [26   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host) in 1348.8526ms
+INFO  2026-03-17 21:09:53,602 [26   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host)'
+INFO  2026-03-17 21:09:53,608 [26   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/AntiForgery/SetCookie - 200 - application/json;+charset=utf-8 1408.9831ms
+INFO  2026-03-17 21:10:43,070 [20   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/api/TokenAuth/Me - - -
+INFO  2026-03-17 21:10:43,151 [20   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Controllers.TokenAuthController.Me (Team3.Web.Core)'
+INFO  2026-03-17 21:10:43,169 [20   ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "Me", controller = "TokenAuth", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Me() on controller Team3.Controllers.TokenAuthController (Team3.Web.Core).
+INFO  2026-03-17 21:10:44,490 [30   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing OkObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-17 21:10:44,515 [30   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Controllers.TokenAuthController.Me (Team3.Web.Core) in 1337.4616ms
+INFO  2026-03-17 21:10:44,523 [30   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Controllers.TokenAuthController.Me (Team3.Web.Core)'
+INFO  2026-03-17 21:10:44,533 [30   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/api/TokenAuth/Me - 200 - application/json;+charset=utf-8 1468.8848ms
+INFO  2026-03-17 21:10:55,008 [20   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/api/services/app/Subject/GetAll - - -
+INFO  2026-03-17 21:10:55,021 [20   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Services.Subjects.SubjectAppService.GetAllAsync (Team3.Application)'
+INFO  2026-03-17 21:10:55,046 [20   ] c.Infrastructure.ControllerActionInvoker - Route matched with {area = "app", action = "GetAll", controller = "Subject"}. Executing controller action with signature System.Threading.Tasks.Task`1[Abp.Application.Services.Dto.ListResultDto`1[Team3.Services.Subjects.Dto.SubjectDto]] GetAllAsync() on controller Team3.Services.Subjects.SubjectAppService (Team3.Application).
+INFO  2026-03-17 21:10:57,508 [30   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-17 21:10:57,537 [30   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Services.Subjects.SubjectAppService.GetAllAsync (Team3.Application) in 2483.8348ms
+INFO  2026-03-17 21:10:57,545 [30   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Services.Subjects.SubjectAppService.GetAllAsync (Team3.Application)'
+INFO  2026-03-17 21:10:57,591 [30   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/api/services/app/Subject/GetAll - 200 - application/json;+charset=utf-8 2542.4103ms
+INFO  2026-03-17 21:11:22,164 [20   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/api/services/app/Subject/GetMySubjects - - -
+INFO  2026-03-17 21:11:22,177 [20   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Services.Subjects.SubjectAppService.GetMySubjectsAsync (Team3.Application)'
+INFO  2026-03-17 21:11:22,194 [20   ] c.Infrastructure.ControllerActionInvoker - Route matched with {area = "app", action = "GetMySubjects", controller = "Subject"}. Executing controller action with signature System.Threading.Tasks.Task`1[Abp.Application.Services.Dto.ListResultDto`1[Team3.Services.Subjects.Dto.SubjectDto]] GetMySubjectsAsync() on controller Team3.Services.Subjects.SubjectAppService (Team3.Application).
+INFO  2026-03-17 21:11:24,606 [26   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-17 21:11:24,611 [26   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Services.Subjects.SubjectAppService.GetMySubjectsAsync (Team3.Application) in 2412.3719ms
+INFO  2026-03-17 21:11:24,616 [26   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Services.Subjects.SubjectAppService.GetMySubjectsAsync (Team3.Application)'
+INFO  2026-03-17 21:11:24,621 [26   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/api/services/app/Subject/GetMySubjects - 200 - application/json;+charset=utf-8 2462.9281ms
+INFO  2026-03-17 21:13:23,627 [30   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 POST https://localhost:44311/api/services/app/Subject/BulkEnroll - application/json 86
+INFO  2026-03-17 21:13:23,646 [30   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution failed.
+INFO  2026-03-17 21:13:23,654 [30   ] pNetCore.Cors.Infrastructure.CorsService - Request origin https://localhost:44311 does not have permission to access the resource.
+INFO  2026-03-17 21:13:23,667 [30   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Services.Subjects.SubjectAppService.BulkEnrollAsync (Team3.Application)'
+INFO  2026-03-17 21:13:23,700 [30   ] c.Infrastructure.ControllerActionInvoker - Route matched with {area = "app", action = "BulkEnroll", controller = "Subject"}. Executing controller action with signature System.Threading.Tasks.Task BulkEnrollAsync(System.Collections.Generic.List`1[System.Guid]) on controller Team3.Services.Subjects.SubjectAppService (Team3.Application).
+INFO  2026-03-17 21:13:26,998 [30   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-17 21:13:27,005 [30   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Services.Subjects.SubjectAppService.BulkEnrollAsync (Team3.Application) in 3298.8157ms
+INFO  2026-03-17 21:13:27,012 [30   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Services.Subjects.SubjectAppService.BulkEnrollAsync (Team3.Application)'
+INFO  2026-03-17 21:13:27,018 [30   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 POST https://localhost:44311/api/services/app/Subject/BulkEnroll - 200 - application/json;+charset=utf-8 3395.8956ms
+INFO  2026-03-17 21:13:42,536 [30   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/api/services/app/Subject/GetAll - - -
+INFO  2026-03-17 21:13:42,546 [30   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Services.Subjects.SubjectAppService.GetAllAsync (Team3.Application)'
+INFO  2026-03-17 21:13:42,560 [30   ] c.Infrastructure.ControllerActionInvoker - Route matched with {area = "app", action = "GetAll", controller = "Subject"}. Executing controller action with signature System.Threading.Tasks.Task`1[Abp.Application.Services.Dto.ListResultDto`1[Team3.Services.Subjects.Dto.SubjectDto]] GetAllAsync() on controller Team3.Services.Subjects.SubjectAppService (Team3.Application).
+INFO  2026-03-17 21:13:44,673 [30   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-17 21:13:44,680 [30   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Services.Subjects.SubjectAppService.GetAllAsync (Team3.Application) in 2113.7431ms
+INFO  2026-03-17 21:13:44,687 [30   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Services.Subjects.SubjectAppService.GetAllAsync (Team3.Application)'
+INFO  2026-03-17 21:13:44,695 [30   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/api/services/app/Subject/GetAll - 200 - application/json;+charset=utf-8 2161.7497ms
+INFO  2026-03-17 21:13:53,077 [30   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/api/services/app/Subject/GetMySubjects - - -
+INFO  2026-03-17 21:13:53,085 [30   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Services.Subjects.SubjectAppService.GetMySubjectsAsync (Team3.Application)'
+INFO  2026-03-17 21:13:53,095 [30   ] c.Infrastructure.ControllerActionInvoker - Route matched with {area = "app", action = "GetMySubjects", controller = "Subject"}. Executing controller action with signature System.Threading.Tasks.Task`1[Abp.Application.Services.Dto.ListResultDto`1[Team3.Services.Subjects.Dto.SubjectDto]] GetMySubjectsAsync() on controller Team3.Services.Subjects.SubjectAppService (Team3.Application).
+INFO  2026-03-17 21:13:55,212 [20   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-17 21:13:55,218 [20   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Services.Subjects.SubjectAppService.GetMySubjectsAsync (Team3.Application) in 2118.0008ms
+INFO  2026-03-17 21:13:55,225 [20   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Services.Subjects.SubjectAppService.GetMySubjectsAsync (Team3.Application)'
+INFO  2026-03-17 21:13:55,259 [20   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/api/services/app/Subject/GetMySubjects - 200 - application/json;+charset=utf-8 2154.5869ms
