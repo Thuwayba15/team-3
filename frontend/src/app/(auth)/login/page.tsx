@@ -67,7 +67,7 @@ export default function LoginPage() {
             />
             
             <div className={styles.footerActions}>
-              <p>Don't have an account? <Link href="/register" className={styles.regLink}>Create an account</Link></p>
+              <p>Don&apos;t have an account? <Link href="/register" className={styles.regLink}>Create an account</Link></p>
               
               <div className={styles.educationTeaser}>
               </div>

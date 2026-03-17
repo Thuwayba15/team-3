@@ -97,7 +97,6 @@ export default function UbuntuLearn() {
           <p className={styles.placeholderText}>
             Personalized learning paths designed to help you excel in your matric year and beyond.
           </p>
-          {/* <Button className={styles.dashboardBtn} size="large">Dashboard</Button> */}
         </div>
       </div>
 

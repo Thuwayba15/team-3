@@ -1,7 +1,7 @@
 "use client";
 import { createStyles } from "antd-style";
 
-export const useStyles = createStyles(({ css, token, responsive }) => ({
+export const useStyles = createStyles(({ css, responsive }) => ({
   container: css`
     width: 100vw;
     min-height: 100vh;
