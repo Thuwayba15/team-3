@@ -1,10 +1,8 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { Button, Progress, Typography } from 'antd';
+import { Button, Progress } from 'antd';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStyles } from './styles';
-
-const { Title, Text } = Typography;
 
 // --- Interfaces ---
 interface BaseItem { label: string; }
