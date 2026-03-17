@@ -82,6 +82,7 @@ namespace Team3.Users
             CheckErrors(await _userManager.AddToRoleAsync(user, input.Role));
 
             await CreateRoleSpecificProfileAsync(user.Id, input);
+            await CurrentUnitOfWork.SaveChangesAsync();
 
             return await BuildRegisterOutputAsync(user, input.Role);
         }
