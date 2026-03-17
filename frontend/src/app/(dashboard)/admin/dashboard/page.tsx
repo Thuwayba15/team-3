@@ -22,9 +22,9 @@ const LANGUAGE_STATS = [
 ];
 
 const ROLE_LEGEND = [
-    { label: "Students (80%)", color: "#00b8a9" },
-    { label: "Tutors (5%)",    color: "#4096ff" },
-    { label: "Parents (15%)",  color: "#faad14" },
+    { label: "Students (80%)", dotClassName: "legendDotPrimary" as const },
+    { label: "Tutors (5%)",    dotClassName: "legendDotInfo" as const },
+    { label: "Parents (15%)",  dotClassName: "legendDotWarning" as const },
 ];
 
 /** Admin dashboard — system overview with key platform metrics. */
@@ -57,9 +57,9 @@ export default function AdminDashboardPage() {
                             <Text type="secondary">Pie Chart Visualization Placeholder</Text>
                         </div>
                         <div className={styles.legend}>
-                            {ROLE_LEGEND.map(({ label, color }) => (
+                            {ROLE_LEGEND.map(({ label, dotClassName }) => (
                                 <span key={label} className={styles.legendItem}>
-                                    <span className={styles.legendDot} style={{ background: color }} />
+                                    <span className={`${styles.legendDot} ${styles[dotClassName]}`} />
                                     {label}
                                 </span>
                             ))}
@@ -76,7 +76,7 @@ export default function AdminDashboardPage() {
                                         <span>{label}</span>
                                         <span>{percent}%</span>
                                     </div>
-                                    <Progress percent={percent} showInfo={false} strokeColor="#00b8a9" />
+                                    <Progress percent={percent} showInfo={false} className={styles.progress} />
                                 </div>
                             ))}
                         </div>

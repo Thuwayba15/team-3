@@ -3,31 +3,67 @@
 import { createStyles } from "antd-style";
 
 export const useStyles = createStyles(({ css, token }) => ({
+    errorAlert: css`
+        margin-bottom: ${token.marginLG}px;
+    `,
+
     toolbar: css`
         display: flex;
         align-items: center;
+        flex-wrap: wrap;
         gap: ${token.marginSM}px;
         margin-bottom: ${token.marginLG}px;
     `,
 
     search: css`
-        width: 280px;
+        width: 100%;
+
+        @media (min-width: 768px) {
+            width: 280px;
+        }
     `,
 
     filters: css`
         display: flex;
+        flex-wrap: wrap;
         gap: ${token.marginSM}px;
         flex: 1;
+        width: 100%;
+
+        @media (min-width: 768px) {
+            width: auto;
+        }
+    `,
+
+    filterSelect: css`
+        width: 100%;
+
+        @media (min-width: 480px) {
+            width: 130px;
+        }
+    `,
+
+    addButtonWrapper: css`
+        width: 100%;
+
+        @media (min-width: 768px) {
+            width: auto;
+            margin-left: auto;
+        }
     `,
 
     addButton: css`
-        margin-left: auto;
-        background: #00b8a9;
-        border-color: #00b8a9;
+        width: 100%;
+        background: ${token.colorPrimary};
+        border-color: ${token.colorPrimary};
 
         &:hover {
-            background: #00a89a !important;
-            border-color: #00a89a !important;
+            background: ${token.colorPrimaryHover} !important;
+            border-color: ${token.colorPrimaryHover} !important;
+        }
+
+        @media (min-width: 768px) {
+            width: auto;
         }
     `,
 
@@ -51,6 +87,31 @@ export const useStyles = createStyles(({ css, token }) => ({
         border: none;
     `,
 
+    roleTagDefault: css`
+        background: ${token.colorFillQuaternary};
+        color: ${token.colorTextTertiary};
+    `,
+
+    roleTagAdmin: css`
+        background: ${token.colorFillSecondary};
+        color: ${token.colorText};
+    `,
+
+    roleTagTutor: css`
+        background: ${token.colorPrimaryBg};
+        color: ${token.colorPrimary};
+    `,
+
+    roleTagParent: css`
+        background: ${token.colorWarningBg};
+        color: ${token.colorWarning};
+    `,
+
+    roleTagStudent: css`
+        background: ${token.colorInfoBg};
+        color: ${token.colorInfo};
+    `,
+
     statusTag: css`
         border-radius: 12px;
         font-size: 12px;
@@ -59,11 +120,11 @@ export const useStyles = createStyles(({ css, token }) => ({
     `,
 
     editLink: css`
-        color: #00b8a9;
+        color: ${token.colorPrimary};
         padding: 0;
 
         &:hover {
-            color: #00a89a !important;
+            color: ${token.colorPrimaryHover} !important;
         }
     `,
 

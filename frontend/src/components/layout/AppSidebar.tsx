@@ -10,13 +10,15 @@ import { useStyles } from "./AppSidebar.style";
 
 interface IAppSidebarProps {
     role: AppRole;
+    isMobile?: boolean;
+    onNavigate?: () => void;
 }
 
 /**
  * Role-aware sidebar that reads items from centralized navigation config.
  * Includes a role label at the top and a Help Center section at the bottom.
  */
-export const AppSidebar = ({ role }: IAppSidebarProps) => {
+export const AppSidebar = ({ role, isMobile = false, onNavigate }: IAppSidebarProps) => {
     const { styles } = useStyles();
     const router = useRouter();
     const pathname = usePathname();
@@ -26,8 +28,8 @@ export const AppSidebar = ({ role }: IAppSidebarProps) => {
         items.find((item) => pathname === item.path) ||
         items.find((item) => pathname.startsWith(item.path));
 
-    return (
-        <Layout.Sider width={260} className={styles.sidebar}>
+    const sidebarContent = (
+        <>
             <div className={styles.roleLabel}>
                 <Typography.Text className={styles.roleLabelText}>
                     {ROLE_LABELS[role].toLowerCase()} &nbsp; Menu
@@ -51,6 +53,7 @@ export const AppSidebar = ({ role }: IAppSidebarProps) => {
                     const target = items.find((item) => item.key === key);
                     if (target) {
                         router.push(target.path);
+                        onNavigate?.();
                     }
                 }}
             />
@@ -61,6 +64,16 @@ export const AppSidebar = ({ role }: IAppSidebarProps) => {
                 <Typography.Text className={styles.helpSubtitle}>Contact support or view guides.</Typography.Text>
                 <Button block className={styles.helpButton}>Help Center</Button>
             </div>
+        </>
+    );
+
+    if (isMobile) {
+        return <div className={styles.mobileSidebar}>{sidebarContent}</div>;
+    }
+
+    return (
+        <Layout.Sider width={260} className={styles.sidebar}>
+            {sidebarContent}
         </Layout.Sider>
     );
 };

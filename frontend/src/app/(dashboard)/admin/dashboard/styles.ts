@@ -21,18 +21,24 @@ export const useStyles = createStyles(({ css, token }) => ({
         align-items: center;
         justify-content: space-between;
         margin-bottom: ${token.marginSM}px;
+
+        @media (max-width: 575px) {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: ${token.marginXS}px;
+        }
     `,
 
     statIcon: css`
         font-size: 22px;
-        color: #00b8a9;
+        color: ${token.colorPrimary};
     `,
 
     trendBadge: css`
         font-size: 12px;
-        color: #52c41a;
-        background: #f6ffed;
-        border: 1px solid #b7eb8f;
+        color: ${token.colorSuccess};
+        background: ${token.colorSuccessBg};
+        border: 1px solid ${token.colorSuccessBorder};
         border-radius: 12px;
         padding: 2px 8px;
     `,
@@ -77,6 +83,11 @@ export const useStyles = createStyles(({ css, token }) => ({
         justify-content: center;
         gap: ${token.marginLG}px;
         flex-wrap: wrap;
+
+        @media (max-width: 575px) {
+            justify-content: flex-start;
+            gap: ${token.marginSM}px;
+        }
     `,
 
     legendItem: css`
@@ -85,6 +96,10 @@ export const useStyles = createStyles(({ css, token }) => ({
         gap: 6px;
         font-size: 13px;
         color: ${token.colorText};
+
+        @media (max-width: 575px) {
+            width: 100%;
+        }
     `,
 
     legendDot: css`
@@ -92,6 +107,18 @@ export const useStyles = createStyles(({ css, token }) => ({
         height: 10px;
         border-radius: 50%;
         flex-shrink: 0;
+    `,
+
+    legendDotPrimary: css`
+        background: ${token.colorPrimary};
+    `,
+
+    legendDotInfo: css`
+        background: ${token.colorInfo};
+    `,
+
+    legendDotWarning: css`
+        background: ${token.colorWarning};
     `,
 
     progressList: css`
@@ -108,5 +135,17 @@ export const useStyles = createStyles(({ css, token }) => ({
         font-size: 13px;
         color: ${token.colorText};
         margin-bottom: 4px;
+
+        @media (max-width: 575px) {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: ${token.marginXXS}px;
+        }
+    `,
+
+    progress: css`
+        .ant-progress-bg {
+            background: ${token.colorPrimary};
+        }
     `,
 }));

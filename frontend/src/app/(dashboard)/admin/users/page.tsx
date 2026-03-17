@@ -8,16 +8,14 @@ import { PageHeader } from "@/components/layout";
 import { userService, type IUser } from "@/services/users/userService";
 import { useStyles } from "./styles";
 
-type RoleColor = { bg: string; text: string };
+type RoleTagClass = "roleTagAdmin" | "roleTagTutor" | "roleTagParent" | "roleTagStudent";
 
-const ROLE_COLORS: Record<string, RoleColor> = {
-    ADMIN:   { bg: "#f5f5f5", text: "#595959" },
-    TUTOR:   { bg: "#e6fffb", text: "#00b8a9" },
-    PARENT:  { bg: "#fffbe6", text: "#d48806" },
-    STUDENT: { bg: "#e6fffb", text: "#00b8a9" },
+const ROLE_CLASS_BY_NAME: Record<string, RoleTagClass> = {
+    ADMIN: "roleTagAdmin",
+    TUTOR: "roleTagTutor",
+    PARENT: "roleTagParent",
+    STUDENT: "roleTagStudent",
 };
-
-const DEFAULT_ROLE_COLOR: RoleColor = { bg: "#f0f0f0", text: "#8c8c8c" };
 
 const ROLE_OPTIONS = [
     { label: "All Roles", value: "" },
@@ -76,12 +74,12 @@ export default function AdminUsersPage() {
             key: "roleNames",
             render: (roleNames: string[]) => {
                 if (roleNames.length === 0) {
-                    return <Tag className={styles.roleTag} style={{ background: "#f0f0f0", color: "#8c8c8c" }}>—</Tag>;
+                    return <Tag className={`${styles.roleTag} ${styles.roleTagDefault}`}>—</Tag>;
                 }
                 return roleNames.map((role) => {
-                    const { bg, text } = ROLE_COLORS[role] ?? DEFAULT_ROLE_COLOR;
+                    const roleClassName = ROLE_CLASS_BY_NAME[role] ?? "roleTagDefault";
                     return (
-                        <Tag key={role} className={styles.roleTag} style={{ background: bg, color: text }}>
+                        <Tag key={role} className={`${styles.roleTag} ${styles[roleClassName]}`}>
                             {role.charAt(0) + role.slice(1).toLowerCase()}
                         </Tag>
                     );
@@ -120,7 +118,7 @@ export default function AdminUsersPage() {
         <div>
             <PageHeader title="User Management" subtitle="Manage platform users, roles, and access" />
 
-            {error && <Alert type="error" message={error} style={{ marginBottom: 16 }} />}
+            {error && <Alert type="error" message={error} className={styles.errorAlert} />}
 
             <div className={styles.toolbar}>
                 <Input.Search
@@ -132,21 +130,23 @@ export default function AdminUsersPage() {
                 />
                 <div className={styles.filters}>
                     <Select
+                        className={styles.filterSelect}
                         options={ROLE_OPTIONS}
                         value={roleFilter}
                         onChange={setRoleFilter}
-                        style={{ width: 130 }}
                     />
                     <Select
+                        className={styles.filterSelect}
                         options={STATUS_OPTIONS}
                         value={statusFilter}
                         onChange={setStatusFilter}
-                        style={{ width: 130 }}
                     />
                 </div>
-                <Button type="primary" icon={<PlusOutlined />} className={styles.addButton}>
-                    Add User
-                </Button>
+                <div className={styles.addButtonWrapper}>
+                    <Button type="primary" icon={<PlusOutlined />} className={styles.addButton}>
+                        Add User
+                    </Button>
+                </div>
             </div>
 
             <Spin spinning={loading}>
@@ -157,6 +157,7 @@ export default function AdminUsersPage() {
                     rowKey="id"
                     pagination={false}
                     bordered={false}
+                    scroll={{ x: "max-content" }}
                 />
             </Spin>
         </div>
