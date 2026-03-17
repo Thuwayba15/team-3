@@ -6,6 +6,7 @@ using Team3.Domain.Students.Team3.Students;
 using Team3.Domain.Subjects;
 using Team3.MultiTenancy;
 using Team3.Users;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace Team3.EntityFrameworkCore;
 
@@ -42,8 +43,16 @@ public class Team3DbContext : AbpZeroDbContext<Tenant, Role, User, Team3DbContex
     {
     }
 
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        base.OnConfiguring(optionsBuilder);
+        optionsBuilder.ConfigureWarnings(w =>
+            w.Ignore(RelationalEventId.PendingModelChangesWarning));
+    }
+
     public void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
         modelBuilder.Entity<StudentProfile>(entity =>
         {
             entity.ToTable("AppStudentProfiles");
