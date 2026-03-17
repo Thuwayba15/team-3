@@ -1,6 +1,6 @@
 "use client";
-import React, { useState, useEffect } from 'react';
-import { Button, Progress } from 'antd';
+import  { useState, useEffect } from 'react';
+import {  Progress } from 'antd';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStyles } from './styles';
 
@@ -97,7 +97,6 @@ export default function UbuntuLearn() {
           <p className={styles.placeholderText}>
             Personalized learning paths designed to help you excel in your matric year and beyond.
           </p>
-          {/* <Button className={styles.dashboardBtn} size="large">Dashboard</Button> */}
         </div>
       </div>
 

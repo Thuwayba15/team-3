@@ -12,6 +12,9 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="FluentValidation" Version="12.1.1" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Team3.Core\Team3.Core.csproj" />
   </ItemGroup>
 </Project>

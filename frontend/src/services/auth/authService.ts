@@ -1,5 +1,13 @@
+"use client";
+
 import { apiClient } from "@/lib/api/client";
-import { LOGOUT_ENDPOINT, ME_ENDPOINT, TOKEN_AUTH_ENDPOINT } from "@/constants/api";
+import { 
+    LOGOUT_ENDPOINT, 
+    ME_ENDPOINT, 
+    TOKEN_AUTH_ENDPOINT,
+    // Ensure this constant is defined in your @/constants/api file
+    REGISTER_ENDPOINT 
+} from "@/constants/api";
 
 interface IAbpResponseEnvelope<T> {
     result: T;
@@ -12,7 +20,18 @@ export interface ILoginRequest {
     rememberClient: boolean;
 }
 
-/** Response from the ABP TokenAuth/Authenticate endpoint. The token is set as an HttpOnly cookie; only metadata is returned in the body. */
+/** Request body for the Register endpoint based on your backend schema. */
+export interface IRegisterRequest {
+    userName: string;
+    name: string;
+    surname: string;
+    emailAddress: string;
+    isActive: boolean;
+    roleNames: string[];
+    password: string;
+}
+
+/** Response from the ABP TokenAuth/Authenticate endpoint. */
 export interface ILoginResponse {
     expireInSeconds: number;
     userId: number;
@@ -34,7 +53,13 @@ async function login(request: ILoginRequest): Promise<ILoginResponse> {
     return payload;
 }
 
-/** Instructs the backend to clear the HttpOnly auth cookie. Fire-and-forget safe. */
+/** * Handles user registration.
+ */
+async function register(request: IRegisterRequest): Promise<void> {
+    await apiClient.post(REGISTER_ENDPOINT, request);
+}
+
+/** Instructs the backend to clear the HttpOnly auth cookie. */
 async function logout(): Promise<void> {
     await apiClient.post(LOGOUT_ENDPOINT);
 }
@@ -50,6 +75,7 @@ async function getMe(): Promise<IMeResponse> {
 
 export const authService = {
     login,
+    register, // Now exported and accessible
     logout,
     getMe,
 };
