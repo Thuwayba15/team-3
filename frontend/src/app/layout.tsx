@@ -3,8 +3,8 @@ import { AppProviders } from "@/providers/AppProviders";
 import "./globals.css";
 
 export const metadata: Metadata = {
-    title: "Team3",
-    description: "Team3 application",
+    title: "UbuntuLearn",
+    description: "UbuntuLearn frontend scaffold",
 };
 
 export default function RootLayout({
