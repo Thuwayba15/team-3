@@ -2,9 +2,10 @@
 import React from "react";
 import { Form, Input, Button, Select, Alert } from "antd";
 import { UserOutlined, MailOutlined, LockOutlined, IdcardOutlined } from "@ant-design/icons";
+import { IRegisterValues } from "@/providers/auth/context";
 
 interface RegisterFormProps {
-  onSubmit: (values: any) => void;
+  onSubmit: (values: IRegisterValues) => void;
   isLoading: boolean;
   errorMessage: string | null;
   onErrorDismiss: () => void;

@@ -20,7 +20,7 @@ export default function RegisterPage() {
     }
   }, [isAuthenticated, router]);
 
-  const handleSubmit = async (values: any): Promise<void> => {
+  const handleSubmit = async (values: IRegisterValues): Promise<void> => {
     // Map form values to the backend schema
     const payload: IRegisterValues = {
       ...values,

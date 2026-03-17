@@ -18,6 +18,7 @@ export interface IRegisterValues {
     emailAddress: string;
     isActive: boolean;
     roleNames: string[];
+    role: string;
     password: string;
 }
 

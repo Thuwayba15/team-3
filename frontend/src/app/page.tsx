@@ -1,6 +1,6 @@
 "use client";
-import React, { useState, useEffect } from 'react';
-import { Button, Progress } from 'antd';
+import  { useState, useEffect } from 'react';
+import {  Progress } from 'antd';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStyles } from './styles';
 
