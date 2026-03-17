@@ -13,6 +13,15 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
   ]),
+  {
+    rules: {
+      "no-unused-vars": "off", // disabled in favour of the TypeScript-aware version below
+      "@typescript-eslint/no-unused-vars": ["error", { vars: "all", args: "after-used", ignoreRestSiblings: true }],
+      "no-console": "warn",
+      "no-debugger": "error",
+      "no-undef": "error",
+    },
+  },
 ]);
 
 export default eslintConfig;
