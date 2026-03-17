@@ -11,7 +11,10 @@ export const DEFAULT_TENANT_ID = "1";
 export const TOKEN_AUTH_ENDPOINT = "/api/TokenAuth/Authenticate";
 
 /** Clears the HttpOnly auth cookie on the backend. */
-export const LOGOUT_ENDPOINT = "/api/TokenAuth/Logout";
+export const LOGOUT_ENDPOINT = "//ToapikenAuth/Logout";
 
 /** Returns the authenticated user's id; used to rehydrate state on page load. */
 export const ME_ENDPOINT = "/api/TokenAuth/Me";
+
+/** Returns a paginated list of all platform users. */
+export const USERS_GET_ALL_ENDPOINT = "/api/services/app/User/GetAll";

@@ -1,111 +1,108 @@
 "use client";
 
 import { PlusOutlined } from "@ant-design/icons";
-import { Button, Input, Select, Table, Tag } from "antd";
+import { Alert, Button, Input, Select, Spin, Table, Tag } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PageHeader } from "@/components/layout";
+import { userService, type IUser } from "@/services/users/userService";
 import { useStyles } from "./styles";
 
-type UserRole = "Student" | "Tutor" | "Parent" | "Admin";
-type UserStatus = "Active" | "Inactive";
+type RoleColor = { bg: string; text: string };
 
-interface IUser {
-    key: string;
-    name: string;
-    email: string;
-    role: UserRole;
-    status: UserStatus;
-    dateJoined: string;
-}
-
-const ROLE_COLORS: Record<UserRole, { bg: string; text: string }> = {
-    Student: { bg: "#e6fffb", text: "#00b8a9" },
-    Tutor:   { bg: "#e6fffb", text: "#00b8a9" },
-    Parent:  { bg: "#fffbe6", text: "#d48806" },
-    Admin:   { bg: "#f5f5f5", text: "#595959" },
+const ROLE_COLORS: Record<string, RoleColor> = {
+    ADMIN:   { bg: "#f5f5f5", text: "#595959" },
+    TUTOR:   { bg: "#e6fffb", text: "#00b8a9" },
+    PARENT:  { bg: "#fffbe6", text: "#d48806" },
+    STUDENT: { bg: "#e6fffb", text: "#00b8a9" },
 };
 
-const MOCK_USERS: IUser[] = [
-    { key: "1", name: "Amina Patel",     email: "amina@school.za",        role: "Student", status: "Active",   dateJoined: "2024-01-15" },
-    { key: "2", name: "Bongani Khumalo", email: "bongani@school.za",      role: "Student", status: "Active",   dateJoined: "2024-02-01" },
-    { key: "3", name: "Ms. Nkosi",       email: "nkosi@school.za",        role: "Tutor",   status: "Active",   dateJoined: "2023-08-10" },
-    { key: "4", name: "Mrs. Mokoena",    email: "mokoena@parent.za",      role: "Parent",  status: "Active",   dateJoined: "2024-03-05" },
-    { key: "5", name: "Zanele Dlamini",  email: "zanele@school.za",       role: "Student", status: "Inactive", dateJoined: "2024-01-20" },
-    { key: "6", name: "Admin User",      email: "admin@ubuntulearn.za",   role: "Admin",   status: "Active",   dateJoined: "2023-01-01" },
-];
+const DEFAULT_ROLE_COLOR: RoleColor = { bg: "#f0f0f0", text: "#8c8c8c" };
 
 const ROLE_OPTIONS = [
     { label: "All Roles", value: "" },
-    { label: "Student",   value: "Student" },
-    { label: "Tutor",     value: "Tutor" },
-    { label: "Parent",    value: "Parent" },
-    { label: "Admin",     value: "Admin" },
+    { label: "Admin",     value: "ADMIN" },
+    { label: "Tutor",     value: "TUTOR" },
+    { label: "Parent",    value: "PARENT" },
+    { label: "Student",   value: "STUDENT" },
 ];
 
 const STATUS_OPTIONS = [
     { label: "All Status", value: "" },
-    { label: "Active",     value: "Active" },
-    { label: "Inactive",   value: "Inactive" },
+    { label: "Active",     value: "active" },
+    { label: "Inactive",   value: "inactive" },
 ];
 
-/** Admin user management page — lists platform users with role and status filters. */
+/** Admin user management page — fetches and displays all platform users. */
 export default function AdminUsersPage() {
     const { styles } = useStyles();
-    const [search, setSearch]       = useState("");
+    const [users, setUsers]               = useState<IUser[]>([]);
+    const [loading, setLoading]           = useState(true);
+    const [error, setError]               = useState<string | null>(null);
+    const [search, setSearch]             = useState("");
     const [roleFilter, setRoleFilter]     = useState("");
     const [statusFilter, setStatusFilter] = useState("");
 
-    const filtered = MOCK_USERS.filter((user) => {
-        const matchesSearch = user.name.toLowerCase().includes(search.toLowerCase()) ||
-            user.email.toLowerCase().includes(search.toLowerCase());
-        const matchesRole   = roleFilter   ? user.role === roleFilter     : true;
-        const matchesStatus = statusFilter ? user.status === statusFilter : true;
+    useEffect(() => {
+        userService.getAll()
+            .then((data) => setUsers(data.items))
+            .catch(() => setError("Failed to load users. Please try again."))
+            .finally(() => setLoading(false));
+    }, []);
+
+    const filtered = users.filter((user) => {
+        const matchesSearch = user.fullName.toLowerCase().includes(search.toLowerCase()) ||
+            user.emailAddress.toLowerCase().includes(search.toLowerCase());
+        const matchesRole   = roleFilter   ? user.roleNames.includes(roleFilter)                              : true;
+        const matchesStatus = statusFilter ? (statusFilter === "active") === user.isActive : true;
         return matchesSearch && matchesRole && matchesStatus;
     });
 
     const columns: ColumnsType<IUser> = [
         {
             title: "Name",
-            dataIndex: "name",
-            key: "name",
+            dataIndex: "fullName",
+            key: "fullName",
             render: (value: string) => <strong>{value}</strong>,
         },
         {
             title: "Email",
-            dataIndex: "email",
-            key: "email",
+            dataIndex: "emailAddress",
+            key: "emailAddress",
         },
         {
             title: "Role",
-            dataIndex: "role",
-            key: "role",
-            render: (role: UserRole) => {
-                const { bg, text } = ROLE_COLORS[role];
-                return (
-                    <Tag className={styles.roleTag} style={{ background: bg, color: text }}>
-                        {role}
-                    </Tag>
-                );
+            dataIndex: "roleNames",
+            key: "roleNames",
+            render: (roleNames: string[]) => {
+                if (roleNames.length === 0) {
+                    return <Tag className={styles.roleTag} style={{ background: "#f0f0f0", color: "#8c8c8c" }}>—</Tag>;
+                }
+                return roleNames.map((role) => {
+                    const { bg, text } = ROLE_COLORS[role] ?? DEFAULT_ROLE_COLOR;
+                    return (
+                        <Tag key={role} className={styles.roleTag} style={{ background: bg, color: text }}>
+                            {role.charAt(0) + role.slice(1).toLowerCase()}
+                        </Tag>
+                    );
+                });
             },
         },
         {
             title: "Status",
-            dataIndex: "status",
-            key: "status",
-            render: (status: UserStatus) => (
-                <Tag
-                    className={styles.statusTag}
-                    color={status === "Active" ? "success" : "warning"}
-                >
-                    {status}
+            dataIndex: "isActive",
+            key: "isActive",
+            render: (isActive: boolean) => (
+                <Tag className={styles.statusTag} color={isActive ? "success" : "warning"}>
+                    {isActive ? "Active" : "Inactive"}
                 </Tag>
             ),
         },
         {
             title: "Date Joined",
-            dataIndex: "dateJoined",
-            key: "dateJoined",
+            dataIndex: "creationTime",
+            key: "creationTime",
+            render: (value: string) => new Date(value).toISOString().split("T")[0],
         },
         {
             title: "Actions",
@@ -122,6 +119,8 @@ export default function AdminUsersPage() {
     return (
         <div>
             <PageHeader title="User Management" subtitle="Manage platform users, roles, and access" />
+
+            {error && <Alert type="error" message={error} style={{ marginBottom: 16 }} />}
 
             <div className={styles.toolbar}>
                 <Input.Search
@@ -150,13 +149,16 @@ export default function AdminUsersPage() {
                 </Button>
             </div>
 
-            <Table
-                className={styles.table}
-                columns={columns}
-                dataSource={filtered}
-                pagination={false}
-                bordered={false}
-            />
+            <Spin spinning={loading}>
+                <Table
+                    className={styles.table}
+                    columns={columns}
+                    dataSource={filtered}
+                    rowKey="id"
+                    pagination={false}
+                    bordered={false}
+                />
+            </Spin>
         </div>
     );
 }
