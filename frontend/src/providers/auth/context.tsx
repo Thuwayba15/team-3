@@ -1,7 +1,10 @@
+import type { AppRole } from "@/types/navigation";
+
 export interface IAuthState {
     isLoading: boolean;
     isAuthenticated: boolean;
     userId: number | null;
+    role: AppRole | null;
     errorMessage: string | null;
 }
 
@@ -35,5 +38,6 @@ export const INITIAL_STATE: IAuthState = {
     isLoading: true, // Lets Start in loading state until we check the auth status on mount
     isAuthenticated: false,
     userId: null,
+    role: null,
     errorMessage: null,
 };

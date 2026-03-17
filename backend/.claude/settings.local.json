@@ -5,7 +5,11 @@
       "Bash(dotnet build:*)",
       "Bash(dotnet user-secrets:*)",
       "Bash(dotnet run:*)",
-      "Bash(taskkill:*)"
+      "Bash(taskkill:*)",
+      "Bash(cat:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npx:*)",
+      "Bash(powershell:*)"
     ]
   }
 }
