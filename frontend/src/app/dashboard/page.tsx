@@ -12,15 +12,20 @@ const { Title, Paragraph } = Typography;
  * Redirects unauthenticated users back to the login page.
  */
 export default function DashboardPage() {
-    const { isAuthenticated, userId } = useAuthState();
+    const { isAuthenticated, userId, isLoading } = useAuthState();
     const { logout } = useAuthActions();
     const router = useRouter();
 
     useEffect(() => {
-        if (!isAuthenticated) {
+        if (!isAuthenticated && !isLoading) {// Also check if it's not loading to avoid redirecting before auth state is determined
             router.replace("/login");
         }
     }, [isAuthenticated, router]);
+
+    // Lets not return anything if its still loading to avoid flashing
+    if (isLoading) {
+        return null; 
+    }
 
     if (!isAuthenticated) {
         return null;
