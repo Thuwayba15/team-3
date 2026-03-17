@@ -18,3 +18,6 @@ export const ME_ENDPOINT = "/api/TokenAuth/Me";
 
 /** Returns a paginated list of all platform users. */
 export const USERS_GET_ALL_ENDPOINT = "/api/services/app/User/GetAll";
+
+
+export const REGISTER_ENDPOINT = "/api/services/app/Account/Register";

@@ -3,15 +3,15 @@ import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { LoginForm } from "@/components/auth/LoginForm/LoginForm";
+import { RegisterForm } from "@/components/auth/RegisterForm/RegisterForm";
 import { useAuthActions, useAuthState } from "@/providers/auth";
-import { ILoginValues } from "@/providers/auth/context";
+import { IRegisterValues } from "@/providers/auth/context";
 import { useStyles } from "../styles";
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const { styles } = useStyles();
   const { isLoading, isAuthenticated, errorMessage } = useAuthState();
-  const { login, clearAuthError } = useAuthActions();
+  const { register, clearAuthError } = useAuthActions();
   const router = useRouter();
 
   useEffect(() => {
@@ -20,8 +20,14 @@ export default function LoginPage() {
     }
   }, [isAuthenticated, router]);
 
-  const handleSubmit = async (values: ILoginValues): Promise<void> => {
-    await login(values);
+  const handleSubmit = async (values: IRegisterValues): Promise<void> => {
+    // Map form values to the backend schema
+    const payload: IRegisterValues = {
+      ...values,
+      isActive: true, // Always true as requested
+      roleNames: [values.role], // Convert single select to array for backend
+    };
+    await register(payload);
   };
 
   return (
@@ -37,29 +43,29 @@ export default function LoginPage() {
           <path d="M-200 150 C 200 50, 700 250, 1600 50" stroke="url(#soft_grad)" strokeWidth="120" strokeOpacity="0.04" strokeLinecap="round" />
         </svg>
       </div>
+
       <div className={styles.mainLayout}>
-    <Link href="/" style={{ textDecoration: 'none', color: 'inherit', cursor: 'pointer' }}>
-
-        <div className={styles.brandSection}>
-          <img src="https://firebasestorage.googleapis.com/v0/b/grade-12-life-sciences-st.firebasestorage.app/o/image.png?alt=media&token=7477da80-3128-4dc8-833b-92c432ea71b1" alt="Logo" className={styles.mainLogo} />
-          <h1 className={styles.title}>Ubuntu Learn</h1>
-          <p className={styles.subtitle}>Learn • Funda • Bala • Leer</p>
-
-        </div>
-    </Link>
+        <Link href="/" style={{ textDecoration: 'none', color: 'inherit', cursor: 'pointer' }}>
+          <div className={styles.brandSection}>
+            <img src="https://firebasestorage.googleapis.com/v0/b/grade-12-life-sciences-st.firebasestorage.app/o/image.png?alt=media&token=7477da80-3128-4dc8-833b-92c432ea71b1" alt="Logo" className={styles.mainLogo} />
+            <h1 className={styles.title}>Ubuntu Learn</h1>
+            <p className={styles.subtitle}>Learn • Funda • Bala • Leer</p>
+          </div>
+        </Link>
 
         <div className={styles.loginSection}>
           <motion.div 
             className={styles.formWrapper}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
+            style={{ maxWidth: '400px' }} // Slightly wider for more fields
           >
             <div className={styles.loginHeader}>
-              <h2 className={styles.loginTitle}>Sign In</h2>
+              <h2 className={styles.loginTitle}>Create Account</h2>
               <div className={styles.accentLine} />
             </div>
 
-            <LoginForm
+            <RegisterForm
               isLoading={isLoading}
               errorMessage={errorMessage}
               onSubmit={handleSubmit}
@@ -67,10 +73,7 @@ export default function LoginPage() {
             />
             
             <div className={styles.footerActions}>
-              <p>Don&apos;t have an account? <Link href="/register" className={styles.regLink}>Create an account</Link></p>
-              
-              <div className={styles.educationTeaser}>
-              </div>
+              <p>Already have an account? <Link href="/login" className={styles.regLink}>Sign In</Link></p>
             </div>
           </motion.div>
         </div>
