@@ -20,7 +20,7 @@ export interface IAuthContextActions {
 }
 
 export const INITIAL_STATE: IAuthState = {
-    isLoading: false,
+    isLoading: true, // Lets Start in loading state until we check the auth status on mount
     isAuthenticated: false,
     userId: null,
     errorMessage: null,
