@@ -38,5 +38,10 @@ namespace Team3.Users
         /// Returns active platform languages for language selection dropdowns.
         /// </summary>
         Task<ListResultDto<PlatformLanguageOptionDto>> GetActiveLanguagesAsync();
+
+        /// <summary>
+        /// Updates the current authenticated user's preferred platform language.
+        /// </summary>
+        Task<UpdatePlatformLanguageOutput> UpdatePlatformLanguageAsync(UpdatePlatformLanguageInput input);
     }
 }

@@ -39,6 +39,9 @@ public class Team3DbContext : AbpZeroDbContext<Tenant, Role, User, Team3DbContex
     // Custom platform languages table owned by this project
     public virtual DbSet<PlatformLanguage> PlatformLanguages { get; set; }
 
+    // Per-user platform language preference
+    public virtual DbSet<UserLanguagePreference> UserLanguagePreferences { get; set; }
+
     // Students
     public virtual DbSet<StudentSubject> StudentSubjects { get; set; }
 
@@ -54,7 +57,7 @@ public class Team3DbContext : AbpZeroDbContext<Tenant, Role, User, Team3DbContex
             w.Ignore(RelationalEventId.PendingModelChangesWarning));
     }
 
-    public void OnModelCreating(ModelBuilder modelBuilder)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.Entity<StudentProfile>(entity =>
@@ -116,6 +119,19 @@ public class Team3DbContext : AbpZeroDbContext<Tenant, Role, User, Team3DbContex
             entity.Property(x => x.IsDeleted).IsRequired();
             entity.Property(x => x.DeleterUserId);
             entity.Property(x => x.DeletionTime);
+        });
+
+        modelBuilder.Entity<UserLanguagePreference>(entity =>
+        {
+            entity.ToTable("AppUserLanguagePreferences");
+            entity.HasIndex(x => x.UserId).IsUnique();
+
+            entity.Property(x => x.LanguageCode).IsRequired().HasMaxLength(32);
+
+            entity.HasOne<User>()
+                .WithMany()
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
     }
 }

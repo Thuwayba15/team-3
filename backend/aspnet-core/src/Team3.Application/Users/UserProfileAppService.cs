@@ -32,8 +32,10 @@ namespace Team3.Users
         private readonly IRepository<ParentProfile, long> _parentProfileRepository;
         private readonly IRepository<AdminProfile, long> _adminProfileRepository;
         private readonly IRepository<PlatformLanguage, int> _languageRepository;
+        private readonly IRepository<UserLanguagePreference, long> _userLanguagePreferenceRepository;
         private readonly IValidator<RegisterUserInput> _registerValidator;
         private readonly IValidator<UpdateMyProfileInput> _updateValidator;
+        private readonly IValidator<UpdatePlatformLanguageInput> _updateLanguageValidator;
 
         public UserProfileAppService(
             UserManager userManager,
@@ -44,8 +46,10 @@ namespace Team3.Users
             IRepository<ParentProfile, long> parentProfileRepository,
             IRepository<AdminProfile, long> adminProfileRepository,
             IRepository<PlatformLanguage, int> languageRepository,
+            IRepository<UserLanguagePreference, long> userLanguagePreferenceRepository,
             IValidator<RegisterUserInput> registerValidator,
-            IValidator<UpdateMyProfileInput> updateValidator)
+            IValidator<UpdateMyProfileInput> updateValidator,
+            IValidator<UpdatePlatformLanguageInput> updateLanguageValidator)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -55,8 +59,10 @@ namespace Team3.Users
             _parentProfileRepository = parentProfileRepository;
             _adminProfileRepository = adminProfileRepository;
             _languageRepository = languageRepository;
+            _userLanguagePreferenceRepository = userLanguagePreferenceRepository;
             _registerValidator = registerValidator;
             _updateValidator = updateValidator;
+            _updateLanguageValidator = updateLanguageValidator;
         }
 
         /// <summary>
@@ -87,6 +93,10 @@ namespace Team3.Users
 
             CheckErrors(await _userManager.CreateAsync(user, input.Password));
             CheckErrors(await _userManager.AddToRoleAsync(user, input.Role));
+
+            await _userLanguagePreferenceRepository.InsertAsync(new UserLanguagePreference(
+                user.Id,
+                input.PreferredLanguage));
 
             await CreateRoleSpecificProfileAsync(user.Id, input);
             await CurrentUnitOfWork.SaveChangesAsync();
@@ -167,6 +177,36 @@ namespace Team3.Users
                 .ToListAsync();
 
             return new ListResultDto<PlatformLanguageOptionDto>(languages);
+        }
+
+        /// <summary>
+        /// Updates the current authenticated user's preferred platform language.
+        /// </summary>
+        [AbpAuthorize]
+        public async Task<UpdatePlatformLanguageOutput> UpdatePlatformLanguageAsync(UpdatePlatformLanguageInput input)
+        {
+            Guard.Against.Null(input);
+            await ValidateAsync(_updateLanguageValidator, input);
+            await EnsurePreferredLanguageIsActiveAsync(input.PreferredLanguage);
+
+            var userId = AbpSession.GetUserId();
+            var normalizedCode = input.PreferredLanguage.Trim().ToLowerInvariant();
+
+            var userPreference = await _userLanguagePreferenceRepository.FirstOrDefaultAsync(x => x.UserId == userId);
+            if (userPreference == null)
+            {
+                await _userLanguagePreferenceRepository.InsertAsync(new UserLanguagePreference(userId, normalizedCode));
+            }
+            else
+            {
+                userPreference.SetLanguageCode(normalizedCode);
+                await _userLanguagePreferenceRepository.UpdateAsync(userPreference);
+            }
+
+            return new UpdatePlatformLanguageOutput
+            {
+                PreferredLanguage = normalizedCode
+            };
         }
 
         /// <summary>
@@ -394,45 +434,50 @@ namespace Team3.Users
                 Name = user.Name,
                 Surname = user.Surname,
                 EmailAddress = user.EmailAddress,
-                Role = role
+                Role = role,
+                PreferredLanguage = await GetPreferredLanguageOrDefaultAsync(user.Id)
             };
 
             switch (role)
             {
                 case UserRoleNames.Student:
-                    var studentProfile = await _studentProfileRepository.FirstOrDefaultAsync(x => x.UserId == user.Id)
-                        ?? throw new UserFriendlyException("Student profile not found.");
-
-                    output.PreferredLanguage = studentProfile.PreferredLanguage;
-                    output.GradeLevel = studentProfile.GradeLevel;
-                    output.ProgressLevel = studentProfile.ProgressLevel;
-                    output.SubjectInterests = studentProfile.SubjectInterests;
+                    var studentProfile = await _studentProfileRepository.FirstOrDefaultAsync(x => x.UserId == user.Id);
+                    if (studentProfile != null)
+                    {
+                        output.PreferredLanguage = studentProfile.PreferredLanguage;
+                        output.GradeLevel = studentProfile.GradeLevel;
+                        output.ProgressLevel = studentProfile.ProgressLevel;
+                        output.SubjectInterests = studentProfile.SubjectInterests;
+                    }
                     break;
 
                 case UserRoleNames.Tutor:
-                    var tutorProfile = await _tutorProfileRepository.FirstOrDefaultAsync(x => x.UserId == user.Id)
-                        ?? throw new UserFriendlyException("Tutor profile not found.");
-
-                    output.PreferredLanguage = tutorProfile.PreferredLanguage;
-                    output.Specialization = tutorProfile.Specialization;
-                    output.Bio = tutorProfile.Bio;
-                    output.SubjectInterests = tutorProfile.SubjectInterests;
+                    var tutorProfile = await _tutorProfileRepository.FirstOrDefaultAsync(x => x.UserId == user.Id);
+                    if (tutorProfile != null)
+                    {
+                        output.PreferredLanguage = tutorProfile.PreferredLanguage;
+                        output.Specialization = tutorProfile.Specialization;
+                        output.Bio = tutorProfile.Bio;
+                        output.SubjectInterests = tutorProfile.SubjectInterests;
+                    }
                     break;
 
                 case UserRoleNames.Parent:
-                    var parentProfile = await _parentProfileRepository.FirstOrDefaultAsync(x => x.UserId == user.Id)
-                        ?? throw new UserFriendlyException("Parent profile not found.");
-
-                    output.PreferredLanguage = parentProfile.PreferredLanguage;
-                    output.RelationshipNotes = parentProfile.RelationshipNotes;
+                    var parentProfile = await _parentProfileRepository.FirstOrDefaultAsync(x => x.UserId == user.Id);
+                    if (parentProfile != null)
+                    {
+                        output.PreferredLanguage = parentProfile.PreferredLanguage;
+                        output.RelationshipNotes = parentProfile.RelationshipNotes;
+                    }
                     break;
 
                 case UserRoleNames.Admin:
-                    var adminProfile = await _adminProfileRepository.FirstOrDefaultAsync(x => x.UserId == user.Id)
-                        ?? throw new UserFriendlyException("Admin profile not found.");
-
-                    output.PreferredLanguage = adminProfile.PreferredLanguage;
-                    output.Department = adminProfile.Department;
+                    var adminProfile = await _adminProfileRepository.FirstOrDefaultAsync(x => x.UserId == user.Id);
+                    if (adminProfile != null)
+                    {
+                        output.PreferredLanguage = adminProfile.PreferredLanguage;
+                        output.Department = adminProfile.Department;
+                    }
                     break;
 
                 default:
@@ -440,6 +485,25 @@ namespace Team3.Users
             }
 
             return output;
+        }
+
+        /// <summary>
+        /// Resolves the stored language for a user or falls back to the system default.
+        /// </summary>
+        private async Task<string> GetPreferredLanguageOrDefaultAsync(long userId)
+        {
+            var userPreference = await _userLanguagePreferenceRepository.FirstOrDefaultAsync(x => x.UserId == userId);
+            if (userPreference != null && !string.IsNullOrWhiteSpace(userPreference.LanguageCode))
+            {
+                return userPreference.LanguageCode;
+            }
+
+            var defaultCode = await _languageRepository.GetAll()
+                .Where(language => language.IsDefault && language.IsActive && !language.IsDeleted)
+                .Select(language => language.Code)
+                .FirstOrDefaultAsync();
+
+            return string.IsNullOrWhiteSpace(defaultCode) ? "en" : defaultCode;
         }
     }
 }

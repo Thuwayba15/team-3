@@ -1,8 +1,12 @@
 using Abp.Configuration;
+using Abp.Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Abp.Zero.Configuration;
 using Team3.Authorization.Accounts.Dto;
 using Team3.Authorization.Users;
+using System.Linq;
 using System.Threading.Tasks;
+using Team3.Localization;
 
 namespace Team3.Authorization.Accounts;
 
@@ -12,11 +16,17 @@ public class AccountAppService : Team3AppServiceBase, IAccountAppService
     public const string PasswordRegex = "(?=^.{8,}$)(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\\s)[0-9a-zA-Z!@#$%^&*()]*$";
 
     private readonly UserRegistrationManager _userRegistrationManager;
+    private readonly IRepository<PlatformLanguage, int> _languageRepository;
+    private readonly IRepository<UserLanguagePreference, long> _userLanguagePreferenceRepository;
 
     public AccountAppService(
-        UserRegistrationManager userRegistrationManager)
+        UserRegistrationManager userRegistrationManager,
+        IRepository<PlatformLanguage, int> languageRepository,
+        IRepository<UserLanguagePreference, long> userLanguagePreferenceRepository)
     {
         _userRegistrationManager = userRegistrationManager;
+        _languageRepository = languageRepository;
+        _userLanguagePreferenceRepository = userLanguagePreferenceRepository;
     }
 
     public async Task<IsTenantAvailableOutput> IsTenantAvailable(IsTenantAvailableInput input)
@@ -50,6 +60,17 @@ public class AccountAppService : Team3AppServiceBase, IAccountAppService
         {
             CheckErrors(await UserManager.SetRolesAsync(user, input.RoleNames));
         }
+
+        var defaultLanguageCode = await _languageRepository.GetAll()
+            .Where(language => language.IsDefault && language.IsActive && !language.IsDeleted)
+            .Select(language => language.Code)
+            .FirstOrDefaultAsync();
+
+        var normalizedLanguageCode = string.IsNullOrWhiteSpace(defaultLanguageCode)
+            ? "en"
+            : defaultLanguageCode.Trim().ToLowerInvariant();
+
+        await _userLanguagePreferenceRepository.InsertAsync(new UserLanguagePreference(user.Id, normalizedLanguageCode));
 
         var isEmailConfirmationRequiredForLogin = await SettingManager.GetSettingValueAsync<bool>(AbpZeroSettingNames.UserManagement.IsEmailConfirmationRequiredForLogin);
 
