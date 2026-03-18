@@ -167,25 +167,7 @@ export const AppHeader = ({ onOpenNavigation, isMobile }: IAppHeaderProps) => {
 
                             <div className={styles.profileRow}>
                                 <Text className={styles.profileLabel}>Username</Text>
-                                <Input
-                                    className={styles.usernameInput}
-                                    value={userNameDraft}
-                                    onChange={(event) => setUserNameDraft(event.target.value)}
-                                    disabled={!currentUser || isProfileLoading || isSavingUserName}
-                                    aria-label="Username"
-                                />
-                            </div>
-
-                            <div className={styles.profileActions}>
-                                <Button
-                                    type="primary"
-                                    className={styles.saveButton}
-                                    onClick={handleSaveUserName}
-                                    loading={isSavingUserName}
-                                    disabled={!currentUser || isProfileLoading}
-                                >
-                                    Save Username
-                                </Button>
+                                <Text className={styles.profileValue}>{userNameDraft}</Text>
                             </div>
                         </div>
                     )}
@@ -197,7 +179,7 @@ export const AppHeader = ({ onOpenNavigation, isMobile }: IAppHeaderProps) => {
                     </button>
                 </Dropdown>
 
-                <Button type="link" icon={<LogoutOutlined />} onClick={handleLogout}>
+                <Button type="link" icon={<LogoutOutlined />} onClick={handleLogout} className={styles.logoutButton}>
                     Logout
                 </Button>
             </div>
