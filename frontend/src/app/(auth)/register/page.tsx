@@ -10,15 +10,15 @@ import { useStyles } from "../styles";
 
 export default function RegisterPage() {
   const { styles } = useStyles();
-  const { isLoading, isAuthenticated, errorMessage } = useAuthState();
+  const { isLoading, isAuthenticated, role, errorMessage } = useAuthState();
   const { register, clearAuthError } = useAuthActions();
   const router = useRouter();
 
   useEffect(() => {
-    if (isAuthenticated) {
-      router.replace("/dashboard");
+    if (isAuthenticated && role) {
+      router.replace(`/${role}/dashboard`);
     }
-  }, [isAuthenticated, router]);
+  }, [isAuthenticated, role, router]);
 
   const handleSubmit = async (values: IRegisterValues): Promise<void> => {
     // Map form values to the backend schema
