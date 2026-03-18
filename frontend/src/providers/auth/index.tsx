@@ -84,7 +84,14 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
     const register = async (values: IRegisterValues): Promise<void> => {
         dispatch(setLoading(true));
         try {
-            await authService.register(values);
+            await authService.register({
+                userName: values.userName,
+                name: values.name,
+                surname: values.surname,
+                emailAddress: values.emailAddress,
+                password: values.password,
+                roleNames: values.role ? [values.role] : [],
+            });
             // Auto-login after successful registration
             await login({
                 userNameOrEmailAddress: values.userName,

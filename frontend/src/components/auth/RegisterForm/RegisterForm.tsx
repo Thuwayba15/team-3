@@ -52,7 +52,16 @@ export const RegisterForm = ({ onSubmit, isLoading, errorMessage, onErrorDismiss
         </Select>
       </Form.Item>
 
-      <Form.Item name="password" rules={[{ required: true, min: 6, message: 'Min 6 characters' }]}>
+      <Form.Item
+        name="password"
+        rules={[
+          { required: true, message: 'Password is required' },
+          {
+            pattern: /(?=^.{8,}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!\s)[0-9a-zA-Z!@#$%^&*()]*$/,
+            message: 'Min 8 characters with at least one uppercase letter, lowercase letter, and number',
+          },
+        ]}
+      >
         <Input.Password prefix={<LockOutlined />} placeholder="Password" />
       </Form.Item>
 
