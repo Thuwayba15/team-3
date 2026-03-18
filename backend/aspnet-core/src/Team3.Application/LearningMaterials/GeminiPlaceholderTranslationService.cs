@@ -107,7 +107,7 @@ public class GeminiPlaceholderTranslationService : ITextTranslationService, ITra
         {
         }
 
-        return "AIzaSyDTXQ_BaDy5la36rEGCppvdWk5ZucoEOsA";
+        return "YouCanHardCodeApiKeyHere";
 
 
         //throw new UserFriendlyException(
