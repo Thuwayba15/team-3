@@ -4,10 +4,27 @@ import {
     BookOutlined,
     ClockCircleOutlined,
     ExclamationCircleOutlined,
+    PlusOutlined,
     RiseOutlined,
     TrophyOutlined,
 } from "@ant-design/icons";
-import { Avatar, Button, Card, Col, Progress, Row, Tag, Typography } from "antd";
+import {
+    Avatar,
+    Button,
+    Card,
+    Col,
+    Form,
+    Input,
+    Modal,
+    Progress,
+    Row,
+    Tabs,
+    Tag,
+    Typography,
+    message,
+} from "antd";
+import { useState } from "react";
+import { linkChild, registerChild } from "@/services/parent/parentService";
 import { useStyles } from "./styles";
 
 const { Text } = Typography;
@@ -42,6 +59,58 @@ const ACTIVITY = [
 /** Parent dashboard — child progress overview with alerts and recent activity. */
 export default function ParentDashboardPage() {
     const { styles } = useStyles();
+    const [modalOpen, setModalOpen]   = useState(false);
+    const [activeTab, setActiveTab]   = useState("link");
+    const [submitting, setSubmitting] = useState(false);
+    const [linkForm]     = Form.useForm();
+    const [registerForm] = Form.useForm();
+
+    const handleLink = async () => {
+        let values;
+        try {
+            values = await linkForm.validateFields();
+        } catch {
+            return; // validation errors shown inline
+        }
+        setSubmitting(true);
+        try {
+            const result = await linkChild({ usernameOrEmail: values.usernameOrEmail });
+            message.success(`${result.studentName} (${result.gradeLevel}) linked successfully.`);
+            linkForm.resetFields();
+            setModalOpen(false);
+        } catch (err: unknown) {
+            message.error(err instanceof Error ? err.message : "Failed to link child.");
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
+    const handleRegister = async () => {
+        let values;
+        try {
+            values = await registerForm.validateFields();
+        } catch {
+            return; // validation errors shown inline
+        }
+        setSubmitting(true);
+        try {
+            const result = await registerChild({
+                name:         values.name,
+                surname:      values.surname,
+                emailAddress: values.emailAddress,
+                userName:     values.userName,
+                password:     values.password,
+                gradeLevel:   values.gradeLevel,
+            });
+            message.success(`Account for ${result.studentName} created and linked.`);
+            registerForm.resetFields();
+            setModalOpen(false);
+        } catch (err: unknown) {
+            message.error(err instanceof Error ? err.message : "Failed to register child.");
+        } finally {
+            setSubmitting(false);
+        }
+    };
 
     return (
         <div>
@@ -51,9 +120,19 @@ export default function ParentDashboardPage() {
                     <Typography.Title level={2} style={{ marginBottom: 0 }}>Parent Dashboard</Typography.Title>
                     <Text type="secondary">Monitoring progress for Thabo Mokoena</Text>
                 </div>
-                <div className={styles.childBadge}>
-                    <Avatar className={styles.childAvatar}>{CHILD.initials}</Avatar>
-                    <Text className={styles.childName}>{CHILD.name} (Grade {CHILD.grade})</Text>
+                <div className={styles.headerRight}>
+                    <div className={styles.childBadge}>
+                        <Avatar className={styles.childAvatar}>{CHILD.initials}</Avatar>
+                        <Text className={styles.childName}>{CHILD.name} (Grade {CHILD.grade})</Text>
+                    </div>
+                    <Button
+                        type="primary"
+                        icon={<PlusOutlined />}
+                        onClick={() => setModalOpen(true)}
+                        className={styles.addChildBtn}
+                    >
+                        Add Child
+                    </Button>
                 </div>
             </div>
 
@@ -134,6 +213,132 @@ export default function ParentDashboardPage() {
                     </Card>
                 </Col>
             </Row>
+
+            {/* Add / Link Child modal */}
+            <Modal
+                title="Add Child"
+                open={modalOpen}
+                onCancel={() => {
+                    setModalOpen(false);
+                    linkForm.resetFields();
+                    registerForm.resetFields();
+                }}
+                footer={null}
+                width={480}
+                destroyOnClose
+            >
+                <Tabs
+                    activeKey={activeTab}
+                    onChange={setActiveTab}
+                    items={[
+                        {
+                            key: "link",
+                            label: "Link Existing Account",
+                            children: (
+                                <Form form={linkForm} layout="vertical" style={{ paddingTop: 8 }}>
+                                    <Text type="secondary" style={{ display: "block", marginBottom: 16 }}>
+                                        Enter the username or email address of your child&apos;s existing student account.
+                                    </Text>
+                                    <Form.Item
+                                        name="usernameOrEmail"
+                                        label="Username or Email"
+                                        rules={[{ required: true, message: "Please enter the student username or email." }]}
+                                    >
+                                        <Input placeholder="e.g. thabo.mokoena or thabo@school.com" />
+                                    </Form.Item>
+                                    <Form.Item style={{ marginBottom: 0 }}>
+                                        <Button
+                                            type="primary"
+                                            block
+                                            loading={submitting}
+                                            onClick={handleLink}
+                                            style={{ background: "#00b8a9", borderColor: "#00b8a9" }}
+                                        >
+                                            Link Child
+                                        </Button>
+                                    </Form.Item>
+                                </Form>
+                            ),
+                        },
+                        {
+                            key: "register",
+                            label: "Register New Child",
+                            children: (
+                                <Form form={registerForm} layout="vertical" style={{ paddingTop: 8 }}>
+                                    <Text type="secondary" style={{ display: "block", marginBottom: 16 }}>
+                                        Create a new student account on your child&apos;s behalf.
+                                    </Text>
+                                    <Row gutter={12}>
+                                        <Col span={12}>
+                                            <Form.Item
+                                                name="name"
+                                                label="First Name"
+                                                rules={[{ required: true, message: "Required" }]}
+                                            >
+                                                <Input placeholder="Thabo" />
+                                            </Form.Item>
+                                        </Col>
+                                        <Col span={12}>
+                                            <Form.Item
+                                                name="surname"
+                                                label="Surname"
+                                                rules={[{ required: true, message: "Required" }]}
+                                            >
+                                                <Input placeholder="Mokoena" />
+                                            </Form.Item>
+                                        </Col>
+                                    </Row>
+                                    <Form.Item
+                                        name="emailAddress"
+                                        label="Email Address"
+                                        rules={[
+                                            { required: true, message: "Required" },
+                                            { type: "email", message: "Must be a valid email" },
+                                        ]}
+                                    >
+                                        <Input placeholder="thabo@school.com" />
+                                    </Form.Item>
+                                    <Form.Item
+                                        name="userName"
+                                        label="Username"
+                                        rules={[{ required: true, message: "Required" }]}
+                                    >
+                                        <Input placeholder="thabo.mokoena" />
+                                    </Form.Item>
+                                    <Form.Item
+                                        name="password"
+                                        label="Password"
+                                        rules={[
+                                            { required: true, message: "Required" },
+                                            { min: 8, message: "Minimum 8 characters" },
+                                        ]}
+                                    >
+                                        <Input.Password placeholder="Min. 8 characters" />
+                                    </Form.Item>
+                                    <Form.Item
+                                        name="gradeLevel"
+                                        label="Grade Level"
+                                        rules={[{ required: true, message: "Required" }]}
+                                    >
+                                        <Input placeholder="e.g. Grade 10" />
+                                    </Form.Item>
+                                    <Form.Item style={{ marginBottom: 0 }}>
+                                        <Button
+                                            type="primary"
+                                            block
+                                            loading={submitting}
+                                            onClick={handleRegister}
+                                            style={{ background: "#00b8a9", borderColor: "#00b8a9" }}
+                                        >
+                                            Register &amp; Link Child
+                                        </Button>
+                                    </Form.Item>
+                                </Form>
+                            ),
+                        },
+                    ]}
+                />
+            </Modal>
         </div>
     );
 }

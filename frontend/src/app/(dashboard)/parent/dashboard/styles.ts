@@ -10,10 +10,26 @@ export const useStyles = createStyles(({ css, token }) => ({
         margin-bottom: ${token.marginLG}px;
     `,
 
+    headerRight: css`
+        display: flex;
+        align-items: center;
+        gap: ${token.marginMD}px;
+    `,
+
     childBadge: css`
         display: flex;
         align-items: center;
         gap: ${token.marginSM}px;
+    `,
+
+    addChildBtn: css`
+        background: #00b8a9 !important;
+        border-color: #00b8a9 !important;
+
+        &:hover {
+            background: #00a89a !important;
+            border-color: #00a89a !important;
+        }
     `,
 
     childAvatar: css`
