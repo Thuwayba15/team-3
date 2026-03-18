@@ -40,11 +40,42 @@ namespace Team3.Migrations
                 table: "AppUILanguages",
                 column: "Code",
                 unique: true);
+
+            migrationBuilder.InsertData(
+                table: "AppUILanguages",
+                columns: new[] { "Id", "Code", "Name", "IsActive", "IsDefault", "CreationTime", "CreatorUserId", "LastModificationTime", "LastModifierUserId", "IsDeleted", "DeleterUserId", "DeletionTime" },
+                values: new object[,]
+                {
+                    { 1, "en", "English", true, true, new DateTime(2026, 3, 18, 0, 0, 0, DateTimeKind.Utc), null, null, null, false, null, null },
+                    { 2, "zu", "isiZulu", true, false, new DateTime(2026, 3, 18, 0, 0, 0, DateTimeKind.Utc), null, null, null, false, null, null },
+                    { 3, "st", "Sesotho", true, false, new DateTime(2026, 3, 18, 0, 0, 0, DateTimeKind.Utc), null, null, null, false, null, null },
+                    { 4, "af", "Afrikaans", true, false, new DateTime(2026, 3, 18, 0, 0, 0, DateTimeKind.Utc), null, null, null, false, null, null }
+                });
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DeleteData(
+                table: "AppUILanguages",
+                keyColumn: "Id",
+                keyValue: 1);
+
+            migrationBuilder.DeleteData(
+                table: "AppUILanguages",
+                keyColumn: "Id",
+                keyValue: 2);
+
+            migrationBuilder.DeleteData(
+                table: "AppUILanguages",
+                keyColumn: "Id",
+                keyValue: 3);
+
+            migrationBuilder.DeleteData(
+                table: "AppUILanguages",
+                keyColumn: "Id",
+                keyValue: 4);
+
             migrationBuilder.DropTable(
                 name: "AppUILanguages");
         }

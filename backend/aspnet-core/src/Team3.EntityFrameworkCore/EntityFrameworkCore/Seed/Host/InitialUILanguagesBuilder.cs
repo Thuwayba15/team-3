@@ -22,10 +22,23 @@ namespace Team3.EntityFrameworkCore.Seed.Host
         /// </summary>
         public void Create()
         {
-            foreach (var language in GetInitialLanguages())
+            var initialLanguages = GetInitialLanguages();
+            var existingByCode = _context.UILanguages
+                .IgnoreQueryFilters()
+                .ToDictionary(x => x.Code);
+
+            foreach (var language in initialLanguages)
             {
-                AddLanguageIfNotExists(language);
+                if (!existingByCode.TryGetValue(language.Code, out var existingLanguage))
+                {
+                    _context.UILanguages.Add(language);
+                    continue;
+                }
+
+                existingLanguage.Update(language.Name, language.IsActive, language.IsDefault);
             }
+
+            _context.SaveChanges();
         }
 
         private static IReadOnlyList<UILanguage> GetInitialLanguages()
@@ -39,19 +52,5 @@ namespace Team3.EntityFrameworkCore.Seed.Host
             };
         }
 
-        private void AddLanguageIfNotExists(UILanguage language)
-        {
-            var exists = _context.UILanguages
-                .IgnoreQueryFilters()
-                .Any(x => x.Code == language.Code);
-
-            if (exists)
-            {
-                return;
-            }
-
-            _context.UILanguages.Add(language);
-            _context.SaveChanges();
-        }
     }
 }
