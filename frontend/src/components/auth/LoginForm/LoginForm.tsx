@@ -1,9 +1,11 @@
 "use client";
 
-import { Alert, Button, Checkbox, Form, Input } from "antd";
+import { Button, Form, Input, Typography } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { useStyles } from "./style";
 import { ILoginValues } from "@/providers/auth/context";
+
+const { Text } = Typography;
 
 interface ILoginFormProps {
     isLoading: boolean;
@@ -30,18 +32,14 @@ export const LoginForm = ({
             form={form}
             layout="vertical"
             onFinish={handleFinish}
+            onValuesChange={() => {
+                if (errorMessage) {
+                    onErrorDismiss();
+                }
+            }}
             initialValues={{ rememberClient: true }}
             className={styles.form}
         >
-            {errorMessage && (
-                <Alert
-                    type="error"
-                    message={errorMessage}
-                    closable
-                    onClose={onErrorDismiss}
-                    className={styles.errorAlert}
-                />
-            )}
 
             <Form.Item
                 name="userNameOrEmailAddress"
@@ -75,11 +73,11 @@ export const LoginForm = ({
                 />
             </Form.Item>
 
-            <Form.Item name="rememberClient" valuePropName="checked">
-                <div className={styles.rememberRow}>
-                    <Checkbox>Remember me</Checkbox>
-                </div>
-            </Form.Item>
+            {errorMessage && (
+                <Text type="danger" className={styles.inlineError} role="alert">
+                    {errorMessage}
+                </Text>
+            )}
 
             <Form.Item>
                 <Button

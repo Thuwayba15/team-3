@@ -84,7 +84,14 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
     const register = async (values: IRegisterValues): Promise<void> => {
         dispatch(setLoading(true));
         try {
-            await authService.register(values);
+            await authService.register({
+                userName: values.userName,
+                name: values.name,
+                surname: values.surname,
+                emailAddress: values.emailAddress,
+                password: values.password,
+                roleNames: values.role ? [values.role] : [],
+            });
             // Auto-login after successful registration
             await login({
                 userNameOrEmailAddress: values.userName,
@@ -97,9 +104,12 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
         }
     };
 
-    const logout = (): void => {
-        authService.logout().catch(() => {});
-        localStorage.removeItem(ROLE_STORAGE_KEY);
+    const logout = async (): Promise<void> => {
+        try {
+            await authService.logout();
+        } catch {
+            // keep UX predictable: clear local auth even if network logout fails
+        }
         dispatch(setUnauthenticated());
     };
 

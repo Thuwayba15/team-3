@@ -30,7 +30,7 @@ export type IAuthContextState = IAuthState;
 export interface IAuthContextActions {
     login(values: ILoginValues): Promise<void>;
     register(values: IRegisterValues): Promise<void>; // Add this
-    logout(): void;
+    logout(): Promise<void>;
     clearAuthError(): void;
 }
 

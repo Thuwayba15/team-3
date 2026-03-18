@@ -1580,6 +1580,286 @@ namespace Team3.Migrations
                     b.ToTable("AbpUsers");
                 });
 
+            modelBuilder.Entity("Team3.Domain.Students.Team3.Students.StudentSubject", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("MasteryScore")
+                        .HasColumnType("integer");
+
+                    b.Property<double>("Progress")
+                        .HasColumnType("double precision");
+
+                    b.Property<Guid>("SubjectId")
+                        .HasColumnType("uuid");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StudentSubjects");
+                });
+
+            modelBuilder.Entity("Team3.Domain.Subjects.Lesson", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("TopicId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TopicId");
+
+                    b.ToTable("Lessons");
+                });
+
+            modelBuilder.Entity("Team3.Domain.Subjects.LessonMaterial", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ContentUrl")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<Guid>("LessonId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("RawBody")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LessonId");
+
+                    b.ToTable("LessonMaterials");
+                });
+
+            modelBuilder.Entity("Team3.Domain.Subjects.LessonTranslation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("CoreId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Language")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CoreId");
+
+                    b.ToTable("LessonTranslations");
+                });
+
+            modelBuilder.Entity("Team3.Domain.Subjects.Subject", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("SubjectCode")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Subjects");
+                });
+
+            modelBuilder.Entity("Team3.Domain.Subjects.SubjectTranslation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("CoreId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Language")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CoreId");
+
+                    b.ToTable("SubjectTranslations");
+                });
+
+            modelBuilder.Entity("Team3.Domain.Subjects.Topic", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long?>("CreatorUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DeleterUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("DeletionTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("LastModificationTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long?>("LastModifierUserId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("SubjectId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SubjectId");
+
+                    b.ToTable("Topics");
+                });
+
+            modelBuilder.Entity("Team3.Domain.Subjects.TopicTranslation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("CoreId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Language")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Summary")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CoreId");
+
+                    b.ToTable("TopicTranslations");
+                });
+
             modelBuilder.Entity("Team3.MultiTenancy.Tenant", b =>
                 {
                     b.Property<int>("Id")
@@ -2046,6 +2326,70 @@ namespace Team3.Migrations
                     b.Navigation("LastModifierUser");
                 });
 
+            modelBuilder.Entity("Team3.Domain.Subjects.Lesson", b =>
+                {
+                    b.HasOne("Team3.Domain.Subjects.Topic", "Topic")
+                        .WithMany("Lessons")
+                        .HasForeignKey("TopicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Topic");
+                });
+
+            modelBuilder.Entity("Team3.Domain.Subjects.LessonMaterial", b =>
+                {
+                    b.HasOne("Team3.Domain.Subjects.Lesson", null)
+                        .WithMany("Materials")
+                        .HasForeignKey("LessonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Team3.Domain.Subjects.LessonTranslation", b =>
+                {
+                    b.HasOne("Team3.Domain.Subjects.Lesson", "Core")
+                        .WithMany("Translations")
+                        .HasForeignKey("CoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Core");
+                });
+
+            modelBuilder.Entity("Team3.Domain.Subjects.SubjectTranslation", b =>
+                {
+                    b.HasOne("Team3.Domain.Subjects.Subject", "Core")
+                        .WithMany("Translations")
+                        .HasForeignKey("CoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Core");
+                });
+
+            modelBuilder.Entity("Team3.Domain.Subjects.Topic", b =>
+                {
+                    b.HasOne("Team3.Domain.Subjects.Subject", "Subject")
+                        .WithMany("Topics")
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Subject");
+                });
+
+            modelBuilder.Entity("Team3.Domain.Subjects.TopicTranslation", b =>
+                {
+                    b.HasOne("Team3.Domain.Subjects.Topic", "Core")
+                        .WithMany("Translations")
+                        .HasForeignKey("CoreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Core");
+                });
+
             modelBuilder.Entity("Team3.MultiTenancy.Tenant", b =>
                 {
                     b.HasOne("Team3.Authorization.Users.User", "CreatorUser")
@@ -2142,6 +2486,27 @@ namespace Team3.Migrations
                     b.Navigation("Settings");
 
                     b.Navigation("Tokens");
+                });
+
+            modelBuilder.Entity("Team3.Domain.Subjects.Lesson", b =>
+                {
+                    b.Navigation("Materials");
+
+                    b.Navigation("Translations");
+                });
+
+            modelBuilder.Entity("Team3.Domain.Subjects.Subject", b =>
+                {
+                    b.Navigation("Topics");
+
+                    b.Navigation("Translations");
+                });
+
+            modelBuilder.Entity("Team3.Domain.Subjects.Topic", b =>
+                {
+                    b.Navigation("Lessons");
+
+                    b.Navigation("Translations");
                 });
 #pragma warning restore 612, 618
         }

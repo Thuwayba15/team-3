@@ -46,6 +46,11 @@ public class AccountAppService : Team3AppServiceBase, IAccountAppService
             true // Assumed email address is always confirmed. Change this if you want to implement email confirmation.
         );
 
+        if (input.RoleNames != null && input.RoleNames.Length > 0)
+        {
+            CheckErrors(await UserManager.SetRolesAsync(user, input.RoleNames));
+        }
+
         var isEmailConfirmationRequiredForLogin = await SettingManager.GetSettingValueAsync<bool>(AbpZeroSettingNames.UserManagement.IsEmailConfirmationRequiredForLogin);
 
         return new RegisterOutput

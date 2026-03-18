@@ -1,19 +1,23 @@
 "use client";
 
-import { Layout, Menu } from "antd";
+import {Layout, Menu, Typography } from "antd";
 import { usePathname, useRouter } from "next/navigation";
 import { NAVIGATION_BY_ROLE } from "@/config/navigation";
+import { ROLE_LABELS } from "@/config/roles";
 import type { AppRole } from "@/types/navigation";
 import { useStyles } from "./AppSidebar.style";
 
 interface IAppSidebarProps {
     role: AppRole;
+    isMobile?: boolean;
+    onNavigate?: () => void;
 }
 
 /**
  * Role-aware sidebar that reads items from centralized navigation config.
+ * Includes a role label at the top and a Help Center section at the bottom.
  */
-export const AppSidebar = ({ role }: IAppSidebarProps) => {
+export const AppSidebar = ({ role, isMobile = false, onNavigate }: IAppSidebarProps) => {
     const { styles } = useStyles();
     const router = useRouter();
     const pathname = usePathname();
@@ -23,8 +27,14 @@ export const AppSidebar = ({ role }: IAppSidebarProps) => {
         items.find((item) => pathname === item.path) ||
         items.find((item) => pathname.startsWith(item.path));
 
-    return (
-        <Layout.Sider width={260} className={styles.sidebar}>
+    const sidebarContent = (
+        <>
+            <div className={styles.roleLabel}>
+                <Typography.Text className={styles.roleLabelText}>
+                    {ROLE_LABELS[role].toLowerCase()} &nbsp; Menu
+                </Typography.Text>
+            </div>
+
             <Menu
                 mode="inline"
                 className={styles.menu}
@@ -42,9 +52,20 @@ export const AppSidebar = ({ role }: IAppSidebarProps) => {
                     const target = items.find((item) => item.key === key);
                     if (target) {
                         router.push(target.path);
+                        onNavigate?.();
                     }
                 }}
             />
+        </>
+    );
+
+    if (isMobile) {
+        return <div className={styles.mobileSidebar}>{sidebarContent}</div>;
+    }
+
+    return (
+        <Layout.Sider width={260} className={styles.sidebar}>
+            {sidebarContent}
         </Layout.Sider>
     );
 };

@@ -20,15 +20,14 @@ export interface ILoginRequest {
     rememberClient: boolean;
 }
 
-/** Request body for the Register endpoint based on your backend schema. */
+/** Request body for the ABP Account/Register endpoint. */
 export interface IRegisterRequest {
     userName: string;
     name: string;
     surname: string;
     emailAddress: string;
-    isActive: boolean;
-    roleNames: string[];
     password: string;
+    roleNames: string[];
 }
 
 /** Response from the ABP TokenAuth/Authenticate endpoint. */
