@@ -102,7 +102,9 @@ namespace Team3.EntityFrameworkCore.Seed.Host
 
                 new ("Information Technology", new() { "Databases", "Object-oriented programming (OOP)", "Graphical user interface (GUI)", "Algorithms", "Systems Technologies", "Communications and Network Technologies", "Data and Information Management", "Solution Development" }),
 
-                new ("Engineering Graphics & Design", new() { "Civil drawing", "Solid geometry", "Perspective drawings", "Mechanical drawings", "Loci of a cam", "Isometric drawing" })
+                new ("Engineering Graphics & Design", new() { "Civil drawing", "Solid geometry", "Perspective drawings", "Mechanical drawings", "Loci of a cam", "Isometric drawing" }),
+
+                new ("English Home Language", new() { "Comprehension", "Language Structures and Conventions", "Literature", "Writing and Presenting", "Visual Literacy", "Listening and Speaking" })
             };
         }
 

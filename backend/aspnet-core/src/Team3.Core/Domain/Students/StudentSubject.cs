@@ -30,6 +30,13 @@ namespace Team3.Domain.Students
                 Progress = 0;
                 MasteryScore = 0;
             }
+
+            /// <summary>Updates the student's progress and mastery score for this subject.</summary>
+            public void UpdateProgress(double progress, int masteryScore)
+            {
+                Progress = Math.Clamp(progress, 0, 100);
+                MasteryScore = Math.Clamp(masteryScore, 0, 100);
+            }
         }
     }
 }
