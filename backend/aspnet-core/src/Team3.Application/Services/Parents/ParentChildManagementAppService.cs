@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Abp.Domain.Repositories;
 using Abp.Runtime.Session;
@@ -27,20 +29,47 @@ public class ParentChildManagementAppService : Team3AppServiceBase, IParentChild
         _userRegistrationManager = userRegistrationManager;
     }
 
+    public async Task<List<ChildLinkResultDto>> GetMyChildrenAsync()
+    {
+        var parentUserId = AbpSession.GetUserId();
+
+        var links = await _linkRepo.GetAll()
+            .Where(l => l.ParentUserId == parentUserId)
+            .ToListAsync();
+
+        var result = new List<ChildLinkResultDto>();
+
+        foreach (var link in links)
+        {
+            var studentUser = await UserManager.FindByIdAsync(link.StudentUserId.ToString());
+            if (studentUser == null) continue;
+
+            var profile = await _studentProfileRepo.FirstOrDefaultAsync(p => p.UserId == link.StudentUserId);
+
+            result.Add(new ChildLinkResultDto
+            {
+                StudentUserId = link.StudentUserId,
+                StudentName   = $"{studentUser.Name} {studentUser.Surname}",
+                GradeLevel    = profile?.GradeLevel ?? "Unknown",
+                Relationship  = link.RelationshipType,
+                Initials      = BuildInitials(studentUser.Name, studentUser.Surname),
+            });
+        }
+
+        return result;
+    }
+
     public async Task<ChildLinkResultDto> LinkChildAsync(LinkChildInput input)
     {
         var parentUserId = AbpSession.GetUserId();
 
-        // Find the student by username or email
         var studentUser = await UserManager.FindByNameAsync(input.UsernameOrEmail)
                        ?? await UserManager.FindByEmailAsync(input.UsernameOrEmail)
                        ?? throw new UserFriendlyException($"No student account found for '{input.UsernameOrEmail}'.");
 
-        // Must be in Student role
         if (!await UserManager.IsInRoleAsync(studentUser, "Student"))
             throw new UserFriendlyException("The specified account does not belong to a student.");
 
-        // Check for duplicate link
         var existing = await _linkRepo.FirstOrDefaultAsync(
             l => l.ParentUserId == parentUserId && l.StudentUserId == studentUser.Id);
 
@@ -58,6 +87,7 @@ public class ParentChildManagementAppService : Team3AppServiceBase, IParentChild
             StudentName   = $"{studentUser.Name} {studentUser.Surname}",
             GradeLevel    = profile?.GradeLevel ?? "Unknown",
             Relationship  = "Parent",
+            Initials      = BuildInitials(studentUser.Name, studentUser.Surname),
         };
     }
 
@@ -65,7 +95,6 @@ public class ParentChildManagementAppService : Team3AppServiceBase, IParentChild
     {
         var parentUserId = AbpSession.GetUserId();
 
-        // Register the new user via ABP's registration manager
         var studentUser = await _userRegistrationManager.RegisterAsync(
             input.Name,
             input.Surname,
@@ -74,20 +103,17 @@ public class ParentChildManagementAppService : Team3AppServiceBase, IParentChild
             input.Password,
             isEmailConfirmed: true);
 
-        // Assign Student role
         CheckErrors(await UserManager.SetRolesAsync(studentUser, ["Student"]));
 
-        // Create the student profile
         var profile = new StudentProfile(
             userId:            studentUser.Id,
             preferredLanguage: "en",
-            gradeLevel:        input.GradeLevel,
+            gradeLevel:        "Unknown",
             progressLevel:     null,
             subjectInterests:  null);
 
         await _studentProfileRepo.InsertAsync(profile);
 
-        // Link the new student to the parent
         var link = new ParentStudentLink(parentUserId, studentUser.Id, "Parent");
         await _linkRepo.InsertAsync(link);
 
@@ -95,8 +121,16 @@ public class ParentChildManagementAppService : Team3AppServiceBase, IParentChild
         {
             StudentUserId = studentUser.Id,
             StudentName   = $"{studentUser.Name} {studentUser.Surname}",
-            GradeLevel    = input.GradeLevel,
+            GradeLevel    = "Unknown",
             Relationship  = "Parent",
+            Initials      = BuildInitials(studentUser.Name, studentUser.Surname),
         };
+    }
+
+    private static string BuildInitials(string name, string surname)
+    {
+        var n = name.Length    > 0 ? name[0].ToString().ToUpper()    : "";
+        var s = surname.Length > 0 ? surname[0].ToString().ToUpper() : "";
+        return n + s;
     }
 }

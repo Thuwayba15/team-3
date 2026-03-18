@@ -20,16 +20,20 @@ import {
     Row,
     Tabs,
     Tag,
+    Tooltip,
     Typography,
     message,
 } from "antd";
-import { useState } from "react";
-import { linkChild, registerChild } from "@/services/parent/parentService";
+import { useEffect, useState } from "react";
+import {
+    type ChildSummary,
+    getMyChildren,
+    linkChild,
+    registerChild,
+} from "@/services/parent/parentService";
 import { useStyles } from "./styles";
 
 const { Text } = Typography;
-
-const CHILD = { name: "Thabo", grade: 10, initials: "TM" };
 
 const STATS = [
     { icon: TrophyOutlined, value: "78%",    label: "Overall Average",      badge: "Good standing" },
@@ -47,37 +51,60 @@ const SUBJECTS = [
 const ALERTS = [
     {
         title: "Struggling with Life Sciences",
-        description: "Thabo has scored below 60% on the last two quizzes regarding Cell Structure. The AI Tutor has recommended a review module.",
+        description: "Scored below 60% on the last two quizzes regarding Cell Structure. The AI Tutor has recommended a review module.",
     },
 ];
 
 const ACTIVITY = [
-    { title: "Completed Math Quiz",  time: "Today, 2:30 PM",     score: "85%",    tag: null },
-    { title: "Chatted with AI Tutor", time: "Yesterday, 4:15 PM", score: null,     tag: "Physics" },
+    { title: "Completed Math Quiz",   time: "Today, 2:30 PM",     score: "85%", tag: null },
+    { title: "Chatted with AI Tutor", time: "Yesterday, 4:15 PM", score: null,  tag: "Physics" },
 ];
 
-/** Parent dashboard — child progress overview with alerts and recent activity. */
 export default function ParentDashboardPage() {
     const { styles } = useStyles();
-    const [modalOpen, setModalOpen]   = useState(false);
-    const [activeTab, setActiveTab]   = useState("link");
-    const [submitting, setSubmitting] = useState(false);
+
+    // ── Children list & selected child ──────────────────────────────────────
+    const [children,      setChildren]      = useState<ChildSummary[]>([]);
+    const [selectedChild, setSelectedChild] = useState<ChildSummary | null>(null);
+    const [loadingChildren, setLoadingChildren] = useState(true);
+
+    useEffect(() => {
+        getMyChildren()
+            .then((list) => {
+                setChildren(list);
+                if (list.length > 0) setSelectedChild(list[0]);
+            })
+            .catch(() => {
+                // Fallback: no children linked yet — show empty state
+            })
+            .finally(() => setLoadingChildren(false));
+    }, []);
+
+    // ── Add-child modal ──────────────────────────────────────────────────────
+    const [modalOpen,   setModalOpen]   = useState(false);
+    const [activeTab,   setActiveTab]   = useState("link");
+    const [submitting,  setSubmitting]  = useState(false);
     const [linkForm]     = Form.useForm();
     const [registerForm] = Form.useForm();
 
+    const closeModal = () => {
+        setModalOpen(false);
+        linkForm.resetFields();
+        registerForm.resetFields();
+    };
+
     const handleLink = async () => {
         let values;
-        try {
-            values = await linkForm.validateFields();
-        } catch {
-            return; // validation errors shown inline
-        }
+        try { values = await linkForm.validateFields(); }
+        catch { return; }
+
         setSubmitting(true);
         try {
             const result = await linkChild({ usernameOrEmail: values.usernameOrEmail });
             message.success(`${result.studentName} (${result.gradeLevel}) linked successfully.`);
-            linkForm.resetFields();
-            setModalOpen(false);
+            setChildren((prev) => [...prev, result]);
+            if (!selectedChild) setSelectedChild(result);
+            closeModal();
         } catch (err: unknown) {
             message.error(err instanceof Error ? err.message : "Failed to link child.");
         } finally {
@@ -87,11 +114,9 @@ export default function ParentDashboardPage() {
 
     const handleRegister = async () => {
         let values;
-        try {
-            values = await registerForm.validateFields();
-        } catch {
-            return; // validation errors shown inline
-        }
+        try { values = await registerForm.validateFields(); }
+        catch { return; }
+
         setSubmitting(true);
         try {
             const result = await registerChild({
@@ -100,11 +125,11 @@ export default function ParentDashboardPage() {
                 emailAddress: values.emailAddress,
                 userName:     values.userName,
                 password:     values.password,
-                gradeLevel:   values.gradeLevel,
             });
             message.success(`Account for ${result.studentName} created and linked.`);
-            registerForm.resetFields();
-            setModalOpen(false);
+            setChildren((prev) => [...prev, result]);
+            if (!selectedChild) setSelectedChild(result);
+            closeModal();
         } catch (err: unknown) {
             message.error(err instanceof Error ? err.message : "Failed to register child.");
         } finally {
@@ -118,13 +143,44 @@ export default function ParentDashboardPage() {
             <div className={styles.pageHeader}>
                 <div>
                     <Typography.Title level={2} style={{ marginBottom: 0 }}>Parent Dashboard</Typography.Title>
-                    <Text type="secondary">Monitoring progress for Thabo Mokoena</Text>
+                    <Text type="secondary">
+                        {selectedChild
+                            ? `Monitoring progress for ${selectedChild.studentName}`
+                            : "No student linked yet"}
+                    </Text>
                 </div>
+
                 <div className={styles.headerRight}>
-                    <div className={styles.childBadge}>
-                        <Avatar className={styles.childAvatar}>{CHILD.initials}</Avatar>
-                        <Text className={styles.childName}>{CHILD.name} (Grade {CHILD.grade})</Text>
-                    </div>
+                    {/* Student switcher — avatar pills */}
+                    {!loadingChildren && children.length > 0 && (
+                        <div className={styles.childSwitcher}>
+                            {children.map((child) => (
+                                <Tooltip key={child.studentUserId} title={`${child.studentName} · ${child.gradeLevel}`}>
+                                    <button
+                                        className={`${styles.childPill} ${
+                                            selectedChild?.studentUserId === child.studentUserId
+                                                ? styles.childPillActive
+                                                : ""
+                                        }`}
+                                        onClick={() => setSelectedChild(child)}
+                                    >
+                                        <Avatar
+                                            size="small"
+                                            className={
+                                                selectedChild?.studentUserId === child.studentUserId
+                                                    ? styles.childAvatarActive
+                                                    : styles.childAvatar
+                                            }
+                                        >
+                                            {child.initials}
+                                        </Avatar>
+                                        <span className={styles.childPillName}>{child.studentName.split(" ")[0]}</span>
+                                    </button>
+                                </Tooltip>
+                            ))}
+                        </div>
+                    )}
+
                     <Button
                         type="primary"
                         icon={<PlusOutlined />}
@@ -158,7 +214,6 @@ export default function ParentDashboardPage() {
 
             {/* Subject progress + alerts/activity */}
             <Row gutter={[16, 16]}>
-                {/* Subject Progress */}
                 <Col xs={24} lg={14}>
                     <Card title="Subject Progress" className={styles.subjectCard}>
                         {SUBJECTS.map(({ name, percent }) => (
@@ -172,19 +227,13 @@ export default function ParentDashboardPage() {
                                         {percent}%
                                     </span>
                                 </div>
-                                <Progress
-                                    percent={percent}
-                                    showInfo={false}
-                                    strokeColor="#00b8a9"
-                                />
+                                <Progress percent={percent} showInfo={false} strokeColor="#00b8a9" />
                             </div>
                         ))}
                     </Card>
                 </Col>
 
-                {/* Alerts + Activity */}
                 <Col xs={24} lg={10}>
-                    {/* Recent Alerts */}
                     <Card title="Recent Alerts" className={styles.alertCard}>
                         {ALERTS.map(({ title, description }) => (
                             <div key={title} className={styles.alertItem}>
@@ -198,7 +247,6 @@ export default function ParentDashboardPage() {
                         ))}
                     </Card>
 
-                    {/* Recent Activity */}
                     <Card title="Recent Activity" className={styles.activityCard}>
                         {ACTIVITY.map(({ title, time, score, tag }) => (
                             <div key={title} className={styles.activityItem}>
@@ -218,13 +266,9 @@ export default function ParentDashboardPage() {
             <Modal
                 title="Add Child"
                 open={modalOpen}
-                onCancel={() => {
-                    setModalOpen(false);
-                    linkForm.resetFields();
-                    registerForm.resetFields();
-                }}
+                onCancel={closeModal}
                 footer={null}
-                width={480}
+                width="min(480px, calc(100vw - 32px))"
                 destroyOnClose
             >
                 <Tabs
@@ -252,7 +296,7 @@ export default function ParentDashboardPage() {
                                             block
                                             loading={submitting}
                                             onClick={handleLink}
-                                            style={{ background: "#00b8a9", borderColor: "#00b8a9" }}
+                                            className={styles.addChildBtn}
                                         >
                                             Link Child
                                         </Button>
@@ -269,21 +313,13 @@ export default function ParentDashboardPage() {
                                         Create a new student account on your child&apos;s behalf.
                                     </Text>
                                     <Row gutter={12}>
-                                        <Col span={12}>
-                                            <Form.Item
-                                                name="name"
-                                                label="First Name"
-                                                rules={[{ required: true, message: "Required" }]}
-                                            >
+                                        <Col xs={24} sm={12}>
+                                            <Form.Item name="name" label="First Name" rules={[{ required: true, message: "Required" }]}>
                                                 <Input placeholder="Thabo" />
                                             </Form.Item>
                                         </Col>
-                                        <Col span={12}>
-                                            <Form.Item
-                                                name="surname"
-                                                label="Surname"
-                                                rules={[{ required: true, message: "Required" }]}
-                                            >
+                                        <Col xs={24} sm={12}>
+                                            <Form.Item name="surname" label="Surname" rules={[{ required: true, message: "Required" }]}>
                                                 <Input placeholder="Mokoena" />
                                             </Form.Item>
                                         </Col>
@@ -291,36 +327,19 @@ export default function ParentDashboardPage() {
                                     <Form.Item
                                         name="emailAddress"
                                         label="Email Address"
-                                        rules={[
-                                            { required: true, message: "Required" },
-                                            { type: "email", message: "Must be a valid email" },
-                                        ]}
+                                        rules={[{ required: true, message: "Required" }, { type: "email", message: "Must be a valid email" }]}
                                     >
                                         <Input placeholder="thabo@school.com" />
                                     </Form.Item>
-                                    <Form.Item
-                                        name="userName"
-                                        label="Username"
-                                        rules={[{ required: true, message: "Required" }]}
-                                    >
+                                    <Form.Item name="userName" label="Username" rules={[{ required: true, message: "Required" }]}>
                                         <Input placeholder="thabo.mokoena" />
                                     </Form.Item>
                                     <Form.Item
                                         name="password"
                                         label="Password"
-                                        rules={[
-                                            { required: true, message: "Required" },
-                                            { min: 8, message: "Minimum 8 characters" },
-                                        ]}
+                                        rules={[{ required: true, message: "Required" }, { min: 8, message: "Minimum 8 characters" }]}
                                     >
                                         <Input.Password placeholder="Min. 8 characters" />
-                                    </Form.Item>
-                                    <Form.Item
-                                        name="gradeLevel"
-                                        label="Grade Level"
-                                        rules={[{ required: true, message: "Required" }]}
-                                    >
-                                        <Input placeholder="e.g. Grade 10" />
                                     </Form.Item>
                                     <Form.Item style={{ marginBottom: 0 }}>
                                         <Button
@@ -328,7 +347,7 @@ export default function ParentDashboardPage() {
                                             block
                                             loading={submitting}
                                             onClick={handleRegister}
-                                            style={{ background: "#00b8a9", borderColor: "#00b8a9" }}
+                                            className={styles.addChildBtn}
                                         >
                                             Register &amp; Link Child
                                         </Button>

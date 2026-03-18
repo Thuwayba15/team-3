@@ -49,18 +49,21 @@ public class ParentChildProgressAppService : Team3AppServiceBase, IParentChildPr
         _userRepo           = userRepo;
     }
 
-    public async Task<ChildProgressDto> GetChildProgressAsync()
+    public async Task<ChildProgressDto> GetChildProgressAsync(long? studentUserId = null)
     {
         var parentUserId = AbpSession.GetUserId();
 
-        var link = await _linkRepo.FirstOrDefaultAsync(l => l.ParentUserId == parentUserId)
-            ?? throw new UserFriendlyException("No linked student found for this parent account.");
+        var link = studentUserId.HasValue
+            ? await _linkRepo.FirstOrDefaultAsync(l => l.ParentUserId == parentUserId && l.StudentUserId == studentUserId.Value)
+              ?? throw new UserFriendlyException("The specified student is not linked to your account.")
+            : await _linkRepo.FirstOrDefaultAsync(l => l.ParentUserId == parentUserId)
+              ?? throw new UserFriendlyException("No linked student found for this parent account.");
 
-        var studentUserId = link.StudentUserId;
+        var linkedStudentId = link.StudentUserId;
 
         // Student identity
-        var studentUser    = await _userRepo.GetAsync(studentUserId);
-        var studentProfile = await _studentProfileRepo.FirstOrDefaultAsync(p => p.UserId == studentUserId);
+        var studentUser    = await _userRepo.GetAsync(linkedStudentId);
+        var studentProfile = await _studentProfileRepo.FirstOrDefaultAsync(p => p.UserId == linkedStudentId);
 
         var studentInfo = new StudentInfoDto
         {
@@ -72,7 +75,7 @@ public class ParentChildProgressAppService : Team3AppServiceBase, IParentChildPr
 
         // Enrolled subjects with mastery
         var enrollments = await _studentSubjectRepo.GetAll()
-            .Where(ss => ss.UserId == studentUserId)
+            .Where(ss => ss.UserId == linkedStudentId)
             .ToListAsync();
 
         var subjectIds = enrollments.Select(e => e.SubjectId).ToList();
@@ -84,7 +87,7 @@ public class ParentChildProgressAppService : Team3AppServiceBase, IParentChildPr
 
         // Topic progress per student
         var topicProgresses = await _topicProgressRepo.GetAll()
-            .Where(tp => tp.StudentUserId == studentUserId && subjectIds.Contains(tp.SubjectId))
+            .Where(tp => tp.StudentUserId == linkedStudentId && subjectIds.Contains(tp.SubjectId))
             .ToListAsync();
 
         var topicIds = topicProgresses.Select(tp => tp.TopicId).Distinct().ToList();
@@ -139,7 +142,7 @@ public class ParentChildProgressAppService : Team3AppServiceBase, IParentChildPr
 
         // Recent assessments (top 4, newest first)
         var assessments = await _assessmentRepo.GetAll()
-            .Where(a => a.StudentUserId == studentUserId)
+            .Where(a => a.StudentUserId == linkedStudentId)
             .OrderByDescending(a => a.OccurredAt)
             .Take(4)
             .ToListAsync();
@@ -160,7 +163,7 @@ public class ParentChildProgressAppService : Team3AppServiceBase, IParentChildPr
 
         // Recent activity (top 4)
         var activities = await _activityRepo.GetAll()
-            .Where(a => a.StudentUserId == studentUserId)
+            .Where(a => a.StudentUserId == linkedStudentId)
             .OrderByDescending(a => a.OccurredAt)
             .Take(4)
             .ToListAsync();

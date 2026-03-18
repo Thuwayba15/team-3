@@ -45,18 +45,21 @@ public class ParentDashboardAppService : Team3AppServiceBase, IParentDashboardAp
         _userRepo           = userRepo;
     }
 
-    public async Task<ParentDashboardDto> GetDashboardSummaryAsync()
+    public async Task<ParentDashboardDto> GetDashboardSummaryAsync(long? studentUserId = null)
     {
         var parentUserId = AbpSession.GetUserId();
 
-        var link = await _linkRepo.FirstOrDefaultAsync(l => l.ParentUserId == parentUserId)
-            ?? throw new UserFriendlyException("No linked student found for this parent account.");
+        var link = studentUserId.HasValue
+            ? await _linkRepo.FirstOrDefaultAsync(l => l.ParentUserId == parentUserId && l.StudentUserId == studentUserId.Value)
+              ?? throw new UserFriendlyException("The specified student is not linked to your account.")
+            : await _linkRepo.FirstOrDefaultAsync(l => l.ParentUserId == parentUserId)
+              ?? throw new UserFriendlyException("No linked student found for this parent account.");
 
-        var studentUserId = link.StudentUserId;
+        var linkedStudentId = link.StudentUserId;
 
         // Student identity
-        var studentUser    = await _userRepo.GetAsync(studentUserId);
-        var studentProfile = await _studentProfileRepo.FirstOrDefaultAsync(p => p.UserId == studentUserId);
+        var studentUser    = await _userRepo.GetAsync(linkedStudentId);
+        var studentProfile = await _studentProfileRepo.FirstOrDefaultAsync(p => p.UserId == linkedStudentId);
 
         var studentInfo = new StudentInfoDto
         {
@@ -68,7 +71,7 @@ public class ParentDashboardAppService : Team3AppServiceBase, IParentDashboardAp
 
         // Subject progress (enrolled subjects with mastery)
         var enrollments = await _studentSubjectRepo.GetAll()
-            .Where(ss => ss.UserId == studentUserId)
+            .Where(ss => ss.UserId == linkedStudentId)
             .ToListAsync();
 
         var subjectIds = enrollments.Select(e => e.SubjectId).ToList();
@@ -101,26 +104,26 @@ public class ParentDashboardAppService : Team3AppServiceBase, IParentDashboardAp
 
         // Lessons completed (count of completed-quiz + completed-module activities)
         var lessonsCompleted = await _activityRepo.CountAsync(
-            a => a.StudentUserId == studentUserId
+            a => a.StudentUserId == linkedStudentId
               && (a.ActivityType == ActivityType.CompletedQuiz || a.ActivityType == ActivityType.CompletedModule));
 
         // Time spent this week
         var weekStart       = DateTime.UtcNow.Date.AddDays(-(int)DateTime.UtcNow.DayOfWeek);
         var weekMinutes     = await _activityRepo.GetAll()
-            .Where(a => a.StudentUserId == studentUserId && a.OccurredAt >= weekStart)
+            .Where(a => a.StudentUserId == linkedStudentId && a.OccurredAt >= weekStart)
             .SumAsync(a => a.DurationMinutes);
         var timeSpent       = FormatMinutes(weekMinutes);
 
         // Recent alerts (top 3, not dismissed, newest first)
         var recentAlerts = await _alertRepo.GetAll()
-            .Where(a => a.StudentUserId == studentUserId && !a.IsDismissed)
+            .Where(a => a.StudentUserId == linkedStudentId && !a.IsDismissed)
             .OrderByDescending(a => a.CreationTime)
             .Take(3)
             .ToListAsync();
 
         // Recent activity (top 4, newest first)
         var recentActivity = await _activityRepo.GetAll()
-            .Where(a => a.StudentUserId == studentUserId)
+            .Where(a => a.StudentUserId == linkedStudentId)
             .OrderByDescending(a => a.OccurredAt)
             .Take(4)
             .ToListAsync();

@@ -1,5 +1,6 @@
 ﻿using Abp.Authorization;
 using Abp.Authorization.Users;
+using Abp.UI;
 using Abp.MultiTenancy;
 using Abp.Runtime.Security;
 using Team3.Authentication.JwtBearer;
@@ -109,13 +110,10 @@ namespace Team3.Controllers
         {
             var loginResult = await _logInManager.LoginAsync(usernameOrEmailAddress, password, tenancyName);
 
-            switch (loginResult.Result)
-            {
-                case AbpLoginResultType.Success:
-                    return loginResult;
-                default:
-                    throw _abpLoginResultTypeHelper.CreateExceptionForFailedLoginAttempt(loginResult.Result, usernameOrEmailAddress, tenancyName);
-            }
+            if (loginResult.Result != AbpLoginResultType.Success)
+                throw new UserFriendlyException("Wrong username or password");
+
+            return loginResult;
         }
 
         private string CreateAccessToken(IEnumerable<Claim> claims, TimeSpan? expiration = null)

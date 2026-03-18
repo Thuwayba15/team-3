@@ -31,10 +31,6 @@ public class RegisterChildInput
     [Required]
     [StringLength(128)]
     public string Password { get; set; } = default!;
-
-    [Required]
-    [StringLength(32)]
-    public string GradeLevel { get; set; } = default!;
 }
 
 public class ChildLinkResultDto
@@ -43,4 +39,5 @@ public class ChildLinkResultDto
     public string StudentName   { get; set; } = default!;
     public string GradeLevel    { get; set; } = default!;
     public string Relationship  { get; set; } = default!;
+    public string Initials      { get; set; } = default!;
 }

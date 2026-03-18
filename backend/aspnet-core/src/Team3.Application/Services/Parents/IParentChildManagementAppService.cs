@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Abp.Application.Services;
 using Team3.Services.Parents.Dto;
@@ -6,6 +7,9 @@ namespace Team3.Services.Parents;
 
 public interface IParentChildManagementAppService : IApplicationService
 {
+    /// <summary>Returns all students linked to the current parent.</summary>
+    Task<List<ChildLinkResultDto>> GetMyChildrenAsync();
+
     /// <summary>Links the current parent to an existing student account by username or email.</summary>
     Task<ChildLinkResultDto> LinkChildAsync(LinkChildInput input);
 

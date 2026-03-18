@@ -7,12 +7,15 @@ export const useStyles = createStyles(({ css, token }) => ({
         display: flex;
         align-items: flex-start;
         justify-content: space-between;
+        flex-wrap: wrap;
+        gap: ${token.marginMD}px;
         margin-bottom: ${token.marginLG}px;
     `,
 
     headerRight: css`
         display: flex;
         align-items: center;
+        flex-wrap: wrap;
         gap: ${token.marginMD}px;
     `,
 
@@ -32,9 +35,57 @@ export const useStyles = createStyles(({ css, token }) => ({
         }
     `,
 
-    childAvatar: css`
-        background: #00b8a9 !important;
+    childSwitcher: css`
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 6px;
+        background: ${token.colorFillSecondary};
+        border-radius: 40px;
+        padding: 4px 8px;
+    `,
+
+    childPill: css`
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border-radius: 32px;
+        border: none;
+        cursor: pointer;
+        background: transparent;
+        transition: background 0.2s;
+        font-size: 13px;
+        color: ${token.colorTextSecondary};
+
+        &:hover {
+            background: ${token.colorBgContainer};
+        }
+    `,
+
+    childPillActive: css`
+        background: ${token.colorBgContainer} !important;
+        color: ${token.colorText} !important;
         font-weight: 600;
+        box-shadow: ${token.boxShadowTertiary};
+    `,
+
+    childAvatar: css`
+        background: ${token.colorFillTertiary} !important;
+        color: ${token.colorTextSecondary} !important;
+        font-weight: 600;
+        font-size: 11px;
+    `,
+
+    childAvatarActive: css`
+        background: #00b8a9 !important;
+        color: #fff !important;
+        font-weight: 600;
+        font-size: 11px;
+    `,
+
+    childPillName: css`
+        font-size: 13px;
     `,
 
     childName: css`

@@ -6,5 +6,5 @@ namespace Team3.Services.Parents;
 
 public interface IParentDashboardAppService : IApplicationService
 {
-    Task<ParentDashboardDto> GetDashboardSummaryAsync();
+    Task<ParentDashboardDto> GetDashboardSummaryAsync(long? studentUserId = null);
 }

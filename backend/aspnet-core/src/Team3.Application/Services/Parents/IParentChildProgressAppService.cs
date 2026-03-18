@@ -6,5 +6,5 @@ namespace Team3.Services.Parents;
 
 public interface IParentChildProgressAppService : IApplicationService
 {
-    Task<ChildProgressDto> GetChildProgressAsync();
+    Task<ChildProgressDto> GetChildProgressAsync(long? studentUserId = null);
 }
