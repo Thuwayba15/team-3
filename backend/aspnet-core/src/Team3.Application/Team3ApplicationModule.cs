@@ -6,6 +6,7 @@ using Team3.Authorization;
 using Castle.MicroKernel.Registration;
 using FluentValidation;
 using Team3.LearningMaterials.Dto;
+using Team3.LearningMaterials;
 using Team3.Users.Dto;
 
 namespace Team3;
@@ -24,7 +25,7 @@ public class Team3ApplicationModule : AbpModule
     {
         var thisAssembly = typeof(Team3ApplicationModule).GetAssembly();
 
-        IocManager.RegisterAssemblyByConvention(thisAssembly);
+IocManager.RegisterAssemblyByConvention(thisAssembly);
 
         IocManager.IocContainer.Register(
             Component.For<IValidator<RegisterUserInput>>()
@@ -38,6 +39,7 @@ public class Team3ApplicationModule : AbpModule
             Component.For<IValidator<UploadTextLearningMaterialInput>>()
                 .ImplementedBy<UploadTextLearningMaterialInputValidator>()
                 .LifestyleTransient()
+
         );
 
         Configuration.Modules.AbpAutoMapper().Configurators.Add(

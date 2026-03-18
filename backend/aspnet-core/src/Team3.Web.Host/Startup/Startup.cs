@@ -70,15 +70,16 @@ namespace Team3.Web.Host.Startup
             ConfigureSwagger(services);
 
             // Configure Abp and Dependency Injection
-            services.AddAbpWithoutCreatingServiceProvider<Team3WebHostModule>(
+            services.AddAbpWithoutCreatingServiceProvider<Team3WebHostModule>(options =>
+            {
                 // Configure Log4Net logging
-                options => options.IocManager.IocContainer.AddFacility<LoggingFacility>(
+                options.IocManager.IocContainer.AddFacility<LoggingFacility>(
                     f => f.UseAbpLog4Net().WithConfig(_hostingEnvironment.IsDevelopment()
                         ? "log4net.config"
                         : "log4net.Production.config"
                     )
-                )
-            );
+                );
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
