@@ -35,8 +35,8 @@ public class Team3ApplicationModule : AbpModule
                 .ImplementedBy<UpdateMyProfileInputValidator>()
                 .LifestyleTransient(),
 
-            Component.For<IValidator<UploadSourceDocumentInput>>()
-                .ImplementedBy<UploadSourceDocumentInputValidator>()
+            Component.For<IValidator<RegisterSourceDocumentInput>>()
+                .ImplementedBy<RegisterSourceDocumentInputValidator>()
                 .LifestyleTransient(),
 
             Component.For<IValidator<StartExtractionJobInput>>()

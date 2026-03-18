@@ -10,7 +10,7 @@ namespace Team3.Curriculum;
 /// </summary>
 public interface ICurriculumIngestionAppService : IApplicationService
 {
-    Task<UploadSourceDocumentOutput> UploadSourceDocument(UploadSourceDocumentInput input);
+    Task<RegisterSourceDocumentOutput> RegisterSourceDocument(RegisterSourceDocumentInput input);
     Task<long> StartExtractionJob(StartExtractionJobInput input);
     Task<ExtractionJobDto> GetExtractionJob(long extractionJobId);
     Task<List<ParsedStructureNodeDto>> GetParsedStructure(long extractionJobId);

@@ -1,11 +1,9 @@
 using System.ComponentModel.DataAnnotations;
-using Abp.Application.Services.Dto;
-using Microsoft.AspNetCore.Http;
 using Team3.Curriculum.Enums;
 
 namespace Team3.Curriculum.Dto;
 
-public class UploadSourceDocumentInput
+public class RegisterSourceDocumentInput
 {
     [Required]
     [StringLength(256)]
@@ -18,5 +16,9 @@ public class UploadSourceDocumentInput
     public SourceDocumentType DocumentType { get; set; } = SourceDocumentType.Pdf;
 
     [Required]
-    public IFormFile File { get; set; }
+    [StringLength(2048)]
+    public string SourceUrl { get; set; }
+
+    [StringLength(256)]
+    public string OriginalFileName { get; set; }
 }

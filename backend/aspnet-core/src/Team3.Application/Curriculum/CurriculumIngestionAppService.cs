@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,29 +7,36 @@ using Abp.Authorization;
 using Abp.Domain.Repositories;
 using Abp.ObjectMapping;
 using Abp.Timing;
-using Microsoft.AspNetCore.Hosting;
+using Abp.UI;
 using Team3.Authorization;
 using Team3.Curriculum.Dto;
 using Team3.Curriculum.Entities;
 using Team3.Curriculum.Enums;
 using Team3.Curriculum.Services.Interfaces;
+using Team3.Curriculum.Services.Models;
 
 namespace Team3.Curriculum;
 
 /// <summary>
 /// Application service for curriculum ingestion operations.
 /// </summary>
-[AbpAuthorize(PermissionNames.Pages_Curriculum)]
+[AbpAllowAnonymous]
 public class CurriculumIngestionAppService : Team3AppServiceBase, ICurriculumIngestionAppService
 {
+    private const int ParsedNodeTitleMaxLength = 512;
+    private const int ParsedNodeContentMaxLength = 4000;
+    private const int SafeLegacyUrlMaxLength = 512;
+    private const int SafeLegacyErrorMessageMaxLength = 512;
+
     private readonly IRepository<CurriculumSourceDocument, long> _sourceDocumentRepository;
     private readonly IRepository<CurriculumExtractionJob, long> _extractionJobRepository;
     private readonly IRepository<ParsedStructureNode, long> _parsedStructureNodeRepository;
     private readonly IRepository<TopicDraft, long> _topicDraftRepository;
     private readonly IRepository<LessonDraft, long> _lessonDraftRepository;
     private readonly IRepository<QuizDraft, long> _quizDraftRepository;
-    private readonly IDocumentStorageService _documentStorageService;
+    private readonly IRemoteDocumentFetcher _remoteDocumentFetcher;
     private readonly IDocumentTextExtractor _textExtractor;
+    private readonly IDocumentProfileBuilder _documentProfileBuilder;
     private readonly IDocumentLayoutClassifier _layoutClassifier;
     private readonly IEnumerable<IStructureParser> _structureParsers;
     private readonly ICurriculumNormalizer _curriculumNormalizer;
@@ -41,8 +49,9 @@ public class CurriculumIngestionAppService : Team3AppServiceBase, ICurriculumIng
         IRepository<TopicDraft, long> topicDraftRepository,
         IRepository<LessonDraft, long> lessonDraftRepository,
         IRepository<QuizDraft, long> quizDraftRepository,
-        IDocumentStorageService documentStorageService,
+        IRemoteDocumentFetcher remoteDocumentFetcher,
         IDocumentTextExtractor textExtractor,
+        IDocumentProfileBuilder documentProfileBuilder,
         IDocumentLayoutClassifier layoutClassifier,
         IEnumerable<IStructureParser> structureParsers,
         ICurriculumNormalizer curriculumNormalizer,
@@ -54,41 +63,41 @@ public class CurriculumIngestionAppService : Team3AppServiceBase, ICurriculumIng
         _topicDraftRepository = topicDraftRepository;
         _lessonDraftRepository = lessonDraftRepository;
         _quizDraftRepository = quizDraftRepository;
-        _documentStorageService = documentStorageService;
+        _remoteDocumentFetcher = remoteDocumentFetcher;
         _textExtractor = textExtractor;
+        _documentProfileBuilder = documentProfileBuilder;
         _layoutClassifier = layoutClassifier;
         _structureParsers = structureParsers;
         _curriculumNormalizer = curriculumNormalizer;
         _objectMapper = objectMapper;
     }
 
-    public async Task<UploadSourceDocumentOutput> UploadSourceDocument(UploadSourceDocumentInput input)
+    public async Task<RegisterSourceDocumentOutput> RegisterSourceDocument(RegisterSourceDocumentInput input)
     {
-        // Store the file
-        var filePath = await _documentStorageService.StoreFileAsync(input.File, input.SubjectName, input.GradeLevel);
-
-        // Create source document entity
+        var sourceUrl = input.SourceUrl.Trim();
         var sourceDocument = new CurriculumSourceDocument
         {
             SubjectName = input.SubjectName,
             GradeLevel = input.GradeLevel,
             DocumentType = input.DocumentType,
-            FilePath = filePath,
-            OriginalFileName = input.File.FileName,
-            FileSize = input.File.Length,
-            ContentType = input.File.ContentType
+            SourceKind = SourceDocumentSourceKind.RemotePdfUrl,
+            SourceUrl = sourceUrl,
+            OriginalFileName = ResolveOriginalFileName(sourceUrl, input.OriginalFileName)
         };
 
         var savedDocument = await _sourceDocumentRepository.InsertAsync(sourceDocument);
         await CurrentUnitOfWork.SaveChangesAsync();
 
-        return new UploadSourceDocumentOutput
+        return new RegisterSourceDocumentOutput
         {
             Id = savedDocument.Id,
             SubjectName = savedDocument.SubjectName,
             GradeLevel = savedDocument.GradeLevel,
-            FilePath = savedDocument.FilePath,
+            DocumentType = savedDocument.DocumentType,
+            SourceKind = savedDocument.SourceKind,
+            SourceUrl = savedDocument.SourceUrl,
             OriginalFileName = savedDocument.OriginalFileName,
+            ContentType = savedDocument.ContentType,
             FileSize = savedDocument.FileSize
         };
     }
@@ -101,56 +110,89 @@ public class CurriculumIngestionAppService : Team3AppServiceBase, ICurriculumIng
         {
             SourceDocumentId = input.SourceDocumentId,
             Status = ExtractionJobStatus.InProgress,
-            StartedAt = Clock.Now
+            StartedAt = Clock.Now,
+            ProcessingStage = ExtractionProcessingStage.Fetching,
+            SourceUrlSnapshot = Truncate(sourceDocument.SourceUrl, SafeLegacyUrlMaxLength)
         };
 
         var savedJob = await _extractionJobRepository.InsertAsync(job);
         await CurrentUnitOfWork.SaveChangesAsync();
 
-        // Run extraction synchronously for now
         await PerformExtractionAsync(savedJob.Id, sourceDocument);
-
         return savedJob.Id;
     }
 
     private async Task PerformExtractionAsync(long jobId, CurriculumSourceDocument sourceDocument)
     {
+        var job = await _extractionJobRepository.GetAsync(jobId);
+
         try
         {
-            // Extract text
-            var textContent = await _textExtractor.ExtractTextAsync(sourceDocument.FilePath);
+            await UpdateJobStageAsync(job, ExtractionProcessingStage.Fetching);
+            var fetchedDocument = await _remoteDocumentFetcher.FetchPdfAsync(sourceDocument.SourceUrl);
 
-            // Classify layout
-            var layoutFamily = await _layoutClassifier.ClassifyLayoutAsync(textContent);
+            sourceDocument.ContentType = fetchedDocument.ContentType;
+            sourceDocument.FileSize = fetchedDocument.FileSize;
+            sourceDocument.OriginalFileName = Truncate(ResolveOriginalFileName(sourceDocument.SourceUrl, fetchedDocument.FileName), 256);
+            sourceDocument.LastFetchedAt = Clock.Now;
+            sourceDocument.DownloadErrorMessage = null;
+            await _sourceDocumentRepository.UpdateAsync(sourceDocument);
 
-            // Parse structure
-            var parser = _structureParsers.FirstOrDefault(p => p.SupportedLayoutFamily == layoutFamily);
+            job.SourceUrlSnapshot = Truncate(fetchedDocument.FinalUrl, SafeLegacyUrlMaxLength);
+            job.DownloadedContentType = fetchedDocument.ContentType;
+            job.DownloadedFileSize = fetchedDocument.FileSize;
+            await _extractionJobRepository.UpdateAsync(job);
+            await CurrentUnitOfWork.SaveChangesAsync();
+
+            await UpdateJobStageAsync(job, ExtractionProcessingStage.ExtractingText);
+            var textContent = await _textExtractor.ExtractTextAsync(fetchedDocument.ContentBytes, sourceDocument.OriginalFileName);
+            var documentProfile = _documentProfileBuilder.BuildProfile(textContent);
+
+            await UpdateJobStageAsync(job, ExtractionProcessingStage.ClassifyingLayout);
+            var classificationResult = await _layoutClassifier.ClassifyLayoutAsync(documentProfile);
+            job.DetectedLayoutFamily = classificationResult.BestMatch;
+            job.ClassificationConfidence = classificationResult.Confidence;
+            job.CandidateFamilies = Truncate(classificationResult.ToSummary(), 2000);
+            await _extractionJobRepository.UpdateAsync(job);
+            await CurrentUnitOfWork.SaveChangesAsync();
+
+            await UpdateJobStageAsync(job, ExtractionProcessingStage.ParsingStructure);
+            var parser = SelectParser(documentProfile, classificationResult);
             if (parser == null)
             {
-                throw new System.Exception($"No parser found for layout family {layoutFamily}");
+                throw new UserFriendlyException("No structure parser was able to handle the extracted document profile.");
             }
 
-            var parsedNodes = await parser.ParseStructureAsync(textContent, jobId);
-
-            // Save parsed nodes
-            foreach (var node in parsedNodes)
+            var parseResult = await parser.ParseStructureAsync(documentProfile, jobId, classificationResult);
+            if (!parseResult.Nodes.Any())
             {
-                await _parsedStructureNodeRepository.InsertAsync(node);
+                throw new UserFriendlyException("No usable structure could be extracted from the PDF text.");
             }
 
-            // Update job
-            var job = await _extractionJobRepository.GetAsync(jobId);
+            await UpdateJobStageAsync(job, ExtractionProcessingStage.PersistingNodes);
+            await PersistParsedNodesAsync(parseResult.Nodes);
+
             job.Status = ExtractionJobStatus.Completed;
             job.CompletedAt = Clock.Now;
-            job.DetectedLayoutFamily = layoutFamily;
+            job.DetectedLayoutFamily = classificationResult.BestMatch;
+            job.ProcessingStage = ExtractionProcessingStage.Completed;
+            job.ErrorMessage = null;
+            job.ExtractionMode = parseResult.Mode;
+            job.ParserName = parseResult.ParserName;
+            job.ParserConfidence = parseResult.Confidence;
+            job.WarningMessages = Truncate(string.Join("; ", parseResult.Warnings.Concat(BuildClassificationWarnings(classificationResult, documentProfile))), 4000);
             await _extractionJobRepository.UpdateAsync(job);
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
-            var job = await _extractionJobRepository.GetAsync(jobId);
+            sourceDocument.LastFetchedAt = Clock.Now;
+            sourceDocument.DownloadErrorMessage = Truncate(ex.GetBaseException().Message, SafeLegacyErrorMessageMaxLength);
+            await _sourceDocumentRepository.UpdateAsync(sourceDocument);
+
             job.Status = ExtractionJobStatus.Failed;
             job.CompletedAt = Clock.Now;
-            job.ErrorMessage = ex.Message;
+            job.ErrorMessage = Truncate(ex.GetBaseException().Message, SafeLegacyErrorMessageMaxLength);
+            job.ProcessingStage = ExtractionProcessingStage.Failed;
             await _extractionJobRepository.UpdateAsync(job);
         }
 
@@ -172,7 +214,30 @@ public class CurriculumIngestionAppService : Team3AppServiceBase, ICurriculumIng
     public async Task GenerateDraftCurriculum(long extractionJobId)
     {
         var nodes = await _parsedStructureNodeRepository.GetAllListAsync(n => n.ExtractionJobId == extractionJobId);
-        await _curriculumNormalizer.NormalizeAsync(nodes, extractionJobId);
+        var normalizationResult = await _curriculumNormalizer.NormalizeAsync(nodes, extractionJobId);
+
+        var job = await _extractionJobRepository.GetAsync(extractionJobId);
+        var warnings = new List<string>();
+        if (!string.IsNullOrWhiteSpace(job.WarningMessages))
+        {
+            warnings.Add(job.WarningMessages);
+        }
+
+        warnings.Add($"Draft generation created {normalizationResult.TopicCount} topics, {normalizationResult.LessonCount} lessons, {normalizationResult.MaterialCount} materials and {normalizationResult.QuizCount} quizzes.");
+
+        if (normalizationResult.InferredLessonCount > 0)
+        {
+            warnings.Add($"{normalizationResult.InferredLessonCount} inferred lesson nodes were used during draft generation.");
+        }
+
+        if (normalizationResult.SyntheticLessonCount > 0)
+        {
+            warnings.Add($"Chapter-only fallback was used for {normalizationResult.SyntheticLessonCount} synthesized lesson rows.");
+        }
+
+        job.WarningMessages = Truncate(string.Join("; ", warnings.Distinct()), 4000);
+        await _extractionJobRepository.UpdateAsync(job);
+        await CurrentUnitOfWork.SaveChangesAsync();
     }
 
     public async Task<List<TopicDraftDto>> GetTopicDrafts(long extractionJobId)
@@ -195,7 +260,6 @@ public class CurriculumIngestionAppService : Team3AppServiceBase, ICurriculumIng
 
     public async Task PublishCurriculum(PublishCurriculumInput input)
     {
-        // For now, just mark drafts as approved. In real implementation, copy to final entities.
         var topics = await _topicDraftRepository.GetAllListAsync(t => t.ExtractionJobId == input.ExtractionJobId);
         foreach (var topic in topics)
         {
@@ -216,5 +280,109 @@ public class CurriculumIngestionAppService : Team3AppServiceBase, ICurriculumIng
             quiz.Status = DraftStatus.Approved;
             await _quizDraftRepository.UpdateAsync(quiz);
         }
+    }
+
+    private async Task UpdateJobStageAsync(CurriculumExtractionJob job, ExtractionProcessingStage stage)
+    {
+        job.ProcessingStage = stage;
+        await _extractionJobRepository.UpdateAsync(job);
+        await CurrentUnitOfWork.SaveChangesAsync();
+    }
+
+    private async Task PersistParsedNodesAsync(List<ParsedStructureNode> parsedNodes)
+    {
+        var idMap = new Dictionary<long, long>();
+
+        foreach (var node in parsedNodes.OrderBy(n => n.Order))
+        {
+            node.Title = Truncate(node.Title, ParsedNodeTitleMaxLength);
+            node.Content = Truncate(node.Content, ParsedNodeContentMaxLength);
+
+            var temporaryId = node.Id;
+            if (node.ParentNodeId.HasValue && idMap.TryGetValue(node.ParentNodeId.Value, out var parentId))
+            {
+                node.ParentNodeId = parentId;
+            }
+            else if (node.ParentNodeId.HasValue)
+            {
+                node.ParentNodeId = null;
+            }
+
+            node.Id = 0;
+            var savedNode = await _parsedStructureNodeRepository.InsertAsync(node);
+            await CurrentUnitOfWork.SaveChangesAsync();
+
+            if (temporaryId != 0)
+            {
+                idMap[temporaryId] = savedNode.Id;
+            }
+        }
+    }
+
+    private static string ResolveOriginalFileName(string sourceUrl, string providedFileName)
+    {
+        if (!string.IsNullOrWhiteSpace(providedFileName))
+        {
+            return providedFileName.Trim();
+        }
+
+        if (Uri.TryCreate(sourceUrl, UriKind.Absolute, out var uri))
+        {
+            var fileName = System.IO.Path.GetFileName(uri.AbsolutePath);
+            if (!string.IsNullOrWhiteSpace(fileName))
+            {
+                return fileName;
+            }
+        }
+
+        return "document.pdf";
+    }
+
+    private IStructureParser SelectParser(DocumentProfile documentProfile, LayoutClassificationResult classificationResult)
+    {
+        var candidateScores = classificationResult.CandidateFamilies.ToDictionary(candidate => candidate.Family, candidate => candidate.Score);
+
+        var preferredMatch = _structureParsers
+            .Where(parser => parser.CanParse(documentProfile, classificationResult))
+            .Where(parser => parser.SupportedLayoutFamily != LayoutFamilyType.Unknown)
+            .OrderByDescending(parser => candidateScores.TryGetValue(parser.SupportedLayoutFamily, out var score) ? score : 0)
+            .FirstOrDefault();
+
+        if (preferredMatch != null)
+        {
+            return preferredMatch;
+        }
+
+        return _structureParsers.FirstOrDefault(parser =>
+            parser.SupportedLayoutFamily == LayoutFamilyType.Unknown &&
+            parser.CanParse(documentProfile, classificationResult));
+    }
+
+    private static IEnumerable<string> BuildClassificationWarnings(LayoutClassificationResult classificationResult, DocumentProfile documentProfile)
+    {
+        if (classificationResult.IsLowConfidence())
+        {
+            yield return $"Classification confidence was low ({classificationResult.Confidence:F2}).";
+        }
+
+        if (documentProfile.HasTableOfContents)
+        {
+            yield return "Table of contents markers were used during profiling.";
+        }
+
+        foreach (var heading in documentProfile.SampleHeadingCandidates(3))
+        {
+            yield return $"Heading sample: {heading}";
+        }
+    }
+
+    private static string Truncate(string value, int maxLength)
+    {
+        if (string.IsNullOrWhiteSpace(value) || value.Length <= maxLength)
+        {
+            return value;
+        }
+
+        return value[..maxLength];
     }
 }

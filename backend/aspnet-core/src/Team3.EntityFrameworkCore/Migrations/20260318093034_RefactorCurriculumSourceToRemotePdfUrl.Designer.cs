@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Team3.EntityFrameworkCore;
@@ -11,9 +12,11 @@ using Team3.EntityFrameworkCore;
 namespace Team3.Migrations
 {
     [DbContext(typeof(Team3DbContext))]
-    partial class Team3DbContextModelSnapshot : ModelSnapshot
+    [Migration("20260318093034_RefactorCurriculumSourceToRemotePdfUrl")]
+    partial class RefactorCurriculumSourceToRemotePdfUrl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1588,13 +1591,6 @@ namespace Team3.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<string>("CandidateFamilies")
-                        .HasMaxLength(2000)
-                        .HasColumnType("character varying(2000)");
-
-                    b.Property<double?>("ClassificationConfidence")
-                        .HasColumnType("double precision");
-
                     b.Property<DateTime?>("CompletedAt")
                         .HasColumnType("timestamp with time zone");
 
@@ -1624,9 +1620,6 @@ namespace Team3.Migrations
                         .HasMaxLength(1024)
                         .HasColumnType("character varying(1024)");
 
-                    b.Property<int?>("ExtractionMode")
-                        .HasColumnType("integer");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
@@ -1635,13 +1628,6 @@ namespace Team3.Migrations
 
                     b.Property<long?>("LastModifierUserId")
                         .HasColumnType("bigint");
-
-                    b.Property<double?>("ParserConfidence")
-                        .HasColumnType("double precision");
-
-                    b.Property<string>("ParserName")
-                        .HasMaxLength(128)
-                        .HasColumnType("character varying(128)");
 
                     b.Property<int>("ProcessingStage")
                         .HasColumnType("integer");
@@ -1658,10 +1644,6 @@ namespace Team3.Migrations
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");
-
-                    b.Property<string>("WarningMessages")
-                        .HasMaxLength(4000)
-                        .HasColumnType("character varying(4000)");
 
                     b.HasKey("Id");
 

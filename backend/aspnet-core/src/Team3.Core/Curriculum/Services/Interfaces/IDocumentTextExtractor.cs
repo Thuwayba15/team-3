@@ -8,7 +8,7 @@ namespace Team3.Curriculum.Services.Interfaces;
 public interface IDocumentTextExtractor
 {
     /// <summary>
-    /// Extracts text from the document at the given path.
+    /// Extracts text from the supplied PDF content.
     /// </summary>
-    Task<string> ExtractTextAsync(string filePath);
+    Task<string> ExtractTextAsync(byte[] fileContent, string sourceName);
 }

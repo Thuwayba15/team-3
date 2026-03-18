@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using Team3.Curriculum.Enums;
+using Team3.Curriculum.Services.Models;
 
 namespace Team3.Curriculum.Services.Interfaces;
 
@@ -9,7 +9,7 @@ namespace Team3.Curriculum.Services.Interfaces;
 public interface IDocumentLayoutClassifier
 {
     /// <summary>
-    /// Determines the layout family from the extracted text.
+    /// Determines the most likely layout family from the document profile.
     /// </summary>
-    Task<LayoutFamilyType> ClassifyLayoutAsync(string textContent);
+    Task<LayoutClassificationResult> ClassifyLayoutAsync(DocumentProfile documentProfile);
 }

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Team3.Curriculum.Entities;
 using Team3.Curriculum.Enums;
+using Team3.Curriculum.Services.Models;
 
 namespace Team3.Curriculum.Services.Interfaces;
 
@@ -11,12 +12,19 @@ namespace Team3.Curriculum.Services.Interfaces;
 public interface IStructureParser
 {
     /// <summary>
-    /// Parses the text content into structure nodes.
+    /// Returns true when the parser can contribute useful structure for the profile.
     /// </summary>
-    Task<List<ParsedStructureNode>> ParseStructureAsync(string textContent, long extractionJobId);
+    bool CanParse(DocumentProfile documentProfile, LayoutClassificationResult classificationResult);
+
+    /// <summary>
+    /// Parses the document profile into structure nodes plus diagnostics.
+    /// </summary>
+    Task<StructureParseResult> ParseStructureAsync(DocumentProfile documentProfile, long extractionJobId, LayoutClassificationResult classificationResult);
 
     /// <summary>
     /// The layout family this parser handles.
     /// </summary>
     LayoutFamilyType SupportedLayoutFamily { get; }
+
+    string ParserName { get; }
 }

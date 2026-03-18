@@ -1,4 +1,5 @@
 using Abp.Domain.Entities.Auditing;
+using System;
 using System.ComponentModel.DataAnnotations;
 using Team3.Curriculum.Enums;
 
@@ -19,16 +20,23 @@ public class CurriculumSourceDocument : FullAuditedEntity<long>
 
     public SourceDocumentType DocumentType { get; set; }
 
+    public SourceDocumentSourceKind SourceKind { get; set; } = SourceDocumentSourceKind.RemotePdfUrl;
+
     [Required]
-    [StringLength(512)]
-    public string FilePath { get; set; }
+    [StringLength(2048)]
+    public string SourceUrl { get; set; }
 
     [Required]
     [StringLength(256)]
     public string OriginalFileName { get; set; }
 
-    public long FileSize { get; set; }
+    public long? FileSize { get; set; }
 
     [StringLength(128)]
     public string ContentType { get; set; }
+
+    public DateTime? LastFetchedAt { get; set; }
+
+    [StringLength(1024)]
+    public string DownloadErrorMessage { get; set; }
 }

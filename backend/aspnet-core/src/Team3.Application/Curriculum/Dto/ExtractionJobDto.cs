@@ -11,5 +11,15 @@ public class ExtractionJobDto : EntityDto<long>
     public DateTime? StartedAt { get; set; }
     public DateTime? CompletedAt { get; set; }
     public string ErrorMessage { get; set; }
+    public ExtractionProcessingStage ProcessingStage { get; set; }
+    public string SourceUrlSnapshot { get; set; }
+    public string DownloadedContentType { get; set; }
+    public long? DownloadedFileSize { get; set; }
     public LayoutFamilyType DetectedLayoutFamily { get; set; }
+    public ExtractionMode? ExtractionMode { get; set; }
+    public double? ClassificationConfidence { get; set; }
+    public string CandidateFamilies { get; set; }
+    public string ParserName { get; set; }
+    public double? ParserConfidence { get; set; }
+    public string WarningMessages { get; set; }
 }

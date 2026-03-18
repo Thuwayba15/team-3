@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Team3.Curriculum.Entities;
+using Team3.Curriculum.Services.Models;
 
 namespace Team3.Curriculum.Services.Interfaces;
 
@@ -12,5 +13,5 @@ public interface ICurriculumNormalizer
     /// <summary>
     /// Normalizes the parsed nodes into topic, lesson, quiz drafts.
     /// </summary>
-    Task NormalizeAsync(List<ParsedStructureNode> nodes, long extractionJobId);
+    Task<NormalizationResult> NormalizeAsync(List<ParsedStructureNode> nodes, long extractionJobId);
 }

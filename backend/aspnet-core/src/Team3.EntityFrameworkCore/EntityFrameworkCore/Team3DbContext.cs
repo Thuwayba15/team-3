@@ -81,9 +81,11 @@ public class Team3DbContext : AbpZeroDbContext<Tenant, Role, User, Team3DbContex
             entity.ToTable("AppCurriculumSourceDocuments");
             entity.Property(x => x.SubjectName).IsRequired().HasMaxLength(256);
             entity.Property(x => x.GradeLevel).IsRequired().HasMaxLength(64);
-            entity.Property(x => x.FilePath).IsRequired().HasMaxLength(512);
+            entity.Property(x => x.SourceUrl).IsRequired().HasMaxLength(2048);
             entity.Property(x => x.OriginalFileName).IsRequired().HasMaxLength(256);
             entity.Property(x => x.ContentType).HasMaxLength(128);
+            entity.Property(x => x.DownloadErrorMessage).HasMaxLength(1024);
+            entity.HasIndex(x => x.SourceUrl);
         });
 
         modelBuilder.Entity<CurriculumExtractionJob>(entity =>
@@ -91,6 +93,11 @@ public class Team3DbContext : AbpZeroDbContext<Tenant, Role, User, Team3DbContex
             entity.ToTable("AppCurriculumExtractionJobs");
             entity.HasIndex(x => x.SourceDocumentId);
             entity.Property(x => x.ErrorMessage).HasMaxLength(1024);
+            entity.Property(x => x.SourceUrlSnapshot).HasMaxLength(2048);
+            entity.Property(x => x.DownloadedContentType).HasMaxLength(128);
+            entity.Property(x => x.CandidateFamilies).HasMaxLength(2000);
+            entity.Property(x => x.ParserName).HasMaxLength(128);
+            entity.Property(x => x.WarningMessages).HasMaxLength(4000);
         });
 
         modelBuilder.Entity<ParsedStructureNode>(entity =>
