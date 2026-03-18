@@ -4,8 +4,9 @@ import { BellOutlined, DownOutlined, LogoutOutlined, MenuOutlined, UserOutlined 
 import { Avatar, Badge, Button, Dropdown, Layout, Select, Typography, message } from "antd";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import { LANGUAGE_OPTIONS } from "@/config/roles";
+import { useTranslation } from "react-i18next";
 import { useAuthActions, useAuthState } from "@/providers/auth";
+import { useI18n } from "@/providers/i18n";
 import { sessionService } from "@/services/sessions/sessionService";
 import { userService } from "@/services/users/userService";
 import { useStyles } from "./AppHeader.style";
@@ -22,11 +23,13 @@ interface IAppHeaderProps {
  */
 export const AppHeader = ({ onOpenNavigation, isMobile }: IAppHeaderProps) => {
     const { styles } = useStyles();
+    const { t } = useTranslation();
     const router = useRouter();
     const { isAuthenticated, userId } = useAuthState();
     const { logout } = useAuthActions();
+    const { currentLanguage, setLanguage, isLoading } = useI18n();
     const [, messageContextHolder] = message.useMessage();
-    const [displayName, setDisplayName] = useState("User");
+    const [displayName, setDisplayName] = useState(t("header.defaultUser"));
     const [emailAddress, setEmailAddress] = useState("-");
     const [userNameDraft, setUserNameDraft] = useState("");
 
@@ -63,14 +66,24 @@ export const AppHeader = ({ onOpenNavigation, isMobile }: IAppHeaderProps) => {
                         setUserNameDraft(sessionUser.userName || "");
                     })
                     .catch(() => {
-                        setDisplayName("User");
+                        setDisplayName(t("header.defaultUser"));
                         setEmailAddress("-");
                         setUserNameDraft("");
                     });
             });
-    }, [isAuthenticated, userId]);
+    }, [isAuthenticated, t, userId]);
 
     const profileInitial = useMemo(() => displayName.charAt(0).toUpperCase() || "U", [displayName]);
+
+    const languageOptions = useMemo(
+        () => [
+            { label: "English", value: "en" },
+            { label: "isiZulu", value: "zu" },
+            { label: "Sesotho", value: "st" },
+            { label: "Afrikaans", value: "af" },
+        ],
+        []
+    );
 
     const handleLogout = async (): Promise<void> => {
         await logout();
@@ -87,7 +100,7 @@ export const AppHeader = ({ onOpenNavigation, isMobile }: IAppHeaderProps) => {
                         type="text"
                         icon={<MenuOutlined />}
                         className={styles.iconButton}
-                        aria-label="Open navigation"
+                        aria-label={t("header.openNavigation")}
                         onClick={onOpenNavigation}
                     />
                 )}
@@ -103,13 +116,17 @@ export const AppHeader = ({ onOpenNavigation, isMobile }: IAppHeaderProps) => {
             <div className={styles.controls}>
                 <Select
                     className={styles.select}
-                    defaultValue="en"
-                    options={LANGUAGE_OPTIONS}
-                    aria-label="Language"
+                    value={currentLanguage}
+                    options={languageOptions}
+                    aria-label={t("header.language")}
+                    loading={isLoading}
+                    onChange={(languageCode) => {
+                        void setLanguage(languageCode);
+                    }}
                 />
 
                 <Badge dot>
-                    <Button type="text" icon={<BellOutlined />} className={styles.iconButton} aria-label="Notifications" />
+                    <Button type="text" icon={<BellOutlined />} className={styles.iconButton} aria-label={t("header.notifications")} />
                 </Badge>
 
                 <Dropdown
@@ -117,18 +134,18 @@ export const AppHeader = ({ onOpenNavigation, isMobile }: IAppHeaderProps) => {
                     dropdownRender={() => (
                         <div className={styles.profileDropdown}>
                             <div className={styles.profileRow}>
-                                <Text className={styles.profileLabel}>Email</Text>
+                                <Text className={styles.profileLabel}>{t("header.email")}</Text>
                                 <Text className={styles.profileValue}>{emailAddress}</Text>
                             </div>
 
                             <div className={styles.profileRow}>
-                                <Text className={styles.profileLabel}>Username</Text>
+                                <Text className={styles.profileLabel}>{t("header.username")}</Text>
                                 <Text className={styles.profileValue}>{userNameDraft}</Text>
                             </div>
                         </div>
                     )}
                 >
-                    <button type="button" className={styles.userWrap} aria-label="Open user profile menu">
+                    <button type="button" className={styles.userWrap} aria-label={t("header.openUserMenu")}>
                         <Avatar icon={<UserOutlined />} className={styles.userAvatar}>{profileInitial}</Avatar>
                         <Text>{displayName}</Text>
                         <DownOutlined />
@@ -136,7 +153,7 @@ export const AppHeader = ({ onOpenNavigation, isMobile }: IAppHeaderProps) => {
                 </Dropdown>
 
                 <Button type="link" icon={<LogoutOutlined />} onClick={handleLogout} className={styles.logoutButton}>
-                    Logout
+                    {t("header.logout")}
                 </Button>
             </div>
         </Layout.Header>

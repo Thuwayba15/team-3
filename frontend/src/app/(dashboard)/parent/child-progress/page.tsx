@@ -1,5 +1,10 @@
+"use client";
+
 import { PageHeader } from "@/components/layout";
+import { useTranslation } from "react-i18next";
 
 export default function ParentChildProgressPage() {
-    return <PageHeader title="Parent Child Progress" subtitle="Page scaffold placeholder" />;
+    const { t } = useTranslation();
+
+    return <PageHeader title={t("dashboard.parent.childProgressTitle")} subtitle={t("dashboard.scaffoldSubtitle")} />;
 }

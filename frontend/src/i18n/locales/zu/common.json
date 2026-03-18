@@ -1,81 +1,197 @@
 {
   "nav": {
-    "dashboard": "Amaphaneli",
+    "dashboard": "Ideshibhodi",
+    "learningPath": "Indlela Yokufunda",
     "lessons": "Izifundo",
+    "quizzes": "Imibuzo",
+    "aiTutor": "Umfundisi we-AI",
+    "progress": "Inqubekelaphambili",
+    "students": "Abafundi",
+    "interventions": "Ukungenelela",
+    "learningModules": "Amamojula Okufunda",
+    "analytics": "Ukuhlaziya",
+    "alerts": "Izexwayiso",
+    "childProgress": "Inqubekelaphambili Yengane",
     "curriculum": "Uhlelo Lokufunda",
     "users": "Abasebenzisi",
     "settings": "Izilungiselelo",
     "languages": "Izilimi",
-    "aiConfiguration": "Ukunqoba kwe-AI",
+    "aiConfiguration": "Ukuhlelwa kwe-AI",
     "logout": "Phuma"
   },
   "common": {
+    "menu": "Imenyu",
     "save": "Londoloza",
     "cancel": "Khansela",
     "delete": "Susa",
     "edit": "Hlela",
-    "loading": "Ilayida...",
+    "loading": "Iyalayisha...",
     "error": "Iphutha",
     "success": "Impumelelo",
     "close": "Vala",
-    "confirm": "Qinisekeza",
+    "confirm": "Qinisekisa",
     "back": "Emuva",
     "next": "Okulandelayo",
-    "previous": "Okwandulela",
+    "previous": "Okwedlule",
     "search": "Sesha",
-    "filter": "Hlela",
+    "filter": "Hlunga",
     "clear": "Sula",
     "submit": "Thumela",
     "export": "Khipha",
-    "import": "Ngena"
+    "import": "Ngenisa"
   },
   "auth": {
     "login": {
       "title": "Ngena",
       "email": "Ikheli le-imeyili",
-      "password": "Iwasi",
+      "password": "Iphasiwedi",
       "submit": "Ngena",
       "noAccount": "Awunayo i-akhawunti?",
       "register": "Bhalisa lapha",
-      "forgotPassword": "Ukhohlwe iwasi?",
-      "invalidCredentials": "Ikheli le-imeyili noma iwasi engalungile"
+      "forgotPassword": "Ukhohlwe iphasiwedi?",
+      "invalidCredentials": "I-imeyili noma iphasiwedi ayilungile"
     },
     "register": {
       "title": "Bhalisa",
-      "firstName": "Igama Lokuqala",
+      "firstName": "Igama",
       "surname": "Isibongo",
       "email": "Ikheli le-imeyili",
-      "password": "Iwasi",
-      "confirmPassword": "Qinisekeza Iwasi",
-      "role": "Umlingani",
-      "selectRole": "Khetha umlingani wakho",
-      "selectLanguage": "Ilimi Elizinzile",
-      "submit": "Lumela i-Akhawunti",
-      "haveAccount": "Sekunayo i-akhawunti?",
+      "password": "Iphasiwedi",
+      "confirmPassword": "Qinisekisa Iphasiwedi",
+      "role": "Indima",
+      "selectRole": "Khetha indima yakho",
+      "selectLanguage": "Ulimi Olukhethwayo",
+      "submit": "Dala I-akhawunti",
+      "haveAccount": "Usunayo i-akhawunti?",
       "loginHere": "Ngena lapha",
-      "agreeTerms": "Ngiyavuma Imigomo Yomsebenziso"
+      "agreeTerms": "Ngiyavuma imigomo yesevisi"
     }
   },
   "settings": {
     "title": "Izilungiselelo",
-    "platformLanguage": "Ilimi Leplatifomu",
-    "platformLanguageDesc": "Khetha ilimi lokwethulakanisa isixazululo se-inthanethi",
-    "selectLanguage": "Khetha Ilimi",
+    "studentTitle": "Izilungiselelo Zomfundi",
+    "studentSubtitle": "Ikhasi lesikhashana",
+    "platformLanguage": "Ulimi Lweplatifomu",
+    "platformLanguageDesc": "Khetha ulimi lwesixhumi sohlelo",
+    "selectLanguage": "Khetha Ulimi",
     "updated": "Izilungiselelo zibuyekezwe ngempumelelo"
   },
   "header": {
-    "profile": "Iphrofayili",
-    "preferences": "Izithandelo",
+    "defaultUser": "Umsebenzisi",
+    "email": "I-imeyili",
+    "username": "Igama Lomsebenzisi",
+    "language": "Ulimi",
+    "notifications": "Izaziso",
+    "openNavigation": "Vula ukuhamba",
+    "openUserMenu": "Vula imenyu yomsebenzisi",
+    "profile": "Iphrofayela",
+    "preferences": "Okuthandwayo",
     "logout": "Phuma"
   },
   "sidebar": {
     "admin": "Umphathi",
-    "student": "Umuntu Esikoleni",
+    "student": "Umfundi",
     "tutor": "Umfundisi",
     "parent": "Umzali"
   },
+  "dashboard": {
+    "scaffoldSubtitle": "Ikhasi lesikhashana",
+    "student": {
+      "title": "Ideshibhodi Yomfundi",
+      "learningPathTitle": "Indlela Yokufunda Yomfundi",
+      "lessonsTitle": "Izifundo Zomfundi",
+      "quizzesTitle": "Imibuzo Yomfundi",
+      "aiTutorTitle": "Umfundisi we-AI Womfundi",
+      "progressTitle": "Inqubekelaphambili Yomfundi"
+    },
+    "tutor": {
+      "title": "Ideshibhodi Yomfundisi",
+      "studentsTitle": "Abafundi Bomfundisi",
+      "interventionsTitle": "Ukungenelela Komfundisi",
+      "learningModulesTitle": "Amamojula Okufunda Omfundisi",
+      "analyticsTitle": "Ukuhlaziya Komfundisi"
+    },
+    "parent": {
+      "title": "Ideshibhodi Yomzali",
+      "childProgressTitle": "Inqubekelaphambili Yengane",
+      "alertsTitle": "Izexwayiso Zomzali"
+    },
+    "admin": {
+      "title": "Ukuphathwa Kohlelo",
+      "subtitle": "Ukubuka konke kwesiteji nempilo yohlelo",
+      "trendThisMonth": "+12% kule nyanga",
+      "totalActiveUsers": "Abasebenzisi Abasebenzayo Bonke",
+      "languageUsage": "Ukusetshenziswa Kwezilimi",
+      "aiApiCallsToday": "Izingcingo ze-AI API (Namuhla)",
+      "systemUptime": "Isikhathi Sohlelo Lusebenzile",
+      "userDistributionByRole": "Ukusatshalaliswa Kwabasebenzisi Ngezindima",
+      "pieChartPlaceholder": "Indawo yeshadi le-pie",
+      "legendStudents": "Abafundi (80%)",
+      "legendTutors": "Othisha (5%)",
+      "legendParents": "Abazali (15%)",
+      "languagePreferenceAnalytics": "Ukuhlaziywa Kokuthandwa Kwezilimi",
+      "analyticsTitle": "Ukuhlaziya Komphathi",
+      "users": {
+        "title": "Ukuphathwa Kwabasebenzisi",
+        "subtitle": "Phatha abasebenzisi, izindima, nokufinyelela",
+        "errorLoadUsers": "Kuhlulekile ukulayisha abasebenzisi. Zama futhi.",
+        "searchPlaceholder": "Sesha abasebenzisi...",
+        "allRoles": "Zonke Izindima",
+        "allStatus": "Sonke Isimo",
+        "active": "Iyasebenza",
+        "inactive": "Ayisebenzi",
+        "addUser": "Engeza Umsebenzisi",
+        "disable": "Khubaza",
+        "columns": {
+          "name": "Igama",
+          "email": "I-imeyili",
+          "role": "Indima",
+          "status": "Isimo",
+          "dateJoined": "Usuku Lokujoyina",
+          "actions": "Izenzo"
+        }
+      },
+      "languages": {
+        "title": "Ukuphathwa Kwezilimi",
+        "subtitle": "Phatha izilimi ezisekelwayo nenqubekelaphambili yokuhumusha",
+        "translationProgress": "Inqubekelaphambili Yokuhumusha",
+        "contentItemsTranslated": "izinto zokuqukethwe zihunyushiwe",
+        "translationStatusByContentType": "Isimo Sokuhumusha Ngohlobo Lokuqukethwe",
+        "contentType": "Uhlobo Lokuqukethwe"
+      },
+      "aiConfiguration": {
+        "title": "Ukuhlelwa kwe-AI",
+        "subtitle": "Phatha ama-prompt e-AI tutor nezilungiselelo zenjini yezincomo",
+        "saved": "Ukuhlelwa kwe-AI kulondoloziwe.",
+        "promptTemplates": "Amathempulethi e-Prompt",
+        "resetToDefault": "Buyisela Okuzenzakalelayo",
+        "recommendationEngineSettings": "Izilungiselelo Zenjini Yezincomo",
+        "minimumMasteryThreshold": "Umkhawulo Omncane Wobungcweti",
+        "maximumRetryAttempts": "Inani Eliphezulu Lokuzama Futhi",
+        "difficultyProgression": "Ukuqhubeka Kobunzima",
+        "progressionModeAdaptive": "Iyazivumelanisa (AI)",
+        "progressionModeLinear": "Umugqa Oqondile",
+        "progressionModeCustom": "Okwezifiso",
+        "contentRecommendationWeight": "Isisindo Sezincomo Zokuqukethwe",
+        "difficultyAdjustment": "Ukulungiswa Kobunzima",
+        "autoAdjustDifficulty": "Lungisa Ubunzima Ngokuzenzakalelayo",
+        "adjustmentSensitivity": "Ukuzwela Kokulungisa",
+        "minQuestionsBeforeAdjustment": "Imibuzo Emncane Ngaphambi Kokulungisa",
+        "increaseThreshold": "Umkhawulo Wokwenyuka (%)",
+        "decreaseThreshold": "Umkhawulo Wokwehla (%)",
+        "high": "Phezulu",
+        "medium": "Maphakathi",
+        "low": "Phansi",
+        "saveConfiguration": "Londoloza Ukuhlelwa"
+      },
+      "curriculum": {
+        "title": "Ukuphathwa Kohlelo Lokufunda",
+        "subtitle": "Dala izifundo, layisha amadokhumenti, bese ubuyekeza okudalwe i-AI"
+      }
+    }
+  },
   "empty": {
-    "noData": "Akukho mininingwane etholakala",
-    "noResults": "Akukho iziphumo ezitholakala"
+    "noData": "Ayikho idatha etholakele",
+    "noResults": "Ayikho imiphumela etholakele"
   }
 }

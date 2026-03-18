@@ -15,6 +15,7 @@ import {
     message,
 } from "antd";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/components/layout";
 import { useStyles } from "./styles";
 
@@ -63,6 +64,7 @@ function buildTemplateState(): IPromptTemplateState[] {
 /** AI configuration page for prompt templates and recommendation settings. */
 export default function AdminAiConfigurationPage() {
     const { styles } = useStyles();
+    const { t } = useTranslation();
     const [messageApi, contextHolder] = message.useMessage();
 
     const [templates, setTemplates] = useState<IPromptTemplateState[]>(buildTemplateState);
@@ -104,7 +106,7 @@ export default function AdminAiConfigurationPage() {
     };
 
     const handleSaveConfiguration = (): void => {
-        messageApi.success("AI configuration saved. Backend integration can now persist these values.");
+        messageApi.success(t("dashboard.admin.aiConfiguration.saved"));
     };
 
     return (
@@ -112,11 +114,11 @@ export default function AdminAiConfigurationPage() {
             {contextHolder}
 
             <PageHeader
-                title="AI Configuration"
-                subtitle="Manage AI tutor prompts and recommendation engine settings"
+                title={t("dashboard.admin.aiConfiguration.title")}
+                subtitle={t("dashboard.admin.aiConfiguration.subtitle")}
             />
 
-            <Card className={styles.sectionCard} title="Tutoring Prompt Templates">
+            <Card className={styles.sectionCard} title={t("dashboard.admin.aiConfiguration.promptTemplates")}>
                 <Row gutter={[16, 16]}>
                     {templates.map((template) => (
                         <Col key={template.id} xs={24} lg={8}>
@@ -130,9 +132,9 @@ export default function AdminAiConfigurationPage() {
                                 />
                                 <div className={styles.templateActions}>
                                     <Button type="text" className={styles.resetButton} onClick={() => handleTemplateReset(template.id)}>
-                                        Reset to Default
+                                        {t("dashboard.admin.aiConfiguration.resetToDefault")}
                                     </Button>
-                                    <Button className={styles.editButton}>Edit</Button>
+                                    <Button className={styles.editButton}>{t("common.edit")}</Button>
                                 </div>
                             </Card>
                         </Col>
@@ -142,18 +144,18 @@ export default function AdminAiConfigurationPage() {
 
             <Row gutter={[16, 16]} className={styles.settingsRow}>
                 <Col xs={24} lg={12}>
-                    <Card className={styles.sectionCard} title="Recommendation Engine Settings">
+                    <Card className={styles.sectionCard} title={t("dashboard.admin.aiConfiguration.recommendationEngineSettings")}>
                         <Space direction="vertical" size={20} className={styles.settingsStack}>
                             <div>
                                 <div className={styles.settingHeader}>
-                                    <Text className={styles.settingLabel}>Minimum Mastery Threshold</Text>
+                                    <Text className={styles.settingLabel}>{t("dashboard.admin.aiConfiguration.minimumMasteryThreshold")}</Text>
                                     <Text className={styles.settingValue}>{masteryThreshold}%</Text>
                                 </div>
                                 <Slider value={masteryThreshold} min={0} max={100} onChange={setMasteryThreshold} className={styles.slider} />
                             </div>
 
                             <div>
-                                <Text className={styles.settingLabelBlock}>Maximum Retry Attempts</Text>
+                                <Text className={styles.settingLabelBlock}>{t("dashboard.admin.aiConfiguration.maximumRetryAttempts")}</Text>
                                 <InputNumber
                                     className={styles.fullWidthInput}
                                     min={1}
@@ -164,23 +166,23 @@ export default function AdminAiConfigurationPage() {
                             </div>
 
                             <div>
-                                <Text className={styles.settingLabelBlock}>Difficulty Progression</Text>
+                                <Text className={styles.settingLabelBlock}>{t("dashboard.admin.aiConfiguration.difficultyProgression")}</Text>
                                 <Select<ProgressionMode>
                                     className={styles.fullWidthInput}
                                     value={difficultyProgression}
                                     onChange={setDifficultyProgression}
                                     options={[
-                                        { label: "Adaptive (AI-driven)", value: "Adaptive (AI-driven)" },
-                                        { label: "Linear (Strict sequence)", value: "Linear (Strict sequence)" },
-                                        { label: "Custom", value: "Custom" },
+                                        { label: t("dashboard.admin.aiConfiguration.progressionModeAdaptive"), value: "Adaptive (AI-driven)" },
+                                        { label: t("dashboard.admin.aiConfiguration.progressionModeLinear"), value: "Linear (Strict sequence)" },
+                                        { label: t("dashboard.admin.aiConfiguration.progressionModeCustom"), value: "Custom" },
                                     ]}
                                 />
                             </div>
 
                             <div>
                                 <div className={styles.settingHeader}>
-                                    <Text className={styles.settingLabel}>Content Recommendation Weight</Text>
-                                    <Text className={styles.settingValue}>{recommendationWeight >= 70 ? "High" : recommendationWeight >= 40 ? "Medium" : "Low"}</Text>
+                                    <Text className={styles.settingLabel}>{t("dashboard.admin.aiConfiguration.contentRecommendationWeight")}</Text>
+                                    <Text className={styles.settingValue}>{recommendationWeight >= 70 ? t("dashboard.admin.aiConfiguration.high") : recommendationWeight >= 40 ? t("dashboard.admin.aiConfiguration.medium") : t("dashboard.admin.aiConfiguration.low")}</Text>
                                 </div>
                                 <Slider value={recommendationWeight} min={0} max={100} onChange={setRecommendationWeight} className={styles.slider} />
                             </div>
@@ -189,17 +191,17 @@ export default function AdminAiConfigurationPage() {
                 </Col>
 
                 <Col xs={24} lg={12}>
-                    <Card className={styles.sectionCard} title="Difficulty Adjustment">
+                    <Card className={styles.sectionCard} title={t("dashboard.admin.aiConfiguration.difficultyAdjustment")}>
                         <Space direction="vertical" size={20} className={styles.settingsStack}>
                             <div className={styles.settingHeader}>
-                                <Text className={styles.settingLabel}>Auto-adjust Difficulty</Text>
+                                <Text className={styles.settingLabel}>{t("dashboard.admin.aiConfiguration.autoAdjustDifficulty")}</Text>
                                 <Switch checked={autoAdjustDifficulty} onChange={setAutoAdjustDifficulty} />
                             </div>
 
                             <div>
                                 <div className={styles.settingHeader}>
-                                    <Text className={styles.settingLabel}>Adjustment Sensitivity</Text>
-                                    <Text className={styles.settingValue}>{adjustmentSensitivity >= 70 ? "High" : adjustmentSensitivity >= 40 ? "Medium" : "Low"}</Text>
+                                    <Text className={styles.settingLabel}>{t("dashboard.admin.aiConfiguration.adjustmentSensitivity")}</Text>
+                                    <Text className={styles.settingValue}>{adjustmentSensitivity >= 70 ? t("dashboard.admin.aiConfiguration.high") : adjustmentSensitivity >= 40 ? t("dashboard.admin.aiConfiguration.medium") : t("dashboard.admin.aiConfiguration.low")}</Text>
                                 </div>
                                 <Slider
                                     value={adjustmentSensitivity}
@@ -212,7 +214,7 @@ export default function AdminAiConfigurationPage() {
                             </div>
 
                             <div>
-                                <Text className={styles.settingLabelBlock}>Min. Questions Before Adjustment</Text>
+                                <Text className={styles.settingLabelBlock}>{t("dashboard.admin.aiConfiguration.minQuestionsBeforeAdjustment")}</Text>
                                 <InputNumber
                                     className={styles.fullWidthInput}
                                     min={1}
@@ -225,7 +227,7 @@ export default function AdminAiConfigurationPage() {
 
                             <Row gutter={[12, 12]}>
                                 <Col xs={24} sm={12}>
-                                    <Text className={styles.settingLabelBlock}>Increase Threshold (%)</Text>
+                                    <Text className={styles.settingLabelBlock}>{t("dashboard.admin.aiConfiguration.increaseThreshold")}</Text>
                                     <InputNumber
                                         className={styles.fullWidthInput}
                                         min={0}
@@ -236,7 +238,7 @@ export default function AdminAiConfigurationPage() {
                                     />
                                 </Col>
                                 <Col xs={24} sm={12}>
-                                    <Text className={styles.settingLabelBlock}>Decrease Threshold (%)</Text>
+                                    <Text className={styles.settingLabelBlock}>{t("dashboard.admin.aiConfiguration.decreaseThreshold")}</Text>
                                     <InputNumber
                                         className={styles.fullWidthInput}
                                         min={0}
@@ -253,7 +255,7 @@ export default function AdminAiConfigurationPage() {
             </Row>
 
             <Button type="primary" className={styles.saveButton} onClick={handleSaveConfiguration}>
-                Save Configuration
+                {t("dashboard.admin.aiConfiguration.saveConfiguration")}
             </Button>
         </div>
     );

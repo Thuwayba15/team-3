@@ -1,5 +1,10 @@
+"use client";
+
 import { PageHeader } from "@/components/layout";
+import { useTranslation } from "react-i18next";
 
 export default function StudentLessonsPage() {
-    return <PageHeader title="Student Lessons" subtitle="Page scaffold placeholder" />;
+    const { t } = useTranslation();
+
+    return <PageHeader title={t("dashboard.student.lessonsTitle")} subtitle={t("dashboard.scaffoldSubtitle")} />;
 }
