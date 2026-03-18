@@ -1,7 +1,6 @@
 "use client";
 
-import { QuestionCircleOutlined } from "@ant-design/icons";
-import { Button, Layout, Menu, Typography } from "antd";
+import {Layout, Menu, Typography } from "antd";
 import { usePathname, useRouter } from "next/navigation";
 import { NAVIGATION_BY_ROLE } from "@/config/navigation";
 import { ROLE_LABELS } from "@/config/roles";
