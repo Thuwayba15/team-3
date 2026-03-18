@@ -8,8 +8,11 @@ import {
     useEffect,
     useMemo,
     useReducer,
+    useRef,
 } from "react";
 import { useTranslation } from "react-i18next";
+import { useAuthState } from "@/providers/auth";
+import { userProfileService } from "@/services/users/userProfileService";
 import { setLanguage, setLoading } from "./actions";
 import {
     II18nContextActions,
@@ -27,9 +30,24 @@ interface II18nProviderProps {
     children: ReactNode;
 }
 
+const SUPPORTED_LANGUAGE_CODES = ["en", "zu", "st", "af"] as const;
+
+function normalizeLanguageCode(languageCode: string | null | undefined): string {
+    if (!languageCode) {
+        return "en";
+    }
+
+    const normalized = languageCode.trim().toLowerCase();
+    return SUPPORTED_LANGUAGE_CODES.includes(normalized as (typeof SUPPORTED_LANGUAGE_CODES)[number])
+        ? normalized
+        : "en";
+}
+
 export const I18nProvider = ({ children }: II18nProviderProps) => {
     const [state, dispatch] = useReducer(i18nReducer, INITIAL_STATE);
     const { i18n } = useTranslation();
+    const { isAuthenticated, isLoading: isAuthLoading, userId } = useAuthState();
+    const syncedLanguageUserIdRef = useRef<number | null>(null);
 
     useEffect(() => {
         const savedLanguage = localStorage.getItem(PLATFORM_LANGUAGE_STORAGE_KEY) ?? "en";
@@ -55,12 +73,59 @@ export const I18nProvider = ({ children }: II18nProviderProps) => {
         };
     }, [i18n]);
 
+    useEffect(() => {
+        if (isAuthLoading) {
+            return;
+        }
+
+        if (!isAuthenticated || userId === null) {
+            syncedLanguageUserIdRef.current = null;
+            return;
+        }
+
+        if (syncedLanguageUserIdRef.current === userId) {
+            return;
+        }
+
+        let isCancelled = false;
+
+        const syncLanguageFromServer = async (): Promise<void> => {
+            dispatch(setLoading(true));
+
+            try {
+                const profile = await userProfileService.getMyProfile();
+                const serverLanguageCode = normalizeLanguageCode(profile.preferredLanguage);
+                const activeLanguageCode = normalizeLanguageCode(i18n.language);
+
+                if (serverLanguageCode !== activeLanguageCode) {
+                    await i18n.changeLanguage(serverLanguageCode);
+                }
+
+                localStorage.setItem(PLATFORM_LANGUAGE_STORAGE_KEY, serverLanguageCode);
+                syncedLanguageUserIdRef.current = userId;
+            } catch {
+                // keep cached language when profile lookup fails
+            } finally {
+                if (!isCancelled) {
+                    dispatch(setLoading(false));
+                }
+            }
+        };
+
+        void syncLanguageFromServer();
+
+        return () => {
+            isCancelled = true;
+        };
+    }, [i18n, isAuthLoading, isAuthenticated, userId]);
+
     const updateLanguage = useCallback(async (languageCode: string): Promise<void> => {
         dispatch(setLoading(true));
 
         try {
-            await i18n.changeLanguage(languageCode);
-            localStorage.setItem(PLATFORM_LANGUAGE_STORAGE_KEY, languageCode);
+            const normalizedLanguageCode = normalizeLanguageCode(languageCode);
+            await i18n.changeLanguage(normalizedLanguageCode);
+            localStorage.setItem(PLATFORM_LANGUAGE_STORAGE_KEY, normalizedLanguageCode);
         } finally {
             dispatch(setLoading(false));
         }
