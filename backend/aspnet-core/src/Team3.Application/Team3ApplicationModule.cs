@@ -1,10 +1,14 @@
 ﻿using Abp.AutoMapper;
 using Abp.Modules;
 using Abp.Reflection.Extensions;
-using Team3.Authorization;
-
 using Castle.MicroKernel.Registration;
 using FluentValidation;
+using System.Globalization;
+using System.Linq;
+using Team3.Authorization;
+using Team3.Domain.Subjects;
+using Team3.Services.Subjects;
+using Team3.Services.Subjects.Dto;
 using Team3.Users.Dto;
 
 namespace Team3;
@@ -35,8 +39,54 @@ public class Team3ApplicationModule : AbpModule
                 .LifestyleTransient()
         );
 
-        Configuration.Modules.AbpAutoMapper().Configurators.Add(
-            cfg => cfg.AddMaps(thisAssembly)
-        );
+        Configuration.Modules.AbpAutoMapper().Configurators.Add(cfg =>
+        {
+            cfg.AddMaps(thisAssembly);
+
+            cfg.CreateMap<Topic, TopicDto>()
+                .ForMember(dest => dest.Title, opt => opt.MapFrom(src =>
+                    src.Translations.Any(t => t.Language == CultureInfo.CurrentUICulture.Name)
+                        ? src.Translations.First(t => t.Language == CultureInfo.CurrentUICulture.Name).Title
+                        : src.Translations.Select(t => t.Title).FirstOrDefault() ?? string.Empty
+                ))
+                .ForMember(dest => dest.Summary, opt => opt.MapFrom(src =>
+                    src.Translations.Any(t => t.Language == CultureInfo.CurrentUICulture.Name)
+                        ? src.Translations.First(t => t.Language == CultureInfo.CurrentUICulture.Name).Summary
+                        : src.Translations.Select(t => t.Summary).FirstOrDefault() ?? string.Empty
+             ));
+
+            cfg.CreateMap<Lesson, LessonDto>()
+                .ForMember(dest => dest.Title, opt => opt.MapFrom(src =>
+                    src.Translations.Any(t => t.Language == CultureInfo.CurrentUICulture.Name)
+                        ? src.Translations.First(t => t.Language == CultureInfo.CurrentUICulture.Name).Title
+                        : src.Translations.Select(t => t.Title).FirstOrDefault() ?? string.Empty
+                ))
+                .ForMember(dest => dest.Content, opt => opt.MapFrom(src =>
+                    src.Translations.Any(t => t.Language == CultureInfo.CurrentUICulture.Name)
+                        ? src.Translations.First(t => t.Language == CultureInfo.CurrentUICulture.Name).Content
+                        : src.Translations.Select(t => t.Content).FirstOrDefault() ?? string.Empty
+            ));
+
+            cfg.CreateMap<LessonMaterial, LessonMaterialDto>();
+
+            cfg.CreateMap<Subject, SubjectDto>()
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src =>
+                    // Check current culture first
+                    src.Translations.Any(t => t.Language == CultureInfo.CurrentUICulture.Name)
+                        ? src.Translations.First(t => t.Language == CultureInfo.CurrentUICulture.Name).Name
+                        // Else try two-letter culture (e.g. "en")
+                        : src.Translations.Any(t => t.Language == CultureInfo.CurrentUICulture.TwoLetterISOLanguageName)
+                            ? src.Translations.First(t => t.Language == CultureInfo.CurrentUICulture.TwoLetterISOLanguageName).Name
+                            // Else fallback to the first one available, or empty string if none exist
+                            : src.Translations.Select(t => t.Name).FirstOrDefault() ?? string.Empty
+                ))
+                .ForMember(dest => dest.Description, opt => opt.MapFrom(src =>
+                    src.Translations.Any(t => t.Language == CultureInfo.CurrentUICulture.Name)
+                        ? src.Translations.First(t => t.Language == CultureInfo.CurrentUICulture.Name).Description
+                        : src.Translations.Any(t => t.Language == CultureInfo.CurrentUICulture.TwoLetterISOLanguageName)
+                            ? src.Translations.First(t => t.Language == CultureInfo.CurrentUICulture.TwoLetterISOLanguageName).Description
+                            : src.Translations.Select(t => t.Description).FirstOrDefault() ?? string.Empty
+                ));
+        });
     }
 }
