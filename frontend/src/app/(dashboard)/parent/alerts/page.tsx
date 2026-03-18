@@ -3,9 +3,8 @@
 import {
     CheckCircleOutlined,
     ClockCircleOutlined,
-    ExclamationCircleOutlined,
     InfoCircleOutlined,
-    WarningOutlined,
+    WarningOutlined
 } from "@ant-design/icons";
 import { Button, Card, Typography } from "antd";
 import { useState } from "react";

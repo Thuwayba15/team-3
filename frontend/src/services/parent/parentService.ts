@@ -2,7 +2,7 @@ import axios from "axios";
 import { apiClient } from "@/lib/api/client";
 
 const BASE = "/api/services/app/ParentChildManagement";
-const DASHBOARD_BASE = "/api/services/app/ParentDashboard";
+// const DASHBOARD_BASE = "/api/services/app/ParentDashboard";
 
 export interface ChildSummary {
     studentUserId: number;
