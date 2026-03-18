@@ -7,7 +7,6 @@ import { useEffect, useMemo, useState } from "react";
 import { LANGUAGE_OPTIONS } from "@/config/roles";
 import { useAuthActions, useAuthState } from "@/providers/auth";
 import { sessionService } from "@/services/sessions/sessionService";
-import { sessionService } from "@/services/sessions/sessionService";
 import { userService } from "@/services/users/userService";
 import { useStyles } from "./AppHeader.style";
 
