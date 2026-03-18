@@ -35,6 +35,7 @@ export interface IRegisterRequest {
 export interface ILoginResponse {
     expireInSeconds: number;
     userId: number;
+    roles: string[];
 }
 
 export interface IMeResponse {
