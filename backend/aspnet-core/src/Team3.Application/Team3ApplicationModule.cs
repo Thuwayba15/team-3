@@ -5,6 +5,7 @@ using Team3.Authorization;
 
 using Castle.MicroKernel.Registration;
 using FluentValidation;
+using Team3.LearningMaterials.Dto;
 using Team3.Users.Dto;
 
 namespace Team3;
@@ -32,6 +33,10 @@ public class Team3ApplicationModule : AbpModule
 
             Component.For<IValidator<UpdateMyProfileInput>>()
                 .ImplementedBy<UpdateMyProfileInputValidator>()
+                .LifestyleTransient(),
+
+            Component.For<IValidator<UploadTextLearningMaterialInput>>()
+                .ImplementedBy<UploadTextLearningMaterialInputValidator>()
                 .LifestyleTransient()
         );
 

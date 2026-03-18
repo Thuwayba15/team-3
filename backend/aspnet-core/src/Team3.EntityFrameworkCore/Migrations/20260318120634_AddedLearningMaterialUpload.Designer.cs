@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Team3.EntityFrameworkCore;
@@ -11,9 +12,11 @@ using Team3.EntityFrameworkCore;
 namespace Team3.Migrations
 {
     [DbContext(typeof(Team3DbContext))]
-    partial class Team3DbContextModelSnapshot : ModelSnapshot
+    [Migration("20260318120634_AddedLearningMaterialUpload")]
+    partial class AddedLearningMaterialUpload
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1445,7 +1448,7 @@ namespace Team3.Migrations
 
                     b.HasIndex("UploadedByUserId");
 
-                    b.ToTable("SourceMaterials", (string)null);
+                    b.ToTable("AppSourceMaterials", (string)null);
                 });
 
             modelBuilder.Entity("Team3.Academic.Lesson", b =>
@@ -1517,7 +1520,7 @@ namespace Team3.Migrations
 
                     b.HasIndex("TopicId");
 
-                    b.ToTable("Lessons", (string)null);
+                    b.ToTable("AppLessons", (string)null);
                 });
 
             modelBuilder.Entity("Team3.Academic.LessonMaterial", b =>
@@ -1555,7 +1558,7 @@ namespace Team3.Migrations
 
                     b.HasIndex("LessonId");
 
-                    b.ToTable("LessonMaterials", (string)null);
+                    b.ToTable("AppLessonMaterials", (string)null);
                 });
 
             modelBuilder.Entity("Team3.Academic.LessonTranslation", b =>
@@ -1614,7 +1617,7 @@ namespace Team3.Migrations
                     b.HasIndex("LessonId", "LanguageId")
                         .IsUnique();
 
-                    b.ToTable("LessonTranslations", (string)null);
+                    b.ToTable("AppLessonTranslations", (string)null);
                 });
 
             modelBuilder.Entity("Team3.Academic.Subject", b =>
@@ -1668,7 +1671,7 @@ namespace Team3.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.ToTable("Subjects", (string)null);
+                    b.ToTable("AppSubjects", (string)null);
                 });
 
             modelBuilder.Entity("Team3.Academic.Topic", b =>
@@ -1738,7 +1741,7 @@ namespace Team3.Migrations
 
                     b.HasIndex("SubjectId");
 
-                    b.ToTable("Topics", (string)null);
+                    b.ToTable("AppTopics", (string)null);
                 });
 
             modelBuilder.Entity("Team3.Authorization.Roles.Role", b =>
@@ -2005,7 +2008,7 @@ namespace Team3.Migrations
                     b.HasIndex("Code")
                         .IsUnique();
 
-                    b.ToTable("Languages", (string)null);
+                    b.ToTable("AppLanguages", (string)null);
                 });
 
             modelBuilder.Entity("Team3.MultiTenancy.Tenant", b =>
