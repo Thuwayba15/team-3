@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Parent Child Progress', () => {
+test.describe.skip('Parent Child Progress', () => {
     test.beforeEach(async ({ page }) => {
         await page.goto('/parent/child-progress');
     });

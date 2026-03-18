@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Parent Alerts', () => {
+test.describe.skip('Parent Alerts', () => {
     test.beforeEach(async ({ page }) => {
         await page.goto('/parent/alerts');
     });

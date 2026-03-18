@@ -7758,3 +7758,62 @@ INFO  2026-03-18 15:19:08,524 [3    ] .Mvc.Infrastructure.ObjectResultExecutor -
 INFO  2026-03-18 15:19:08,536 [3    ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Controllers.TokenAuthController.Authenticate (Team3.Web.Core) in 6593.979ms
 INFO  2026-03-18 15:19:08,538 [3    ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Controllers.TokenAuthController.Authenticate (Team3.Web.Core)'
 INFO  2026-03-18 15:19:08,540 [3    ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 POST https://localhost:44311/api/TokenAuth/Authenticate - 200 - application/json;+charset=utf-8 6675.7308ms
+INFO  2026-03-18 15:42:07,090 [32   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 OPTIONS https://localhost:44311/api/TokenAuth/Me - - -
+INFO  2026-03-18 15:42:07,121 [12   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 OPTIONS https://localhost:44311/api/TokenAuth/Me - - -
+INFO  2026-03-18 15:42:07,152 [33   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 OPTIONS https://localhost:44311/api/TokenAuth/Me - - -
+INFO  2026-03-18 15:42:07,200 [33   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-18 15:42:07,229 [12   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-18 15:42:07,259 [32   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-18 15:42:07,305 [33   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 OPTIONS https://localhost:44311/api/TokenAuth/Me - 204 - - 231.3273ms
+INFO  2026-03-18 15:42:07,338 [32   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 OPTIONS https://localhost:44311/api/TokenAuth/Me - 204 - - 281.9948ms
+INFO  2026-03-18 15:42:07,369 [12   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 OPTIONS https://localhost:44311/api/TokenAuth/Me - 204 - - 282.2353ms
+INFO  2026-03-18 15:42:07,375 [19   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/api/TokenAuth/Me - - -
+INFO  2026-03-18 15:42:07,415 [32   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/api/TokenAuth/Me - - -
+INFO  2026-03-18 15:42:07,448 [10   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/api/TokenAuth/Me - - -
+INFO  2026-03-18 15:42:07,476 [32   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-18 15:42:07,507 [10   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-18 15:42:07,539 [19   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-18 15:42:07,607 [19   ] uthorization.DefaultAuthorizationService - Authorization failed. These requirements were not met:
+DenyAnonymousAuthorizationRequirement: Requires an authenticated user.
+INFO  2026-03-18 15:42:07,634 [32   ] uthorization.DefaultAuthorizationService - Authorization failed. These requirements were not met:
+DenyAnonymousAuthorizationRequirement: Requires an authenticated user.
+INFO  2026-03-18 15:42:07,666 [10   ] uthorization.DefaultAuthorizationService - Authorization failed. These requirements were not met:
+DenyAnonymousAuthorizationRequirement: Requires an authenticated user.
+INFO  2026-03-18 15:42:07,696 [32   ] uthentication.JwtBearer.JwtBearerHandler - AuthenticationScheme: JwtBearer was challenged.
+INFO  2026-03-18 15:42:07,726 [19   ] uthentication.JwtBearer.JwtBearerHandler - AuthenticationScheme: JwtBearer was challenged.
+INFO  2026-03-18 15:42:07,733 [10   ] uthentication.JwtBearer.JwtBearerHandler - AuthenticationScheme: JwtBearer was challenged.
+INFO  2026-03-18 15:42:07,773 [32   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/api/TokenAuth/Me - 401 - - 367.7026ms
+INFO  2026-03-18 15:42:07,781 [10   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/api/TokenAuth/Me - 401 - - 360.4554ms
+INFO  2026-03-18 15:42:07,785 [19   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/api/TokenAuth/Me - 401 - - 404.4313ms
+INFO  2026-03-18 15:42:11,425 [10   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 OPTIONS https://localhost:44311/api/TokenAuth/Me - - -
+INFO  2026-03-18 15:42:11,456 [32   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 OPTIONS https://localhost:44311/api/services/app/ParentChildManagement/GetMyChildren - - -
+INFO  2026-03-18 15:42:11,459 [10   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-18 15:42:11,488 [32   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-18 15:42:11,493 [32   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 OPTIONS https://localhost:44311/api/services/app/ParentChildManagement/GetMyChildren - 204 - - 63.9478ms
+INFO  2026-03-18 15:42:11,519 [10   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 OPTIONS https://localhost:44311/api/TokenAuth/Me - 204 - - 68.2334ms
+INFO  2026-03-18 15:42:11,551 [19   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/api/services/app/ParentChildManagement/GetMyChildren - - -
+INFO  2026-03-18 15:42:11,583 [18   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/api/TokenAuth/Me - - -
+INFO  2026-03-18 15:42:11,591 [19   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-18 15:42:11,591 [18   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-18 15:42:11,629 [18   ] uthorization.DefaultAuthorizationService - Authorization failed. These requirements were not met:
+DenyAnonymousAuthorizationRequirement: Requires an authenticated user.
+INFO  2026-03-18 15:42:11,660 [18   ] uthentication.JwtBearer.JwtBearerHandler - AuthenticationScheme: JwtBearer was challenged.
+INFO  2026-03-18 15:42:11,664 [32   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 OPTIONS https://localhost:44311/api/TokenAuth/Me - - -
+INFO  2026-03-18 15:42:11,691 [32   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-18 15:42:11,721 [10   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 OPTIONS https://localhost:44311/api/services/app/ParentChildManagement/GetMyChildren - - -
+INFO  2026-03-18 15:42:11,753 [32   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 OPTIONS https://localhost:44311/api/TokenAuth/Me - 204 - - 92.3239ms
+INFO  2026-03-18 15:42:11,784 [33   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/api/TokenAuth/Me - - -
+INFO  2026-03-18 15:42:11,816 [10   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-18 15:42:11,847 [33   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-18 15:42:11,878 [32   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/api/services/app/ParentChildManagement/GetMyChildren - - -
+INFO  2026-03-18 15:42:11,911 [32   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-18 15:42:11,943 [10   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 OPTIONS https://localhost:44311/api/services/app/ParentChildManagement/GetMyChildren - 204 - - 214.2413ms
+INFO  2026-03-18 15:42:11,976 [18   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/api/TokenAuth/Me - 401 - - 423.9852ms
+INFO  2026-03-18 15:42:12,005 [33   ] uthorization.DefaultAuthorizationService - Authorization failed. These requirements were not met:
+DenyAnonymousAuthorizationRequirement: Requires an authenticated user.
+INFO  2026-03-18 15:42:12,007 [32   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Services.Parents.ParentChildManagementAppService.GetMyChildrenAsync (Team3.Application)'
+INFO  2026-03-18 15:42:12,010 [19   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Services.Parents.ParentChildManagementAppService.GetMyChildrenAsync (Team3.Application)'
+INFO  2026-03-18 15:42:12,013 [33   ] uthentication.JwtBearer.JwtBearerHandler - AuthenticationScheme: JwtBearer was challenged.
+INFO  2026-03-18 15:42:12,050 [33   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/api/TokenAuth/Me - 401 - - 260.4959ms
+INFO  2026-03-18 15:42:12,090 [19   ] c.Infrastructure.ControllerActionInvoker - Route matched with {area = "app", action = "GetMyChildren", controller = "ParentChildManagement"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.Collections.Generic.List`1[Team3.Services.Parents.Dto.ChildLinkResultDto]] GetMyChildrenAsync() on controller Team3.Services.Parents.ParentChildManagementAppService (Team3.Application).
+INFO  2026-03-18 15:42:12,127 [32   ] c.Infrastructure.ControllerActionInvoker - Route matched with {area = "app", action = "GetMyChildren", controller = "ParentChildManagement"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.Collections.Generic.List`1[Team3.Services.Parents.Dto.ChildLinkResultDto]] GetMyChildrenAsync() on controller Team3.Services.Parents.ParentChildManagementAppService (Team3.Application).
