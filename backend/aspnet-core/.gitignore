@@ -260,3 +260,7 @@ src/Team3.Migrator/secrets.json
 backend/**/Logs.txt
 backend/**/logs/
 *.log
+
+src/Team3.Migrator/appsettings.json
+src/Team3.Web.Host/appsettings.json
+src/Team3.Web.Mvc/appsettings.json
