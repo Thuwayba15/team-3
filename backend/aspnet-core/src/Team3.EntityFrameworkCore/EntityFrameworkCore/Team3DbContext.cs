@@ -4,6 +4,7 @@ using Team3.Authorization.Roles;
 using Team3.Authorization.Users;
 using Team3.Domain.Students.Team3.Students;
 using Team3.Domain.Subjects;
+using Team3.Localization;
 using Team3.MultiTenancy;
 using Team3.Users;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -21,6 +22,9 @@ public class Team3DbContext : AbpZeroDbContext<Tenant, Role, User, Team3DbContex
     public DbSet<ParentProfile> ParentProfiles { get; set; }
     // Admin
     public DbSet<AdminProfile> AdminProfiles { get; set; }
+
+    // Platform UI languages
+    public DbSet<UILanguage> UILanguages { get; set; }
 
     // Subjects
     public virtual DbSet<Subject> Subjects { get; set; }
@@ -91,6 +95,17 @@ public class Team3DbContext : AbpZeroDbContext<Tenant, Role, User, Team3DbContex
 
             entity.Property(x => x.PreferredLanguage).IsRequired().HasMaxLength(64);
             entity.Property(x => x.Department).HasMaxLength(128);
+        });
+
+        modelBuilder.Entity<UILanguage>(entity =>
+        {
+            entity.ToTable("AppUILanguages");
+            entity.HasIndex(x => x.Code).IsUnique();
+
+            entity.Property(x => x.Code).IsRequired().HasMaxLength(16);
+            entity.Property(x => x.Name).IsRequired().HasMaxLength(64);
+            entity.Property(x => x.IsActive).IsRequired();
+            entity.Property(x => x.IsDefault).IsRequired();
         });
     }
 }
