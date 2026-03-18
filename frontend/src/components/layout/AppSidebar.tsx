@@ -57,13 +57,6 @@ export const AppSidebar = ({ role, isMobile = false, onNavigate }: IAppSidebarPr
                     }
                 }}
             />
-
-            <div className={styles.helpSection}>
-                <QuestionCircleOutlined className={styles.helpIcon} />
-                <Typography.Text strong className={styles.helpTitle}>Need Help?</Typography.Text>
-                <Typography.Text className={styles.helpSubtitle}>Contact support or view guides.</Typography.Text>
-                <Button block className={styles.helpButton}>Help Center</Button>
-            </div>
         </>
     );
 
