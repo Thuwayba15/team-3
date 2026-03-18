@@ -13,11 +13,10 @@ public class InitialHostDbBuilder
     {
         new DefaultEditionCreator(_context).Create();
         new DefaultLanguagesCreator(_context).Create();
-        new InitialUILanguagesBuilder(_context).Create();
         new HostRoleAndUserCreator(_context).Create();
         new DefaultSettingsCreator(_context).Create();
         new DefaultPlatformRoleCreator(_context).Create();
-        new InitialSubjectsBuilder(_context).Create();
+        // new InitialSubjectsBuilder(_context).Create();
 
         _context.SaveChanges();
     }

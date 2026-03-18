@@ -5,6 +5,7 @@ using Abp.Runtime.Validation;
 using Abp.UI;
 using Ardalis.GuardClauses;
 using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Team3.Authorization.Roles;
 using Team3.Authorization.Users;
+using Team3.Localization;
 using Team3.Users.Dto;
 
 namespace Team3.Users
@@ -28,6 +30,7 @@ namespace Team3.Users
         private readonly IRepository<TutorProfile, long> _tutorProfileRepository;
         private readonly IRepository<ParentProfile, long> _parentProfileRepository;
         private readonly IRepository<AdminProfile, long> _adminProfileRepository;
+        private readonly IRepository<PlatformLanguage, int> _languageRepository;
         private readonly IValidator<RegisterUserInput> _registerValidator;
         private readonly IValidator<UpdateMyProfileInput> _updateValidator;
 
@@ -39,6 +42,7 @@ namespace Team3.Users
             IRepository<TutorProfile, long> tutorProfileRepository,
             IRepository<ParentProfile, long> parentProfileRepository,
             IRepository<AdminProfile, long> adminProfileRepository,
+            IRepository<PlatformLanguage, int> languageRepository,
             IValidator<RegisterUserInput> registerValidator,
             IValidator<UpdateMyProfileInput> updateValidator)
         {
@@ -49,6 +53,7 @@ namespace Team3.Users
             _tutorProfileRepository = tutorProfileRepository;
             _parentProfileRepository = parentProfileRepository;
             _adminProfileRepository = adminProfileRepository;
+            _languageRepository = languageRepository;
             _registerValidator = registerValidator;
             _updateValidator = updateValidator;
         }
@@ -61,6 +66,7 @@ namespace Team3.Users
         {
             Guard.Against.Null(input);
             await ValidateAsync(_registerValidator, input);
+            await EnsurePreferredLanguageIsActiveAsync(input.PreferredLanguage);
 
             await EnsureRoleExistsAsync(input.Role);
             await EnsureEmailIsUniqueAsync(input.EmailAddress);
@@ -108,6 +114,7 @@ namespace Team3.Users
         {
             Guard.Against.Null(input);
             await ValidateAsync(_updateValidator, input);
+            await EnsurePreferredLanguageIsActiveAsync(input.PreferredLanguage);
 
             var userId = AbpSession.GetUserId();
             var user = await _userRepository.GetAsync(userId);
@@ -175,6 +182,22 @@ namespace Team3.Users
             if (existingUser != null)
             {
                 throw new UserFriendlyException("A user with this email address already exists.");
+            }
+        }
+
+        /// <summary>
+        /// Ensures that the preferred language code exists and is active in the existing languages table.
+        /// </summary>
+        private async Task EnsurePreferredLanguageIsActiveAsync(string preferredLanguage)
+        {
+            var normalizedCode = Guard.Against.NullOrWhiteSpace(preferredLanguage).Trim().ToLowerInvariant();
+
+            var isActiveLanguage = await _languageRepository.GetAll()
+                .AnyAsync(language => language.Code == normalizedCode && language.IsActive && !language.IsDeleted);
+
+            if (!isActiveLanguage)
+            {
+                throw new UserFriendlyException($"Preferred language '{normalizedCode}' is invalid or inactive.");
             }
         }
 

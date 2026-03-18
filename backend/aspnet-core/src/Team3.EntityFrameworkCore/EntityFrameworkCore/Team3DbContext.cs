@@ -4,10 +4,10 @@ using Team3.Authorization.Roles;
 using Team3.Authorization.Users;
 using Team3.Domain.Students.Team3.Students;
 using Team3.Domain.Subjects;
-using Team3.Localization;
 using Team3.MultiTenancy;
 using Team3.Users;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Team3.Localization;
 
 namespace Team3.EntityFrameworkCore;
 
@@ -23,9 +23,6 @@ public class Team3DbContext : AbpZeroDbContext<Tenant, Role, User, Team3DbContex
     // Admin
     public DbSet<AdminProfile> AdminProfiles { get; set; }
 
-    // Platform UI languages
-    public DbSet<UILanguage> UILanguages { get; set; }
-
     // Subjects
     public virtual DbSet<Subject> Subjects { get; set; }
     public virtual DbSet<SubjectTranslation> SubjectTranslations { get; set; }
@@ -38,6 +35,9 @@ public class Team3DbContext : AbpZeroDbContext<Tenant, Role, User, Team3DbContex
     public virtual DbSet<Lesson> Lessons { get; set; }
     public virtual DbSet<LessonTranslation> LessonTranslations { get; set; }
     public virtual DbSet<LessonMaterial> LessonMaterials { get; set; }
+
+    // Custom platform languages table owned by this project
+    public virtual DbSet<PlatformLanguage> PlatformLanguages { get; set; }
 
     // Students
     public virtual DbSet<StudentSubject> StudentSubjects { get; set; }
@@ -97,15 +97,25 @@ public class Team3DbContext : AbpZeroDbContext<Tenant, Role, User, Team3DbContex
             entity.Property(x => x.Department).HasMaxLength(128);
         });
 
-        modelBuilder.Entity<UILanguage>(entity =>
+        modelBuilder.Entity<PlatformLanguage>(entity =>
         {
-            entity.ToTable("AppUILanguages");
-            entity.HasIndex(x => x.Code).IsUnique();
+            // Existing table managed outside this migration stream.
+            entity.ToTable("Languages", tableBuilder => tableBuilder.ExcludeFromMigrations());
+            entity.HasKey(x => x.Id);
 
-            entity.Property(x => x.Code).IsRequired().HasMaxLength(16);
-            entity.Property(x => x.Name).IsRequired().HasMaxLength(64);
+            entity.Property(x => x.Code).HasMaxLength(32);
+            entity.Property(x => x.Name).HasMaxLength(128);
+            entity.Property(x => x.NativeName).HasMaxLength(128);
             entity.Property(x => x.IsActive).IsRequired();
             entity.Property(x => x.IsDefault).IsRequired();
+            entity.Property(x => x.SortOrder).IsRequired();
+
+            entity.Property(x => x.CreationTime).IsRequired();
+            entity.Property(x => x.CreatorUserId);
+            entity.Property(x => x.LastModificationTime).HasColumnName("LastModificationTime");
+            entity.Property(x => x.IsDeleted).IsRequired();
+            entity.Property(x => x.DeleterUserId);
+            entity.Property(x => x.DeletionTime);
         });
     }
 }
