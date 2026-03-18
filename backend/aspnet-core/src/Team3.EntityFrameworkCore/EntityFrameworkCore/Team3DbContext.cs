@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Team3.Authorization.Roles;
 using Team3.Authorization.Users;
-using Team3.Domain.Parents;
+using Team3.Domain.Parents; 
 using Team3.Domain.Students.Team3.Students;
 using Team3.Domain.Subjects;
 using Team3.MultiTenancy;
