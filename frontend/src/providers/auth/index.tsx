@@ -104,9 +104,12 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
         }
     };
 
-    const logout = (): void => {
-        authService.logout().catch(() => {});
-        localStorage.removeItem(ROLE_STORAGE_KEY);
+    const logout = async (): Promise<void> => {
+        try {
+            await authService.logout();
+        } catch {
+            // keep UX predictable: clear local auth even if network logout fails
+        }
         dispatch(setUnauthenticated());
     };
 
