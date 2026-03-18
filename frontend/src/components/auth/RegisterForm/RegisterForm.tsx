@@ -1,8 +1,11 @@
 "use client";
 import React from "react";
-import { Form, Input, Button, Select, Alert } from "antd";
+import { Form, Input, Button, Select, Typography } from "antd";
 import { UserOutlined, MailOutlined, LockOutlined, IdcardOutlined } from "@ant-design/icons";
 import { IRegisterValues } from "@/providers/auth/context";
+import { useStyles } from "./style";
+
+const { Text } = Typography;
 
 interface RegisterFormProps {
   onSubmit: (values: IRegisterValues) => void;
@@ -12,60 +15,75 @@ interface RegisterFormProps {
 }
 
 export const RegisterForm = ({ onSubmit, isLoading, errorMessage, onErrorDismiss }: RegisterFormProps) => {
-  return (
-    <Form layout="vertical" onFinish={onSubmit} requiredMark={false}>
-      {errorMessage && (
-        <Alert
-          message={errorMessage}
-          type="error"
-          showIcon
-          closable
-          onClose={onErrorDismiss}
-          style={{ marginBottom: 24, borderRadius: 12 }}
-        />
-      )}
+  const { styles } = useStyles();
 
-      {/* Row for Name & Surname */}
-      <div style={{ display: 'flex', gap: '12px' }}>
-        <Form.Item name="name" rules={[{ required: true, message: 'Required' }]} style={{ flex: 1 }}>
+  return (
+    <Form
+      layout="vertical"
+      onFinish={onSubmit}
+      onValuesChange={() => {
+        if (errorMessage) {
+          onErrorDismiss();
+        }
+      }}
+      requiredMark={false}
+      className={styles.form}
+    >
+
+      <div className={styles.nameRow}>
+        <Form.Item
+          name="name"
+          rules={[{ required: true, message: "Required" }]}
+          className={styles.nameField}
+        >
           <Input prefix={<IdcardOutlined />} placeholder="First Name" />
         </Form.Item>
-        <Form.Item name="surname" rules={[{ required: true, message: 'Required' }]} style={{ flex: 1 }}>
+
+        <Form.Item
+          name="surname"
+          rules={[{ required: true, message: "Required" }]}
+          className={styles.nameField}
+        >
           <Input prefix={<IdcardOutlined />} placeholder="Last Name" />
         </Form.Item>
       </div>
 
-      <Form.Item name="userName" rules={[{ required: true, message: 'Please input a username' }]}>
+      <Form.Item name="userName" rules={[{ required: true, message: "Please input a username" }]}>
         <Input prefix={<UserOutlined />} placeholder="Username" />
       </Form.Item>
 
-      <Form.Item name="emailAddress" rules={[{ required: true, type: 'email', message: 'Valid email required' }]}>
+      <Form.Item name="emailAddress" rules={[{ required: true, type: "email", message: "Valid email required" }]}>
         <Input prefix={<MailOutlined />} placeholder="Email Address" />
       </Form.Item>
 
-      <Form.Item name="role" rules={[{ required: true, message: 'Please select your role' }]}>
+      <Form.Item name="role" rules={[{ required: true, message: "Please select your role" }]}>
         <Select placeholder="I am a...">
           <Select.Option value="Student">Student</Select.Option>
           <Select.Option value="Parent">Parent</Select.Option>
           <Select.Option value="Tutor">Tutor</Select.Option>
-          <Select.Option value="Admin">Admin</Select.Option>
         </Select>
       </Form.Item>
 
       <Form.Item
         name="password"
         rules={[
-          { required: true, message: 'Password is required' },
+          { required: true, message: "Password is required" },
           {
             pattern: /(?=^.{8,}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!\s)[0-9a-zA-Z!@#$%^&*()]*$/,
-            message: 'Min 8 characters with at least one uppercase letter, lowercase letter, and number',
+            message: "Min 8 characters with at least one uppercase letter, lowercase letter, and number",
           },
         ]}
       >
         <Input.Password prefix={<LockOutlined />} placeholder="Password" />
       </Form.Item>
 
-      <Button type="primary" htmlType="submit" loading={isLoading}>
+      {errorMessage && (
+        <Text type="danger" className={styles.inlineError} role="alert">
+          {errorMessage}
+        </Text>
+      )}
+
+      <Button type="primary" htmlType="submit" loading={isLoading} className={styles.submitButton}>
         Sign Up
       </Button>
     </Form>

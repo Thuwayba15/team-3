@@ -8,8 +8,8 @@ export const useStyles = createStyles(({ css, token }) => ({
         align-items: center;
         justify-content: space-between;
         gap: ${token.marginMD}px;
-        padding: 0 ${token.paddingLG}px;
-        height: auto;
+        padding: ${token.paddingSM}px ${token.paddingLG}px;
+        min-height: 76px;
         line-height: normal;
 
         @media (max-width: 991px) {
@@ -17,6 +17,7 @@ export const useStyles = createStyles(({ css, token }) => ({
             align-items: stretch;
             padding: ${token.paddingSM}px ${token.paddingMD}px;
             gap: ${token.marginSM}px;
+            min-height: 88px;
         }
     `,
 
@@ -69,6 +70,11 @@ export const useStyles = createStyles(({ css, token }) => ({
         display: flex;
         align-items: center;
         gap: ${token.marginXS}px;
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        padding: 0;
+        color: ${token.colorText};
 
         @media (max-width: 575px) {
             min-width: 0;
@@ -88,6 +94,75 @@ export const useStyles = createStyles(({ css, token }) => ({
         @media (max-width: 575px) {
             flex: 1;
             min-width: 120px;
+        }
+    `,
+
+    userAvatar: css`
+        background: ${token.colorPrimaryBg};
+        color: ${token.colorPrimary};
+    `,
+
+    profileDropdown: css`
+        width: 320px;
+        background: ${token.colorBgElevated};
+        border: 1px solid ${token.colorBorderSecondary};
+        border-radius: ${token.borderRadiusLG}px;
+        box-shadow: ${token.boxShadowSecondary};
+        padding: ${token.paddingMD}px;
+        display: flex;
+        flex-direction: column;
+        gap: ${token.marginSM}px;
+
+        @media (max-width: 575px) {
+            width: min(320px, calc(100vw - 24px));
+        }
+    `,
+
+    profileRow: css`
+        display: flex;
+        flex-direction: column;
+        gap: ${token.marginXXS}px;
+    `,
+
+    profileLabel: css`
+        font-size: 12px;
+        color: ${token.colorTextSecondary};
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    `,
+
+    profileValue: css`
+        color: ${token.colorText};
+        word-break: break-word;
+    `,
+
+    usernameInput: css`
+        width: 100%;
+    `,
+
+    profileActions: css`
+        display: flex;
+        justify-content: flex-end;
+    `,
+
+    saveButton: css`
+        background: ${token.colorPrimary};
+        border-color: ${token.colorPrimary};
+
+        &:hover {
+            background: ${token.colorPrimaryHover} !important;
+            border-color: ${token.colorPrimaryHover} !important;
+        }
+    `,
+
+    logoutButton: css`
+        color: ${token.colorPrimary};
+        font-weight: 600;
+        border-radius: ${token.borderRadiusSM}px;
+
+        &:hover {
+            color: ${token.colorPrimaryHover} !important;
+            background: ${token.colorPrimaryBg} !important;
         }
     `,
 }));

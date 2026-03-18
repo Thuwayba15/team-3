@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Spin } from "antd";
 import { useAuthState } from "@/providers/auth";
 import type { AppRole } from "@/types/navigation";
+import { useStyles } from "./withRole.style";
 
 /**
  * HOC that guards a page to a specific set of allowed roles.
@@ -22,30 +23,31 @@ export function withRole<P extends object>(allowedRoles: AppRole[]) {
         function RoleGuard(props: P) {
             const { isLoading, isAuthenticated, role } = useAuthState();
             const router = useRouter();
+            const { styles } = useStyles();
 
             useEffect(() => {
-                if (isLoading) return;
+                if (isLoading) {
+                    return;
+                }
 
                 if (!isAuthenticated) {
                     router.replace("/login");
                     return;
                 }
 
-                if (role && !allowedRoles.includes(role)) {
+                if (!role) {
+                    router.replace("/");
+                    return;
+                }
+
+                if (!allowedRoles.includes(role)) {
                     router.replace(`/${role}/dashboard`);
                 }
-            }, [isLoading, isAuthenticated, role, router]);
+            }, [isAuthenticated, isLoading, role, router]);
 
-            if (isLoading || !isAuthenticated || (role && !allowedRoles.includes(role))) {
+            if (isLoading || !isAuthenticated || !role || !allowedRoles.includes(role)) {
                 return (
-                    <div
-                        style={{
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems: "center",
-                            minHeight: "100vh",
-                        }}
-                    >
+                    <div className={styles.guardLoadingContainer}>
                         <Spin size="large" />
                     </div>
                 );

@@ -38,7 +38,7 @@ export default function LoginPage() {
         </svg>
       </div>
       <div className={styles.mainLayout}>
-    <Link href="/" style={{ textDecoration: 'none', color: 'inherit', cursor: 'pointer' }}>
+    <Link href="/" className={styles.brandLink}>
 
         <div className={styles.brandSection}>
           <img src="https://firebasestorage.googleapis.com/v0/b/grade-12-life-sciences-st.firebasestorage.app/o/image.png?alt=media&token=7477da80-3128-4dc8-833b-92c432ea71b1" alt="Logo" className={styles.mainLogo} />

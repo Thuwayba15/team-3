@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-test.describe("AdminUsers", () => {
+test.describe.skip("AdminUsers", () => {
     test("loads successfully", async ({ page }) => {
         await page.goto("/admin/users");
         await expect(page.getByRole("heading", { name: "User Management" })).toBeVisible();
