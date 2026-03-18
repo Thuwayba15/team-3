@@ -8072,3 +8072,107 @@ INFO  2026-03-18 16:37:49,313 [19   ] .Mvc.Infrastructure.ObjectResultExecutor -
 INFO  2026-03-18 16:37:49,332 [19   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host) in 974.3186ms
 INFO  2026-03-18 16:37:49,361 [19   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host)'
 INFO  2026-03-18 16:37:49,365 [19   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/AntiForgery/SetCookie - 200 - application/json;+charset=utf-8 1029.9081ms
+INFO  2026-03-18 16:42:57,780 [13   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 OPTIONS https://localhost:44311/api/TokenAuth/Me - - -
+INFO  2026-03-18 16:42:57,838 [13   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-18 16:42:57,877 [13   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 OPTIONS https://localhost:44311/api/TokenAuth/Me - 204 - - 110.4819ms
+INFO  2026-03-18 16:42:57,888 [13   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/api/TokenAuth/Me - - -
+INFO  2026-03-18 16:42:57,895 [13   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-18 16:42:58,046 [13   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Controllers.TokenAuthController.Me (Team3.Web.Core)'
+INFO  2026-03-18 16:42:58,089 [13   ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "Me", controller = "TokenAuth", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Me() on controller Team3.Controllers.TokenAuthController (Team3.Web.Core).
+INFO  2026-03-18 16:42:59,115 [18   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing OkObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-18 16:42:59,182 [18   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Controllers.TokenAuthController.Me (Team3.Web.Core) in 1089.2503ms
+INFO  2026-03-18 16:42:59,184 [18   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Controllers.TokenAuthController.Me (Team3.Web.Core)'
+INFO  2026-03-18 16:42:59,187 [18   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/api/TokenAuth/Me - 200 - application/json;+charset=utf-8 1299.9187ms
+INFO  2026-03-18 16:43:00,421 [19   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 OPTIONS https://localhost:44311/api/services/app/Session/GetCurrentLoginInformations - - -
+INFO  2026-03-18 16:43:00,454 [19   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-18 16:43:00,457 [13   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 OPTIONS https://localhost:44311/api/services/app/User/Get?Id=48 - - -
+INFO  2026-03-18 16:43:00,460 [18   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 OPTIONS https://localhost:44311/api/services/app/User/Get?Id=48 - - -
+INFO  2026-03-18 16:43:00,462 [13   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-18 16:43:00,500 [19   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 OPTIONS https://localhost:44311/api/services/app/Session/GetCurrentLoginInformations - 204 - - 44.5456ms
+INFO  2026-03-18 16:43:00,509 [18   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-18 16:43:00,545 [13   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 OPTIONS https://localhost:44311/api/services/app/User/Get?Id=48 - 204 - - 54.4849ms
+INFO  2026-03-18 16:43:00,547 [17   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 OPTIONS https://localhost:44311/api/services/app/Session/GetCurrentLoginInformations - - -
+INFO  2026-03-18 16:43:00,585 [18   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 OPTIONS https://localhost:44311/api/services/app/User/Get?Id=48 - 204 - - 93.3087ms
+INFO  2026-03-18 16:43:00,625 [17   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-18 16:43:00,634 [18   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/api/services/app/User/Get?Id=48 - - -
+INFO  2026-03-18 16:43:00,637 [19   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/api/services/app/Session/GetCurrentLoginInformations - - -
+INFO  2026-03-18 16:43:00,651 [17   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 OPTIONS https://localhost:44311/api/services/app/Session/GetCurrentLoginInformations - 204 - - 137.1484ms
+INFO  2026-03-18 16:43:00,655 [18   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-18 16:43:00,683 [19   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-18 16:43:00,715 [19   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Sessions.SessionAppService.GetCurrentLoginInformations (Team3.Application)'
+INFO  2026-03-18 16:43:00,776 [18   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Users.UserAppService.GetAsync (Team3.Application)'
+INFO  2026-03-18 16:43:00,822 [19   ] c.Infrastructure.ControllerActionInvoker - Route matched with {area = "app", action = "GetCurrentLoginInformations", controller = "Session"}. Executing controller action with signature System.Threading.Tasks.Task`1[Team3.Sessions.Dto.GetCurrentLoginInformationsOutput] GetCurrentLoginInformations() on controller Team3.Sessions.SessionAppService (Team3.Application).
+INFO  2026-03-18 16:43:00,887 [18   ] c.Infrastructure.ControllerActionInvoker - Route matched with {area = "app", action = "Get", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[Team3.Users.Dto.UserDto] GetAsync(Abp.Application.Services.Dto.EntityDto`1[System.Int64]) on controller Team3.Users.UserAppService (Team3.Application).
+INFO  2026-03-18 16:43:03,431 [10   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-18 16:43:03,464 [10   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Sessions.SessionAppService.GetCurrentLoginInformations (Team3.Application) in 2637.5198ms
+INFO  2026-03-18 16:43:03,495 [10   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Sessions.SessionAppService.GetCurrentLoginInformations (Team3.Application)'
+INFO  2026-03-18 16:43:03,498 [17   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/api/services/app/Session/GetCurrentLoginInformations - - -
+INFO  2026-03-18 16:43:03,503 [10   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/api/services/app/Session/GetCurrentLoginInformations - 200 - application/json;+charset=utf-8 2913.8971ms
+INFO  2026-03-18 16:43:03,540 [17   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-18 16:43:03,548 [17   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Sessions.SessionAppService.GetCurrentLoginInformations (Team3.Application)'
+INFO  2026-03-18 16:43:03,557 [17   ] c.Infrastructure.ControllerActionInvoker - Route matched with {area = "app", action = "GetCurrentLoginInformations", controller = "Session"}. Executing controller action with signature System.Threading.Tasks.Task`1[Team3.Sessions.Dto.GetCurrentLoginInformationsOutput] GetCurrentLoginInformations() on controller Team3.Sessions.SessionAppService (Team3.Application).
+INFO  2026-03-18 16:43:04,257 [17   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-18 16:43:04,265 [17   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Sessions.SessionAppService.GetCurrentLoginInformations (Team3.Application) in 700.5119ms
+INFO  2026-03-18 16:43:04,269 [17   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Sessions.SessionAppService.GetCurrentLoginInformations (Team3.Application)'
+INFO  2026-03-18 16:43:04,280 [17   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/api/services/app/Session/GetCurrentLoginInformations - 200 - application/json;+charset=utf-8 806.3429ms
+WARN  2026-03-18 16:43:07,152 [10   ] Mvc.ExceptionHandling.AbpExceptionFilter - Required permissions are not granted. At least one of these permissions must be granted: Users
+Abp.Authorization.AbpAuthorizationException: Required permissions are not granted. At least one of these permissions must be granted: Users
+   at Abp.Authorization.PermissionCheckerExtensions.AuthorizeAsync(IPermissionChecker permissionChecker, Boolean requireAll, String[] permissionNames)
+   at Abp.Authorization.AuthorizationHelper.AuthorizeAsync(IEnumerable`1 authorizeAttributes)
+   at Abp.Authorization.AuthorizationHelper.CheckPermissionsAsync(MethodInfo methodInfo, Type type)
+   at Abp.Authorization.AuthorizationHelper.AuthorizeAsync(MethodInfo methodInfo, Type type)
+   at Abp.Authorization.AuthorizationInterceptor.InternalInterceptAsynchronous[TResult](IInvocation invocation)
+   at lambda_method1937(Closure, Object)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.AwaitableObjectResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextExceptionFilterAsync>g__Awaited|26_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+INFO  2026-03-18 16:43:07,299 [10   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-18 16:43:07,359 [10   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Users.UserAppService.GetAsync (Team3.Application) in 6449.5024ms
+INFO  2026-03-18 16:43:07,462 [18   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/api/services/app/User/Get?Id=48 - - -
+INFO  2026-03-18 16:43:07,430 [10   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Users.UserAppService.GetAsync (Team3.Application)'
+INFO  2026-03-18 16:43:07,477 [18   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-18 16:43:07,491 [10   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/api/services/app/User/Get?Id=48 - 403 - application/json;+charset=utf-8 6877.4809ms
+INFO  2026-03-18 16:43:07,513 [18   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Users.UserAppService.GetAsync (Team3.Application)'
+INFO  2026-03-18 16:43:07,553 [13   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 OPTIONS https://localhost:44311/api/services/app/Session/GetCurrentLoginInformations - - -
+INFO  2026-03-18 16:43:07,563 [13   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-18 16:43:07,594 [13   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 OPTIONS https://localhost:44311/api/services/app/Session/GetCurrentLoginInformations - 204 - - 48.9694ms
+INFO  2026-03-18 16:43:07,633 [18   ] c.Infrastructure.ControllerActionInvoker - Route matched with {area = "app", action = "Get", controller = "User"}. Executing controller action with signature System.Threading.Tasks.Task`1[Team3.Users.Dto.UserDto] GetAsync(Abp.Application.Services.Dto.EntityDto`1[System.Int64]) on controller Team3.Users.UserAppService (Team3.Application).
+INFO  2026-03-18 16:43:07,675 [19   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/api/services/app/Session/GetCurrentLoginInformations - - -
+INFO  2026-03-18 16:43:07,684 [19   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-18 16:43:07,727 [19   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Sessions.SessionAppService.GetCurrentLoginInformations (Team3.Application)'
+INFO  2026-03-18 16:43:07,751 [19   ] c.Infrastructure.ControllerActionInvoker - Route matched with {area = "app", action = "GetCurrentLoginInformations", controller = "Session"}. Executing controller action with signature System.Threading.Tasks.Task`1[Team3.Sessions.Dto.GetCurrentLoginInformationsOutput] GetCurrentLoginInformations() on controller Team3.Sessions.SessionAppService (Team3.Application).
+INFO  2026-03-18 16:43:08,446 [19   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-18 16:43:08,451 [19   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Sessions.SessionAppService.GetCurrentLoginInformations (Team3.Application) in 695.7099ms
+INFO  2026-03-18 16:43:08,461 [19   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Sessions.SessionAppService.GetCurrentLoginInformations (Team3.Application)'
+INFO  2026-03-18 16:43:08,466 [19   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/api/services/app/Session/GetCurrentLoginInformations - 200 - application/json;+charset=utf-8 828.7078ms
+WARN  2026-03-18 16:43:08,709 [19   ] Mvc.ExceptionHandling.AbpExceptionFilter - Required permissions are not granted. At least one of these permissions must be granted: Users
+Abp.Authorization.AbpAuthorizationException: Required permissions are not granted. At least one of these permissions must be granted: Users
+   at Abp.Authorization.PermissionCheckerExtensions.AuthorizeAsync(IPermissionChecker permissionChecker, Boolean requireAll, String[] permissionNames)
+   at Abp.Authorization.AuthorizationHelper.AuthorizeAsync(IEnumerable`1 authorizeAttributes)
+   at Abp.Authorization.AuthorizationHelper.CheckPermissionsAsync(MethodInfo methodInfo, Type type)
+   at Abp.Authorization.AuthorizationHelper.AuthorizeAsync(MethodInfo methodInfo, Type type)
+   at Abp.Authorization.AuthorizationInterceptor.InternalInterceptAsynchronous[TResult](IInvocation invocation)
+   at lambda_method1937(Closure, Object)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.AwaitableObjectResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextExceptionFilterAsync>g__Awaited|26_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+INFO  2026-03-18 16:43:08,715 [19   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-18 16:43:08,722 [19   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Users.UserAppService.GetAsync (Team3.Application) in 1082.2069ms
+INFO  2026-03-18 16:43:08,726 [19   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Users.UserAppService.GetAsync (Team3.Application)'
+INFO  2026-03-18 16:43:08,731 [19   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/api/services/app/User/Get?Id=48 - 403 - application/json;+charset=utf-8 1316.7353ms
+INFO  2026-03-18 16:43:08,738 [19   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/api/services/app/Session/GetCurrentLoginInformations - - -
+INFO  2026-03-18 16:43:08,741 [19   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-18 16:43:08,747 [19   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Sessions.SessionAppService.GetCurrentLoginInformations (Team3.Application)'
+INFO  2026-03-18 16:43:08,752 [19   ] c.Infrastructure.ControllerActionInvoker - Route matched with {area = "app", action = "GetCurrentLoginInformations", controller = "Session"}. Executing controller action with signature System.Threading.Tasks.Task`1[Team3.Sessions.Dto.GetCurrentLoginInformationsOutput] GetCurrentLoginInformations() on controller Team3.Sessions.SessionAppService (Team3.Application).
+INFO  2026-03-18 16:43:09,446 [19   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-18 16:43:09,450 [19   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Sessions.SessionAppService.GetCurrentLoginInformations (Team3.Application) in 694.3839ms
+INFO  2026-03-18 16:43:09,456 [19   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Sessions.SessionAppService.GetCurrentLoginInformations (Team3.Application)'
+INFO  2026-03-18 16:43:09,460 [19   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/api/services/app/Session/GetCurrentLoginInformations - 200 - application/json;+charset=utf-8 722.9402ms

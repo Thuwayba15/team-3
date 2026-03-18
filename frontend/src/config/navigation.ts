@@ -5,9 +5,7 @@ import {
     CompassOutlined,
     DashboardOutlined,
     GlobalOutlined,
-    QuestionCircleOutlined,
     RobotOutlined,
-    SettingOutlined,
     TeamOutlined,
     UserOutlined,
 } from "@ant-design/icons";
@@ -18,10 +16,7 @@ export const NAVIGATION_BY_ROLE: RoleNavigationMap = {
         { key: "student-dashboard", label: "Dashboard", path: "/student/dashboard", icon: DashboardOutlined },
         { key: "student-learning-path", label: "Learning Path", path: "/student/learning-path", icon: CompassOutlined },
         { key: "student-lessons", label: "Lessons", path: "/student/lessons", icon: BookOutlined },
-        { key: "student-quizzes", label: "Quizzes", path: "/student/quizzes", icon: QuestionCircleOutlined },
-        { key: "student-ai-tutor", label: "AI Tutor", path: "/student/ai-tutor", icon: RobotOutlined },
         { key: "student-progress", label: "Progress", path: "/student/progress", icon: BarChartOutlined },
-        { key: "student-settings", label: "Settings", path: "/student/settings", icon: SettingOutlined },
     ],
     tutor: [
         { key: "tutor-dashboard", label: "Dashboard", path: "/tutor/dashboard", icon: DashboardOutlined },
