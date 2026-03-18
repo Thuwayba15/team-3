@@ -43,5 +43,10 @@ namespace Team3.Users
         /// Updates the current authenticated user's preferred platform language.
         /// </summary>
         Task<UpdatePlatformLanguageOutput> UpdatePlatformLanguageAsync(UpdatePlatformLanguageInput input);
+
+        /// <summary>
+        /// Returns the current authenticated user's preferred platform language.
+        /// </summary>
+        Task<UpdatePlatformLanguageOutput> GetMyPlatformLanguageAsync();
     }
 }

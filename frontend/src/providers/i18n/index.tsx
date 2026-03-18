@@ -126,10 +126,15 @@ export const I18nProvider = ({ children }: II18nProviderProps) => {
             const normalizedLanguageCode = normalizeLanguageCode(languageCode);
             await i18n.changeLanguage(normalizedLanguageCode);
             localStorage.setItem(PLATFORM_LANGUAGE_STORAGE_KEY, normalizedLanguageCode);
+
+            if (isAuthenticated && userId !== null) {
+                await userProfileService.updateMyPlatformLanguage(normalizedLanguageCode);
+                syncedLanguageUserIdRef.current = userId;
+            }
         } finally {
             dispatch(setLoading(false));
         }
-    }, [i18n]);
+    }, [i18n, isAuthenticated, userId]);
 
     const actionsValue = useMemo<II18nContextActions>(
         () => ({

@@ -8,7 +8,6 @@ import { useTranslation } from "react-i18next";
 import { useAuthActions, useAuthState } from "@/providers/auth";
 import { useI18n } from "@/providers/i18n";
 import { sessionService } from "@/services/sessions/sessionService";
-import { userService } from "@/services/users/userService";
 import { useStyles } from "./AppHeader.style";
 
 const { Text } = Typography;
@@ -38,38 +37,22 @@ export const AppHeader = ({ onOpenNavigation, isMobile }: IAppHeaderProps) => {
             return;
         }
 
-        Promise.all([
-            sessionService.getCurrentLoginInformations(),
-            userService.getById(userId),
-        ])
-            .then(([sessionInfo, user]) => {
+        sessionService.getCurrentLoginInformations()
+            .then((sessionInfo) => {
                 const sessionUser = sessionInfo.user;
-                const resolvedName = sessionUser
-                    ? `${sessionUser.name} ${sessionUser.surname}`.trim()
-                    : user.fullName;
+                if (!sessionUser) {
+                    return;
+                }
 
-                setDisplayName(resolvedName || user.userName);
-                setEmailAddress(sessionUser?.emailAddress || user.emailAddress || "-");
-                setUserNameDraft(user.userName);
+                const resolvedName = `${sessionUser.name} ${sessionUser.surname}`.trim();
+                setDisplayName(resolvedName || sessionUser.userName);
+                setEmailAddress(sessionUser.emailAddress || "-");
+                setUserNameDraft(sessionUser.userName || "");
             })
             .catch(() => {
-                sessionService.getCurrentLoginInformations()
-                    .then((sessionInfo) => {
-                        const sessionUser = sessionInfo.user;
-                        if (!sessionUser) {
-                            return;
-                        }
-
-                        const resolvedName = `${sessionUser.name} ${sessionUser.surname}`.trim();
-                        setDisplayName(resolvedName || sessionUser.userName);
-                        setEmailAddress(sessionUser.emailAddress || "-");
-                        setUserNameDraft(sessionUser.userName || "");
-                    })
-                    .catch(() => {
-                        setDisplayName(t("header.defaultUser"));
-                        setEmailAddress("-");
-                        setUserNameDraft("");
-                    });
+                setDisplayName(t("header.defaultUser"));
+                setEmailAddress("-");
+                setUserNameDraft("");
             });
     }, [isAuthenticated, t, userId]);
 

@@ -24,6 +24,8 @@ namespace Team3.Users
     /// </summary>
     public class UserProfileAppService : Team3AppServiceBase, IUserProfileAppService
     {
+        private const string FallbackRoleName = "User";
+
         private readonly UserManager _userManager;
         private readonly RoleManager _roleManager;
         private readonly IRepository<User, long> _userRepository;
@@ -136,6 +138,8 @@ namespace Team3.Users
 
             CheckErrors(await _userManager.UpdateAsync(user));
 
+            await UpsertUserLanguagePreferenceAsync(user.Id, input.PreferredLanguage);
+
             await UpdateRoleSpecificProfileAsync(user.Id, role, input);
 
             return await BuildProfileOutputAsync(user, role);
@@ -210,6 +214,21 @@ namespace Team3.Users
         }
 
         /// <summary>
+        /// Returns the current authenticated user's preferred platform language.
+        /// </summary>
+        [AbpAuthorize]
+        public async Task<UpdatePlatformLanguageOutput> GetMyPlatformLanguageAsync()
+        {
+            var userId = AbpSession.GetUserId();
+            var preferredLanguage = await GetPreferredLanguageOrDefaultAsync(userId);
+
+            return new UpdatePlatformLanguageOutput
+            {
+                PreferredLanguage = preferredLanguage
+            };
+        }
+
+        /// <summary>
         /// Validates input using FluentValidation and returns a readable error message when invalid.
         /// </summary>
         private static async Task ValidateAsync<T>(IValidator<T> validator, T input)
@@ -270,7 +289,8 @@ namespace Team3.Users
         private async Task EnsureCurrentUserIsAdminAsync()
         {
             var currentUser = await _userRepository.GetAsync(AbpSession.GetUserId());
-            var isAdmin = await _userManager.IsInRoleAsync(currentUser, UserRoleNames.Admin);
+            var roles = await _userManager.GetRolesAsync(currentUser);
+            var isAdmin = roles.Any(role => string.Equals(role, UserRoleNames.Admin, StringComparison.OrdinalIgnoreCase));
 
             if (!isAdmin)
             {
@@ -284,14 +304,17 @@ namespace Team3.Users
         private async Task<string> GetPrimaryRoleAsync(User user)
         {
             var roles = await _userManager.GetRolesAsync(user);
-            var matchedRole = roles.FirstOrDefault(UserRoleNames.All.Contains);
-
-            if (string.IsNullOrWhiteSpace(matchedRole))
+            foreach (var supportedRole in UserRoleNames.All)
             {
-                throw new UserFriendlyException("The user does not have a supported platform role.");
+                var matchedRole = roles.FirstOrDefault(role => string.Equals(role, supportedRole, StringComparison.OrdinalIgnoreCase));
+                if (!string.IsNullOrWhiteSpace(matchedRole))
+                {
+                    return supportedRole;
+                }
             }
 
-            return matchedRole;
+            var firstKnownRole = roles.FirstOrDefault(role => !string.IsNullOrWhiteSpace(role));
+            return string.IsNullOrWhiteSpace(firstKnownRole) ? FallbackRoleName : firstKnownRole;
         }
 
         /// <summary>
@@ -346,55 +369,60 @@ namespace Team3.Users
             switch (role)
             {
                 case UserRoleNames.Student:
-                    var studentProfile = await _studentProfileRepository.FirstOrDefaultAsync(x => x.UserId == userId)
-                        ?? throw new UserFriendlyException("Student profile not found.");
+                    var studentProfile = await _studentProfileRepository.FirstOrDefaultAsync(x => x.UserId == userId);
+                    if (studentProfile != null)
+                    {
+                        studentProfile.UpdateProfile(
+                            input.PreferredLanguage,
+                            input.GradeLevel ?? studentProfile.GradeLevel,
+                            input.ProgressLevel,
+                            input.SubjectInterests);
 
-                    studentProfile.UpdateProfile(
-                        input.PreferredLanguage,
-                        input.GradeLevel ?? studentProfile.GradeLevel,
-                        input.ProgressLevel,
-                        input.SubjectInterests);
-
-                    await _studentProfileRepository.UpdateAsync(studentProfile);
+                        await _studentProfileRepository.UpdateAsync(studentProfile);
+                    }
                     break;
 
                 case UserRoleNames.Tutor:
-                    var tutorProfile = await _tutorProfileRepository.FirstOrDefaultAsync(x => x.UserId == userId)
-                        ?? throw new UserFriendlyException("Tutor profile not found.");
+                    var tutorProfile = await _tutorProfileRepository.FirstOrDefaultAsync(x => x.UserId == userId);
+                    if (tutorProfile != null)
+                    {
+                        tutorProfile.UpdateProfile(
+                            input.PreferredLanguage,
+                            input.Specialization,
+                            input.Bio,
+                            input.SubjectInterests);
 
-                    tutorProfile.UpdateProfile(
-                        input.PreferredLanguage,
-                        input.Specialization,
-                        input.Bio,
-                        input.SubjectInterests);
-
-                    await _tutorProfileRepository.UpdateAsync(tutorProfile);
+                        await _tutorProfileRepository.UpdateAsync(tutorProfile);
+                    }
                     break;
 
                 case UserRoleNames.Parent:
-                    var parentProfile = await _parentProfileRepository.FirstOrDefaultAsync(x => x.UserId == userId)
-                        ?? throw new UserFriendlyException("Parent profile not found.");
+                    var parentProfile = await _parentProfileRepository.FirstOrDefaultAsync(x => x.UserId == userId);
+                    if (parentProfile != null)
+                    {
+                        parentProfile.UpdateProfile(
+                            input.PreferredLanguage,
+                            input.RelationshipNotes);
 
-                    parentProfile.UpdateProfile(
-                        input.PreferredLanguage,
-                        input.RelationshipNotes);
-
-                    await _parentProfileRepository.UpdateAsync(parentProfile);
+                        await _parentProfileRepository.UpdateAsync(parentProfile);
+                    }
                     break;
 
                 case UserRoleNames.Admin:
-                    var adminProfile = await _adminProfileRepository.FirstOrDefaultAsync(x => x.UserId == userId)
-                        ?? throw new UserFriendlyException("Admin profile not found.");
+                    var adminProfile = await _adminProfileRepository.FirstOrDefaultAsync(x => x.UserId == userId);
+                    if (adminProfile != null)
+                    {
+                        adminProfile.UpdateProfile(
+                            input.PreferredLanguage,
+                            input.Department);
 
-                    adminProfile.UpdateProfile(
-                        input.PreferredLanguage,
-                        input.Department);
-
-                    await _adminProfileRepository.UpdateAsync(adminProfile);
+                        await _adminProfileRepository.UpdateAsync(adminProfile);
+                    }
                     break;
 
                 default:
-                    throw new UserFriendlyException("Unsupported role.");
+                    // no-op for custom role setups that do not use legacy role profile tables
+                    break;
             }
         }
 
@@ -481,10 +509,29 @@ namespace Team3.Users
                     break;
 
                 default:
-                    throw new UserFriendlyException("Unsupported role.");
+                    // custom role setups rely on user-language preference table only
+                    break;
             }
 
             return output;
+        }
+
+        /// <summary>
+        /// Upserts the normalized preferred language in the user preference table.
+        /// </summary>
+        private async Task UpsertUserLanguagePreferenceAsync(long userId, string preferredLanguage)
+        {
+            var normalizedCode = preferredLanguage.Trim().ToLowerInvariant();
+            var preference = await _userLanguagePreferenceRepository.FirstOrDefaultAsync(x => x.UserId == userId);
+
+            if (preference == null)
+            {
+                await _userLanguagePreferenceRepository.InsertAsync(new UserLanguagePreference(userId, normalizedCode));
+                return;
+            }
+
+            preference.SetLanguageCode(normalizedCode);
+            await _userLanguagePreferenceRepository.UpdateAsync(preference);
         }
 
         /// <summary>
