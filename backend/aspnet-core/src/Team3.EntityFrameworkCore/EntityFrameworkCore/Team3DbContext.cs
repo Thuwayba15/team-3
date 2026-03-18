@@ -32,6 +32,8 @@ public class Team3DbContext : AbpZeroDbContext<Tenant, Role, User, Team3DbContex
     public DbSet<LessonMaterial> LessonMaterials { get; set; }
     public DbSet<LessonTranslation> LessonTranslations { get; set; }
     public DbSet<SourceMaterial> SourceMaterials { get; set; }
+    public DbSet<StudentEnrollment> StudentEnrollments { get; set; }
+    public DbSet<StudentProgress> StudentProgresses { get; set; }
 
     public Team3DbContext(DbContextOptions<Team3DbContext> options)
         : base(options)

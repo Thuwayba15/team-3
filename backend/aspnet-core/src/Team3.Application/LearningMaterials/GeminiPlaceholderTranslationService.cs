@@ -105,13 +105,12 @@ public class GeminiPlaceholderTranslationService : ITextTranslationService, ITra
         apiKey = Environment.GetEnvironmentVariable("GEMINI_API_KEY");
         if (!string.IsNullOrWhiteSpace(apiKey))
         {
+            return apiKey.Trim();
         }
 
-        return "YouCanHardCodeApiKeyHere";
-
-
+        return "YouCanHardCodeTheApiKeyHere";
         //throw new UserFriendlyException(
-           // $"Gemini API key is not configured. Set '{AppSettingNames.GeminiApiKey}' or the GEMINI_API_KEY environment variable.");
+          //  $"Gemini API key is not configured. Set '{AppSettingNames.GeminiApiKey}' or the GEMINI_API_KEY environment variable.");
     }
 
     private async Task<string> ResolveGeminiModelAsync()
@@ -222,7 +221,7 @@ public class GeminiPlaceholderTranslationService : ITextTranslationService, ITra
         }
         catch
         {
-            // ignored
+           
         }
 
         return "Gemini returned an error without a parsable message.";
