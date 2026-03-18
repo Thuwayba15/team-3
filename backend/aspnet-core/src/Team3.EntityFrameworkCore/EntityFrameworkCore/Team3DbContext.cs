@@ -211,7 +211,7 @@ public class Team3DbContext : AbpZeroDbContext<Tenant, Role, User, Team3DbContex
                 .OnDelete(DeleteBehavior.Restrict);
 
             entity.HasOne(x => x.Subject)
-                .WithMany()Add - Migration Initial_Curriculum_Tables - Context Team3DbContext
+                .WithMany()
                 .HasForeignKey(x => x.SubjectId)
                 .OnDelete(DeleteBehavior.Restrict);
 
