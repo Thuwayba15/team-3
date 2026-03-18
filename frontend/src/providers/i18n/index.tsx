@@ -3,6 +3,7 @@
 import {
     createContext,
     ReactNode,
+    useCallback,
     useContext,
     useEffect,
     useMemo,
@@ -33,32 +34,43 @@ export const I18nProvider = ({ children }: II18nProviderProps) => {
     useEffect(() => {
         const savedLanguage = localStorage.getItem(PLATFORM_LANGUAGE_STORAGE_KEY) ?? "en";
 
-        dispatch(setLanguage(savedLanguage));
-        document.documentElement.lang = savedLanguage;
-
         if (i18n.language !== savedLanguage) {
-            i18n.changeLanguage(savedLanguage);
+            void i18n.changeLanguage(savedLanguage);
+        } else {
+            dispatch(setLanguage(savedLanguage));
+            document.documentElement.lang = savedLanguage;
         }
     }, [i18n]);
 
-    const updateLanguage = async (languageCode: string): Promise<void> => {
+    useEffect(() => {
+        const handleLanguageChanged = (languageCode: string): void => {
+            dispatch(setLanguage(languageCode));
+            document.documentElement.lang = languageCode;
+        };
+
+        i18n.on("languageChanged", handleLanguageChanged);
+
+        return () => {
+            i18n.off("languageChanged", handleLanguageChanged);
+        };
+    }, [i18n]);
+
+    const updateLanguage = useCallback(async (languageCode: string): Promise<void> => {
         dispatch(setLoading(true));
 
         try {
             await i18n.changeLanguage(languageCode);
             localStorage.setItem(PLATFORM_LANGUAGE_STORAGE_KEY, languageCode);
-            document.documentElement.lang = languageCode;
-            dispatch(setLanguage(languageCode));
         } finally {
             dispatch(setLoading(false));
         }
-    };
+    }, [i18n]);
 
     const actionsValue = useMemo<II18nContextActions>(
         () => ({
             setLanguage: updateLanguage,
         }),
-        []
+        [updateLanguage]
     );
 
     return (
