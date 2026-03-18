@@ -31,8 +31,10 @@ public class Team3DbContext : AbpZeroDbContext<Tenant, Role, User, Team3DbContex
     {
     }
 
-    public void OnModelCreating(ModelBuilder modelBuilder)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
+
         modelBuilder.Entity<StudentProfile>(entity =>
         {
             entity.ToTable("AppStudentProfiles");
