@@ -10,15 +10,15 @@ import { useStyles } from "../styles";
 
 export default function LoginPage() {
   const { styles } = useStyles();
-  const { isLoading, isAuthenticated, errorMessage } = useAuthState();
+  const { isLoading, isAuthenticated, role, errorMessage } = useAuthState();
   const { login, clearAuthError } = useAuthActions();
   const router = useRouter();
 
   useEffect(() => {
-    if (isAuthenticated) {
-      router.replace("/dashboard");
+    if (isAuthenticated && role) {
+      router.replace(`/${role}/dashboard`);
     }
-  }, [isAuthenticated, router]);
+  }, [isAuthenticated, role, router]);
 
   const handleSubmit = async (values: ILoginValues): Promise<void> => {
     await login(values);

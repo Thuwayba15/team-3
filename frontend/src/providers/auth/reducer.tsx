@@ -18,6 +18,7 @@ export const authReducer = (
                 isLoading: false,
                 isAuthenticated: true,
                 userId: action.payload.userId,
+                role: action.payload.role,
                 errorMessage: null,
             };
 
@@ -27,6 +28,7 @@ export const authReducer = (
                 isLoading: false,
                 isAuthenticated: false,
                 userId: null,
+                role: null,
                 errorMessage: null,
             };
 

@@ -62,10 +62,16 @@ namespace Team3.Controllers
             // Store JWT in an HttpOnly cookie so client-side JavaScript cannot read it.
             Response.Cookies.Append("access_token", accessToken, cookieOptions);
 
+            var roles = loginResult.Identity.Claims
+                .Where(c => c.Type == System.Security.Claims.ClaimTypes.Role)
+                .Select(c => c.Value)
+                .ToList();
+
             return new AuthenticateResultModel
             {
                 ExpireInSeconds = expireInSeconds,
-                UserId = loginResult.User.Id
+                UserId = loginResult.User.Id,
+                Roles = roles
             };
         }
 

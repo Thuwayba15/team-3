@@ -25,6 +25,15 @@ import {
 } from "./context";
 import { authReducer } from "./reducer";
 import { authService } from "@/services/auth/authService";
+import type { AppRole } from "@/types/navigation";
+
+const ROLE_STORAGE_KEY = "userRole";
+
+function resolveRole(roles: string[]): AppRole | null {
+    const normalized = roles.map((r) => r.toLowerCase()) as AppRole[];
+    const priority: AppRole[] = ["admin", "tutor", "parent", "student"];
+    return priority.find((r) => normalized.includes(r)) ?? null;
+}
 
 // --- Contexts ---
 
@@ -47,7 +56,10 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
         dispatch(setLoading(true));
         authService
             .getMe()
-            .then((me) => dispatch(setAuthenticated({ userId: me.userId })))
+            .then((me) => {
+                const storedRole = localStorage.getItem(ROLE_STORAGE_KEY) as AppRole | null;
+                dispatch(setAuthenticated({ userId: me.userId, role: storedRole }));
+            })
             .catch(() => dispatch(setLoading(false)));
     }, []);
 
@@ -60,7 +72,9 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
                 rememberClient: values.rememberClient,
             });
 
-            dispatch(setAuthenticated({ userId: response.userId }));
+            const role = resolveRole(response.roles ?? []);
+            if (role) localStorage.setItem(ROLE_STORAGE_KEY, role);
+            dispatch(setAuthenticated({ userId: response.userId, role }));
         } catch (error) {
             const message = resolveErrorMessage(error);
             dispatch(setError(message));
@@ -85,6 +99,7 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
 
     const logout = (): void => {
         authService.logout().catch(() => {});
+        localStorage.removeItem(ROLE_STORAGE_KEY);
         dispatch(setUnauthenticated());
     };
 
