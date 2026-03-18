@@ -1,6 +1,6 @@
 "use client";
 
-import { BellOutlined, DownOutlined, LogoutOutlined, UserOutlined } from "@ant-design/icons";
+import { BellOutlined, DownOutlined, LogoutOutlined, MenuOutlined, UserOutlined } from "@ant-design/icons";
 import { Avatar, Badge, Button, Dropdown, Layout, Select, Typography } from "antd";
 import type { MenuProps } from "antd";
 import { LANGUAGE_OPTIONS, ROLE_LABELS, ROLE_OPTIONS } from "@/config/roles";
@@ -12,12 +12,14 @@ const { Text } = Typography;
 interface IAppHeaderProps {
     role: AppRole;
     onRoleChange: (role: AppRole) => void;
+    onOpenNavigation: () => void;
+    isMobile: boolean;
 }
 
 /**
  * Global dashboard header used across all role routes.
  */
-export const AppHeader = ({ role, onRoleChange }: IAppHeaderProps) => {
+export const AppHeader = ({ role, onRoleChange, onOpenNavigation, isMobile }: IAppHeaderProps) => {
     const { styles } = useStyles();
 
     const userMenuItems: MenuProps["items"] = [
@@ -27,11 +29,23 @@ export const AppHeader = ({ role, onRoleChange }: IAppHeaderProps) => {
 
     return (
         <Layout.Header className={styles.header}>
-            <div className={styles.brand}>
-                <Avatar shape="square" size={34} className={styles.logoAvatar}>
-                    U
-                </Avatar>
-                <Typography.Title level={4}>UbuntuLearn</Typography.Title>
+            <div className={styles.brandRow}>
+                {isMobile && (
+                    <Button
+                        type="text"
+                        icon={<MenuOutlined />}
+                        className={styles.iconButton}
+                        aria-label="Open navigation"
+                        onClick={onOpenNavigation}
+                    />
+                )}
+
+                <div className={styles.brand}>
+                    <Avatar shape="square" size={34} className={styles.logoAvatar}>
+                        U
+                    </Avatar>
+                    <Typography.Title level={4} className={styles.brandTitle}>UbuntuLearn</Typography.Title>
+                </div>
             </div>
 
             <div className={styles.controls}>

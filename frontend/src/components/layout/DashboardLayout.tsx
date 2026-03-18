@@ -1,8 +1,8 @@
 "use client";
 
-import { Layout } from "antd";
+import { Drawer, Grid, Layout } from "antd";
 import { usePathname, useRouter } from "next/navigation";
-import { ReactNode, useMemo } from "react";
+import { ReactNode, useMemo, useState } from "react";
 import type { AppRole } from "@/types/navigation";
 import { AppHeader } from "./AppHeader";
 import { AppSidebar } from "./AppSidebar";
@@ -35,18 +35,42 @@ export const DashboardLayout = ({ children }: IDashboardLayoutProps) => {
     const { styles } = useStyles();
     const router = useRouter();
     const pathname = usePathname();
+    const screens = Grid.useBreakpoint();
     const role = useMemo(() => getRoleFromPath(pathname), [pathname]);
+    const [isNavigationOpen, setIsNavigationOpen] = useState(false);
+    const isMobile = !screens.lg;
 
     const handleRoleChange = (nextRole: AppRole): void => {
         router.push(`/${nextRole}/dashboard`);
     };
 
+    const handleOpenNavigation = (): void => {
+        setIsNavigationOpen(true);
+    };
+
+    const handleCloseNavigation = (): void => {
+        setIsNavigationOpen(false);
+    };
+
     return (
         <Layout className={styles.root}>
-            <AppHeader role={role} onRoleChange={handleRoleChange} />
+            <AppHeader role={role} onRoleChange={handleRoleChange} onOpenNavigation={handleOpenNavigation} isMobile={isMobile} />
 
             <Layout className={styles.body}>
-                <AppSidebar role={role} />
+                {isMobile ? (
+                    <Drawer
+                        placement="left"
+                        width={280}
+                        open={isNavigationOpen}
+                        onClose={handleCloseNavigation}
+                        className={styles.navigationDrawer}
+                        rootClassName={styles.navigationDrawerRoot}
+                    >
+                        <AppSidebar role={role} isMobile onNavigate={handleCloseNavigation} />
+                    </Drawer>
+                ) : (
+                    <AppSidebar role={role} />
+                )}
 
                 <Layout.Content className={styles.content}>
                     <div className={styles.contentSurface}>{children}</div>
