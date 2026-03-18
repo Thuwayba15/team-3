@@ -1,0 +1,81 @@
+{
+  "nav": {
+    "dashboard": "Seriti sa Dashboard",
+    "lessons": "Dithupelo",
+    "curriculum": "Khoebo ya go Ithuta",
+    "users": "Batho",
+    "settings": "Ditolano",
+    "languages": "Leleme",
+    "aiConfiguration": "Kopano ya AI",
+    "logout": "Tloga"
+  },
+  "common": {
+    "save": "Boloka",
+    "cancel": "Hlola",
+    "delete": "Hlakola",
+    "edit": "Fetolela",
+    "loading": "Go fetolela...",
+    "error": "Phoso",
+    "success": "Katlego",
+    "close": "Tswalela",
+    "confirm": "Netefatsa",
+    "back": "Morago",
+    "next": "Omolelele",
+    "previous": "Pego",
+    "search": "Batla",
+    "filter": "Hlophisa",
+    "clear": "Hlakola",
+    "submit": "Romela",
+    "export": "Romela Kantle",
+    "import": "Kopa Gare"
+  },
+  "auth": {
+    "login": {
+      "title": "Kopa Gare",
+      "email": "Aterese ya Email",
+      "password": "Lepase",
+      "submit": "Kopa Gare",
+      "noAccount": "Ga o na le akhaonto?",
+      "register": "Bala mo",
+      "forgotPassword": "A o lebala lepase?",
+      "invalidCredentials": "Email kapa lepase le sa netefatse"
+    },
+    "register": {
+      "title": "Bala",
+      "firstName": "Lebitso la Ntlha",
+      "surname": "Lebitso la Lelapa",
+      "email": "Aterese ya Email",
+      "password": "Lepase",
+      "confirmPassword": "Netefatsa Lepase",
+      "role": "Seabe",
+      "selectRole": "Khetha seabe sa gago",
+      "selectLanguage": "Leleme la Kgetsi",
+      "submit": "Bala Akhaonto",
+      "haveAccount": "A o na le akhaonto?",
+      "loginHere": "Kopa Gare mo",
+      "agreeTerms": "Ke a dumela Melawana ya Tshebediso"
+    }
+  },
+  "settings": {
+    "title": "Ditolano",
+    "platformLanguage": "Leleme la Platform",
+    "platformLanguageDesc": "Khetha leleme la sekhutlo sa software",
+    "selectLanguage": "Khetha Leleme",
+    "updated": "Ditolano di thulagane ka katlego"
+  },
+  "header": {
+    "profile": "Profile",
+    "preferences": "Kgetsi",
+    "logout": "Tloga"
+  },
+  "sidebar": {
+    "admin": "Mmusi",
+    "student": "Sekolo",
+    "tutor": "Morutabusi",
+    "parent": "Monetsana"
+  },
+  "empty": {
+    "noData": "Ga go na tshedimoso",
+    "noResults": "Ga go na diphitlhelelo"
+  }
+}

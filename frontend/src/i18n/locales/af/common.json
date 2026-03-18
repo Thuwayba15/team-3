@@ -1,0 +1,81 @@
+{
+  "nav": {
+    "dashboard": "Dashboard",
+    "lessons": "Lesse",
+    "curriculum": "Kurrikulum",
+    "users": "Gebruikers",
+    "settings": "Instellings",
+    "languages": "Tale",
+    "aiConfiguration": "AI-konfigurasie",
+    "logout": "Afmeld"
+  },
+  "common": {
+    "save": "Stoor",
+    "cancel": "Kanselleer",
+    "delete": "Verwyder",
+    "edit": "Wysig",
+    "loading": "Laai...",
+    "error": "Fout",
+    "success": "Sukses",
+    "close": "Sluit",
+    "confirm": "Bevestig",
+    "back": "Terug",
+    "next": "Volgende",
+    "previous": "Vorige",
+    "search": "Soek",
+    "filter": "Filter",
+    "clear": "Wis",
+    "submit": "Dien In",
+    "export": "Uitvoer",
+    "import": "Invoer"
+  },
+  "auth": {
+    "login": {
+      "title": "Aanmeld",
+      "email": "E-posadres",
+      "password": "Wagwoord",
+      "submit": "Meld Aan",
+      "noAccount": "Geen rekening?",
+      "register": "Teken hier in",
+      "forgotPassword": "Wagwoord vergeet?",
+      "invalidCredentials": "Ongeldige e-pos of wagwoord"
+    },
+    "register": {
+      "title": "Teken In",
+      "firstName": "Voornaam",
+      "surname": "Van",
+      "email": "E-posadres",
+      "password": "Wagwoord",
+      "confirmPassword": "Bevestig Wagwoord",
+      "role": "Rol",
+      "selectRole": "Kies jou rol",
+      "selectLanguage": "Voorkeur Taal",
+      "submit": "Skep Rekening",
+      "haveAccount": "Reeds 'n rekening?",
+      "loginHere": "Meld hier aan",
+      "agreeTerms": "Ek stem in tot die Diensvoorwaardes"
+    }
+  },
+  "settings": {
+    "title": "Instellings",
+    "platformLanguage": "Platform Taal",
+    "platformLanguageDesc": "Kies die taal vir die toepassingskoppelvlak",
+    "selectLanguage": "Kies Taal",
+    "updated": "Instellings suksesvol opgedateer"
+  },
+  "header": {
+    "profile": "Profiel",
+    "preferences": "Voorkeue",
+    "logout": "Afmeld"
+  },
+  "sidebar": {
+    "admin": "Beheerder",
+    "student": "Student",
+    "tutor": "Tutor",
+    "parent": "Ouer"
+  },
+  "empty": {
+    "noData": "Geen data beskikbaar",
+    "noResults": "Geen resultate gevind"
+  }
+}

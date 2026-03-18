@@ -1,0 +1,81 @@
+{
+  "nav": {
+    "dashboard": "Dashboard",
+    "lessons": "Lessons",
+    "curriculum": "Curriculum",
+    "users": "Users",
+    "settings": "Settings",
+    "languages": "Languages",
+    "aiConfiguration": "AI Configuration",
+    "logout": "Logout"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "close": "Close",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "search": "Search",
+    "filter": "Filter",
+    "clear": "Clear",
+    "submit": "Submit",
+    "export": "Export",
+    "import": "Import"
+  },
+  "auth": {
+    "login": {
+      "title": "Login",
+      "email": "Email Address",
+      "password": "Password",
+      "submit": "Sign In",
+      "noAccount": "Don't have an account?",
+      "register": "Register here",
+      "forgotPassword": "Forgot password?",
+      "invalidCredentials": "Invalid email or password"
+    },
+    "register": {
+      "title": "Register",
+      "firstName": "First Name",
+      "surname": "Surname",
+      "email": "Email Address",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "role": "Role",
+      "selectRole": "Select your role",
+      "selectLanguage": "Preferred Language",
+      "submit": "Create Account",
+      "haveAccount": "Already have an account?",
+      "loginHere": "Login here",
+      "agreeTerms": "I agree to the Terms of Service"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "platformLanguage": "Platform Language",
+    "platformLanguageDesc": "Choose the language for the application interface",
+    "selectLanguage": "Select Language",
+    "updated": "Settings updated successfully"
+  },
+  "header": {
+    "profile": "Profile",
+    "preferences": "Preferences",
+    "logout": "Logout"
+  },
+  "sidebar": {
+    "admin": "Admin",
+    "student": "Student",
+    "tutor": "Tutor",
+    "parent": "Parent"
+  },
+  "empty": {
+    "noData": "No data available",
+    "noResults": "No results found"
+  }
+}
