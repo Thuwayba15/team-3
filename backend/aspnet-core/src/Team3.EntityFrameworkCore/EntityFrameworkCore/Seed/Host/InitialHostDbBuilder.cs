@@ -16,7 +16,7 @@ public class InitialHostDbBuilder
         new HostRoleAndUserCreator(_context).Create();
         new DefaultSettingsCreator(_context).Create();
         new DefaultPlatformRoleCreator(_context).Create();
-        new InitialSubjectsBuilder(_context).Create();
+        //new InitialParentDataBuilder(_context).Create();
 
         _context.SaveChanges();
     }
