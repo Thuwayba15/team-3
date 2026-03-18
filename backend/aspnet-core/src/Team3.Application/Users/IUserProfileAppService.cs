@@ -1,4 +1,5 @@
 ﻿using Abp.Application.Services;
+using Abp.Application.Services.Dto;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,5 +33,10 @@ namespace Team3.Users
         /// Returns a profile for a specific user id.
         /// </summary>
         Task<GetMyProfileOutput> GetProfileByUserIdAsync(long userId);
+
+        /// <summary>
+        /// Returns active platform languages for language selection dropdowns.
+        /// </summary>
+        Task<ListResultDto<PlatformLanguageOptionDto>> GetActiveLanguagesAsync();
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Abp.Authorization;
+using Abp.Application.Services.Dto;
 using Abp.Domain.Repositories;
 using Abp.Runtime.Session;
 using Abp.Runtime.Validation;
@@ -144,6 +145,28 @@ namespace Team3.Users
             var role = await GetPrimaryRoleAsync(user);
 
             return await BuildProfileOutputAsync(user, role);
+        }
+
+        /// <summary>
+        /// Returns active platform languages for the language dropdown.
+        /// </summary>
+        [AbpAllowAnonymous]
+        public async Task<ListResultDto<PlatformLanguageOptionDto>> GetActiveLanguagesAsync()
+        {
+            var languages = await _languageRepository.GetAll()
+                .Where(language => language.IsActive && !language.IsDeleted)
+                .OrderByDescending(language => language.IsDefault)
+                .ThenBy(language => language.SortOrder)
+                .ThenBy(language => language.Name)
+                .Select(language => new PlatformLanguageOptionDto
+                {
+                    Code = language.Code,
+                    Name = language.Name,
+                    IsDefault = language.IsDefault
+                })
+                .ToListAsync();
+
+            return new ListResultDto<PlatformLanguageOptionDto>(languages);
         }
 
         /// <summary>
