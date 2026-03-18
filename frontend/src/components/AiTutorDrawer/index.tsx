@@ -2,7 +2,7 @@
 
 import { RobotOutlined, SendOutlined, UserOutlined } from "@ant-design/icons";
 import { Avatar, Button, Drawer, Input, Select, Spin, Typography } from "antd";
-import { useEffect, useRef, useState } from "react";
+import { type KeyboardEvent, useEffect, useRef, useState } from "react";
 import { useStyles } from "./styles";
 
 const { Text } = Typography;
@@ -83,17 +83,19 @@ function getSimulatedReply(question: string, topic: string, lang: string): strin
 export default function AiTutorDrawer({ open, onClose, lessonTitle = "this lesson" }: AiTutorDrawerProps) {
     const { styles } = useStyles();
     const [lang, setLang] = useState("en");
-    const [messages, setMessages] = useState<Message[]>([]);
+    const [messages, setMessages] = useState<Message[]>([{ role: "ai", text: GREETINGS["en"] }]);
     const [input, setInput] = useState("");
     const [thinking, setThinking] = useState(false);
     const bottomRef = useRef<HTMLDivElement>(null);
+    const [prevOpen, setPrevOpen] = useState(open);
+    const [prevLang, setPrevLang] = useState(lang);
 
-    useEffect(() => {
-        if (open) {
-            setMessages([{ role: "ai", text: GREETINGS[lang] }]);
-            setInput("");
-        }
-    }, [open, lang]);
+    if (open && (open !== prevOpen || lang !== prevLang)) {
+        setPrevOpen(open);
+        setPrevLang(lang);
+        setMessages([{ role: "ai", text: GREETINGS[lang] }]);
+        setInput("");
+    }
 
     useEffect(() => {
         bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -114,7 +116,7 @@ export default function AiTutorDrawer({ open, onClose, lessonTitle = "this lesso
         setThinking(false);
     };
 
-    const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
         if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault();
             send();
