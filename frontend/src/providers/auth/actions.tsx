@@ -14,8 +14,11 @@ export interface ISetLoadingAction {
     payload: boolean;
 }
 
+import type { AppRole } from "@/types/navigation";
+
 export interface ISetAuthenticatedPayload {
     userId: number;
+    role: AppRole | null;
 }
 
 export interface ISetAuthenticatedAction {
