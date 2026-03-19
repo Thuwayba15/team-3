@@ -429,17 +429,12 @@ function LessonList({ onSelect }: { onSelect: (id: string) => void }) {
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 export default function StudentLessonsPage() {
-    const [selectedLessonId, setSelectedLessonId] = useState<string | null>(null);
+    const [activeLesson, setActiveLesson] = useState<string | null>(null);
 
-    if (selectedLessonId !== null) {
-        return (
-            <LessonDetail
-                lessonId={selectedLessonId}
-                onBack={() => setSelectedLessonId(null)}
-            />
-        );
+    if (activeLesson) {
+        return <LessonDetail lessonId={activeLesson} onBack={() => setActiveLesson(null)} />;
     }
 
-    return <LessonList onSelect={setSelectedLessonId} />;
+    return <LessonList onSelect={setActiveLesson} />;
 }
 
