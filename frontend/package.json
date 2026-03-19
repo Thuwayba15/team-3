@@ -15,10 +15,16 @@
     "antd-style": "^4.1.0",
     "axios": "^1.13.6",
     "framer-motion": "^12.38.0",
+    "katex": "^0.16.38",
     "next": "16.1.6",
+    "openai": "^6.32.0",
     "playwright": "^1.58.2",
     "react": "19.2.3",
-    "react-dom": "19.2.3"
+    "react-dom": "19.2.3",
+    "react-markdown": "^10.1.0",
+    "rehype-katex": "^7.0.1",
+    "remark-gfm": "^4.0.1",
+    "remark-math": "^6.0.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.58.2",

@@ -65,19 +65,52 @@ export const useStyles = createStyles(({ css, token }) => ({
         border-radius: 12px;
         font-size: 14px;
         line-height: 1.6;
-        white-space: pre-wrap;
+
+        /* Markdown elements */
+        p { margin: 0 0 6px 0; }
+        p:last-child { margin-bottom: 0; }
+
+        ul, ol {
+            margin: 4px 0 6px 0;
+            padding-left: 20px;
+        }
+        li { margin-bottom: 2px; }
+
+        strong { font-weight: 600; }
+        em { font-style: italic; }
+
+        code {
+            font-family: monospace;
+            font-size: 13px;
+            background: rgba(0,0,0,0.08);
+            border-radius: 3px;
+            padding: 1px 4px;
+        }
+
+        /* KaTeX display blocks */
+        .katex-display {
+            margin: 8px 0;
+            overflow-x: auto;
+        }
     `,
 
     bubbleAi: css`
         background: ${token.colorFillSecondary};
         color: ${token.colorText};
         border-radius: 4px 12px 12px 12px;
+
+        code { background: rgba(0,0,0,0.06); }
     `,
 
     bubbleUser: css`
         background: #00b8a9;
         color: #fff;
         border-radius: 12px 4px 12px 12px;
+
+        code { background: rgba(255,255,255,0.2); }
+
+        /* KaTeX in user bubble — keep white */
+        .katex { color: #fff; }
     `,
 
     avatarAi: css`

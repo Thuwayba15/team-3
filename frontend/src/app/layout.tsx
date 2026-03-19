@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { AppProviders } from "@/providers/AppProviders";
+import { AppProviders } from "@/providers/AppProviders";klklm
 import "./globals.css";
+import "katex/dist/katex.min.css";
 
 export const metadata: Metadata = {
     title: "UbuntuLearn",
