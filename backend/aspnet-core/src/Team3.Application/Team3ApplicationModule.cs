@@ -42,6 +42,12 @@ IocManager.RegisterAssemblyByConvention(thisAssembly);
 
         );
 
+        IocManager.IocContainer.Register(
+            Component.For<IValidator<UpdatePlatformLanguageInput>>()
+                .ImplementedBy<UpdatePlatformLanguageInputValidator>()
+                .LifestyleTransient()
+        );
+
         Configuration.Modules.AbpAutoMapper().Configurators.Add(
             cfg => cfg.AddMaps(thisAssembly)
         );

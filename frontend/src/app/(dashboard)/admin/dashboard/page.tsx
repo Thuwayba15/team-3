@@ -16,6 +16,13 @@ const METRIC_ICONS = {
     "supported-languages": GlobalOutlined,
 } as const;
 
+const ROLE_LEGEND = [
+    { labelKey: "dashboard.admin.legendStudents", dotClassName: "legendDotPrimary" as const },
+    { labelKey: "dashboard.admin.legendTutors", dotClassName: "legendDotInfo" as const },
+    { labelKey: "dashboard.admin.legendParents", dotClassName: "legendDotWarning" as const },
+];
+
+/** Admin dashboard — system overview with key platform metrics. */
 export default function AdminDashboardPage() {
     const { styles } = useStyles();
     const { t } = useTranslation();
@@ -67,17 +74,28 @@ export default function AdminDashboardPage() {
                         {loading ? (
                             <Skeleton active paragraph={{ rows: 5 }} title={false} />
                         ) : summary && summary.roleDistribution.length > 0 ? (
-                            <div className={styles.progressList}>
-                                {summary.roleDistribution.map((role) => (
-                                    <div key={role.roleName} className={styles.progressItem}>
-                                        <div className={styles.progressHeader}>
-                                            <span>{role.roleName}</span>
-                                            <span>{`${role.count} users`}</span>
+                            <>
+                                <div className={styles.progressList}>
+                                    {summary.roleDistribution.map((role) => (
+                                        <div key={role.roleName} className={styles.progressItem}>
+                                            <div className={styles.progressHeader}>
+                                                <span>{role.roleName}</span>
+                                                <span>{`${role.count} users`}</span>
+                                            </div>
+                                            <Progress percent={role.percent} showInfo={false} className={styles.progress} />
                                         </div>
-                                        <Progress percent={role.percent} showInfo={false} className={styles.progress} />
-                                    </div>
-                                ))}
-                            </div>
+                                    ))}
+                                </div>
+
+                                <div className={styles.legend}>
+                                    {ROLE_LEGEND.map(({ labelKey, dotClassName }) => (
+                                        <span key={labelKey} className={styles.legendItem}>
+                                            <span className={`${styles.legendDot} ${styles[dotClassName]}`} />
+                                            {t(labelKey)}
+                                        </span>
+                                    ))}
+                                </div>
+                            </>
                         ) : (
                             <div className={styles.emptyState}>
                                 <Text type="secondary">{t("empty.noData")}</Text>

@@ -31,6 +31,10 @@ interface IUpdatePlatformLanguageRequest {
     preferredLanguage: string;
 }
 
+interface IUpdatePlatformLanguageResponse {
+    preferredLanguage: string;
+}
+
 /** Fetches active platform languages available for selection in the UI. */
 async function getActiveLanguages(): Promise<IPlatformLanguageOption[]> {
     const response = await apiClient.get<IAbpListResultEnvelope<IPlatformLanguageOption>>(USER_PROFILE_GET_ACTIVE_LANGUAGES_ENDPOINT);
@@ -50,18 +54,27 @@ async function getMyProfile(): Promise<IMyProfileResponse> {
 }
 
 /** Persists the authenticated user's preferred platform language. */
-async function updateMyPlatformLanguage(preferredLanguage: string): Promise<void> {
+async function updateMyPlatformLanguage(preferredLanguage: string): Promise<IUpdatePlatformLanguageResponse> {
     const payload: IUpdatePlatformLanguageRequest = {
         preferredLanguage,
     };
 
     try {
-        await apiClient.put<IAbpResponseEnvelope<IMyProfileResponse>>(USER_PROFILE_UPDATE_PLATFORM_LANGUAGE_ENDPOINT, payload);
+        const response = await apiClient.put<IAbpResponseEnvelope<IUpdatePlatformLanguageResponse>>(
+            USER_PROFILE_UPDATE_PLATFORM_LANGUAGE_ENDPOINT,
+            payload
+        );
+
+        return response.data.result;
     } catch (error) {
         // fallback for environments where dynamic API maps Update* methods to POST
         if (axios.isAxiosError(error) && error.response?.status === 405) {
-            await apiClient.post<IAbpResponseEnvelope<IMyProfileResponse>>(USER_PROFILE_UPDATE_PLATFORM_LANGUAGE_ENDPOINT, payload);
-            return;
+            const response = await apiClient.post<IAbpResponseEnvelope<IUpdatePlatformLanguageResponse>>(
+                USER_PROFILE_UPDATE_PLATFORM_LANGUAGE_ENDPOINT,
+                payload
+            );
+
+            return response.data.result;
         }
 
         throw error;

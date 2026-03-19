@@ -1,4 +1,10 @@
 using Abp.Application.Services;
+﻿using Abp.Application.Services;
+using Abp.Application.Services.Dto;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Team3.Users.Dto;
 
@@ -24,9 +30,19 @@ namespace Team3.Users
         /// </summary>
         Task<GetMyProfileOutput> UpdateMyProfileAsync(UpdateMyProfileInput input);
 
-        /// <summary>
-        /// Returns a profile for a specific user id.
+         /// <summary>
+        /// Returns active platform languages for language selection dropdowns.
         /// </summary>
-        Task<GetMyProfileOutput> GetProfileByUserIdAsync(long userId);
+        Task<ListResultDto<PlatformLanguageOptionDto>> GetActiveLanguagesAsync();
+
+        /// <summary>
+        /// Updates the current authenticated user's preferred platform language.
+        /// </summary>
+        Task<UpdatePlatformLanguageOutput> UpdatePlatformLanguageAsync(UpdatePlatformLanguageInput input);
+
+        /// <summary>
+        /// Returns the current authenticated user's preferred platform language.
+        /// </summary>
+        Task<UpdatePlatformLanguageOutput> GetMyPlatformLanguageAsync();
     }
 }

@@ -104,7 +104,125 @@
       "lessonsTitle": "Dithuto tsa Moithuti",
       "quizzesTitle": "Dipotso tsa Moithuti",
       "aiTutorTitle": "Moruti wa AI wa Moithuti",
-      "progressTitle": "Tsoelo-pele ya Moithuti"
+      "progressTitle": "Tsoelo-pele ya Moithuti",
+      "dashboardPage": {
+        "welcomeTitle": "Re a o amohela hape, Thabo!",
+        "welcomeSubtitle": "O etsa hantle haholo. O itokiseditse ho tswela pele ho ithuta?",
+        "askAiTutor": "Botsa Moruti wa AI",
+        "recommendedNextLesson": "Thuto e Kgothaletswang e Latelang",
+        "mathsGrade10": "Dipalo Kereiti ya 10",
+        "nextLessonSubtitle": "Ho ipapisitse le tshebetso ya hao ya moraorao ya dipalo",
+        "algebraicExpressionsLesson": "Dipolelo tsa Algebra: Factorisation",
+        "lessonDescription": "Ithute ho factorisa quadratic trinomials le phapang ya disekwere tse pedi. Sena se aha hodima thuto ya hao e fetileng ya ho atolosa mabrakete.",
+        "startLesson": "Qala Thuto",
+        "lessonDuration": "metsotso e 25",
+        "masteryHeatmap": "Heatmap ya Bokgoni",
+        "performanceAcrossSubjects": "Tshebetso ya hao dithutong tsohle",
+        "heatmapPlaceholder": "Sebaka sa heatmap",
+        "needsWork": "E hloka mosebetsi",
+        "mastered": "E hlotswe",
+        "recentQuizResults": "Diphetho tsa Dipotso tsa Moraorao",
+        "viewAllResults": "Bona Diphetho Tsohle",
+        "upNextTitle": "Se Latelang",
+        "dates": {
+          "today": "Kajeno",
+          "yesterday": "Maobane",
+          "daysAgo3": "Matsatsi a 3 a fetileng"
+        },
+        "stats": {
+          "overallProgressScore": "Lintlha tsa Tsoelo-pele",
+          "topicsMastered": "Dihlooho Tse Hlotsweng",
+          "lessonsCompleted": "Dithuto Tse Qetilweng",
+          "badgeThisWeek": "5% bekeng ena",
+          "badgeNew": "2 tse ntjha"
+        },
+        "quizResults": {
+          "linearEquations": "Linear Equations",
+          "cellStructure": "Sebopeho sa Sele",
+          "chemicalBonding": "Tlamo ya Khemikhale"
+        },
+        "upNext": {
+          "reviewBiologyNotes": "Hlahloba dinoutu tsa Biology",
+          "completePhysicsQuiz": "Qeta quiz ya Physics",
+          "dueTomorrow": "E tshwanetse hosane",
+          "dueFriday": "E tshwanetse ka Labohlano"
+        }
+      },
+      "progressPage": {
+        "title": "Tsoelo-pele ya Hao",
+        "subtitle": "Latela leeto la hao la ho ithuta le maemo a bokgoni",
+        "masteryHeatmap": "Heatmap ya Bokgoni",
+        "performanceAcrossTopics": "Tshebetso ya hao dihloohong tsohle",
+        "performanceOverTime": "Tshebetso Ha Nako e Feta",
+        "performanceGraphPlaceholder": "Sebaka sa graph ya tshebetso",
+        "completedLessons": "Dithuto Tse Qetilweng",
+        "quizHistory": "Nalane ya Dipotso",
+        "pass": "Fetile",
+        "fail": "Hlotse",
+        "dates": {
+          "today": "Kajeno",
+          "yesterday": "Maobane",
+          "daysAgo2": "Matsatsi a 2 a fetileng"
+        },
+        "stats": {
+          "overallScore": "Lintlha ka Kakaretso",
+          "topicsMastered": "Dihlooho Tse Hlotsweng",
+          "quizzesPassed": "Dipotso Tse Fetileng",
+          "studyStreak": "Matsatsi a ho Ithuta"
+        },
+        "heatmap": {
+          "expandingBrackets": "Ho Atolosa Mabrakete",
+          "factorisation": "Factorisation",
+          "algebraicFractions": "Algebraic Fractions",
+          "exponents": "Exponents",
+          "numberPatterns": "Dipaterone tsa Dinomoro",
+          "equations": "Dikakanyo",
+          "geometry": "Geometry",
+          "dataHandling": "Tsamaiso ya Data"
+        },
+        "lessons": {
+          "introductionToExponents": "Selelekela sa Exponents",
+          "factorisingTrinomials": "Ho Factorisa Trinomials",
+          "differenceOfTwoSquares": "Phapang ya Dihlopha Tse Pedi"
+        },
+        "quizzes": {
+          "exponentsQuiz1": "Quiz ya Exponents 1",
+          "exponentsQuiz1Meta": "Kajeno - 11am - 9/10",
+          "factorisationTest": "Teko ya Factorisation",
+          "factorisationTestMeta": "Maobane - 11am - 8/10",
+          "algebraicFractions": "Algebraic Fractions",
+          "algebraicFractionsMeta": "Bekeng e Fetileng - 4/10"
+        },
+        "attention": {
+          "title": "Libaka Tse Hlokang Tlhokomelo",
+          "geometryTitle": "Geometry: Thepa ya Ditriangle",
+          "geometryDesc": "Bokgoni ba jwale: 30%. Ketso e kgothaletswang: Hlahloba Thuto 4.",
+          "dataHandlingTitle": "Tsamaiso ya Data: Standard Deviation",
+          "dataHandlingDesc": "Bokgoni ba jwale: 20%. Ketso e kgothaletswang: Kopa mehlala ho AI Tutor."
+        }
+      },
+      "learningPathPage": {
+        "title": "Tsela ya ho Ithuta",
+        "subtitle": "Tsoelo-pele ya kharikhulamo ya hao e ikgethileng",
+        "overallSubjectProgress": "Tsoelo-pele ya Sehlooho ka Kakaretso",
+        "completed": "E qetilwe",
+        "inProgress": "E ntse e tswela pele",
+        "locked": "E notletswe",
+        "continue": "Tswela pele",
+        "mastered": "E hlotswe",
+        "review": "Hlahloba",
+        "backToLearningPath": "Kgutlela Tsela ya ho Ithuta",
+        "practiceQuiz": "Quiz ya Boikoetliso",
+        "questionCounter": "Potso ya {{current}} ho {{total}}",
+        "multipleChoice": "Kgetho e Mengata",
+        "correctWellDone": "Ho nepahetse! O entse hantle.",
+        "correctAnswerIs": "Ha se hantle. Karabo e nepahetseng ke: {{answer}}",
+        "submitAnswer": "Romela Karabo",
+        "nextQuestion": "Potso e Latelang",
+        "seeResults": "Bona Diphetho",
+        "quizComplete": "Quiz e Phethilwe!",
+        "quizScoreSummary": "O arabile dipotso tse {{score}} ho tse {{total}} ka nepo."
+      }
     },
     "tutor": {
       "title": "Dashboard ya Moruti",
@@ -177,7 +295,16 @@
         "translationProgress": "Tsoelo-pele ya phetolelo",
         "contentItemsTranslated": "dintho tsa dikahare di fetoletswe",
         "translationStatusByContentType": "Boemo ba phetolelo ka mofuta wa dikahare",
-        "contentType": "Mofuta wa dikahare"
+        "contentType": "Mofuta wa dikahare",
+        "languageNameEnglish": "Senyesemane",
+        "languageNameIsiZulu": "isiZulu",
+        "languageNameSesotho": "Sesotho",
+        "languageNameAfrikaans": "Afrikaans",
+        "contentTypeUiLabels": "Dileibole tsa UI",
+        "contentTypeLessons": "Dithuto",
+        "contentTypeQuizQuestions": "Dipotso tsa Quiz",
+        "contentTypeNotifications": "Ditsebiso",
+        "contentTypeSystemMessages": "Melaetsa ya Sisteme"
       },
       "aiConfiguration": {
         "title": "Tlhophiso ya AI",

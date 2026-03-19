@@ -27,6 +27,7 @@ public class Team3DbContext : AbpZeroDbContext<Tenant, Role, User, Team3DbContex
 
     // Learning material upload entities
     public DbSet<Language> LearningLanguages { get; set; }
+    public DbSet<UserLanguagePreference> UserLanguagePreferences { get; set; }
     public DbSet<Subject> Subjects { get; set; }
     public DbSet<Topic> Topics { get; set; }
     public DbSet<Lesson> Lessons { get; set; }
@@ -37,7 +38,6 @@ public class Team3DbContext : AbpZeroDbContext<Tenant, Role, User, Team3DbContex
     public DbSet<StudentProgress> StudentProgresses { get; set; }
 
     // Per-user platform language preference
-    public virtual DbSet<UserLanguagePreference> UserLanguagePreferences { get; set; }
 
     public Team3DbContext(DbContextOptions<Team3DbContext> options)
         : base(options)
@@ -221,14 +221,24 @@ public class Team3DbContext : AbpZeroDbContext<Tenant, Role, User, Team3DbContex
                 .HasForeignKey(x => x.SubjectId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            entity.HasOne(x => x.GeneratedLesson)
-                .WithMany()
-                .HasForeignKey(x => x.GeneratedLessonId)
-                .OnDelete(DeleteBehavior.SetNull);
-
             entity.HasOne(x => x.GeneratedTopic)
                 .WithMany()
                 .HasForeignKey(x => x.GeneratedTopicId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            entity.HasOne(x => x.GeneratedEasyLesson)
+                .WithMany()
+                .HasForeignKey(x => x.GeneratedEasyLessonId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            entity.HasOne(x => x.GeneratedMediumLesson)
+                .WithMany()
+                .HasForeignKey(x => x.GeneratedMediumLessonId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            entity.HasOne(x => x.GeneratedHardLesson)
+                .WithMany()
+                .HasForeignKey(x => x.GeneratedHardLessonId)
                 .OnDelete(DeleteBehavior.SetNull);
         });
 
