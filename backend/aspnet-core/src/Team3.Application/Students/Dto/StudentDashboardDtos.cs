@@ -29,6 +29,21 @@ namespace Team3.Students.Dto
         public bool NeedsRevision { get; set; }
     }
 
+    public class StudentDashboardRecommendationDto
+    {
+        public Guid? LessonId { get; set; }
+        public string? LessonTitle { get; set; }
+        public string? TopicName { get; set; }
+        public string? Reason { get; set; }
+    }
+
+    public class StudentDashboardRevisionAdviceDto
+    {
+        public string? TopicName { get; set; }
+        public decimal MasteryScore { get; set; }
+        public string? Advice { get; set; }
+    }
+
     public class StudentDashboardProgressDto
     {
         public Guid? SubjectId { get; set; }
@@ -41,5 +56,8 @@ namespace Team3.Students.Dto
         public List<StudentDashboardRecentQuizDto> RecentQuizzes { get; set; } = new();
         public List<StudentDashboardCompletedLessonDto> CompletedLessons { get; set; } = new();
         public List<StudentDashboardWeakTopicDto> WeakTopics { get; set; } = new();
+        public StudentDashboardRecommendationDto? RecommendedLesson { get; set; }
+        public List<StudentDashboardRevisionAdviceDto> RevisionAdvices { get; set; } = new();
+        public string? MotivationalGuidance { get; set; }
     }
 }

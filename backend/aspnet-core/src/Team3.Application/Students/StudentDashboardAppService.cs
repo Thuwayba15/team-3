@@ -4,6 +4,7 @@ using Abp.Runtime.Session;
 using Abp.UI;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Team3.Academic;
@@ -25,6 +26,7 @@ namespace Team3.Students
         private readonly IRepository<StudentTopicProgress, Guid> _topicProgressRepository;
         private readonly IRepository<StudentProgress, Guid> _studentProgressRepository;
         private readonly IRepository<Assessment, Guid> _assessmentRepository;
+        private readonly RecommendationEngine _recommendationEngine;
 
         public StudentDashboardAppService(
             IRepository<Subject, Guid> subjectRepository,
@@ -35,7 +37,8 @@ namespace Team3.Students
             IRepository<StudentLessonProgress, Guid> lessonProgressRepository,
             IRepository<StudentTopicProgress, Guid> topicProgressRepository,
             IRepository<StudentProgress, Guid> studentProgressRepository,
-            IRepository<Assessment, Guid> assessmentRepository)
+            IRepository<Assessment, Guid> assessmentRepository,
+            RecommendationEngine recommendationEngine)
         {
             _subjectRepository = subjectRepository;
             _topicRepository = topicRepository;
@@ -46,6 +49,7 @@ namespace Team3.Students
             _topicProgressRepository = topicProgressRepository;
             _studentProgressRepository = studentProgressRepository;
             _assessmentRepository = assessmentRepository;
+            _recommendationEngine = recommendationEngine;
         }
 
         public async Task<StudentDashboardProgressDto> GetProgressAsync(Guid? subjectId)
@@ -133,7 +137,65 @@ namespace Team3.Students
                             MasteryScore = progress.MasteryScore,
                             NeedsRevision = progress.NeedsRevision
                         };
-                    }).ToList()
+                    }).ToList(),
+                RecommendedLesson = GenerateRecommendedLesson(topicProgresses, topics, lessons),
+                RevisionAdvices = GenerateRevisionAdvices(topicProgresses, topics),
+                MotivationalGuidance = GenerateMotivationalGuidance(subjectProgressRecords)
+            };
+        }
+
+        private StudentDashboardRecommendationDto? GenerateRecommendedLesson(
+            List<StudentTopicProgress> topicProgresses,
+            List<Topic> topics,
+            List<Lesson> lessons)
+        {
+            if (!topicProgresses.Any())
+                return null;
+
+            var nextLesson = _recommendationEngine.SelectNextLessonByTopicProgress(topics, lessons, topicProgresses);
+            if (nextLesson == null)
+                return null;
+
+            var topic = topics.FirstOrDefault(x => x.Id == nextLesson.TopicId);
+            return new StudentDashboardRecommendationDto
+            {
+                LessonId = nextLesson.Id,
+                LessonTitle = nextLesson.Title,
+                TopicName = topic?.Name,
+                Reason = "Recommended based on your learning progress"
+            };
+        }
+
+        private List<StudentDashboardRevisionAdviceDto> GenerateRevisionAdvices(
+            List<StudentTopicProgress> topicProgresses,
+            List<Topic> topics)
+        {
+            var weaknessInsights = _recommendationEngine.RankWeakTopicsByTopicProgress(topics, topicProgresses, 3);
+            return weaknessInsights
+                .Select(insight =>
+                {
+                    var topic = topics.FirstOrDefault(x => x.Id == insight.TopicId);
+                    return new StudentDashboardRevisionAdviceDto
+                    {
+                        TopicName = topic?.Name,
+                        MasteryScore = insight.MasteryPercent,
+                        Advice = $"Focus on revising {topic?.Name ?? "this topic"} to improve your mastery."
+                    };
+                }).ToList();
+        }
+
+        private string? GenerateMotivationalGuidance(List<StudentProgress> subjectProgressRecords)
+        {
+            if (!subjectProgressRecords.Any())
+                return "Start your learning journey today!";
+
+            var avgScore = subjectProgressRecords.Average(x => x.MasteryScore);
+            return avgScore switch
+            {
+                >= 80 => "Excellent progress! Keep up the momentum.",
+                >= 60 => "Good work! A bit more effort will get you to mastery.",
+                >= 40 => "You're making progress. Continue practicing to strengthen your skills.",
+                _ => "Every expert started as a beginner. Don't give up!"
             };
         }
 
