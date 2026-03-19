@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Team3.Users
 {
+    /// <summary>
+    /// Base profile entity for role-specific user profile records.
+    /// </summary>
     public abstract class UserProfileBase : FullAuditedEntity<long>
     {
         public long UserId { get; protected set; }
@@ -21,7 +24,7 @@ namespace Team3.Users
         protected UserProfileBase(long userId, string preferredLanguage)
         {
             UserId = Guard.Against.NegativeOrZero(userId);
-            PreferredLanguage = Guard.Against.NullOrWhiteSpace(preferredLanguage);
+            PreferredLanguage = Guard.Against.NullOrWhiteSpace(preferredLanguage).Trim();
         }
 
         /// <summary>

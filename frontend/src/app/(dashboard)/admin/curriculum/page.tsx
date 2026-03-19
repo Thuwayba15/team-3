@@ -30,6 +30,7 @@ import {
 import type { ColumnsType } from "antd/es/table";
 import type { UploadChangeParam, UploadFile, UploadProps } from "antd/es/upload/interface";
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/components/layout";
 import { useStyles } from "./styles";
 
@@ -169,6 +170,7 @@ function getReviewStatusClassName(status: ReviewStatus): "reviewPending" | "revi
 /** Admin curriculum management page for subject CRUD and AI-assisted curriculum review workflow. */
 export default function AdminCurriculumPage() {
     const { styles } = useStyles();
+    const { t } = useTranslation();
     const [messageApi, messageContextHolder] = message.useMessage();
     const [form] = Form.useForm<ISubjectFormValues>();
 
@@ -471,8 +473,8 @@ export default function AdminCurriculumPage() {
             {messageContextHolder}
 
             <PageHeader
-                title="Curriculum Management"
-                subtitle="Create subjects, upload source documents, and review AI-generated curriculum drafts"
+                title={t("dashboard.admin.curriculum.title")}
+                subtitle={t("dashboard.admin.curriculum.subtitle")}
             />
 
             <Row gutter={[16, 16]}>

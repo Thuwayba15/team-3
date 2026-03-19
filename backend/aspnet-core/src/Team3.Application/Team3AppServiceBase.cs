@@ -1,11 +1,12 @@
-﻿using Abp.Application.Services;
+using Abp.Application.Services;
+using Abp.Authorization;
 using Abp.IdentityFramework;
 using Abp.Runtime.Session;
-using Team3.Authorization.Users;
-using Team3.MultiTenancy;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Threading.Tasks;
+using Team3.Authorization.Users;
+using Team3.MultiTenancy;
 
 namespace Team3;
 
@@ -42,5 +43,17 @@ public abstract class Team3AppServiceBase : ApplicationService
     protected virtual void CheckErrors(IdentityResult identityResult)
     {
         identityResult.CheckErrors(LocalizationManager);
+    }
+
+    protected virtual async Task<User> EnsureCurrentUserInRoleAsync(string roleName)
+    {
+        var user = await GetCurrentUserAsync();
+        var isInRole = await UserManager.IsInRoleAsync(user, roleName);
+        if (!isInRole)
+        {
+            throw new AbpAuthorizationException($"Only {roleName} users can perform this action.");
+        }
+
+        return user;
     }
 }

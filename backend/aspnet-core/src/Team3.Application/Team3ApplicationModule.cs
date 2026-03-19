@@ -39,6 +39,12 @@ public class Team3ApplicationModule : AbpModule
                 .LifestyleTransient()
         );
 
+            IocManager.IocContainer.Register(
+                Component.For<IValidator<UpdatePlatformLanguageInput>>()
+                    .ImplementedBy<UpdatePlatformLanguageInputValidator>()
+                    .LifestyleTransient()
+            );
+
         Configuration.Modules.AbpAutoMapper().Configurators.Add(cfg =>
         {
             cfg.AddMaps(thisAssembly);

@@ -456,3 +456,4 @@ export default function StudentLessonsPage() {
 
     return <LessonList onSelect={setActiveLesson} />;
 }
+

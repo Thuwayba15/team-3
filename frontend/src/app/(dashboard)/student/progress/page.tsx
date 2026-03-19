@@ -9,6 +9,7 @@ import {
 } from "@ant-design/icons";
 import { Card, Col, Row, Tag, Typography } from "antd";
 import { useStyles } from "./styles";
+// import { useTranslation } from "react-i18next";
 
 const { Title, Text } = Typography;
 
