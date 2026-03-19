@@ -6,6 +6,10 @@ import type { ThemeConfig } from "antd";
 const themeConfig: ThemeConfig = {
     token: {
         colorPrimary: "#0f766e",
+        colorInfo: "#1d4ed8",
+        colorSuccess: "#15803d",
+        colorWarning: "#b45309",
+        colorError: "#b91c1c",
         colorBgLayout: "#f5f5f5",
         borderRadius: 8,
         fontFamily:
@@ -22,6 +26,9 @@ const themeConfig: ThemeConfig = {
         },
         Card: {
             borderRadius: 12,
+        },
+        Progress: {
+            defaultColor: "#0f766e",
         },
     },
 };

@@ -8024,3 +8024,1223 @@ INFO  2026-03-18 20:56:53,610 [14   ] .Mvc.Infrastructure.ObjectResultExecutor -
 INFO  2026-03-18 20:56:53,634 [14   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.LearningMaterials.LearningMaterialAppService.UploadTextMaterialAsync (Team3.Application) in 29724.8628ms
 INFO  2026-03-18 20:56:53,640 [14   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.LearningMaterials.LearningMaterialAppService.UploadTextMaterialAsync (Team3.Application)'
 INFO  2026-03-18 20:56:53,646 [14   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 POST https://localhost:44311/api/services/app/LearningMaterial/UploadTextMaterial - 200 - application/json;+charset=utf-8 29843.3803ms
+DEBUG 2026-03-19 11:15:35,064 [2    ] Abp.Modules.AbpModuleManager             - Loading Abp modules...
+DEBUG 2026-03-19 11:15:41,818 [2    ] Abp.Modules.AbpModuleManager             - Found 15 ABP modules in total.
+DEBUG 2026-03-19 11:15:41,860 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Web.Host.Startup.Team3WebHostModule, Team3.Web.Host, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:15:41,865 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3WebCoreModule, Team3.Web.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:15:41,866 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3ApplicationModule, Team3.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:15:41,867 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3CoreModule, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:15:41,868 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCoreModule, Abp.ZeroCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:15:41,869 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCommonModule, Abp.Zero.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:15:41,870 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AbpKernelModule, Abp, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:15:41,874 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AutoMapper.AbpAutoMapperModule, Abp.AutoMapper, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:15:41,875 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.EntityFrameworkCore.Team3EntityFrameworkModule, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:15:41,876 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.EntityFrameworkCore.AbpZeroCoreEntityFrameworkCoreModule, Abp.ZeroCore.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:15:41,877 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFrameworkCore.AbpEntityFrameworkCoreModule, Abp.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:15:41,878 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFramework.AbpEntityFrameworkCommonModule, Abp.EntityFramework.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:15:41,879 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.AbpAspNetCoreModule, Abp.AspNetCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:15:41,880 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Web.AbpWebCommonModule, Abp.Web.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:15:41,880 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.SignalR.AbpAspNetCoreSignalRModule, Abp.AspNetCore.SignalR, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:15:41,884 [2    ] Abp.Modules.AbpModuleManager             - 15 modules loaded.
+DEBUG 2026-03-19 11:15:42,232 [2    ] o.Configuration.LanguageManagementConfig - Converted Abp (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 11:15:42,232 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpZero (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 11:15:42,232 [2    ] o.Configuration.LanguageManagementConfig - Converted Team3 (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 11:15:42,232 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpWeb (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 11:15:43,727 [2    ] ameworkCore.AbpEntityFrameworkCoreModule - Registering DbContext: Team3.EntityFrameworkCore.Team3DbContext, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:15:44,093 [2    ] Abp.Localization.LocalizationManager     - Initializing 4 localization sources.
+DEBUG 2026-03-19 11:15:44,185 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Abp
+DEBUG 2026-03-19 11:15:44,201 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpZero
+DEBUG 2026-03-19 11:15:44,218 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Team3
+DEBUG 2026-03-19 11:15:44,227 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpWeb
+DEBUG 2026-03-19 11:15:44,250 [2    ] Abp.BackgroundJobs.BackgroundJobManager  - Start background worker: Abp.BackgroundJobs.BackgroundJobManager
+DEBUG 2026-03-19 11:15:44,266 [2    ] , Culture=neutral, PublicKeyToken=null]] - Start background worker: Abp.Authorization.Users.UserTokenExpirationWorker`2[[Team3.MultiTenancy.Tenant, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Team3.Authorization.Users.User, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]
+DEBUG 2026-03-19 11:15:44,311 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Found 7 classes define auto mapping attributes
+DEBUG 2026-03-19 11:15:44,312 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.CreateUserDto
+DEBUG 2026-03-19 11:15:44,335 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.UserDto
+DEBUG 2026-03-19 11:15:44,337 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.TenantLoginInfoDto
+DEBUG 2026-03-19 11:15:44,337 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.UserLoginInfoDto
+DEBUG 2026-03-19 11:15:44,337 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Roles.Dto.PermissionDto
+DEBUG 2026-03-19 11:15:44,337 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.CreateTenantDto
+DEBUG 2026-03-19 11:15:44,338 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.TenantDto
+WARN  2026-03-19 11:15:47,994 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'SourceMaterial'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 11:15:48,001 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Lesson' has a global query filter defined and is the required end of a relationship with the entity 'LessonMaterial'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 11:15:48,031 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Language' has a global query filter defined and is the required end of a relationship with the entity 'LessonTranslation'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 11:15:48,039 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Subject' has a global query filter defined and is the required end of a relationship with the entity 'StudentEnrollment'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 11:15:48,044 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Subject' has a global query filter defined and is the required end of a relationship with the entity 'StudentProgress'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 11:15:48,282 [2    ] oft.EntityFrameworkCore.Model.Validation - The 'ProcessingStatus' property 'ProcessingStatus' on entity type 'SourceMaterial' is configured with a database-generated default, but has no configured sentinel value. The database-generated default will always be used for inserts when the property has the value '0', since this is the CLR default for the 'ProcessingStatus' type. Consider using a nullable type, using a nullable backing field, or setting the sentinel value for the property to ensure the database default is used when, and only when, appropriate. See https://aka.ms/efcore-docs-default-values for more information.
+INFO  2026-03-19 11:16:19,370 [2    ] tCore.Builder.RequestLocalizationOptions - Supported Request Localization Cultures: en,es-MX,fr,de,it,nl,pt-BR,tr,ru,ar,fa,ja,zh-Hans
+INFO  2026-03-19 11:16:20,622 [14   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/ - - -
+INFO  2026-03-19 11:16:20,857 [2    ] Microsoft.Hosting.Lifetime               - Application started. Press Ctrl+C to shut down.
+INFO  2026-03-19 11:16:20,862 [2    ] Microsoft.Hosting.Lifetime               - Hosting environment: Development
+INFO  2026-03-19 11:16:20,875 [2    ] Microsoft.Hosting.Lifetime               - Content root path: C:\Users\Welcome\source\repos\FolderCombine\team-3\backend\aspnet-core\src\Team3.Web.Host
+INFO  2026-03-19 11:16:22,622 [9    ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host)'
+INFO  2026-03-19 11:16:22,765 [9    ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "Index", controller = "Home", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller Team3.Web.Host.Controllers.HomeController (Team3.Web.Host).
+INFO  2026-03-19 11:16:24,266 [9    ] vc.Infrastructure.RedirectResultExecutor - Executing RedirectResult, redirecting to /swagger.
+INFO  2026-03-19 11:16:24,311 [9    ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host) in 1505.8881ms
+INFO  2026-03-19 11:16:24,316 [9    ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host)'
+INFO  2026-03-19 11:16:24,363 [9    ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/ - 302 - - 3757.8987ms
+INFO  2026-03-19 11:16:24,433 [21   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/_framework/aspnetcore-browser-refresh.js - - -
+INFO  2026-03-19 11:16:24,437 [20   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/_vs/browserLink - - -
+INFO  2026-03-19 11:16:24,479 [21   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/_framework/aspnetcore-browser-refresh.js - 200 14933 application/javascript;+charset=utf-8 46.2370ms
+INFO  2026-03-19 11:16:24,666 [21   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/AntiForgery/SetCookie - - -
+INFO  2026-03-19 11:16:24,675 [16   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/_vs/browserLink - 200 - text/javascript;+charset=UTF-8 236.5963ms
+INFO  2026-03-19 11:16:24,714 [21   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host)'
+INFO  2026-03-19 11:16:24,747 [14   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/swagger/v1/swagger.json - - -
+INFO  2026-03-19 11:16:24,759 [21   ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "SetCookie", controller = "AntiForgery", area = ""}. Executing controller action with signature Void SetCookie() on controller Team3.Web.Host.Controllers.AntiForgeryController (Team3.Web.Host).
+INFO  2026-03-19 11:16:24,841 [14   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/swagger/v1/swagger.json - 200 - application/json;charset=utf-8 120.7018ms
+INFO  2026-03-19 11:16:25,998 [21   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-19 11:16:26,017 [21   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host) in 1253.418ms
+INFO  2026-03-19 11:16:26,021 [21   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host)'
+INFO  2026-03-19 11:16:26,026 [21   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/AntiForgery/SetCookie - 200 - application/json;+charset=utf-8 1362.3002ms
+INFO  2026-03-19 11:17:39,326 [21   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/api/services/app/StudentSubject/GetAllSubjects - - -
+INFO  2026-03-19 11:17:39,381 [21   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.LearningMaterials.Subjects.StudentSubjectAppService.GetAllSubjectsAsync (Team3.Application)'
+INFO  2026-03-19 11:17:39,406 [21   ] c.Infrastructure.ControllerActionInvoker - Route matched with {area = "app", action = "GetAllSubjects", controller = "StudentSubject"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.Collections.Generic.List`1[Team3.LearningMaterials.Dto.SubjectDto]] GetAllSubjectsAsync() on controller Team3.LearningMaterials.Subjects.StudentSubjectAppService (Team3.Application).
+INFO  2026-03-19 11:17:41,292 [21   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-19 11:17:41,321 [21   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.LearningMaterials.Subjects.StudentSubjectAppService.GetAllSubjectsAsync (Team3.Application) in 1907.728ms
+INFO  2026-03-19 11:17:41,327 [21   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.LearningMaterials.Subjects.StudentSubjectAppService.GetAllSubjectsAsync (Team3.Application)'
+INFO  2026-03-19 11:17:41,336 [21   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/api/services/app/StudentSubject/GetAllSubjects - 200 - application/json;+charset=utf-8 2007.3541ms
+DEBUG 2026-03-19 11:42:12,293 [2    ] Abp.Modules.AbpModuleManager             - Loading Abp modules...
+DEBUG 2026-03-19 11:42:13,056 [2    ] Abp.Modules.AbpModuleManager             - Found 15 ABP modules in total.
+DEBUG 2026-03-19 11:42:13,073 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Web.Host.Startup.Team3WebHostModule, Team3.Web.Host, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:42:13,075 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3WebCoreModule, Team3.Web.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:42:13,075 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3ApplicationModule, Team3.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:42:13,076 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3CoreModule, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:42:13,076 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCoreModule, Abp.ZeroCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:42:13,076 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCommonModule, Abp.Zero.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:42:13,076 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AbpKernelModule, Abp, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:42:13,077 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AutoMapper.AbpAutoMapperModule, Abp.AutoMapper, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:42:13,077 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.EntityFrameworkCore.Team3EntityFrameworkModule, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:42:13,077 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.EntityFrameworkCore.AbpZeroCoreEntityFrameworkCoreModule, Abp.ZeroCore.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:42:13,078 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFrameworkCore.AbpEntityFrameworkCoreModule, Abp.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:42:13,078 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFramework.AbpEntityFrameworkCommonModule, Abp.EntityFramework.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:42:13,078 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.AbpAspNetCoreModule, Abp.AspNetCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:42:13,078 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Web.AbpWebCommonModule, Abp.Web.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:42:13,079 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.SignalR.AbpAspNetCoreSignalRModule, Abp.AspNetCore.SignalR, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:42:13,080 [2    ] Abp.Modules.AbpModuleManager             - 15 modules loaded.
+DEBUG 2026-03-19 11:42:13,132 [2    ] o.Configuration.LanguageManagementConfig - Converted Abp (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 11:42:13,132 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpZero (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 11:42:13,132 [2    ] o.Configuration.LanguageManagementConfig - Converted Team3 (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 11:42:13,132 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpWeb (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 11:42:13,421 [2    ] ameworkCore.AbpEntityFrameworkCoreModule - Registering DbContext: Team3.EntityFrameworkCore.Team3DbContext, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:42:13,748 [2    ] Abp.Localization.LocalizationManager     - Initializing 4 localization sources.
+DEBUG 2026-03-19 11:42:13,809 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Abp
+DEBUG 2026-03-19 11:42:13,819 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpZero
+DEBUG 2026-03-19 11:42:13,826 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Team3
+DEBUG 2026-03-19 11:42:13,831 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpWeb
+DEBUG 2026-03-19 11:42:13,840 [2    ] Abp.BackgroundJobs.BackgroundJobManager  - Start background worker: Abp.BackgroundJobs.BackgroundJobManager
+DEBUG 2026-03-19 11:42:13,844 [2    ] , Culture=neutral, PublicKeyToken=null]] - Start background worker: Abp.Authorization.Users.UserTokenExpirationWorker`2[[Team3.MultiTenancy.Tenant, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Team3.Authorization.Users.User, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]
+DEBUG 2026-03-19 11:42:13,867 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Found 7 classes define auto mapping attributes
+DEBUG 2026-03-19 11:42:13,867 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.CreateUserDto
+DEBUG 2026-03-19 11:42:13,871 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.UserDto
+DEBUG 2026-03-19 11:42:13,872 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.TenantLoginInfoDto
+DEBUG 2026-03-19 11:42:13,872 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.UserLoginInfoDto
+DEBUG 2026-03-19 11:42:13,872 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Roles.Dto.PermissionDto
+DEBUG 2026-03-19 11:42:13,872 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.CreateTenantDto
+DEBUG 2026-03-19 11:42:13,873 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.TenantDto
+WARN  2026-03-19 11:42:15,366 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'SourceMaterial'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 11:42:15,367 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Lesson' has a global query filter defined and is the required end of a relationship with the entity 'LessonMaterial'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 11:42:15,367 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Language' has a global query filter defined and is the required end of a relationship with the entity 'LessonTranslation'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 11:42:15,368 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Subject' has a global query filter defined and is the required end of a relationship with the entity 'StudentEnrollment'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 11:42:15,370 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Subject' has a global query filter defined and is the required end of a relationship with the entity 'StudentProgress'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+FATAL 2026-03-19 11:42:15,516 [2    ] Abp.AbpBootstrapper                      - System.InvalidOperationException: Cannot use table 'Languages' for entity type 'PlatformLanguage' since it is being used for entity type 'Language' and potentially other entity types, but there is no linking relationship. Add a foreign key to 'PlatformLanguage' on the primary key properties and pointing to the primary key on another entity type mapped to 'Languages'.
+   at Microsoft.EntityFrameworkCore.Infrastructure.RelationalModelValidator.ValidateSharedTableCompatibility(IReadOnlyList`1 mappedTypes, StoreObjectIdentifier& storeObject, IDiagnosticsLogger`1 logger)
+   at Microsoft.EntityFrameworkCore.Infrastructure.RelationalModelValidator.ValidateSharedTableCompatibility(IModel model, IDiagnosticsLogger`1 logger)
+   at Microsoft.EntityFrameworkCore.Infrastructure.RelationalModelValidator.Validate(IModel model, IDiagnosticsLogger`1 logger)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Infrastructure.Internal.NpgsqlModelValidator.Validate(IModel model, IDiagnosticsLogger`1 logger)
+   at Microsoft.EntityFrameworkCore.Infrastructure.ModelRuntimeInitializer.Initialize(IModel model, Boolean designTime, IDiagnosticsLogger`1 validationLogger)
+   at Microsoft.EntityFrameworkCore.Infrastructure.ModelSource.CreateModel(DbContext context, ModelCreationDependencies modelCreationDependencies, Boolean designTime)
+   at Microsoft.EntityFrameworkCore.Infrastructure.ModelSource.GetModel(DbContext context, ModelCreationDependencies modelCreationDependencies, Boolean designTime)
+   at Microsoft.EntityFrameworkCore.Internal.DbContextServices.CreateModel(Boolean designTime)
+   at Microsoft.EntityFrameworkCore.Internal.DbContextServices.get_Model()
+   at Microsoft.EntityFrameworkCore.Infrastructure.EntityFrameworkServicesBuilder.<>c.<TryAddCoreServices>b__8_4(IServiceProvider p)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitCache(ServiceCallSite callSite, RuntimeResolverContext context, ServiceProviderEngineScope serviceProviderEngine, RuntimeResolverLock lockType)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitScopeCache(ServiceCallSite callSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitCache(ServiceCallSite callSite, RuntimeResolverContext context, ServiceProviderEngineScope serviceProviderEngine, RuntimeResolverLock lockType)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitScopeCache(ServiceCallSite callSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitCache(ServiceCallSite callSite, RuntimeResolverContext context, ServiceProviderEngineScope serviceProviderEngine, RuntimeResolverLock lockType)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitScopeCache(ServiceCallSite callSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.Resolve(ServiceCallSite callSite, ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.DynamicServiceProviderEngine.<>c__DisplayClass2_0.<RealizeService>b__0(ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(ServiceIdentifier serviceIdentifier, ServiceProviderEngineScope serviceProviderEngineScope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.ServiceProviderEngineScope.GetService(Type serviceType)
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService(IServiceProvider provider, Type serviceType)
+   at Abp.EntityFrameworkCore.AbpDbContextOptionsExtension.<>c__DisplayClass0_0.<ApplyServices>b__1(IServiceProvider provider)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitCache(ServiceCallSite callSite, RuntimeResolverContext context, ServiceProviderEngineScope serviceProviderEngine, RuntimeResolverLock lockType)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitScopeCache(ServiceCallSite callSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitCache(ServiceCallSite callSite, RuntimeResolverContext context, ServiceProviderEngineScope serviceProviderEngine, RuntimeResolverLock lockType)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitScopeCache(ServiceCallSite callSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitCache(ServiceCallSite callSite, RuntimeResolverContext context, ServiceProviderEngineScope serviceProviderEngine, RuntimeResolverLock lockType)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitScopeCache(ServiceCallSite callSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitCache(ServiceCallSite callSite, RuntimeResolverContext context, ServiceProviderEngineScope serviceProviderEngine, RuntimeResolverLock lockType)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitScopeCache(ServiceCallSite callSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.Resolve(ServiceCallSite callSite, ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.DynamicServiceProviderEngine.<>c__DisplayClass2_0.<RealizeService>b__0(ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(ServiceIdentifier serviceIdentifier, ServiceProviderEngineScope serviceProviderEngineScope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.ServiceProviderEngineScope.GetService(Type serviceType)
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService(IServiceProvider provider, Type serviceType)
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService[T](IServiceProvider provider)
+   at Microsoft.EntityFrameworkCore.DbContext.get_DbContextDependencies()
+   at Microsoft.EntityFrameworkCore.DbContext.get_ContextServices()
+   at Microsoft.EntityFrameworkCore.DbContext.get_InternalServiceProvider()
+   at Microsoft.EntityFrameworkCore.DbContext.Microsoft.EntityFrameworkCore.Infrastructure.IInfrastructure<System.IServiceProvider>.get_Instance()
+   at Microsoft.EntityFrameworkCore.Infrastructure.Internal.InfrastructureExtensions.GetService(IInfrastructure`1 accessor, Type serviceType)
+   at Microsoft.EntityFrameworkCore.Infrastructure.Internal.InfrastructureExtensions.GetService[TService](IInfrastructure`1 accessor)
+   at Microsoft.EntityFrameworkCore.Infrastructure.AccessorExtensions.GetService[TService](IInfrastructure`1 accessor)
+   at Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade.get_Dependencies()
+   at Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade.Microsoft.EntityFrameworkCore.Storage.IDatabaseFacadeDependenciesAccessor.get_Dependencies()
+   at Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions.BeginTransaction(DatabaseFacade databaseFacade, IsolationLevel isolationLevel)
+   at Abp.EntityFrameworkCore.Uow.DbContextEfCoreTransactionStrategy.CreateDbContext[TDbContext](String connectionString, IDbContextResolver dbContextResolver)
+   at Abp.EntityFrameworkCore.Uow.EfCoreUnitOfWork.GetOrCreateDbContext[TDbContext](Nullable`1 multiTenancySide, String name)
+   at Abp.EntityFrameworkCore.Uow.UnitOfWorkExtensions.GetDbContext[TDbContext](IActiveUnitOfWork unitOfWork, Nullable`1 multiTenancySide, String name)
+   at Team3.EntityFrameworkCore.Seed.SeedHelper.WithDbContext[TDbContext](IIocResolver iocResolver, Action`1 contextAction) in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\SeedHelper.cs:line 37
+   at Team3.EntityFrameworkCore.Seed.SeedHelper.SeedHostDb(IIocResolver iocResolver) in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\SeedHelper.cs:line 17
+   at Team3.EntityFrameworkCore.Team3EntityFrameworkModule.PostInitialize() in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Team3EntityFrameworkModule.cs:line 49
+   at Abp.Modules.AbpModuleManager.<>c.<StartModules>b__15_2(AbpModuleInfo module)
+   at System.Collections.Generic.List`1.ForEach(Action`1 action)
+   at Abp.Modules.AbpModuleManager.StartModules()
+   at Abp.AbpBootstrapper.Initialize()
+System.InvalidOperationException: Cannot use table 'Languages' for entity type 'PlatformLanguage' since it is being used for entity type 'Language' and potentially other entity types, but there is no linking relationship. Add a foreign key to 'PlatformLanguage' on the primary key properties and pointing to the primary key on another entity type mapped to 'Languages'.
+   at Microsoft.EntityFrameworkCore.Infrastructure.RelationalModelValidator.ValidateSharedTableCompatibility(IReadOnlyList`1 mappedTypes, StoreObjectIdentifier& storeObject, IDiagnosticsLogger`1 logger)
+   at Microsoft.EntityFrameworkCore.Infrastructure.RelationalModelValidator.ValidateSharedTableCompatibility(IModel model, IDiagnosticsLogger`1 logger)
+   at Microsoft.EntityFrameworkCore.Infrastructure.RelationalModelValidator.Validate(IModel model, IDiagnosticsLogger`1 logger)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Infrastructure.Internal.NpgsqlModelValidator.Validate(IModel model, IDiagnosticsLogger`1 logger)
+   at Microsoft.EntityFrameworkCore.Infrastructure.ModelRuntimeInitializer.Initialize(IModel model, Boolean designTime, IDiagnosticsLogger`1 validationLogger)
+   at Microsoft.EntityFrameworkCore.Infrastructure.ModelSource.CreateModel(DbContext context, ModelCreationDependencies modelCreationDependencies, Boolean designTime)
+   at Microsoft.EntityFrameworkCore.Infrastructure.ModelSource.GetModel(DbContext context, ModelCreationDependencies modelCreationDependencies, Boolean designTime)
+   at Microsoft.EntityFrameworkCore.Internal.DbContextServices.CreateModel(Boolean designTime)
+   at Microsoft.EntityFrameworkCore.Internal.DbContextServices.get_Model()
+   at Microsoft.EntityFrameworkCore.Infrastructure.EntityFrameworkServicesBuilder.<>c.<TryAddCoreServices>b__8_4(IServiceProvider p)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitCache(ServiceCallSite callSite, RuntimeResolverContext context, ServiceProviderEngineScope serviceProviderEngine, RuntimeResolverLock lockType)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitScopeCache(ServiceCallSite callSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitCache(ServiceCallSite callSite, RuntimeResolverContext context, ServiceProviderEngineScope serviceProviderEngine, RuntimeResolverLock lockType)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitScopeCache(ServiceCallSite callSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitCache(ServiceCallSite callSite, RuntimeResolverContext context, ServiceProviderEngineScope serviceProviderEngine, RuntimeResolverLock lockType)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitScopeCache(ServiceCallSite callSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.Resolve(ServiceCallSite callSite, ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.DynamicServiceProviderEngine.<>c__DisplayClass2_0.<RealizeService>b__0(ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(ServiceIdentifier serviceIdentifier, ServiceProviderEngineScope serviceProviderEngineScope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.ServiceProviderEngineScope.GetService(Type serviceType)
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService(IServiceProvider provider, Type serviceType)
+   at Abp.EntityFrameworkCore.AbpDbContextOptionsExtension.<>c__DisplayClass0_0.<ApplyServices>b__1(IServiceProvider provider)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitCache(ServiceCallSite callSite, RuntimeResolverContext context, ServiceProviderEngineScope serviceProviderEngine, RuntimeResolverLock lockType)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitScopeCache(ServiceCallSite callSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitCache(ServiceCallSite callSite, RuntimeResolverContext context, ServiceProviderEngineScope serviceProviderEngine, RuntimeResolverLock lockType)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitScopeCache(ServiceCallSite callSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitCache(ServiceCallSite callSite, RuntimeResolverContext context, ServiceProviderEngineScope serviceProviderEngine, RuntimeResolverLock lockType)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitScopeCache(ServiceCallSite callSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitCache(ServiceCallSite callSite, RuntimeResolverContext context, ServiceProviderEngineScope serviceProviderEngine, RuntimeResolverLock lockType)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitScopeCache(ServiceCallSite callSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.Resolve(ServiceCallSite callSite, ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.DynamicServiceProviderEngine.<>c__DisplayClass2_0.<RealizeService>b__0(ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(ServiceIdentifier serviceIdentifier, ServiceProviderEngineScope serviceProviderEngineScope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.ServiceProviderEngineScope.GetService(Type serviceType)
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService(IServiceProvider provider, Type serviceType)
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService[T](IServiceProvider provider)
+   at Microsoft.EntityFrameworkCore.DbContext.get_DbContextDependencies()
+   at Microsoft.EntityFrameworkCore.DbContext.get_ContextServices()
+   at Microsoft.EntityFrameworkCore.DbContext.get_InternalServiceProvider()
+   at Microsoft.EntityFrameworkCore.DbContext.Microsoft.EntityFrameworkCore.Infrastructure.IInfrastructure<System.IServiceProvider>.get_Instance()
+   at Microsoft.EntityFrameworkCore.Infrastructure.Internal.InfrastructureExtensions.GetService(IInfrastructure`1 accessor, Type serviceType)
+   at Microsoft.EntityFrameworkCore.Infrastructure.Internal.InfrastructureExtensions.GetService[TService](IInfrastructure`1 accessor)
+   at Microsoft.EntityFrameworkCore.Infrastructure.AccessorExtensions.GetService[TService](IInfrastructure`1 accessor)
+   at Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade.get_Dependencies()
+   at Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade.Microsoft.EntityFrameworkCore.Storage.IDatabaseFacadeDependenciesAccessor.get_Dependencies()
+   at Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions.BeginTransaction(DatabaseFacade databaseFacade, IsolationLevel isolationLevel)
+   at Abp.EntityFrameworkCore.Uow.DbContextEfCoreTransactionStrategy.CreateDbContext[TDbContext](String connectionString, IDbContextResolver dbContextResolver)
+   at Abp.EntityFrameworkCore.Uow.EfCoreUnitOfWork.GetOrCreateDbContext[TDbContext](Nullable`1 multiTenancySide, String name)
+   at Abp.EntityFrameworkCore.Uow.UnitOfWorkExtensions.GetDbContext[TDbContext](IActiveUnitOfWork unitOfWork, Nullable`1 multiTenancySide, String name)
+   at Team3.EntityFrameworkCore.Seed.SeedHelper.WithDbContext[TDbContext](IIocResolver iocResolver, Action`1 contextAction) in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\SeedHelper.cs:line 37
+   at Team3.EntityFrameworkCore.Seed.SeedHelper.SeedHostDb(IIocResolver iocResolver) in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\SeedHelper.cs:line 17
+   at Team3.EntityFrameworkCore.Team3EntityFrameworkModule.PostInitialize() in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Team3EntityFrameworkModule.cs:line 49
+   at Abp.Modules.AbpModuleManager.<>c.<StartModules>b__15_2(AbpModuleInfo module)
+   at System.Collections.Generic.List`1.ForEach(Action`1 action)
+   at Abp.Modules.AbpModuleManager.StartModules()
+   at Abp.AbpBootstrapper.Initialize()
+FATAL 2026-03-19 11:42:15,532 [2    ] Microsoft.AspNetCore.Hosting.Diagnostics - Application startup exception
+System.InvalidOperationException: Cannot use table 'Languages' for entity type 'PlatformLanguage' since it is being used for entity type 'Language' and potentially other entity types, but there is no linking relationship. Add a foreign key to 'PlatformLanguage' on the primary key properties and pointing to the primary key on another entity type mapped to 'Languages'.
+   at Microsoft.EntityFrameworkCore.Infrastructure.RelationalModelValidator.ValidateSharedTableCompatibility(IReadOnlyList`1 mappedTypes, StoreObjectIdentifier& storeObject, IDiagnosticsLogger`1 logger)
+   at Microsoft.EntityFrameworkCore.Infrastructure.RelationalModelValidator.ValidateSharedTableCompatibility(IModel model, IDiagnosticsLogger`1 logger)
+   at Microsoft.EntityFrameworkCore.Infrastructure.RelationalModelValidator.Validate(IModel model, IDiagnosticsLogger`1 logger)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Infrastructure.Internal.NpgsqlModelValidator.Validate(IModel model, IDiagnosticsLogger`1 logger)
+   at Microsoft.EntityFrameworkCore.Infrastructure.ModelRuntimeInitializer.Initialize(IModel model, Boolean designTime, IDiagnosticsLogger`1 validationLogger)
+   at Microsoft.EntityFrameworkCore.Infrastructure.ModelSource.CreateModel(DbContext context, ModelCreationDependencies modelCreationDependencies, Boolean designTime)
+   at Microsoft.EntityFrameworkCore.Infrastructure.ModelSource.GetModel(DbContext context, ModelCreationDependencies modelCreationDependencies, Boolean designTime)
+   at Microsoft.EntityFrameworkCore.Internal.DbContextServices.CreateModel(Boolean designTime)
+   at Microsoft.EntityFrameworkCore.Internal.DbContextServices.get_Model()
+   at Microsoft.EntityFrameworkCore.Infrastructure.EntityFrameworkServicesBuilder.<>c.<TryAddCoreServices>b__8_4(IServiceProvider p)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitCache(ServiceCallSite callSite, RuntimeResolverContext context, ServiceProviderEngineScope serviceProviderEngine, RuntimeResolverLock lockType)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitScopeCache(ServiceCallSite callSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitCache(ServiceCallSite callSite, RuntimeResolverContext context, ServiceProviderEngineScope serviceProviderEngine, RuntimeResolverLock lockType)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitScopeCache(ServiceCallSite callSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitCache(ServiceCallSite callSite, RuntimeResolverContext context, ServiceProviderEngineScope serviceProviderEngine, RuntimeResolverLock lockType)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitScopeCache(ServiceCallSite callSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.Resolve(ServiceCallSite callSite, ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.DynamicServiceProviderEngine.<>c__DisplayClass2_0.<RealizeService>b__0(ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(ServiceIdentifier serviceIdentifier, ServiceProviderEngineScope serviceProviderEngineScope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.ServiceProviderEngineScope.GetService(Type serviceType)
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService(IServiceProvider provider, Type serviceType)
+   at Abp.EntityFrameworkCore.AbpDbContextOptionsExtension.<>c__DisplayClass0_0.<ApplyServices>b__1(IServiceProvider provider)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitCache(ServiceCallSite callSite, RuntimeResolverContext context, ServiceProviderEngineScope serviceProviderEngine, RuntimeResolverLock lockType)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitScopeCache(ServiceCallSite callSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitCache(ServiceCallSite callSite, RuntimeResolverContext context, ServiceProviderEngineScope serviceProviderEngine, RuntimeResolverLock lockType)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitScopeCache(ServiceCallSite callSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitCache(ServiceCallSite callSite, RuntimeResolverContext context, ServiceProviderEngineScope serviceProviderEngine, RuntimeResolverLock lockType)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitScopeCache(ServiceCallSite callSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitCache(ServiceCallSite callSite, RuntimeResolverContext context, ServiceProviderEngineScope serviceProviderEngine, RuntimeResolverLock lockType)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitScopeCache(ServiceCallSite callSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.Resolve(ServiceCallSite callSite, ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.DynamicServiceProviderEngine.<>c__DisplayClass2_0.<RealizeService>b__0(ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(ServiceIdentifier serviceIdentifier, ServiceProviderEngineScope serviceProviderEngineScope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.ServiceProviderEngineScope.GetService(Type serviceType)
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService(IServiceProvider provider, Type serviceType)
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService[T](IServiceProvider provider)
+   at Microsoft.EntityFrameworkCore.DbContext.get_DbContextDependencies()
+   at Microsoft.EntityFrameworkCore.DbContext.get_ContextServices()
+   at Microsoft.EntityFrameworkCore.DbContext.get_InternalServiceProvider()
+   at Microsoft.EntityFrameworkCore.DbContext.Microsoft.EntityFrameworkCore.Infrastructure.IInfrastructure<System.IServiceProvider>.get_Instance()
+   at Microsoft.EntityFrameworkCore.Infrastructure.Internal.InfrastructureExtensions.GetService(IInfrastructure`1 accessor, Type serviceType)
+   at Microsoft.EntityFrameworkCore.Infrastructure.Internal.InfrastructureExtensions.GetService[TService](IInfrastructure`1 accessor)
+   at Microsoft.EntityFrameworkCore.Infrastructure.AccessorExtensions.GetService[TService](IInfrastructure`1 accessor)
+   at Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade.get_Dependencies()
+   at Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade.Microsoft.EntityFrameworkCore.Storage.IDatabaseFacadeDependenciesAccessor.get_Dependencies()
+   at Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions.BeginTransaction(DatabaseFacade databaseFacade, IsolationLevel isolationLevel)
+   at Abp.EntityFrameworkCore.Uow.DbContextEfCoreTransactionStrategy.CreateDbContext[TDbContext](String connectionString, IDbContextResolver dbContextResolver)
+   at Abp.EntityFrameworkCore.Uow.EfCoreUnitOfWork.GetOrCreateDbContext[TDbContext](Nullable`1 multiTenancySide, String name)
+   at Abp.EntityFrameworkCore.Uow.UnitOfWorkExtensions.GetDbContext[TDbContext](IActiveUnitOfWork unitOfWork, Nullable`1 multiTenancySide, String name)
+   at Team3.EntityFrameworkCore.Seed.SeedHelper.WithDbContext[TDbContext](IIocResolver iocResolver, Action`1 contextAction) in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\SeedHelper.cs:line 37
+   at Team3.EntityFrameworkCore.Seed.SeedHelper.SeedHostDb(IIocResolver iocResolver) in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\SeedHelper.cs:line 17
+   at Team3.EntityFrameworkCore.Team3EntityFrameworkModule.PostInitialize() in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Team3EntityFrameworkModule.cs:line 49
+   at Abp.Modules.AbpModuleManager.<>c.<StartModules>b__15_2(AbpModuleInfo module)
+   at System.Collections.Generic.List`1.ForEach(Action`1 action)
+   at Abp.Modules.AbpModuleManager.StartModules()
+   at Abp.AbpBootstrapper.Initialize()
+   at Abp.AspNetCore.AbpApplicationBuilderExtensions.InitializeAbp(IApplicationBuilder app)
+   at Abp.AspNetCore.AbpApplicationBuilderExtensions.UseAbp(IApplicationBuilder app, Action`1 optionsAction)
+   at Team3.Web.Host.Startup.Startup.Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory) in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.Web.Host\Startup\Startup.cs:line 87
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+   at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at Microsoft.AspNetCore.Hosting.ConfigureBuilder.Invoke(Object instance, IApplicationBuilder builder)
+   at Microsoft.AspNetCore.Hosting.GenericWebHostService.StartAsync(CancellationToken cancellationToken)
+ERROR 2026-03-19 11:42:15,537 [2    ] crosoft.Extensions.Hosting.Internal.Host - Hosting failed to start
+System.InvalidOperationException: Cannot use table 'Languages' for entity type 'PlatformLanguage' since it is being used for entity type 'Language' and potentially other entity types, but there is no linking relationship. Add a foreign key to 'PlatformLanguage' on the primary key properties and pointing to the primary key on another entity type mapped to 'Languages'.
+   at Microsoft.EntityFrameworkCore.Infrastructure.RelationalModelValidator.ValidateSharedTableCompatibility(IReadOnlyList`1 mappedTypes, StoreObjectIdentifier& storeObject, IDiagnosticsLogger`1 logger)
+   at Microsoft.EntityFrameworkCore.Infrastructure.RelationalModelValidator.ValidateSharedTableCompatibility(IModel model, IDiagnosticsLogger`1 logger)
+   at Microsoft.EntityFrameworkCore.Infrastructure.RelationalModelValidator.Validate(IModel model, IDiagnosticsLogger`1 logger)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Infrastructure.Internal.NpgsqlModelValidator.Validate(IModel model, IDiagnosticsLogger`1 logger)
+   at Microsoft.EntityFrameworkCore.Infrastructure.ModelRuntimeInitializer.Initialize(IModel model, Boolean designTime, IDiagnosticsLogger`1 validationLogger)
+   at Microsoft.EntityFrameworkCore.Infrastructure.ModelSource.CreateModel(DbContext context, ModelCreationDependencies modelCreationDependencies, Boolean designTime)
+   at Microsoft.EntityFrameworkCore.Infrastructure.ModelSource.GetModel(DbContext context, ModelCreationDependencies modelCreationDependencies, Boolean designTime)
+   at Microsoft.EntityFrameworkCore.Internal.DbContextServices.CreateModel(Boolean designTime)
+   at Microsoft.EntityFrameworkCore.Internal.DbContextServices.get_Model()
+   at Microsoft.EntityFrameworkCore.Infrastructure.EntityFrameworkServicesBuilder.<>c.<TryAddCoreServices>b__8_4(IServiceProvider p)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitCache(ServiceCallSite callSite, RuntimeResolverContext context, ServiceProviderEngineScope serviceProviderEngine, RuntimeResolverLock lockType)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitScopeCache(ServiceCallSite callSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitCache(ServiceCallSite callSite, RuntimeResolverContext context, ServiceProviderEngineScope serviceProviderEngine, RuntimeResolverLock lockType)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitScopeCache(ServiceCallSite callSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitCache(ServiceCallSite callSite, RuntimeResolverContext context, ServiceProviderEngineScope serviceProviderEngine, RuntimeResolverLock lockType)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitScopeCache(ServiceCallSite callSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.Resolve(ServiceCallSite callSite, ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.DynamicServiceProviderEngine.<>c__DisplayClass2_0.<RealizeService>b__0(ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(ServiceIdentifier serviceIdentifier, ServiceProviderEngineScope serviceProviderEngineScope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.ServiceProviderEngineScope.GetService(Type serviceType)
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService(IServiceProvider provider, Type serviceType)
+   at Abp.EntityFrameworkCore.AbpDbContextOptionsExtension.<>c__DisplayClass0_0.<ApplyServices>b__1(IServiceProvider provider)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitCache(ServiceCallSite callSite, RuntimeResolverContext context, ServiceProviderEngineScope serviceProviderEngine, RuntimeResolverLock lockType)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitScopeCache(ServiceCallSite callSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitCache(ServiceCallSite callSite, RuntimeResolverContext context, ServiceProviderEngineScope serviceProviderEngine, RuntimeResolverLock lockType)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitScopeCache(ServiceCallSite callSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitCache(ServiceCallSite callSite, RuntimeResolverContext context, ServiceProviderEngineScope serviceProviderEngine, RuntimeResolverLock lockType)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitScopeCache(ServiceCallSite callSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitConstructor(ConstructorCallSite constructorCallSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSiteMain(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitCache(ServiceCallSite callSite, RuntimeResolverContext context, ServiceProviderEngineScope serviceProviderEngine, RuntimeResolverLock lockType)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.VisitScopeCache(ServiceCallSite callSite, RuntimeResolverContext context)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2.VisitCallSite(ServiceCallSite callSite, TArgument argument)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteRuntimeResolver.Resolve(ServiceCallSite callSite, ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.DynamicServiceProviderEngine.<>c__DisplayClass2_0.<RealizeService>b__0(ServiceProviderEngineScope scope)
+   at Microsoft.Extensions.DependencyInjection.ServiceProvider.GetService(ServiceIdentifier serviceIdentifier, ServiceProviderEngineScope serviceProviderEngineScope)
+   at Microsoft.Extensions.DependencyInjection.ServiceLookup.ServiceProviderEngineScope.GetService(Type serviceType)
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService(IServiceProvider provider, Type serviceType)
+   at Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService[T](IServiceProvider provider)
+   at Microsoft.EntityFrameworkCore.DbContext.get_DbContextDependencies()
+   at Microsoft.EntityFrameworkCore.DbContext.get_ContextServices()
+   at Microsoft.EntityFrameworkCore.DbContext.get_InternalServiceProvider()
+   at Microsoft.EntityFrameworkCore.DbContext.Microsoft.EntityFrameworkCore.Infrastructure.IInfrastructure<System.IServiceProvider>.get_Instance()
+   at Microsoft.EntityFrameworkCore.Infrastructure.Internal.InfrastructureExtensions.GetService(IInfrastructure`1 accessor, Type serviceType)
+   at Microsoft.EntityFrameworkCore.Infrastructure.Internal.InfrastructureExtensions.GetService[TService](IInfrastructure`1 accessor)
+   at Microsoft.EntityFrameworkCore.Infrastructure.AccessorExtensions.GetService[TService](IInfrastructure`1 accessor)
+   at Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade.get_Dependencies()
+   at Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade.Microsoft.EntityFrameworkCore.Storage.IDatabaseFacadeDependenciesAccessor.get_Dependencies()
+   at Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions.BeginTransaction(DatabaseFacade databaseFacade, IsolationLevel isolationLevel)
+   at Abp.EntityFrameworkCore.Uow.DbContextEfCoreTransactionStrategy.CreateDbContext[TDbContext](String connectionString, IDbContextResolver dbContextResolver)
+   at Abp.EntityFrameworkCore.Uow.EfCoreUnitOfWork.GetOrCreateDbContext[TDbContext](Nullable`1 multiTenancySide, String name)
+   at Abp.EntityFrameworkCore.Uow.UnitOfWorkExtensions.GetDbContext[TDbContext](IActiveUnitOfWork unitOfWork, Nullable`1 multiTenancySide, String name)
+   at Team3.EntityFrameworkCore.Seed.SeedHelper.WithDbContext[TDbContext](IIocResolver iocResolver, Action`1 contextAction) in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\SeedHelper.cs:line 37
+   at Team3.EntityFrameworkCore.Seed.SeedHelper.SeedHostDb(IIocResolver iocResolver) in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\SeedHelper.cs:line 17
+   at Team3.EntityFrameworkCore.Team3EntityFrameworkModule.PostInitialize() in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Team3EntityFrameworkModule.cs:line 49
+   at Abp.Modules.AbpModuleManager.<>c.<StartModules>b__15_2(AbpModuleInfo module)
+   at System.Collections.Generic.List`1.ForEach(Action`1 action)
+   at Abp.Modules.AbpModuleManager.StartModules()
+   at Abp.AbpBootstrapper.Initialize()
+   at Abp.AspNetCore.AbpApplicationBuilderExtensions.InitializeAbp(IApplicationBuilder app)
+   at Abp.AspNetCore.AbpApplicationBuilderExtensions.UseAbp(IApplicationBuilder app, Action`1 optionsAction)
+   at Team3.Web.Host.Startup.Startup.Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory) in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.Web.Host\Startup\Startup.cs:line 87
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+   at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at Microsoft.AspNetCore.Hosting.ConfigureBuilder.Invoke(Object instance, IApplicationBuilder builder)
+   at Microsoft.AspNetCore.Hosting.GenericWebHostService.StartAsync(CancellationToken cancellationToken)
+   at Microsoft.Extensions.Hosting.Internal.Host.<StartAsync>b__14_1(IHostedService service, CancellationToken token)
+   at Microsoft.Extensions.Hosting.Internal.Host.ForeachService[T](IEnumerable`1 services, CancellationToken token, Boolean concurrent, Boolean abortOnFirstException, List`1 exceptions, Func`3 operation)
+DEBUG 2026-03-19 11:44:42,503 [2    ] Abp.Modules.AbpModuleManager             - Loading Abp modules...
+DEBUG 2026-03-19 11:44:43,788 [2    ] Abp.Modules.AbpModuleManager             - Found 15 ABP modules in total.
+DEBUG 2026-03-19 11:44:43,799 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Web.Host.Startup.Team3WebHostModule, Team3.Web.Host, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:44:43,801 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3WebCoreModule, Team3.Web.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:44:43,801 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3ApplicationModule, Team3.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:44:43,801 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3CoreModule, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:44:43,801 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCoreModule, Abp.ZeroCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:44:43,802 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCommonModule, Abp.Zero.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:44:43,802 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AbpKernelModule, Abp, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:44:43,802 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AutoMapper.AbpAutoMapperModule, Abp.AutoMapper, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:44:43,803 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.EntityFrameworkCore.Team3EntityFrameworkModule, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:44:43,803 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.EntityFrameworkCore.AbpZeroCoreEntityFrameworkCoreModule, Abp.ZeroCore.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:44:43,803 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFrameworkCore.AbpEntityFrameworkCoreModule, Abp.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:44:43,803 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFramework.AbpEntityFrameworkCommonModule, Abp.EntityFramework.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:44:43,804 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.AbpAspNetCoreModule, Abp.AspNetCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:44:43,804 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Web.AbpWebCommonModule, Abp.Web.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:44:43,804 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.SignalR.AbpAspNetCoreSignalRModule, Abp.AspNetCore.SignalR, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:44:43,805 [2    ] Abp.Modules.AbpModuleManager             - 15 modules loaded.
+DEBUG 2026-03-19 11:44:43,857 [2    ] o.Configuration.LanguageManagementConfig - Converted Abp (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 11:44:43,857 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpZero (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 11:44:43,857 [2    ] o.Configuration.LanguageManagementConfig - Converted Team3 (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 11:44:43,857 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpWeb (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 11:44:44,113 [2    ] ameworkCore.AbpEntityFrameworkCoreModule - Registering DbContext: Team3.EntityFrameworkCore.Team3DbContext, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:44:44,273 [2    ] Abp.Localization.LocalizationManager     - Initializing 4 localization sources.
+DEBUG 2026-03-19 11:44:44,335 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Abp
+DEBUG 2026-03-19 11:44:44,347 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpZero
+DEBUG 2026-03-19 11:44:44,359 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Team3
+DEBUG 2026-03-19 11:44:44,365 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpWeb
+DEBUG 2026-03-19 11:44:44,377 [2    ] Abp.BackgroundJobs.BackgroundJobManager  - Start background worker: Abp.BackgroundJobs.BackgroundJobManager
+DEBUG 2026-03-19 11:44:44,387 [2    ] , Culture=neutral, PublicKeyToken=null]] - Start background worker: Abp.Authorization.Users.UserTokenExpirationWorker`2[[Team3.MultiTenancy.Tenant, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Team3.Authorization.Users.User, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]
+DEBUG 2026-03-19 11:44:44,412 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Found 7 classes define auto mapping attributes
+DEBUG 2026-03-19 11:44:44,412 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.CreateUserDto
+DEBUG 2026-03-19 11:44:44,417 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.UserDto
+DEBUG 2026-03-19 11:44:44,418 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.TenantLoginInfoDto
+DEBUG 2026-03-19 11:44:44,418 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.UserLoginInfoDto
+DEBUG 2026-03-19 11:44:44,418 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Roles.Dto.PermissionDto
+DEBUG 2026-03-19 11:44:44,419 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.CreateTenantDto
+DEBUG 2026-03-19 11:44:44,419 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.TenantDto
+WARN  2026-03-19 11:44:47,316 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'SourceMaterial'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 11:44:47,316 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Lesson' has a global query filter defined and is the required end of a relationship with the entity 'LessonMaterial'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 11:44:47,317 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Language' has a global query filter defined and is the required end of a relationship with the entity 'LessonTranslation'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 11:44:47,317 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Subject' has a global query filter defined and is the required end of a relationship with the entity 'StudentEnrollment'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 11:44:47,318 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Subject' has a global query filter defined and is the required end of a relationship with the entity 'StudentProgress'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 11:44:47,546 [2    ] oft.EntityFrameworkCore.Model.Validation - The 'ProcessingStatus' property 'ProcessingStatus' on entity type 'SourceMaterial' is configured with a database-generated default, but has no configured sentinel value. The database-generated default will always be used for inserts when the property has the value '0', since this is the CLR default for the 'ProcessingStatus' type. Consider using a nullable type, using a nullable backing field, or setting the sentinel value for the property to ensure the database default is used when, and only when, appropriate. See https://aka.ms/efcore-docs-default-values for more information.
+ERROR 2026-03-19 11:44:54,563 [2    ] Microsoft.EntityFrameworkCore.Query      - An exception occurred while iterating over the results of a query for context type 'Team3.EntityFrameworkCore.Team3DbContext'.
+Npgsql.PostgresException (0x80004005): 42P01: relation "AppLanguages" does not exist
+
+POSITION: 240
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult()
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.<>c.<MoveNext>b__21_0(DbContext _, Enumerator enumerator)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+  Exception data:
+    Severity: ERROR
+    SqlState: 42P01
+    MessageText: relation "AppLanguages" does not exist
+    Position: 240
+    File: parse_relation.c
+    Line: 1449
+    Routine: parserOpenTable
+Npgsql.PostgresException (0x80004005): 42P01: relation "AppLanguages" does not exist
+
+POSITION: 240
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult()
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.<>c.<MoveNext>b__21_0(DbContext _, Enumerator enumerator)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+  Exception data:
+    Severity: ERROR
+    SqlState: 42P01
+    MessageText: relation "AppLanguages" does not exist
+    Position: 240
+    File: parse_relation.c
+    Line: 1449
+    Routine: parserOpenTable
+FATAL 2026-03-19 11:44:54,846 [2    ] Abp.AbpBootstrapper                      - Npgsql.PostgresException (0x80004005): 42P01: relation "AppLanguages" does not exist
+
+POSITION: 240
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult()
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.<>c.<MoveNext>b__21_0(DbContext _, Enumerator enumerator)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+   at System.Linq.Enumerable.TryGetSingle[TSource](IEnumerable`1 source, Boolean& found)
+   at lambda_method446(Closure, QueryContext)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.ExecuteCore[TResult](Expression query, Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.Execute[TResult](Expression query)
+   at Microsoft.EntityFrameworkCore.Query.Internal.EntityQueryProvider.Execute[TResult](Expression expression)
+   at Abp.EntityFrameworkCore.AbpEntityQueryProvider.Execute[TResult](Expression expression)
+   at Team3.EntityFrameworkCore.Seed.Host.DefaultLearningLanguagesCreator.Create() in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\Host\DefaultLearningLanguagesCreator.cs:line 32
+   at Team3.EntityFrameworkCore.Seed.Host.InitialHostDbBuilder.Create() in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\Host\InitialHostDbBuilder.cs:line 16
+   at Team3.EntityFrameworkCore.Seed.SeedHelper.SeedHostDb(Team3DbContext context) in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\SeedHelper.cs:line 25
+   at Team3.EntityFrameworkCore.Seed.SeedHelper.WithDbContext[TDbContext](IIocResolver iocResolver, Action`1 contextAction) in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\SeedHelper.cs:line 39
+   at Team3.EntityFrameworkCore.Seed.SeedHelper.SeedHostDb(IIocResolver iocResolver) in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\SeedHelper.cs:line 17
+   at Team3.EntityFrameworkCore.Team3EntityFrameworkModule.PostInitialize() in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Team3EntityFrameworkModule.cs:line 49
+   at Abp.Modules.AbpModuleManager.<>c.<StartModules>b__15_2(AbpModuleInfo module)
+   at System.Collections.Generic.List`1.ForEach(Action`1 action)
+   at Abp.Modules.AbpModuleManager.StartModules()
+   at Abp.AbpBootstrapper.Initialize()
+  Exception data:
+    Severity: ERROR
+    SqlState: 42P01
+    MessageText: relation "AppLanguages" does not exist
+    Position: 240
+    File: parse_relation.c
+    Line: 1449
+    Routine: parserOpenTable
+Npgsql.PostgresException (0x80004005): 42P01: relation "AppLanguages" does not exist
+
+POSITION: 240
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult()
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.<>c.<MoveNext>b__21_0(DbContext _, Enumerator enumerator)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+   at System.Linq.Enumerable.TryGetSingle[TSource](IEnumerable`1 source, Boolean& found)
+   at lambda_method446(Closure, QueryContext)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.ExecuteCore[TResult](Expression query, Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.Execute[TResult](Expression query)
+   at Microsoft.EntityFrameworkCore.Query.Internal.EntityQueryProvider.Execute[TResult](Expression expression)
+   at Abp.EntityFrameworkCore.AbpEntityQueryProvider.Execute[TResult](Expression expression)
+   at Team3.EntityFrameworkCore.Seed.Host.DefaultLearningLanguagesCreator.Create() in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\Host\DefaultLearningLanguagesCreator.cs:line 32
+   at Team3.EntityFrameworkCore.Seed.Host.InitialHostDbBuilder.Create() in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\Host\InitialHostDbBuilder.cs:line 16
+   at Team3.EntityFrameworkCore.Seed.SeedHelper.SeedHostDb(Team3DbContext context) in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\SeedHelper.cs:line 25
+   at Team3.EntityFrameworkCore.Seed.SeedHelper.WithDbContext[TDbContext](IIocResolver iocResolver, Action`1 contextAction) in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\SeedHelper.cs:line 39
+   at Team3.EntityFrameworkCore.Seed.SeedHelper.SeedHostDb(IIocResolver iocResolver) in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\SeedHelper.cs:line 17
+   at Team3.EntityFrameworkCore.Team3EntityFrameworkModule.PostInitialize() in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Team3EntityFrameworkModule.cs:line 49
+   at Abp.Modules.AbpModuleManager.<>c.<StartModules>b__15_2(AbpModuleInfo module)
+   at System.Collections.Generic.List`1.ForEach(Action`1 action)
+   at Abp.Modules.AbpModuleManager.StartModules()
+   at Abp.AbpBootstrapper.Initialize()
+  Exception data:
+    Severity: ERROR
+    SqlState: 42P01
+    MessageText: relation "AppLanguages" does not exist
+    Position: 240
+    File: parse_relation.c
+    Line: 1449
+    Routine: parserOpenTable
+FATAL 2026-03-19 11:44:54,901 [2    ] Microsoft.AspNetCore.Hosting.Diagnostics - Application startup exception
+Npgsql.PostgresException (0x80004005): 42P01: relation "AppLanguages" does not exist
+
+POSITION: 240
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult()
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.<>c.<MoveNext>b__21_0(DbContext _, Enumerator enumerator)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+   at System.Linq.Enumerable.TryGetSingle[TSource](IEnumerable`1 source, Boolean& found)
+   at lambda_method446(Closure, QueryContext)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.ExecuteCore[TResult](Expression query, Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.Execute[TResult](Expression query)
+   at Microsoft.EntityFrameworkCore.Query.Internal.EntityQueryProvider.Execute[TResult](Expression expression)
+   at Abp.EntityFrameworkCore.AbpEntityQueryProvider.Execute[TResult](Expression expression)
+   at Team3.EntityFrameworkCore.Seed.Host.DefaultLearningLanguagesCreator.Create() in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\Host\DefaultLearningLanguagesCreator.cs:line 32
+   at Team3.EntityFrameworkCore.Seed.Host.InitialHostDbBuilder.Create() in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\Host\InitialHostDbBuilder.cs:line 16
+   at Team3.EntityFrameworkCore.Seed.SeedHelper.SeedHostDb(Team3DbContext context) in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\SeedHelper.cs:line 25
+   at Team3.EntityFrameworkCore.Seed.SeedHelper.WithDbContext[TDbContext](IIocResolver iocResolver, Action`1 contextAction) in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\SeedHelper.cs:line 39
+   at Team3.EntityFrameworkCore.Seed.SeedHelper.SeedHostDb(IIocResolver iocResolver) in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\SeedHelper.cs:line 17
+   at Team3.EntityFrameworkCore.Team3EntityFrameworkModule.PostInitialize() in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Team3EntityFrameworkModule.cs:line 49
+   at Abp.Modules.AbpModuleManager.<>c.<StartModules>b__15_2(AbpModuleInfo module)
+   at System.Collections.Generic.List`1.ForEach(Action`1 action)
+   at Abp.Modules.AbpModuleManager.StartModules()
+   at Abp.AbpBootstrapper.Initialize()
+   at Abp.AspNetCore.AbpApplicationBuilderExtensions.InitializeAbp(IApplicationBuilder app)
+   at Abp.AspNetCore.AbpApplicationBuilderExtensions.UseAbp(IApplicationBuilder app, Action`1 optionsAction)
+   at Team3.Web.Host.Startup.Startup.Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory) in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.Web.Host\Startup\Startup.cs:line 87
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+   at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at Microsoft.AspNetCore.Hosting.ConfigureBuilder.Invoke(Object instance, IApplicationBuilder builder)
+   at Microsoft.AspNetCore.Hosting.GenericWebHostService.StartAsync(CancellationToken cancellationToken)
+  Exception data:
+    Severity: ERROR
+    SqlState: 42P01
+    MessageText: relation "AppLanguages" does not exist
+    Position: 240
+    File: parse_relation.c
+    Line: 1449
+    Routine: parserOpenTable
+ERROR 2026-03-19 11:44:54,924 [2    ] crosoft.Extensions.Hosting.Internal.Host - Hosting failed to start
+Npgsql.PostgresException (0x80004005): 42P01: relation "AppLanguages" does not exist
+
+POSITION: 240
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult()
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.<>c.<MoveNext>b__21_0(DbContext _, Enumerator enumerator)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+   at System.Linq.Enumerable.TryGetSingle[TSource](IEnumerable`1 source, Boolean& found)
+   at lambda_method446(Closure, QueryContext)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.ExecuteCore[TResult](Expression query, Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.Execute[TResult](Expression query)
+   at Microsoft.EntityFrameworkCore.Query.Internal.EntityQueryProvider.Execute[TResult](Expression expression)
+   at Abp.EntityFrameworkCore.AbpEntityQueryProvider.Execute[TResult](Expression expression)
+   at Team3.EntityFrameworkCore.Seed.Host.DefaultLearningLanguagesCreator.Create() in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\Host\DefaultLearningLanguagesCreator.cs:line 32
+   at Team3.EntityFrameworkCore.Seed.Host.InitialHostDbBuilder.Create() in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\Host\InitialHostDbBuilder.cs:line 16
+   at Team3.EntityFrameworkCore.Seed.SeedHelper.SeedHostDb(Team3DbContext context) in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\SeedHelper.cs:line 25
+   at Team3.EntityFrameworkCore.Seed.SeedHelper.WithDbContext[TDbContext](IIocResolver iocResolver, Action`1 contextAction) in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\SeedHelper.cs:line 39
+   at Team3.EntityFrameworkCore.Seed.SeedHelper.SeedHostDb(IIocResolver iocResolver) in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\SeedHelper.cs:line 17
+   at Team3.EntityFrameworkCore.Team3EntityFrameworkModule.PostInitialize() in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Team3EntityFrameworkModule.cs:line 49
+   at Abp.Modules.AbpModuleManager.<>c.<StartModules>b__15_2(AbpModuleInfo module)
+   at System.Collections.Generic.List`1.ForEach(Action`1 action)
+   at Abp.Modules.AbpModuleManager.StartModules()
+   at Abp.AbpBootstrapper.Initialize()
+   at Abp.AspNetCore.AbpApplicationBuilderExtensions.InitializeAbp(IApplicationBuilder app)
+   at Abp.AspNetCore.AbpApplicationBuilderExtensions.UseAbp(IApplicationBuilder app, Action`1 optionsAction)
+   at Team3.Web.Host.Startup.Startup.Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory) in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.Web.Host\Startup\Startup.cs:line 87
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+   at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at Microsoft.AspNetCore.Hosting.ConfigureBuilder.Invoke(Object instance, IApplicationBuilder builder)
+   at Microsoft.AspNetCore.Hosting.GenericWebHostService.StartAsync(CancellationToken cancellationToken)
+   at Microsoft.Extensions.Hosting.Internal.Host.<StartAsync>b__14_1(IHostedService service, CancellationToken token)
+   at Microsoft.Extensions.Hosting.Internal.Host.ForeachService[T](IEnumerable`1 services, CancellationToken token, Boolean concurrent, Boolean abortOnFirstException, List`1 exceptions, Func`3 operation)
+  Exception data:
+    Severity: ERROR
+    SqlState: 42P01
+    MessageText: relation "AppLanguages" does not exist
+    Position: 240
+    File: parse_relation.c
+    Line: 1449
+    Routine: parserOpenTable
+DEBUG 2026-03-19 11:45:12,980 [2    ] Abp.Modules.AbpModuleManager             - Loading Abp modules...
+DEBUG 2026-03-19 11:45:12,995 [2    ] Abp.Modules.AbpModuleManager             - Found 15 ABP modules in total.
+DEBUG 2026-03-19 11:45:13,003 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Web.Host.Startup.Team3WebHostModule, Team3.Web.Host, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:45:13,005 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3WebCoreModule, Team3.Web.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:45:13,005 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3ApplicationModule, Team3.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:45:13,005 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3CoreModule, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:45:13,005 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCoreModule, Abp.ZeroCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:45:13,006 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCommonModule, Abp.Zero.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:45:13,006 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AbpKernelModule, Abp, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:45:13,007 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AutoMapper.AbpAutoMapperModule, Abp.AutoMapper, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:45:13,007 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.EntityFrameworkCore.Team3EntityFrameworkModule, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:45:13,007 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.EntityFrameworkCore.AbpZeroCoreEntityFrameworkCoreModule, Abp.ZeroCore.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:45:13,008 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFrameworkCore.AbpEntityFrameworkCoreModule, Abp.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:45:13,008 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFramework.AbpEntityFrameworkCommonModule, Abp.EntityFramework.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:45:13,008 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.AbpAspNetCoreModule, Abp.AspNetCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:45:13,008 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Web.AbpWebCommonModule, Abp.Web.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:45:13,008 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.SignalR.AbpAspNetCoreSignalRModule, Abp.AspNetCore.SignalR, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:45:13,010 [2    ] Abp.Modules.AbpModuleManager             - 15 modules loaded.
+DEBUG 2026-03-19 11:45:13,042 [2    ] o.Configuration.LanguageManagementConfig - Converted Abp (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 11:45:13,042 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpZero (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 11:45:13,042 [2    ] o.Configuration.LanguageManagementConfig - Converted Team3 (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 11:45:13,042 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpWeb (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 11:45:13,245 [2    ] ameworkCore.AbpEntityFrameworkCoreModule - Registering DbContext: Team3.EntityFrameworkCore.Team3DbContext, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:45:13,359 [2    ] Abp.Localization.LocalizationManager     - Initializing 4 localization sources.
+DEBUG 2026-03-19 11:45:13,389 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Abp
+DEBUG 2026-03-19 11:45:13,394 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpZero
+DEBUG 2026-03-19 11:45:13,397 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Team3
+DEBUG 2026-03-19 11:45:13,399 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpWeb
+DEBUG 2026-03-19 11:45:13,405 [2    ] Abp.BackgroundJobs.BackgroundJobManager  - Start background worker: Abp.BackgroundJobs.BackgroundJobManager
+DEBUG 2026-03-19 11:45:13,408 [2    ] , Culture=neutral, PublicKeyToken=null]] - Start background worker: Abp.Authorization.Users.UserTokenExpirationWorker`2[[Team3.MultiTenancy.Tenant, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Team3.Authorization.Users.User, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]
+DEBUG 2026-03-19 11:45:13,420 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Found 7 classes define auto mapping attributes
+DEBUG 2026-03-19 11:45:13,420 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.CreateUserDto
+DEBUG 2026-03-19 11:45:13,422 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.UserDto
+DEBUG 2026-03-19 11:45:13,422 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.TenantLoginInfoDto
+DEBUG 2026-03-19 11:45:13,423 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.UserLoginInfoDto
+DEBUG 2026-03-19 11:45:13,423 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Roles.Dto.PermissionDto
+DEBUG 2026-03-19 11:45:13,423 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.CreateTenantDto
+DEBUG 2026-03-19 11:45:13,423 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.TenantDto
+WARN  2026-03-19 11:45:14,155 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'SourceMaterial'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 11:45:14,156 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Lesson' has a global query filter defined and is the required end of a relationship with the entity 'LessonMaterial'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 11:45:14,156 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Language' has a global query filter defined and is the required end of a relationship with the entity 'LessonTranslation'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 11:45:14,156 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Subject' has a global query filter defined and is the required end of a relationship with the entity 'StudentEnrollment'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 11:45:14,156 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Subject' has a global query filter defined and is the required end of a relationship with the entity 'StudentProgress'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 11:45:14,216 [2    ] oft.EntityFrameworkCore.Model.Validation - The 'ProcessingStatus' property 'ProcessingStatus' on entity type 'SourceMaterial' is configured with a database-generated default, but has no configured sentinel value. The database-generated default will always be used for inserts when the property has the value '0', since this is the CLR default for the 'ProcessingStatus' type. Consider using a nullable type, using a nullable backing field, or setting the sentinel value for the property to ensure the database default is used when, and only when, appropriate. See https://aka.ms/efcore-docs-default-values for more information.
+ERROR 2026-03-19 11:45:26,132 [2    ] Microsoft.EntityFrameworkCore.Query      - An exception occurred while iterating over the results of a query for context type 'Team3.EntityFrameworkCore.Team3DbContext'.
+Npgsql.PostgresException (0x80004005): 42P01: relation "AppLanguages" does not exist
+
+POSITION: 240
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult()
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.<>c.<MoveNext>b__21_0(DbContext _, Enumerator enumerator)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+  Exception data:
+    Severity: ERROR
+    SqlState: 42P01
+    MessageText: relation "AppLanguages" does not exist
+    Position: 240
+    File: parse_relation.c
+    Line: 1449
+    Routine: parserOpenTable
+Npgsql.PostgresException (0x80004005): 42P01: relation "AppLanguages" does not exist
+
+POSITION: 240
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult()
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.<>c.<MoveNext>b__21_0(DbContext _, Enumerator enumerator)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+  Exception data:
+    Severity: ERROR
+    SqlState: 42P01
+    MessageText: relation "AppLanguages" does not exist
+    Position: 240
+    File: parse_relation.c
+    Line: 1449
+    Routine: parserOpenTable
+FATAL 2026-03-19 11:45:26,379 [2    ] Abp.AbpBootstrapper                      - Npgsql.PostgresException (0x80004005): 42P01: relation "AppLanguages" does not exist
+
+POSITION: 240
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult()
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.<>c.<MoveNext>b__21_0(DbContext _, Enumerator enumerator)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+   at System.Linq.Enumerable.TryGetSingle[TSource](IEnumerable`1 source, Boolean& found)
+   at lambda_method446(Closure, QueryContext)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.ExecuteCore[TResult](Expression query, Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.Execute[TResult](Expression query)
+   at Microsoft.EntityFrameworkCore.Query.Internal.EntityQueryProvider.Execute[TResult](Expression expression)
+   at Abp.EntityFrameworkCore.AbpEntityQueryProvider.Execute[TResult](Expression expression)
+   at Team3.EntityFrameworkCore.Seed.Host.DefaultLearningLanguagesCreator.Create() in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\Host\DefaultLearningLanguagesCreator.cs:line 32
+   at Team3.EntityFrameworkCore.Seed.Host.InitialHostDbBuilder.Create() in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\Host\InitialHostDbBuilder.cs:line 16
+   at Team3.EntityFrameworkCore.Seed.SeedHelper.SeedHostDb(Team3DbContext context) in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\SeedHelper.cs:line 25
+   at Team3.EntityFrameworkCore.Seed.SeedHelper.WithDbContext[TDbContext](IIocResolver iocResolver, Action`1 contextAction) in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\SeedHelper.cs:line 39
+   at Team3.EntityFrameworkCore.Seed.SeedHelper.SeedHostDb(IIocResolver iocResolver) in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\SeedHelper.cs:line 17
+   at Team3.EntityFrameworkCore.Team3EntityFrameworkModule.PostInitialize() in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Team3EntityFrameworkModule.cs:line 49
+   at Abp.Modules.AbpModuleManager.<>c.<StartModules>b__15_2(AbpModuleInfo module)
+   at System.Collections.Generic.List`1.ForEach(Action`1 action)
+   at Abp.Modules.AbpModuleManager.StartModules()
+   at Abp.AbpBootstrapper.Initialize()
+  Exception data:
+    Severity: ERROR
+    SqlState: 42P01
+    MessageText: relation "AppLanguages" does not exist
+    Position: 240
+    File: parse_relation.c
+    Line: 1449
+    Routine: parserOpenTable
+Npgsql.PostgresException (0x80004005): 42P01: relation "AppLanguages" does not exist
+
+POSITION: 240
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult()
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.<>c.<MoveNext>b__21_0(DbContext _, Enumerator enumerator)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+   at System.Linq.Enumerable.TryGetSingle[TSource](IEnumerable`1 source, Boolean& found)
+   at lambda_method446(Closure, QueryContext)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.ExecuteCore[TResult](Expression query, Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.Execute[TResult](Expression query)
+   at Microsoft.EntityFrameworkCore.Query.Internal.EntityQueryProvider.Execute[TResult](Expression expression)
+   at Abp.EntityFrameworkCore.AbpEntityQueryProvider.Execute[TResult](Expression expression)
+   at Team3.EntityFrameworkCore.Seed.Host.DefaultLearningLanguagesCreator.Create() in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\Host\DefaultLearningLanguagesCreator.cs:line 32
+   at Team3.EntityFrameworkCore.Seed.Host.InitialHostDbBuilder.Create() in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\Host\InitialHostDbBuilder.cs:line 16
+   at Team3.EntityFrameworkCore.Seed.SeedHelper.SeedHostDb(Team3DbContext context) in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\SeedHelper.cs:line 25
+   at Team3.EntityFrameworkCore.Seed.SeedHelper.WithDbContext[TDbContext](IIocResolver iocResolver, Action`1 contextAction) in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\SeedHelper.cs:line 39
+   at Team3.EntityFrameworkCore.Seed.SeedHelper.SeedHostDb(IIocResolver iocResolver) in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\SeedHelper.cs:line 17
+   at Team3.EntityFrameworkCore.Team3EntityFrameworkModule.PostInitialize() in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Team3EntityFrameworkModule.cs:line 49
+   at Abp.Modules.AbpModuleManager.<>c.<StartModules>b__15_2(AbpModuleInfo module)
+   at System.Collections.Generic.List`1.ForEach(Action`1 action)
+   at Abp.Modules.AbpModuleManager.StartModules()
+   at Abp.AbpBootstrapper.Initialize()
+  Exception data:
+    Severity: ERROR
+    SqlState: 42P01
+    MessageText: relation "AppLanguages" does not exist
+    Position: 240
+    File: parse_relation.c
+    Line: 1449
+    Routine: parserOpenTable
+FATAL 2026-03-19 11:45:26,402 [2    ] Microsoft.AspNetCore.Hosting.Diagnostics - Application startup exception
+Npgsql.PostgresException (0x80004005): 42P01: relation "AppLanguages" does not exist
+
+POSITION: 240
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult()
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.<>c.<MoveNext>b__21_0(DbContext _, Enumerator enumerator)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+   at System.Linq.Enumerable.TryGetSingle[TSource](IEnumerable`1 source, Boolean& found)
+   at lambda_method446(Closure, QueryContext)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.ExecuteCore[TResult](Expression query, Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.Execute[TResult](Expression query)
+   at Microsoft.EntityFrameworkCore.Query.Internal.EntityQueryProvider.Execute[TResult](Expression expression)
+   at Abp.EntityFrameworkCore.AbpEntityQueryProvider.Execute[TResult](Expression expression)
+   at Team3.EntityFrameworkCore.Seed.Host.DefaultLearningLanguagesCreator.Create() in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\Host\DefaultLearningLanguagesCreator.cs:line 32
+   at Team3.EntityFrameworkCore.Seed.Host.InitialHostDbBuilder.Create() in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\Host\InitialHostDbBuilder.cs:line 16
+   at Team3.EntityFrameworkCore.Seed.SeedHelper.SeedHostDb(Team3DbContext context) in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\SeedHelper.cs:line 25
+   at Team3.EntityFrameworkCore.Seed.SeedHelper.WithDbContext[TDbContext](IIocResolver iocResolver, Action`1 contextAction) in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\SeedHelper.cs:line 39
+   at Team3.EntityFrameworkCore.Seed.SeedHelper.SeedHostDb(IIocResolver iocResolver) in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\SeedHelper.cs:line 17
+   at Team3.EntityFrameworkCore.Team3EntityFrameworkModule.PostInitialize() in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Team3EntityFrameworkModule.cs:line 49
+   at Abp.Modules.AbpModuleManager.<>c.<StartModules>b__15_2(AbpModuleInfo module)
+   at System.Collections.Generic.List`1.ForEach(Action`1 action)
+   at Abp.Modules.AbpModuleManager.StartModules()
+   at Abp.AbpBootstrapper.Initialize()
+   at Abp.AspNetCore.AbpApplicationBuilderExtensions.InitializeAbp(IApplicationBuilder app)
+   at Abp.AspNetCore.AbpApplicationBuilderExtensions.UseAbp(IApplicationBuilder app, Action`1 optionsAction)
+   at Team3.Web.Host.Startup.Startup.Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory) in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.Web.Host\Startup\Startup.cs:line 87
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+   at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at Microsoft.AspNetCore.Hosting.ConfigureBuilder.Invoke(Object instance, IApplicationBuilder builder)
+   at Microsoft.AspNetCore.Hosting.GenericWebHostService.StartAsync(CancellationToken cancellationToken)
+  Exception data:
+    Severity: ERROR
+    SqlState: 42P01
+    MessageText: relation "AppLanguages" does not exist
+    Position: 240
+    File: parse_relation.c
+    Line: 1449
+    Routine: parserOpenTable
+ERROR 2026-03-19 11:45:26,408 [2    ] crosoft.Extensions.Hosting.Internal.Host - Hosting failed to start
+Npgsql.PostgresException (0x80004005): 42P01: relation "AppLanguages" does not exist
+
+POSITION: 240
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult()
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior)
+   at Npgsql.NpgsqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalCommand.ExecuteReader(RelationalCommandParameterObject parameterObject)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.InitializeReader(Enumerator enumerator)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.<>c.<MoveNext>b__21_0(DbContext _, Enumerator enumerator)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.Query.Internal.SingleQueryingEnumerable`1.Enumerator.MoveNext()
+   at System.Linq.Enumerable.TryGetSingle[TSource](IEnumerable`1 source, Boolean& found)
+   at lambda_method446(Closure, QueryContext)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.ExecuteCore[TResult](Expression query, Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Query.Internal.QueryCompiler.Execute[TResult](Expression query)
+   at Microsoft.EntityFrameworkCore.Query.Internal.EntityQueryProvider.Execute[TResult](Expression expression)
+   at Abp.EntityFrameworkCore.AbpEntityQueryProvider.Execute[TResult](Expression expression)
+   at Team3.EntityFrameworkCore.Seed.Host.DefaultLearningLanguagesCreator.Create() in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\Host\DefaultLearningLanguagesCreator.cs:line 32
+   at Team3.EntityFrameworkCore.Seed.Host.InitialHostDbBuilder.Create() in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\Host\InitialHostDbBuilder.cs:line 16
+   at Team3.EntityFrameworkCore.Seed.SeedHelper.SeedHostDb(Team3DbContext context) in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\SeedHelper.cs:line 25
+   at Team3.EntityFrameworkCore.Seed.SeedHelper.WithDbContext[TDbContext](IIocResolver iocResolver, Action`1 contextAction) in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\SeedHelper.cs:line 39
+   at Team3.EntityFrameworkCore.Seed.SeedHelper.SeedHostDb(IIocResolver iocResolver) in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Seed\SeedHelper.cs:line 17
+   at Team3.EntityFrameworkCore.Team3EntityFrameworkModule.PostInitialize() in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.EntityFrameworkCore\EntityFrameworkCore\Team3EntityFrameworkModule.cs:line 49
+   at Abp.Modules.AbpModuleManager.<>c.<StartModules>b__15_2(AbpModuleInfo module)
+   at System.Collections.Generic.List`1.ForEach(Action`1 action)
+   at Abp.Modules.AbpModuleManager.StartModules()
+   at Abp.AbpBootstrapper.Initialize()
+   at Abp.AspNetCore.AbpApplicationBuilderExtensions.InitializeAbp(IApplicationBuilder app)
+   at Abp.AspNetCore.AbpApplicationBuilderExtensions.UseAbp(IApplicationBuilder app, Action`1 optionsAction)
+   at Team3.Web.Host.Startup.Startup.Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory) in C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.Web.Host\Startup\Startup.cs:line 87
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+   at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at System.Reflection.RuntimeMethodInfo.Invoke(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+   at Microsoft.AspNetCore.Hosting.ConfigureBuilder.Invoke(Object instance, IApplicationBuilder builder)
+   at Microsoft.AspNetCore.Hosting.GenericWebHostService.StartAsync(CancellationToken cancellationToken)
+   at Microsoft.Extensions.Hosting.Internal.Host.<StartAsync>b__14_1(IHostedService service, CancellationToken token)
+   at Microsoft.Extensions.Hosting.Internal.Host.ForeachService[T](IEnumerable`1 services, CancellationToken token, Boolean concurrent, Boolean abortOnFirstException, List`1 exceptions, Func`3 operation)
+  Exception data:
+    Severity: ERROR
+    SqlState: 42P01
+    MessageText: relation "AppLanguages" does not exist
+    Position: 240
+    File: parse_relation.c
+    Line: 1449
+    Routine: parserOpenTable
+DEBUG 2026-03-19 11:47:06,777 [2    ] Abp.Modules.AbpModuleManager             - Loading Abp modules...
+DEBUG 2026-03-19 11:47:07,709 [2    ] Abp.Modules.AbpModuleManager             - Found 15 ABP modules in total.
+DEBUG 2026-03-19 11:47:07,729 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Web.Host.Startup.Team3WebHostModule, Team3.Web.Host, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:47:07,732 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3WebCoreModule, Team3.Web.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:47:07,732 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3ApplicationModule, Team3.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:47:07,733 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3CoreModule, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:47:07,733 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCoreModule, Abp.ZeroCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:47:07,734 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCommonModule, Abp.Zero.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:47:07,734 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AbpKernelModule, Abp, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:47:07,734 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AutoMapper.AbpAutoMapperModule, Abp.AutoMapper, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:47:07,735 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.EntityFrameworkCore.Team3EntityFrameworkModule, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:47:07,735 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.EntityFrameworkCore.AbpZeroCoreEntityFrameworkCoreModule, Abp.ZeroCore.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:47:07,735 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFrameworkCore.AbpEntityFrameworkCoreModule, Abp.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:47:07,735 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFramework.AbpEntityFrameworkCommonModule, Abp.EntityFramework.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:47:07,736 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.AbpAspNetCoreModule, Abp.AspNetCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:47:07,736 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Web.AbpWebCommonModule, Abp.Web.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:47:07,736 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.SignalR.AbpAspNetCoreSignalRModule, Abp.AspNetCore.SignalR, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:47:07,737 [2    ] Abp.Modules.AbpModuleManager             - 15 modules loaded.
+DEBUG 2026-03-19 11:47:07,774 [2    ] o.Configuration.LanguageManagementConfig - Converted Abp (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 11:47:07,774 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpZero (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 11:47:07,774 [2    ] o.Configuration.LanguageManagementConfig - Converted Team3 (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 11:47:07,774 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpWeb (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 11:47:08,005 [2    ] ameworkCore.AbpEntityFrameworkCoreModule - Registering DbContext: Team3.EntityFrameworkCore.Team3DbContext, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:47:08,186 [2    ] Abp.Localization.LocalizationManager     - Initializing 4 localization sources.
+DEBUG 2026-03-19 11:47:08,216 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Abp
+DEBUG 2026-03-19 11:47:08,225 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpZero
+DEBUG 2026-03-19 11:47:08,230 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Team3
+DEBUG 2026-03-19 11:47:08,232 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpWeb
+DEBUG 2026-03-19 11:47:08,237 [2    ] Abp.BackgroundJobs.BackgroundJobManager  - Start background worker: Abp.BackgroundJobs.BackgroundJobManager
+DEBUG 2026-03-19 11:47:08,240 [2    ] , Culture=neutral, PublicKeyToken=null]] - Start background worker: Abp.Authorization.Users.UserTokenExpirationWorker`2[[Team3.MultiTenancy.Tenant, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Team3.Authorization.Users.User, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]
+DEBUG 2026-03-19 11:47:08,252 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Found 7 classes define auto mapping attributes
+DEBUG 2026-03-19 11:47:08,252 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.CreateUserDto
+DEBUG 2026-03-19 11:47:08,254 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.UserDto
+DEBUG 2026-03-19 11:47:08,255 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.TenantLoginInfoDto
+DEBUG 2026-03-19 11:47:08,255 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.UserLoginInfoDto
+DEBUG 2026-03-19 11:47:08,255 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Roles.Dto.PermissionDto
+DEBUG 2026-03-19 11:47:08,255 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.CreateTenantDto
+DEBUG 2026-03-19 11:47:08,255 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.TenantDto
+WARN  2026-03-19 11:47:08,991 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'SourceMaterial'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 11:47:08,992 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Lesson' has a global query filter defined and is the required end of a relationship with the entity 'LessonMaterial'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 11:47:08,992 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Language' has a global query filter defined and is the required end of a relationship with the entity 'LessonTranslation'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 11:47:08,992 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Subject' has a global query filter defined and is the required end of a relationship with the entity 'StudentEnrollment'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 11:47:08,992 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Subject' has a global query filter defined and is the required end of a relationship with the entity 'StudentProgress'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 11:47:09,052 [2    ] oft.EntityFrameworkCore.Model.Validation - The 'ProcessingStatus' property 'ProcessingStatus' on entity type 'SourceMaterial' is configured with a database-generated default, but has no configured sentinel value. The database-generated default will always be used for inserts when the property has the value '0', since this is the CLR default for the 'ProcessingStatus' type. Consider using a nullable type, using a nullable backing field, or setting the sentinel value for the property to ensure the database default is used when, and only when, appropriate. See https://aka.ms/efcore-docs-default-values for more information.
+INFO  2026-03-19 11:47:31,936 [2    ] tCore.Builder.RequestLocalizationOptions - Supported Request Localization Cultures: en,es-MX,fr,de,it,nl,pt-BR,tr,ru,ar,fa,ja,zh-Hans
+WARN  2026-03-19 11:47:32,134 [2    ] Microsoft.AspNetCore.Server.Kestrel      - Overriding address(es) 'https://localhost:44311/'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+INFO  2026-03-19 11:47:32,162 [2    ] Microsoft.Hosting.Lifetime               - Now listening on: https://localhost:44311
+INFO  2026-03-19 11:47:32,163 [2    ] Microsoft.Hosting.Lifetime               - Application started. Press Ctrl+C to shut down.
+INFO  2026-03-19 11:47:32,163 [2    ] Microsoft.Hosting.Lifetime               - Hosting environment: Development
+INFO  2026-03-19 11:47:32,163 [2    ] Microsoft.Hosting.Lifetime               - Content root path: C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.Web.Host
+DEBUG 2026-03-19 11:47:58,335 [20   ] Abp.Modules.AbpModuleManager             - Shutting down has been started
+DEBUG 2026-03-19 11:47:58,339 [20   ] Abp.BackgroundJobs.BackgroundJobManager  - Stop background worker: Abp.BackgroundJobs.BackgroundJobManager
+DEBUG 2026-03-19 11:47:58,340 [20   ] , Culture=neutral, PublicKeyToken=null]] - Stop background worker: Abp.Authorization.Users.UserTokenExpirationWorker`2[[Team3.MultiTenancy.Tenant, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Team3.Authorization.Users.User, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]
+DEBUG 2026-03-19 11:47:58,340 [20   ] Abp.BackgroundJobs.BackgroundJobManager  - WaitToStop background worker: Abp.BackgroundJobs.BackgroundJobManager
+DEBUG 2026-03-19 11:47:58,340 [20   ] , Culture=neutral, PublicKeyToken=null]] - WaitToStop background worker: Abp.Authorization.Users.UserTokenExpirationWorker`2[[Team3.MultiTenancy.Tenant, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Team3.Authorization.Users.User, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]
+DEBUG 2026-03-19 11:47:58,340 [20   ] Abp.Modules.AbpModuleManager             - Shutting down completed.
+INFO  2026-03-19 11:47:58,340 [20   ] Microsoft.Hosting.Lifetime               - Application is shutting down...
+DEBUG 2026-03-19 11:48:10,100 [2    ] Abp.Modules.AbpModuleManager             - Loading Abp modules...
+DEBUG 2026-03-19 11:48:10,113 [2    ] Abp.Modules.AbpModuleManager             - Found 15 ABP modules in total.
+DEBUG 2026-03-19 11:48:10,120 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Web.Host.Startup.Team3WebHostModule, Team3.Web.Host, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:48:10,122 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3WebCoreModule, Team3.Web.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:48:10,122 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3ApplicationModule, Team3.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:48:10,122 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3CoreModule, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:48:10,122 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCoreModule, Abp.ZeroCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:48:10,123 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCommonModule, Abp.Zero.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:48:10,123 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AbpKernelModule, Abp, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:48:10,123 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AutoMapper.AbpAutoMapperModule, Abp.AutoMapper, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:48:10,123 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.EntityFrameworkCore.Team3EntityFrameworkModule, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:48:10,124 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.EntityFrameworkCore.AbpZeroCoreEntityFrameworkCoreModule, Abp.ZeroCore.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:48:10,124 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFrameworkCore.AbpEntityFrameworkCoreModule, Abp.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:48:10,124 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFramework.AbpEntityFrameworkCommonModule, Abp.EntityFramework.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:48:10,124 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.AbpAspNetCoreModule, Abp.AspNetCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:48:10,124 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Web.AbpWebCommonModule, Abp.Web.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:48:10,124 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.SignalR.AbpAspNetCoreSignalRModule, Abp.AspNetCore.SignalR, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:48:10,125 [2    ] Abp.Modules.AbpModuleManager             - 15 modules loaded.
+DEBUG 2026-03-19 11:48:10,153 [2    ] o.Configuration.LanguageManagementConfig - Converted Abp (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 11:48:10,153 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpZero (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 11:48:10,153 [2    ] o.Configuration.LanguageManagementConfig - Converted Team3 (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 11:48:10,153 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpWeb (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 11:48:10,343 [2    ] ameworkCore.AbpEntityFrameworkCoreModule - Registering DbContext: Team3.EntityFrameworkCore.Team3DbContext, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 11:48:10,461 [2    ] Abp.Localization.LocalizationManager     - Initializing 4 localization sources.
+DEBUG 2026-03-19 11:48:10,490 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Abp
+DEBUG 2026-03-19 11:48:10,499 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpZero
+DEBUG 2026-03-19 11:48:10,502 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Team3
+DEBUG 2026-03-19 11:48:10,504 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpWeb
+DEBUG 2026-03-19 11:48:10,510 [2    ] Abp.BackgroundJobs.BackgroundJobManager  - Start background worker: Abp.BackgroundJobs.BackgroundJobManager
+DEBUG 2026-03-19 11:48:10,513 [2    ] , Culture=neutral, PublicKeyToken=null]] - Start background worker: Abp.Authorization.Users.UserTokenExpirationWorker`2[[Team3.MultiTenancy.Tenant, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Team3.Authorization.Users.User, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]
+DEBUG 2026-03-19 11:48:10,526 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Found 7 classes define auto mapping attributes
+DEBUG 2026-03-19 11:48:10,526 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.CreateUserDto
+DEBUG 2026-03-19 11:48:10,529 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.UserDto
+DEBUG 2026-03-19 11:48:10,529 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.TenantLoginInfoDto
+DEBUG 2026-03-19 11:48:10,529 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.UserLoginInfoDto
+DEBUG 2026-03-19 11:48:10,529 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Roles.Dto.PermissionDto
+DEBUG 2026-03-19 11:48:10,529 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.CreateTenantDto
+DEBUG 2026-03-19 11:48:10,530 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.TenantDto
+WARN  2026-03-19 11:48:11,309 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'SourceMaterial'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 11:48:11,309 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Lesson' has a global query filter defined and is the required end of a relationship with the entity 'LessonMaterial'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 11:48:11,310 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Language' has a global query filter defined and is the required end of a relationship with the entity 'LessonTranslation'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 11:48:11,310 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Subject' has a global query filter defined and is the required end of a relationship with the entity 'StudentEnrollment'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 11:48:11,310 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Subject' has a global query filter defined and is the required end of a relationship with the entity 'StudentProgress'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 11:48:11,373 [2    ] oft.EntityFrameworkCore.Model.Validation - The 'ProcessingStatus' property 'ProcessingStatus' on entity type 'SourceMaterial' is configured with a database-generated default, but has no configured sentinel value. The database-generated default will always be used for inserts when the property has the value '0', since this is the CLR default for the 'ProcessingStatus' type. Consider using a nullable type, using a nullable backing field, or setting the sentinel value for the property to ensure the database default is used when, and only when, appropriate. See https://aka.ms/efcore-docs-default-values for more information.
+INFO  2026-03-19 11:48:34,330 [2    ] tCore.Builder.RequestLocalizationOptions - Supported Request Localization Cultures: en,es-MX,fr,de,it,nl,pt-BR,tr,ru,ar,fa,ja,zh-Hans
+WARN  2026-03-19 11:48:34,476 [2    ] Microsoft.AspNetCore.Server.Kestrel      - Overriding address(es) 'https://localhost:44311/'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead.
+INFO  2026-03-19 11:48:34,502 [2    ] Microsoft.Hosting.Lifetime               - Now listening on: https://localhost:44311
+INFO  2026-03-19 11:48:34,503 [2    ] Microsoft.Hosting.Lifetime               - Application started. Press Ctrl+C to shut down.
+INFO  2026-03-19 11:48:34,504 [2    ] Microsoft.Hosting.Lifetime               - Hosting environment: Development
+INFO  2026-03-19 11:48:34,504 [2    ] Microsoft.Hosting.Lifetime               - Content root path: C:\Users\Thuwayba\Desktop\Projects\team-3\backend\aspnet-core\src\Team3.Web.Host
+INFO  2026-03-19 11:48:47,221 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 OPTIONS https://localhost:44311/api/TokenAuth/Authenticate - - -
+INFO  2026-03-19 11:48:47,232 [15   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-19 11:48:47,278 [18   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 POST https://localhost:44311/api/TokenAuth/Authenticate - application/json 54
+INFO  2026-03-19 11:48:47,280 [18   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-19 11:48:47,288 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 OPTIONS https://localhost:44311/api/TokenAuth/Authenticate - 204 - - 19.6998ms
+INFO  2026-03-19 11:48:48,486 [18   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Controllers.TokenAuthController.Authenticate (Team3.Web.Core)'
+INFO  2026-03-19 11:48:48,723 [18   ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "Authenticate", controller = "TokenAuth", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Team3.Models.TokenAuth.AuthenticateResultModel] Authenticate(Team3.Models.TokenAuth.AuthenticateModel) on controller Team3.Controllers.TokenAuthController (Team3.Web.Core).
+INFO  2026-03-19 11:48:54,705 [15   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-19 11:48:54,794 [15   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Controllers.TokenAuthController.Authenticate (Team3.Web.Core) in 6048.7391ms
+INFO  2026-03-19 11:48:54,796 [15   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Controllers.TokenAuthController.Authenticate (Team3.Web.Core)'
+INFO  2026-03-19 11:48:54,801 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 POST https://localhost:44311/api/TokenAuth/Authenticate - 200 - application/json;+charset=utf-8 7522.6441ms
+INFO  2026-03-19 11:48:54,875 [20   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 OPTIONS https://localhost:44311/api/services/app/UserProfile/GetActiveLanguages - - -
+INFO  2026-03-19 11:48:54,876 [20   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-19 11:48:54,876 [20   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 OPTIONS https://localhost:44311/api/services/app/UserProfile/GetActiveLanguages - 204 - - 0.7556ms
+INFO  2026-03-19 11:48:54,883 [20   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/api/services/app/UserProfile/GetActiveLanguages - - -
+INFO  2026-03-19 11:48:54,884 [20   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-19 11:48:55,470 [20   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/api/services/app/UserProfile/GetActiveLanguages - 404 0 - 587.3388ms
+INFO  2026-03-19 11:48:55,471 [20   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:44311/api/services/app/UserProfile/GetActiveLanguages, Response status code: 404
+INFO  2026-03-19 11:48:56,648 [19   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 OPTIONS https://localhost:44311/api/services/app/Session/GetCurrentLoginInformations - - -
+INFO  2026-03-19 11:48:56,648 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/api/services/app/UserProfile/GetActiveLanguages - - -
+INFO  2026-03-19 11:48:56,648 [15   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-19 11:48:56,649 [19   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-19 11:48:56,649 [19   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 OPTIONS https://localhost:44311/api/services/app/Session/GetCurrentLoginInformations - 204 - - 0.7178ms
+INFO  2026-03-19 11:48:56,649 [19   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 OPTIONS https://localhost:44311/api/services/app/Session/GetCurrentLoginInformations - - -
+INFO  2026-03-19 11:48:56,649 [19   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-19 11:48:56,649 [19   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 OPTIONS https://localhost:44311/api/services/app/Session/GetCurrentLoginInformations - 204 - - 0.3633ms
+INFO  2026-03-19 11:48:56,666 [18   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/api/services/app/Session/GetCurrentLoginInformations - - -
+INFO  2026-03-19 11:48:56,666 [18   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-19 11:48:56,678 [18   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Sessions.SessionAppService.GetCurrentLoginInformations (Team3.Application)'
+INFO  2026-03-19 11:48:56,703 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/api/services/app/UserProfile/GetActiveLanguages - 404 0 - 55.1668ms
+INFO  2026-03-19 11:48:56,703 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:44311/api/services/app/UserProfile/GetActiveLanguages, Response status code: 404
+INFO  2026-03-19 11:48:56,720 [19   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/api/services/app/UserProfile/GetActiveLanguages - - -
+INFO  2026-03-19 11:48:56,720 [19   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-19 11:48:56,739 [19   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/api/services/app/UserProfile/GetActiveLanguages - 404 0 - 19.3767ms
+INFO  2026-03-19 11:48:56,739 [19   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:44311/api/services/app/UserProfile/GetActiveLanguages, Response status code: 404
+INFO  2026-03-19 11:48:56,882 [18   ] c.Infrastructure.ControllerActionInvoker - Route matched with {area = "app", action = "GetCurrentLoginInformations", controller = "Session"}. Executing controller action with signature System.Threading.Tasks.Task`1[Team3.Sessions.Dto.GetCurrentLoginInformationsOutput] GetCurrentLoginInformations() on controller Team3.Sessions.SessionAppService (Team3.Application).
+INFO  2026-03-19 11:48:58,053 [15   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-19 11:48:58,122 [15   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Sessions.SessionAppService.GetCurrentLoginInformations (Team3.Application) in 1240.3455ms
+INFO  2026-03-19 11:48:58,123 [15   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Sessions.SessionAppService.GetCurrentLoginInformations (Team3.Application)'
+INFO  2026-03-19 11:48:58,123 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/api/services/app/Session/GetCurrentLoginInformations - 200 - application/json;+charset=utf-8 1457.0575ms
+INFO  2026-03-19 11:48:58,127 [19   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/api/services/app/Session/GetCurrentLoginInformations - - -
+INFO  2026-03-19 11:48:58,127 [19   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-19 11:48:58,128 [19   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Sessions.SessionAppService.GetCurrentLoginInformations (Team3.Application)'
+INFO  2026-03-19 11:48:58,145 [19   ] c.Infrastructure.ControllerActionInvoker - Route matched with {area = "app", action = "GetCurrentLoginInformations", controller = "Session"}. Executing controller action with signature System.Threading.Tasks.Task`1[Team3.Sessions.Dto.GetCurrentLoginInformationsOutput] GetCurrentLoginInformations() on controller Team3.Sessions.SessionAppService (Team3.Application).
+INFO  2026-03-19 11:48:58,866 [18   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-19 11:48:58,866 [18   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Sessions.SessionAppService.GetCurrentLoginInformations (Team3.Application) in 720.3986ms
+INFO  2026-03-19 11:48:58,866 [18   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Sessions.SessionAppService.GetCurrentLoginInformations (Team3.Application)'
+INFO  2026-03-19 11:48:58,867 [18   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/api/services/app/Session/GetCurrentLoginInformations - 200 - application/json;+charset=utf-8 739.9607ms
+INFO  2026-03-19 11:49:01,282 [18   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 OPTIONS https://localhost:44311/api/services/app/UserProfile/GetActiveLanguages - - -
+INFO  2026-03-19 11:49:01,282 [19   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/api/services/app/Session/GetCurrentLoginInformations - - -
+INFO  2026-03-19 11:49:01,283 [18   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-19 11:49:01,283 [19   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-19 11:49:01,283 [18   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 OPTIONS https://localhost:44311/api/services/app/UserProfile/GetActiveLanguages - 204 - - 0.6184ms
+INFO  2026-03-19 11:49:01,283 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 OPTIONS https://localhost:44311/api/services/app/UserProfile/GetActiveLanguages - - -
+INFO  2026-03-19 11:49:01,283 [15   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-19 11:49:01,284 [19   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Sessions.SessionAppService.GetCurrentLoginInformations (Team3.Application)'
+INFO  2026-03-19 11:49:01,284 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 OPTIONS https://localhost:44311/api/services/app/UserProfile/GetActiveLanguages - 204 - - 0.2571ms
+INFO  2026-03-19 11:49:01,284 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 OPTIONS https://localhost:44311/api/services/app/UserProfile/GetActiveLanguages - - -
+INFO  2026-03-19 11:49:01,284 [15   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-19 11:49:01,284 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 OPTIONS https://localhost:44311/api/services/app/UserProfile/GetActiveLanguages - 204 - - 0.3116ms
+INFO  2026-03-19 11:49:01,285 [18   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 OPTIONS https://localhost:44311/api/services/app/UserProfile/GetActiveLanguages - - -
+INFO  2026-03-19 11:49:01,286 [18   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-19 11:49:01,286 [18   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 OPTIONS https://localhost:44311/api/services/app/UserProfile/GetActiveLanguages - 204 - - 0.3524ms
+INFO  2026-03-19 11:49:01,286 [21   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 OPTIONS https://localhost:44311/api/services/app/UserProfile/UpdatePlatformLanguage - - -
+INFO  2026-03-19 11:49:01,286 [21   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-19 11:49:01,286 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/api/services/app/UserProfile/GetActiveLanguages - - -
+INFO  2026-03-19 11:49:01,286 [21   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 OPTIONS https://localhost:44311/api/services/app/UserProfile/UpdatePlatformLanguage - 204 - - 0.2827ms
+INFO  2026-03-19 11:49:01,286 [15   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-19 11:49:01,286 [19   ] c.Infrastructure.ControllerActionInvoker - Route matched with {area = "app", action = "GetCurrentLoginInformations", controller = "Session"}. Executing controller action with signature System.Threading.Tasks.Task`1[Team3.Sessions.Dto.GetCurrentLoginInformationsOutput] GetCurrentLoginInformations() on controller Team3.Sessions.SessionAppService (Team3.Application).
+INFO  2026-03-19 11:49:01,287 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/api/services/app/UserProfile/GetActiveLanguages - 404 0 - 1.0160ms
+INFO  2026-03-19 11:49:01,287 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:44311/api/services/app/UserProfile/GetActiveLanguages, Response status code: 404
+INFO  2026-03-19 11:49:01,291 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 PUT https://localhost:44311/api/services/app/UserProfile/UpdatePlatformLanguage - application/json 26
+INFO  2026-03-19 11:49:01,291 [22   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/api/services/app/UserProfile/GetActiveLanguages - - -
+INFO  2026-03-19 11:49:01,291 [15   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-19 11:49:01,292 [22   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-19 11:49:01,293 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 PUT https://localhost:44311/api/services/app/UserProfile/UpdatePlatformLanguage - 404 0 - 1.9211ms
+INFO  2026-03-19 11:49:01,293 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request reached the end of the middleware pipeline without being handled by application code. Request path: PUT https://localhost:44311/api/services/app/UserProfile/UpdatePlatformLanguage, Response status code: 404
+INFO  2026-03-19 11:49:01,293 [22   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/api/services/app/UserProfile/GetActiveLanguages - 404 0 - 2.6280ms
+INFO  2026-03-19 11:49:01,294 [22   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:44311/api/services/app/UserProfile/GetActiveLanguages, Response status code: 404
+INFO  2026-03-19 11:49:01,295 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/api/services/app/UserProfile/GetActiveLanguages - - -
+INFO  2026-03-19 11:49:01,295 [15   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-19 11:49:01,297 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/api/services/app/UserProfile/GetActiveLanguages - 404 0 - 1.4741ms
+INFO  2026-03-19 11:49:01,297 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:44311/api/services/app/UserProfile/GetActiveLanguages, Response status code: 404
+INFO  2026-03-19 11:49:01,301 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/api/services/app/UserProfile/GetActiveLanguages - - -
+INFO  2026-03-19 11:49:01,302 [15   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-19 11:49:01,304 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/api/services/app/UserProfile/GetActiveLanguages - 404 0 - 3.3395ms
+INFO  2026-03-19 11:49:01,304 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request reached the end of the middleware pipeline without being handled by application code. Request path: GET https://localhost:44311/api/services/app/UserProfile/GetActiveLanguages, Response status code: 404
+INFO  2026-03-19 11:49:01,975 [19   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-19 11:49:01,976 [19   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Sessions.SessionAppService.GetCurrentLoginInformations (Team3.Application) in 689.889ms
+INFO  2026-03-19 11:49:01,977 [19   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Sessions.SessionAppService.GetCurrentLoginInformations (Team3.Application)'
+INFO  2026-03-19 11:49:01,977 [19   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/api/services/app/Session/GetCurrentLoginInformations - 200 - application/json;+charset=utf-8 694.7719ms
+INFO  2026-03-19 11:49:01,992 [19   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/api/services/app/Session/GetCurrentLoginInformations - - -
+INFO  2026-03-19 11:49:01,993 [19   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-19 11:49:02,000 [19   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Sessions.SessionAppService.GetCurrentLoginInformations (Team3.Application)'
+INFO  2026-03-19 11:49:02,014 [19   ] c.Infrastructure.ControllerActionInvoker - Route matched with {area = "app", action = "GetCurrentLoginInformations", controller = "Session"}. Executing controller action with signature System.Threading.Tasks.Task`1[Team3.Sessions.Dto.GetCurrentLoginInformationsOutput] GetCurrentLoginInformations() on controller Team3.Sessions.SessionAppService (Team3.Application).
+INFO  2026-03-19 11:49:02,726 [19   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-19 11:49:02,727 [19   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Sessions.SessionAppService.GetCurrentLoginInformations (Team3.Application) in 712.9595ms
+INFO  2026-03-19 11:49:02,727 [19   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Sessions.SessionAppService.GetCurrentLoginInformations (Team3.Application)'
+INFO  2026-03-19 11:49:02,728 [19   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/api/services/app/Session/GetCurrentLoginInformations - 200 - application/json;+charset=utf-8 735.6451ms
+INFO  2026-03-19 11:49:02,742 [18   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/api/services/app/Session/GetCurrentLoginInformations - - -
+INFO  2026-03-19 11:49:02,743 [18   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-19 11:49:02,749 [18   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Sessions.SessionAppService.GetCurrentLoginInformations (Team3.Application)'
+INFO  2026-03-19 11:49:02,792 [18   ] c.Infrastructure.ControllerActionInvoker - Route matched with {area = "app", action = "GetCurrentLoginInformations", controller = "Session"}. Executing controller action with signature System.Threading.Tasks.Task`1[Team3.Sessions.Dto.GetCurrentLoginInformationsOutput] GetCurrentLoginInformations() on controller Team3.Sessions.SessionAppService (Team3.Application).
+INFO  2026-03-19 11:49:03,487 [18   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-19 11:49:03,488 [18   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Sessions.SessionAppService.GetCurrentLoginInformations (Team3.Application) in 695.3957ms
+INFO  2026-03-19 11:49:03,488 [18   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Sessions.SessionAppService.GetCurrentLoginInformations (Team3.Application)'
+INFO  2026-03-19 11:49:03,488 [18   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/api/services/app/Session/GetCurrentLoginInformations - 200 - application/json;+charset=utf-8 745.7572ms

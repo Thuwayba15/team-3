@@ -9,6 +9,7 @@ using Team3.Authorization.Roles;
 using Team3.Authorization.Users;
 using Team3.Configuration;
 using Team3.Enums;
+using Team3.Localization;
 using Team3.MultiTenancy;
 using Team3.Users;
 
@@ -34,6 +35,9 @@ public class Team3DbContext : AbpZeroDbContext<Tenant, Role, User, Team3DbContex
     public DbSet<SourceMaterial> SourceMaterials { get; set; }
     public DbSet<StudentEnrollment> StudentEnrollments { get; set; }
     public DbSet<StudentProgress> StudentProgresses { get; set; }
+
+    // Per-user platform language preference
+    public virtual DbSet<UserLanguagePreference> UserLanguagePreferences { get; set; }
 
     public Team3DbContext(DbContextOptions<Team3DbContext> options)
         : base(options)
@@ -226,6 +230,19 @@ public class Team3DbContext : AbpZeroDbContext<Tenant, Role, User, Team3DbContex
                 .WithMany()
                 .HasForeignKey(x => x.GeneratedTopicId)
                 .OnDelete(DeleteBehavior.SetNull);
+        });
+
+        modelBuilder.Entity<UserLanguagePreference>(entity =>
+        {
+            entity.ToTable("AppUserLanguagePreferences");
+            entity.HasIndex(x => x.UserId).IsUnique();
+
+            entity.Property(x => x.LanguageCode).IsRequired().HasMaxLength(32);
+
+            entity.HasOne<User>()
+                .WithMany()
+                .HasForeignKey(x => x.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
     }
 }

@@ -1,0 +1,199 @@
+{
+  "nav": {
+    "dashboard": "Dashboard",
+    "learningPath": "Leerpad",
+    "lessons": "Lesse",
+    "quizzes": "Vasvrae",
+    "aiTutor": "AI Tutor",
+    "progress": "Vordering",
+    "students": "Studente",
+    "interventions": "Intervensies",
+    "learningModules": "Leermodules",
+    "analytics": "Analise",
+    "alerts": "Waarskuwings",
+    "childProgress": "Kind Vordering",
+    "curriculum": "Kurrikulum",
+    "users": "Gebruikers",
+    "settings": "Instellings",
+    "languages": "Tale",
+    "aiConfiguration": "AI-konfigurasie",
+    "logout": "Afmeld"
+  },
+  "common": {
+    "menu": "Kieslys",
+    "save": "Stoor",
+    "cancel": "Kanselleer",
+    "delete": "Verwyder",
+    "edit": "Wysig",
+    "loading": "Laai...",
+    "error": "Fout",
+    "success": "Sukses",
+    "close": "Sluit",
+    "confirm": "Bevestig",
+    "back": "Terug",
+    "next": "Volgende",
+    "previous": "Vorige",
+    "search": "Soek",
+    "filter": "Filter",
+    "clear": "Wis",
+    "submit": "Dien in",
+    "export": "Uitvoer",
+    "import": "Invoer"
+  },
+  "auth": {
+    "login": {
+      "title": "Meld aan",
+      "email": "E-posadres",
+      "password": "Wagwoord",
+      "submit": "Teken in",
+      "noAccount": "Het jy nie 'n rekening nie?",
+      "register": "Registreer hier",
+      "forgotPassword": "Wagwoord vergeet?",
+      "invalidCredentials": "Ongeldige e-pos of wagwoord"
+    },
+    "register": {
+      "title": "Registreer",
+      "firstName": "Voornaam",
+      "surname": "Van",
+      "email": "E-posadres",
+      "password": "Wagwoord",
+      "confirmPassword": "Bevestig Wagwoord",
+      "role": "Rol",
+      "selectRole": "Kies jou rol",
+      "selectLanguage": "Voorkeurtaal",
+      "submit": "Skep Rekening",
+      "haveAccount": "Het jy reeds 'n rekening?",
+      "loginHere": "Meld hier aan",
+      "agreeTerms": "Ek stem in tot die diensvoorwaardes"
+    }
+  },
+  "settings": {
+    "title": "Instellings",
+    "studentTitle": "Student Instellings",
+    "studentSubtitle": "Bladsy voorlopige plekhouer",
+    "platformLanguage": "Platform Taal",
+    "platformLanguageDesc": "Kies die taal vir die toepassing",
+    "selectLanguage": "Kies Taal",
+    "updated": "Instellings suksesvol opgedateer"
+  },
+  "header": {
+    "defaultUser": "Gebruiker",
+    "email": "E-pos",
+    "username": "Gebruikersnaam",
+    "language": "Taal",
+    "languageUpdated": "Taal suksesvol opgedateer",
+    "languageUpdateFailed": "Kon nie taal opdateer nie. Probeer asseblief weer.",
+    "notifications": "Kennisgewings",
+    "openNavigation": "Maak navigasie oop",
+    "openUserMenu": "Maak gebruikerskieslys oop",
+    "profile": "Profiel",
+    "preferences": "Voorkeure",
+    "logout": "Afmeld"
+  },
+  "sidebar": {
+    "admin": "Admin",
+    "student": "Student",
+    "tutor": "Tutor",
+    "parent": "Ouer"
+  },
+  "dashboard": {
+    "scaffoldSubtitle": "Bladsy voorlopige plekhouer",
+    "student": {
+      "title": "Student Dashboard",
+      "learningPathTitle": "Student Leerpad",
+      "lessonsTitle": "Student Lesse",
+      "quizzesTitle": "Student Vasvrae",
+      "aiTutorTitle": "Student AI Tutor",
+      "progressTitle": "Student Vordering"
+    },
+    "tutor": {
+      "title": "Tutor Dashboard",
+      "studentsTitle": "Tutor Studente",
+      "interventionsTitle": "Tutor Intervensies",
+      "learningModulesTitle": "Tutor Leermodules",
+      "analyticsTitle": "Tutor Analise"
+    },
+    "parent": {
+      "title": "Ouer Dashboard",
+      "childProgressTitle": "Ouer Kind Vordering",
+      "alertsTitle": "Ouer Waarskuwings"
+    },
+    "admin": {
+      "title": "Stelseladministrasie",
+      "subtitle": "Platform oorsig en stelselgesondheid",
+      "trendThisMonth": "+12% hierdie maand",
+      "totalActiveUsers": "Totale Aktiewe Gebruikers",
+      "languageUsage": "Taalgebruik",
+      "aiApiCallsToday": "AI API-oproepe (Vandag)",
+      "systemUptime": "Stelsel Uptyd",
+      "userDistributionByRole": "Gebruikerverdeling per Rol",
+      "pieChartPlaceholder": "Sirkelgrafiek plekhouer",
+      "legendStudents": "Studente (80%)",
+      "legendTutors": "Tutors (5%)",
+      "legendParents": "Ouers (15%)",
+      "languagePreferenceAnalytics": "Taalvoorkeur Analise",
+      "analyticsTitle": "Administrateur Analise",
+      "users": {
+        "title": "Gebruikerbestuur",
+        "subtitle": "Bestuur platformgebruikers, rolle en toegang",
+        "errorLoadUsers": "Kon nie gebruikers laai nie. Probeer weer.",
+        "searchPlaceholder": "Soek gebruikers...",
+        "allRoles": "Alle Rolle",
+        "allStatus": "Alle Statusse",
+        "active": "Aktief",
+        "inactive": "Onaktief",
+        "addUser": "Voeg Gebruiker By",
+        "disable": "Deaktiveer",
+        "columns": {
+          "name": "Naam",
+          "email": "E-pos",
+          "role": "Rol",
+          "status": "Status",
+          "dateJoined": "Aansluitdatum",
+          "actions": "Aksies"
+        }
+      },
+      "languages": {
+        "title": "Taalbestuur",
+        "subtitle": "Bestuur ondersteunde tale en vertaalvordering",
+        "translationProgress": "Vertaalvordering",
+        "contentItemsTranslated": "inhouditems vertaal",
+        "translationStatusByContentType": "Vertaalstatus per Inhoudstipe",
+        "contentType": "Inhoudstipe"
+      },
+      "aiConfiguration": {
+        "title": "AI-konfigurasie",
+        "subtitle": "Bestuur AI tutor-aanwysings en aanbevelingenjin-instellings",
+        "saved": "AI-konfigurasie suksesvol gestoor.",
+        "promptTemplates": "Tutor-aanwysing Templates",
+        "resetToDefault": "Herstel na Verstek",
+        "recommendationEngineSettings": "Aanbevelingenjin Instellings",
+        "minimumMasteryThreshold": "Minimum Meesterskap Drempel",
+        "maximumRetryAttempts": "Maksimum Herprobeer Pogings",
+        "difficultyProgression": "Moeilikheidsgraad Progressie",
+        "progressionModeAdaptive": "Aanpasbaar (AI-gedrewe)",
+        "progressionModeLinear": "Lineer (Streng volgorde)",
+        "progressionModeCustom": "Pasgemaak",
+        "contentRecommendationWeight": "Inhoud Aanbevelingsgewig",
+        "difficultyAdjustment": "Moeilikheidsgraad Aanpassing",
+        "autoAdjustDifficulty": "Pas Moeilikheidsgraad Outomaties Aan",
+        "adjustmentSensitivity": "Aanpassingsensitiwiteit",
+        "minQuestionsBeforeAdjustment": "Min. Vrae voor Aanpassing",
+        "increaseThreshold": "Verhoog Drempel (%)",
+        "decreaseThreshold": "Verlaag Drempel (%)",
+        "high": "Hoog",
+        "medium": "Medium",
+        "low": "Laag",
+        "saveConfiguration": "Stoor Konfigurasie"
+      },
+      "curriculum": {
+        "title": "Kurrikulumbestuur",
+        "subtitle": "Skep vakke, laai dokumente op, en hersien AI-gegenereerde konsepte"
+      }
+    }
+  },
+  "empty": {
+    "noData": "Geen data beskikbaar",
+    "noResults": "Geen resultate gevind"
+  }
+}

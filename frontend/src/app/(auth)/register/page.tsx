@@ -10,15 +10,15 @@ import { useStyles } from "../styles";
 
 export default function RegisterPage() {
   const { styles } = useStyles();
-  const { isLoading, isAuthenticated, errorMessage } = useAuthState();
+  const { isLoading, isAuthenticated, role, errorMessage } = useAuthState();
   const { register, clearAuthError } = useAuthActions();
   const router = useRouter();
 
   useEffect(() => {
-    if (isAuthenticated) {
-      router.replace("/dashboard");
+    if (isAuthenticated && role) {
+      router.replace(`/${role}/dashboard`);
     }
-  }, [isAuthenticated, router]);
+  }, [isAuthenticated, role, router]);
 
   const handleSubmit = async (values: IRegisterValues): Promise<void> => {
     // Map form values to the backend schema
@@ -45,7 +45,7 @@ export default function RegisterPage() {
       </div>
 
       <div className={styles.mainLayout}>
-        <Link href="/" style={{ textDecoration: 'none', color: 'inherit', cursor: 'pointer' }}>
+        <Link href="/" className={styles.brandLink}>
           <div className={styles.brandSection}>
             <img src="https://firebasestorage.googleapis.com/v0/b/grade-12-life-sciences-st.firebasestorage.app/o/image.png?alt=media&token=7477da80-3128-4dc8-833b-92c432ea71b1" alt="Logo" className={styles.mainLogo} />
             <h1 className={styles.title}>Ubuntu Learn</h1>
@@ -55,10 +55,9 @@ export default function RegisterPage() {
 
         <div className={styles.loginSection}>
           <motion.div 
-            className={styles.formWrapper}
+            className={`${styles.formWrapper} ${styles.registerFormWrapper}`}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            style={{ maxWidth: '400px' }} // Slightly wider for more fields
           >
             <div className={styles.loginHeader}>
               <h2 className={styles.loginTitle}>Create Account</h2>
