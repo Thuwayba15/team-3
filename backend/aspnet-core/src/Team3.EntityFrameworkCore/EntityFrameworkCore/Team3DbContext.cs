@@ -8,6 +8,7 @@ using Team3.AI;
 using Team3.Authorization.Roles;
 using Team3.Authorization.Users;
 using Team3.Configuration;
+using Team3.Domain.Assessment;
 using Team3.Enums;
 using Team3.Localization;
 using Team3.MultiTenancy;
@@ -35,6 +36,10 @@ public class Team3DbContext : AbpZeroDbContext<Tenant, Role, User, Team3DbContex
     public DbSet<SourceMaterial> SourceMaterials { get; set; }
     public DbSet<StudentEnrollment> StudentEnrollments { get; set; }
     public DbSet<StudentProgress> StudentProgresses { get; set; }
+
+    public DbSet<Assessment> Assessments { get; set; }
+    public DbSet<Question> Questions { get; set; }
+    public DbSet<QuestionTranslation> QuestionTranslations { get; set; }
 
     // Per-user platform language preference
     public virtual DbSet<UserLanguagePreference> UserLanguagePreferences { get; set; }
@@ -253,6 +258,64 @@ public class Team3DbContext : AbpZeroDbContext<Tenant, Role, User, Team3DbContex
                 .WithMany()
                 .HasForeignKey(x => x.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<Assessment>(entity =>
+        {
+            entity.ToTable("Assessments");
+            entity.Property(x => x.Title).IsRequired().HasMaxLength(200);
+            entity.Property(x => x.Description).HasMaxLength(500);
+            entity.Property(x => x.TotalMarks).HasPrecision(10, 2);
+            entity.Property(x => x.IsPublished).HasDefaultValue(false);
+            entity.Property(x => x.GeneratedByAI).HasDefaultValue(false);
+
+            entity.HasOne(x => x.Topic)
+                .WithMany(x => x.Assessments)
+                .HasForeignKey(x => x.TopicId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(x => x.Lesson)
+                .WithMany()
+                .HasForeignKey(x => x.LessonId)
+                .OnDelete(DeleteBehavior.SetNull);
+        });
+
+        modelBuilder.Entity<Question>(entity =>
+        {
+            entity.ToTable("Questions");
+            entity.Property(x => x.CorrectAnswer).HasMaxLength(10);
+            entity.Property(x => x.Marks).HasPrecision(10, 2).HasDefaultValue(1);
+            entity.Property(x => x.SequenceOrder).HasDefaultValue(0);
+            entity.Property(x => x.IsActive).HasDefaultValue(true);
+            entity.Property(x => x.GeneratedByAI).HasDefaultValue(false);
+
+            entity.HasOne(x => x.Assessment)
+                .WithMany(x => x.Questions)
+                .HasForeignKey(x => x.AssessmentId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<QuestionTranslation>(entity =>
+        {
+            entity.ToTable("QuestionTranslations");
+            entity.HasIndex(x => new { x.QuestionId, x.LanguageId }).IsUnique();
+            entity.Property(x => x.QuestionText).IsRequired().HasColumnType("text");
+            entity.Property(x => x.OptionA).HasMaxLength(500);
+            entity.Property(x => x.OptionB).HasMaxLength(500);
+            entity.Property(x => x.OptionC).HasMaxLength(500);
+            entity.Property(x => x.OptionD).HasMaxLength(500);
+            entity.Property(x => x.HintText).HasMaxLength(500);
+            entity.Property(x => x.ExplanationText).HasColumnType("text");
+
+            entity.HasOne(x => x.Question)
+                .WithMany(x => x.Translations)
+                .HasForeignKey(x => x.QuestionId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(x => x.Language)
+                .WithMany()
+                .HasForeignKey(x => x.LanguageId)
+                .OnDelete(DeleteBehavior.Restrict);
         });
     }
 }

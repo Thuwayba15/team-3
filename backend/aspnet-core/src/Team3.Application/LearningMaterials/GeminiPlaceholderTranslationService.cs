@@ -150,7 +150,7 @@ public class GeminiPlaceholderTranslationService : ITextTranslationService, ITra
             return apiKey.Trim();
         }
 
-        return "YouCanHardCodeYourAPIKeyHere";
+        return "AIzaSyAHLSGQoI-owvhWjQE0deBAogPrz8vgmUA";
         //throw new UserFriendlyException(
           //  $"Gemini API key is not configured. Set '{AppSettingNames.GeminiApiKey}' or the GEMINI_API_KEY environment variable.");
     }
