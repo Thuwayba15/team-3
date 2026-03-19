@@ -92,7 +92,16 @@ namespace Team3.Controllers
                 return Unauthorized();
             }
 
-            return Ok(new { UserId = AbpSession.UserId.Value });
+            var roles = User.Claims
+                .Where(c => c.Type == ClaimTypes.Role)
+                .Select(c => c.Value)
+                .ToList();
+
+            return Ok(new
+            {
+                UserId = AbpSession.UserId.Value,
+                Roles = roles
+            });
         }
 
         private string GetTenancyNameOrNull()

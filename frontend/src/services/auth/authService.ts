@@ -22,12 +22,13 @@ export interface ILoginRequest {
 
 /** Request body for the ABP Account/Register endpoint. */
 export interface IRegisterRequest {
-    userName: string;
     name: string;
     surname: string;
     emailAddress: string;
     password: string;
-    roleNames: string[];
+    role: string;
+    preferredLanguage: string;
+    gradeLevel?: string;
 }
 
 /** Response from the ABP TokenAuth/Authenticate endpoint. */
@@ -39,6 +40,7 @@ export interface ILoginResponse {
 
 export interface IMeResponse {
     userId: number;
+    roles: string[];
 }
 
 async function login(request: ILoginRequest): Promise<ILoginResponse> {

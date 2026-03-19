@@ -1,167 +1,181 @@
 "use client";
 
 import { PlusOutlined } from "@ant-design/icons";
-import { Alert, Button, Input, Select, Spin, Table, Tag } from "antd";
+import { Alert, Button, Form, Input, Modal, Select, Space, Spin, Table, Tag, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useEffect, useMemo, useState } from "react";
 import { PageHeader } from "@/components/layout";
-import { userService, type IUser } from "@/services/users/userService";
+import { userService, type ICreateUserInput, type IUser } from "@/services/users/userService";
 import { useStyles } from "./styles";
 
-type RoleTagClass = "roleTagAdmin" | "roleTagTutor" | "roleTagParent" | "roleTagStudent";
+const ROLE_OPTIONS = [
+    { label: "Student", value: "Student" },
+    { label: "Admin", value: "Admin" },
+];
 
-const ROLE_CLASS_BY_NAME: Record<string, RoleTagClass> = {
-    ADMIN: "roleTagAdmin",
-    TUTOR: "roleTagTutor",
-    PARENT: "roleTagParent",
-    STUDENT: "roleTagStudent",
-};
-
-/** Admin user management page — fetches and displays all platform users. */
 export default function AdminUsersPage() {
     const { styles } = useStyles();
-    const { t } = useTranslation();
-    const [users, setUsers]               = useState<IUser[]>([]);
-    const [loading, setLoading]           = useState(true);
-    const [error, setError]               = useState<string | null>(null);
-    const [search, setSearch]             = useState("");
-    const [roleFilter, setRoleFilter]     = useState("");
-    const [statusFilter, setStatusFilter] = useState("");
+    const [form] = Form.useForm<ICreateUserInput>();
+    const [users, setUsers] = useState<IUser[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const [search, setSearch] = useState("");
+    const [roleFilter, setRoleFilter] = useState("");
+    const [isCreateOpen, setIsCreateOpen] = useState(false);
+    const [saving, setSaving] = useState(false);
+
+    const loadUsers = async () => {
+        setLoading(true);
+        try {
+            const result = await userService.getAll();
+            setUsers(result.items.filter((user) => user.roleNames.some((role) => role === "ADMIN" || role === "STUDENT")));
+            setError(null);
+        } catch {
+            setError("Could not load users.");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        userService.getAll()
-            .then((data) => setUsers(data.items))
-            .catch(() => setError(t("dashboard.admin.users.errorLoadUsers")))
-            .finally(() => setLoading(false));
-    }, [t]);
+        void loadUsers();
+    }, []);
 
-    const roleOptions = [
-        { label: t("dashboard.admin.users.allRoles"), value: "" },
-        { label: t("sidebar.admin"), value: "ADMIN" },
-        { label: t("sidebar.tutor"), value: "TUTOR" },
-        { label: t("sidebar.parent"), value: "PARENT" },
-        { label: t("sidebar.student"), value: "STUDENT" },
-    ];
+    const filteredUsers = useMemo(() => {
+        return users.filter((user) => {
+            const matchesSearch = `${user.fullName} ${user.emailAddress}`.toLowerCase().includes(search.toLowerCase());
+            const matchesRole = roleFilter ? user.roleNames.includes(roleFilter.toUpperCase()) : true;
+            return matchesSearch && matchesRole;
+        });
+    }, [roleFilter, search, users]);
 
-    const statusOptions = [
-        { label: t("dashboard.admin.users.allStatus"), value: "" },
-        { label: t("dashboard.admin.users.active"), value: "active" },
-        { label: t("dashboard.admin.users.inactive"), value: "inactive" },
-    ];
+    const handleCreate = async () => {
+        setSaving(true);
+        try {
+            const values = await form.validateFields();
+            await userService.create(values);
+            form.resetFields();
+            setIsCreateOpen(false);
+            message.success("User created.");
+            await loadUsers();
+        } catch {
+            message.error("Could not create user.");
+        } finally {
+            setSaving(false);
+        }
+    };
 
-    const filtered = users.filter((user) => {
-        const matchesSearch = user.fullName.toLowerCase().includes(search.toLowerCase()) ||
-            user.emailAddress.toLowerCase().includes(search.toLowerCase());
-        const matchesRole   = roleFilter   ? user.roleNames.includes(roleFilter)                              : true;
-        const matchesStatus = statusFilter ? (statusFilter === "active") === user.isActive : true;
-        return matchesSearch && matchesRole && matchesStatus;
-    });
+    const toggleStatus = async (user: IUser) => {
+        try {
+            if (user.isActive) {
+                await userService.deactivate(user.id);
+                message.success("User deactivated.");
+            } else {
+                await userService.activate(user.id);
+                message.success("User activated.");
+            }
+            await loadUsers();
+        } catch {
+            message.error("Could not update user status.");
+        }
+    };
 
     const columns: ColumnsType<IUser> = [
         {
-            title: t("dashboard.admin.users.columns.name"),
+            title: "Name",
             dataIndex: "fullName",
             key: "fullName",
-            render: (value: string) => <strong>{value}</strong>,
         },
         {
-            title: t("dashboard.admin.users.columns.email"),
+            title: "Email",
             dataIndex: "emailAddress",
             key: "emailAddress",
         },
         {
-            title: t("dashboard.admin.users.columns.role"),
+            title: "Role",
             dataIndex: "roleNames",
             key: "roleNames",
-            render: (roleNames: string[]) => {
-                if (roleNames.length === 0) {
-                    return <Tag className={`${styles.roleTag} ${styles.roleTagDefault}`}>—</Tag>;
-                }
-                return roleNames.map((role) => {
-                    const roleClassName = ROLE_CLASS_BY_NAME[role] ?? "roleTagDefault";
-                    return (
-                        <Tag key={role} className={`${styles.roleTag} ${styles[roleClassName]}`}>
-                            {role.charAt(0) + role.slice(1).toLowerCase()}
-                        </Tag>
-                    );
-                });
-            },
+            render: (roles: string[]) => roles
+                .filter((role) => role === "ADMIN" || role === "STUDENT")
+                .map((role) => <Tag key={role}>{role === "ADMIN" ? "Admin" : "Student"}</Tag>),
         },
         {
-            title: t("dashboard.admin.users.columns.status"),
+            title: "Status",
             dataIndex: "isActive",
             key: "isActive",
-            render: (isActive: boolean) => (
-                <Tag className={styles.statusTag} color={isActive ? "success" : "warning"}>
-                    {isActive ? t("dashboard.admin.users.active") : t("dashboard.admin.users.inactive")}
-                </Tag>
-            ),
+            render: (isActive: boolean) => <Tag color={isActive ? "success" : "default"}>{isActive ? "Active" : "Inactive"}</Tag>,
         },
         {
-            title: t("dashboard.admin.users.columns.dateJoined"),
-            dataIndex: "creationTime",
-            key: "creationTime",
-            render: (value: string) => new Date(value).toISOString().split("T")[0],
-        },
-        {
-            title: t("dashboard.admin.users.columns.actions"),
+            title: "Actions",
             key: "actions",
-            render: () => (
-                <div className={styles.actions}>
-                    <Button type="link" className={styles.editLink}>{t("common.edit")}</Button>
-                    <Button type="link" className={styles.disableLink}>{t("dashboard.admin.users.disable")}</Button>
-                </div>
+            render: (_value, record) => (
+                <Button type="link" onClick={() => void toggleStatus(record)}>
+                    {record.isActive ? "Deactivate" : "Activate"}
+                </Button>
             ),
         },
     ];
 
     return (
         <div>
-            <PageHeader title={t("dashboard.admin.users.title")} subtitle={t("dashboard.admin.users.subtitle")} />
+            <PageHeader title="Users" subtitle="Manage admin and student accounts for the MVP." />
 
             {error && <Alert type="error" message={error} className={styles.errorAlert} />}
 
             <div className={styles.toolbar}>
                 <Input.Search
                     className={styles.search}
-                    placeholder={t("dashboard.admin.users.searchPlaceholder")}
+                    placeholder="Search users"
                     value={search}
-                    onChange={(e) => setSearch(e.target.value)}
+                    onChange={(event) => setSearch(event.target.value)}
                     allowClear
                 />
-                <div className={styles.filters}>
+
+                <Space>
                     <Select
-                        className={styles.filterSelect}
-                        options={roleOptions}
+                        style={{ width: 180 }}
                         value={roleFilter}
                         onChange={setRoleFilter}
+                        options={[{ label: "All roles", value: "" }, ...ROLE_OPTIONS]}
                     />
-                    <Select
-                        className={styles.filterSelect}
-                        options={statusOptions}
-                        value={statusFilter}
-                        onChange={setStatusFilter}
-                    />
-                </div>
-                <div className={styles.addButtonWrapper}>
-                    <Button type="primary" icon={<PlusOutlined />} className={styles.addButton}>
-                        {t("dashboard.admin.users.addUser")}
+                    <Button type="primary" icon={<PlusOutlined />} onClick={() => setIsCreateOpen(true)}>
+                        Add User
                     </Button>
-                </div>
+                </Space>
             </div>
 
             <Spin spinning={loading}>
-                <Table
-                    className={styles.table}
-                    columns={columns}
-                    dataSource={filtered}
-                    rowKey="id"
-                    pagination={false}
-                    bordered={false}
-                    scroll={{ x: "max-content" }}
-                />
+                <Table columns={columns} dataSource={filteredUsers} rowKey="id" pagination={false} />
             </Spin>
+
+            <Modal
+                title="Create User"
+                open={isCreateOpen}
+                onCancel={() => setIsCreateOpen(false)}
+                onOk={() => void handleCreate()}
+                confirmLoading={saving}
+            >
+                <Form form={form} layout="vertical" initialValues={{ isActive: true, roleNames: ["Student"] }}>
+                    <Form.Item name="name" label="First Name" rules={[{ required: true }]}>
+                        <Input />
+                    </Form.Item>
+                    <Form.Item name="surname" label="Last Name" rules={[{ required: true }]}>
+                        <Input />
+                    </Form.Item>
+                    <Form.Item name="userName" label="Username" rules={[{ required: true }]}>
+                        <Input />
+                    </Form.Item>
+                    <Form.Item name="emailAddress" label="Email" rules={[{ required: true, type: "email" }]}>
+                        <Input />
+                    </Form.Item>
+                    <Form.Item name="password" label="Password" rules={[{ required: true, min: 8 }]}>
+                        <Input.Password />
+                    </Form.Item>
+                    <Form.Item name="roleNames" label="Role" rules={[{ required: true }]}>
+                        <Select mode="multiple" maxCount={1} options={ROLE_OPTIONS} />
+                    </Form.Item>
+                </Form>
+            </Modal>
         </div>
     );
 }

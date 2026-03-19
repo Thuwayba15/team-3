@@ -23,6 +23,8 @@ export interface IRegisterValues {
     roleNames: string[];
     role: string;
     password: string;
+    preferredLanguage?: string;
+    gradeLevel?: string;
 }
 
 export type IAuthContextState = IAuthState;

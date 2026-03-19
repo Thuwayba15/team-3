@@ -1,236 +1,103 @@
 "use client";
 
-import {
-    BookOutlined,
-    CheckCircleOutlined,
-    ClockCircleOutlined,
-    PlayCircleOutlined,
-    ReadOutlined,
-    RiseOutlined,
-    RobotOutlined,
-    TrophyOutlined,
-} from "@ant-design/icons";
-import {
-    Button,
-    Card,
-    Col,
-    Progress,
-    Row,
-    Tag,
-    Typography,
-} from "antd";
+import { BookOutlined, ExperimentOutlined, RobotOutlined, TrophyOutlined } from "@ant-design/icons";
+import { Alert, Button, Card, Col, Progress, Row, Spin, Typography } from "antd";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { studentLearningService, type IStudentDashboard } from "@/services/student/studentLearningService";
 import { useStyles } from "./styles";
 
 const { Text, Title } = Typography;
 
-const STATS = [
-    {
-        icon: TrophyOutlined,
-        value: "78%",
-        label: "Overall Progress Score",
-        badge: "5% this week",
-    },
-    {
-        icon: CheckCircleOutlined,
-        value: "12",
-        label: "Topics Mastered",
-        badge: "2 new",
-    },
-    {
-        icon: BookOutlined,
-        value: "24",
-        label: "Lessons Completed",
-        badge: null,
-    },
-];
-
-const QUIZ_RESULTS = [
-    { name: "Linear Equations",  date: "Today",       score: 85 },
-    { name: "Cell Structure",    date: "Yesterday",   score: 92 },
-    { name: "Chemical Bonding",  date: "3 days ago",  score: 65 },
-];
-
-const UP_NEXT = [
-    { title: "Review Biology Notes",   due: "Due tomorrow" },
-    { title: "Complete Physics Quiz",  due: "Due Friday"   },
-];
-
-function quizScoreColor(score: number) {
-    if (score >= 80) return "#52c41a";
-    if (score >= 65) return "#00b8a9";
-    return "#fa8c16";
-}
-
 export default function StudentDashboardPage() {
     const { styles } = useStyles();
+    const [dashboard, setDashboard] = useState<IStudentDashboard | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        studentLearningService.getDashboard()
+            .then((result) => {
+                setDashboard(result);
+                setError(null);
+            })
+            .catch(() => setError("Could not load the student dashboard."))
+            .finally(() => setLoading(false));
+    }, []);
+
+    const stats = [
+        { icon: TrophyOutlined, label: "Mastery Score", value: `${Math.round(dashboard?.progress?.masteryScore ?? 0)}%` },
+        { icon: BookOutlined, label: "Completed Lessons", value: dashboard?.progress?.completedLessonCount ?? 0 },
+        { icon: ExperimentOutlined, label: "Diagnostic Attempts", value: dashboard?.progress?.attemptCount ?? 0 },
+    ];
 
     return (
         <div>
-            {/* Welcome section */}
             <div className={styles.welcomeSection}>
                 <div>
-                    <Title level={2} className={styles.welcomeText}>
-                        Welcome back, Thabo! 👋
-                    </Title>
-                    <Text type="secondary">
-                        You&apos;re making great progress. Ready to continue learning?
-                    </Text>
+                    <Title level={2} className={styles.welcomeText}>Life Sciences Dashboard</Title>
+                    <Text type="secondary">Track your current topic, latest diagnostic result, and recommended next lesson.</Text>
                 </div>
-                <Button
-                    type="primary"
-                    icon={<RobotOutlined />}
-                    size="large"
-                    className={styles.askAiBtn}
-                >
-                    Ask AI Tutor
-                </Button>
+                <Link href="/student/ai-tutor">
+                    <Button type="primary" icon={<RobotOutlined />} size="large" className={styles.askAiBtn}>
+                        Ask AI Tutor
+                    </Button>
+                </Link>
             </div>
 
-            <Row gutter={[16, 16]}>
-                {/* Main content column */}
-                <Col xs={24} lg={16}>
-                    {/* Stat cards */}
-                    <Row gutter={[16, 16]} className={styles.statsRow}>
-                        {STATS.map(({ icon: Icon, value, label, badge }) => (
-                            <Col key={label} xs={24} md={8}>
-                                <Card className={styles.statCard}>
-                                    <div className={styles.statHeader}>
-                                        <Icon className={styles.statIcon} />
-                                        {badge && (
-                                            <span className={styles.statBadge}>
-                                                <RiseOutlined /> {badge}
-                                            </span>
-                                        )}
-                                    </div>
-                                    <div className={styles.statValue}>{value}</div>
-                                    <div className={styles.statLabel}>{label}</div>
-                                </Card>
-                            </Col>
-                        ))}
-                    </Row>
+            {error && <Alert type="error" message={error} style={{ marginBottom: 16 }} />}
 
-                    {/* Recommended next lesson */}
-                    <Card
-                        className={styles.nextLessonCard}
-                        title={
-                            <div>
-                                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                                    <span>Recommended Next Lesson</span>
-                                    <Tag color="cyan">Maths Grade 10</Tag>
-                                </div>
-                                <div className={styles.nextLessonSubtitle}>
-                                    Based on your recent performance in Mathematics
-                                </div>
-                            </div>
-                        }
-                    >
-                        <div className={styles.nextLessonBody}>
-                            <div className={styles.lessonThumbnail}>
-                                <ReadOutlined />
-                            </div>
-                            <div className={styles.lessonInfo}>
-                                <Text className={styles.lessonTitle}>
-                                    Algebraic Expressions: Factorisation ✓
-                                </Text>
-                                <Text className={styles.lessonDesc}>
-                                    Learn how to factorise quadratic trinomials and difference of two
-                                    squares. This builds on your previous lesson on expanding brackets.
-                                </Text>
-                                <div className={styles.lessonActions}>
-                                    <Button
-                                        type="primary"
-                                        icon={<PlayCircleOutlined />}
-                                        className={styles.startBtn}
-                                    >
-                                        Start Lesson
-                                    </Button>
-                                    <span className={styles.durationText}>
-                                        <ClockCircleOutlined /> 25 mins
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </Card>
+            <Spin spinning={loading}>
+                <Row gutter={[16, 16]}>
+                    {stats.map(({ icon: Icon, label, value }) => (
+                        <Col key={label} xs={24} md={8}>
+                            <Card className={styles.statCard}>
+                                <Icon className={styles.statIcon} />
+                                <div className={styles.statValue}>{value}</div>
+                                <div className={styles.statLabel}>{label}</div>
+                            </Card>
+                        </Col>
+                    ))}
+                </Row>
 
-                    {/* Mastery heatmap */}
-                    <Card
-                        className={styles.heatmapCard}
-                        title={
-                            <div>
-                                <div>Mastery Heatmap</div>
-                                <div className={styles.heatmapSubtitle}>
-                                    Your performance across subjects
-                                </div>
+                <Row gutter={[16, 16]} style={{ marginTop: 8 }}>
+                    <Col xs={24} lg={16}>
+                        <Card className={styles.nextLessonCard} title="Recommended Next Step">
+                            <Text className={styles.lessonTitle}>
+                                {dashboard?.recommendedLesson?.title ?? "No published lesson yet"}
+                            </Text>
+                            <Text className={styles.lessonDesc}>
+                                Topic: {dashboard?.recommendedTopic?.name ?? "Not available"}
+                            </Text>
+                            <div className={styles.lessonActions}>
+                                <Link href="/student/learning-path">
+                                    <Button type="primary" className={styles.startBtn}>Open Learning Path</Button>
+                                </Link>
                             </div>
-                        }
-                    >
-                        <div className={styles.heatmapPlaceholder}>
-                            Heatmap Visualization Placeholder
-                        </div>
-                        <div className={styles.heatmapLegend}>
-                            <span>Needs Work</span>
-                            <div className={styles.legendDots}>
-                                {["#ffd6cc", "#ffd666", "#d4f5a1", "#00b8a9"].map((color) => (
-                                    <div
-                                        key={color}
-                                        style={{
-                                            width: 18,
-                                            height: 18,
-                                            borderRadius: 3,
-                                            background: color,
-                                        }}
-                                    />
-                                ))}
-                            </div>
-                            <span>Mastered</span>
-                        </div>
-                    </Card>
-                </Col>
+                        </Card>
 
-                {/* Right sidebar */}
-                <Col xs={24} lg={8}>
-                    {/* Recent quiz results */}
-                    <Card className={styles.quizCard} title="Recent Quiz Results">
-                        {QUIZ_RESULTS.map(({ name, date, score }) => (
-                            <div key={name} className={styles.quizItem}>
-                                <div className={styles.quizHeader}>
-                                    <span className={styles.quizName}>{name}</span>
-                                    <span
-                                        className={styles.quizScore}
-                                        style={{ color: quizScoreColor(score) }}
-                                    >
-                                        {score}%
-                                    </span>
-                                </div>
-                                <div className={styles.quizDate}>{date}</div>
-                                <Progress
-                                    percent={score}
-                                    showInfo={false}
-                                    strokeColor={quizScoreColor(score)}
-                                    size="small"
-                                    style={{ marginTop: 6 }}
-                                />
-                            </div>
-                        ))}
-                        <Button type="link" className={styles.viewAllLink} style={{ padding: 0, marginTop: 8 }}>
-                            View All Results →
-                        </Button>
-                    </Card>
+                        <Card className={styles.heatmapCard} title="Current Progress Snapshot">
+                            <Text>Subject: {dashboard?.subject?.name ?? "Life Sciences"}</Text>
+                            <Progress percent={Math.round(dashboard?.progress?.masteryScore ?? 0)} />
+                            <Text type="secondary">
+                                Status: {dashboard?.progress?.progressStatus ?? "Not started"}
+                            </Text>
+                        </Card>
+                    </Col>
 
-                    {/* Up next */}
-                    <Card className={styles.upNextCard} title="Up Next">
-                        {UP_NEXT.map(({ title, due }) => (
-                            <div key={title} className={styles.upNextItem}>
-                                <CheckCircleOutlined className={styles.upNextIcon} />
-                                <div className={styles.upNextInfo}>
-                                    <span className={styles.upNextTitle}>{title}</span>
-                                    <span className={styles.upNextDue}>{due}</span>
-                                </div>
+                    <Col xs={24} lg={8}>
+                        <Card className={styles.quizCard} title="Latest Diagnostic">
+                            <Text>{dashboard?.latestDiagnostic?.topicName ?? "No topic selected yet"}</Text>
+                            <div className={styles.quizScore}>
+                                {dashboard?.latestDiagnostic ? `${dashboard.latestDiagnostic.scorePercent}%` : "No result yet"}
                             </div>
-                        ))}
-                    </Card>
-                </Col>
-            </Row>
+                            <Text type="secondary">
+                                {dashboard?.latestDiagnostic?.recommendation ?? "Take a topic diagnostic to get a recommendation."}
+                            </Text>
+                        </Card>
+                    </Col>
+                </Row>
+            </Spin>
         </div>
     );
 }

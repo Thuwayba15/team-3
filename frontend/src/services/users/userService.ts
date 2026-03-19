@@ -1,5 +1,12 @@
 import { apiClient } from "@/lib/api/client";
-import { USERS_GET_ALL_ENDPOINT, USERS_GET_ENDPOINT, USERS_UPDATE_ENDPOINT } from "@/constants/api";
+import {
+    USERS_ACTIVATE_ENDPOINT,
+    USERS_CREATE_ENDPOINT,
+    USERS_DEACTIVATE_ENDPOINT,
+    USERS_GET_ALL_ENDPOINT,
+    USERS_GET_ENDPOINT,
+    USERS_UPDATE_ENDPOINT,
+} from "@/constants/api";
 
 export interface IUser {
     id: number;
@@ -24,6 +31,16 @@ interface IAbpResponseEnvelope<T> {
     success: boolean;
 }
 
+export interface ICreateUserInput {
+    userName: string;
+    name: string;
+    surname: string;
+    emailAddress: string;
+    isActive: boolean;
+    roleNames: string[];
+    password: string;
+}
+
 /** Fetches all platform users from the ABP User AppService. */
 async function getAll(): Promise<IPagedResult<IUser>> {
     const response = await apiClient.get<IAbpResponseEnvelope<IPagedResult<IUser>>>(
@@ -46,8 +63,24 @@ async function update(user: IUser): Promise<IUser> {
     return response.data.result;
 }
 
+async function create(user: ICreateUserInput): Promise<IUser> {
+    const response = await apiClient.post<IAbpResponseEnvelope<IUser>>(USERS_CREATE_ENDPOINT, user);
+    return response.data.result;
+}
+
+async function activate(id: number): Promise<void> {
+    await apiClient.post(USERS_ACTIVATE_ENDPOINT, { id });
+}
+
+async function deactivate(id: number): Promise<void> {
+    await apiClient.post(USERS_DEACTIVATE_ENDPOINT, { id });
+}
+
 export const userService = {
     getAll,
     getById,
     update,
+    create,
+    activate,
+    deactivate,
 };

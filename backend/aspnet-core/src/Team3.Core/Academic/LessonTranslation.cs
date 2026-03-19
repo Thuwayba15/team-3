@@ -54,6 +54,22 @@ public class LessonTranslation : AuditedEntity<Guid>
         RevisionSummary = revisionSummary?.Trim();
         IsAutoTranslated = isAutoTranslated;
     }
+
+    public void UpdateContent(
+        string title,
+        string content,
+        string? summary,
+        string? examples,
+        string? revisionSummary,
+        bool isAutoTranslated)
+    {
+        Title = Guard.Against.NullOrWhiteSpace(title).Trim();
+        Content = Guard.Against.NullOrWhiteSpace(content).Trim();
+        Summary = summary?.Trim();
+        Examples = examples?.Trim();
+        RevisionSummary = revisionSummary?.Trim();
+        IsAutoTranslated = isAutoTranslated;
+    }
 }
 
 #nullable disable

@@ -55,6 +55,7 @@ public class UserAppService : AsyncCrudAppService<User, UserDto, long, PagedUser
     public override async Task<UserDto> CreateAsync(CreateUserDto input)
     {
         CheckCreatePermission();
+        EnsureMvpRoles(input.RoleNames);
 
         var user = ObjectMapper.Map<User>(input);
 
@@ -78,6 +79,7 @@ public class UserAppService : AsyncCrudAppService<User, UserDto, long, PagedUser
     public override async Task<UserDto> UpdateAsync(UserDto input)
     {
         CheckUpdatePermission();
+        EnsureMvpRoles(input.RoleNames);
 
         var user = await _userManager.GetUserByIdAsync(input.Id);
 
@@ -184,6 +186,20 @@ public class UserAppService : AsyncCrudAppService<User, UserDto, long, PagedUser
     protected virtual void CheckErrors(IdentityResult identityResult)
     {
         identityResult.CheckErrors(LocalizationManager);
+    }
+
+    private static void EnsureMvpRoles(IEnumerable<string>? roleNames)
+    {
+        if (roleNames == null)
+        {
+            return;
+        }
+
+        var invalidRole = roleNames.FirstOrDefault(role => !UserRoleNames.MvpRoles.Contains(role, StringComparer.OrdinalIgnoreCase));
+        if (!string.IsNullOrWhiteSpace(invalidRole))
+        {
+            throw new UserFriendlyException("Only Student and Admin roles are available in the current MVP.");
+        }
     }
 
     public async Task<bool> ChangePassword(ChangePasswordDto input)

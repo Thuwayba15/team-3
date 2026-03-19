@@ -35,7 +35,7 @@ namespace Team3.Users.Dto
             RuleFor(x => x.Role)
                 .NotEmpty()
                 .Must(BeSupportedRole)
-                .WithMessage("Role must be one of: Student, Tutor, Parent, Admin.");
+                .WithMessage("Role must be one of: Student or Admin.");
 
             RuleFor(x => x.PreferredLanguage)
                 .NotEmpty()
@@ -54,21 +54,6 @@ namespace Team3.Users.Dto
                     .MaximumLength(64);
             });
 
-            When(x => x.Role == UserRoleNames.Tutor, () =>
-            {
-                RuleFor(x => x.Specialization)
-                    .MaximumLength(128);
-
-                RuleFor(x => x.Bio)
-                    .MaximumLength(1000);
-            });
-
-            When(x => x.Role == UserRoleNames.Parent, () =>
-            {
-                RuleFor(x => x.RelationshipNotes)
-                    .MaximumLength(256);
-            });
-
             When(x => x.Role == UserRoleNames.Admin, () =>
             {
                 RuleFor(x => x.Department)
@@ -78,7 +63,7 @@ namespace Team3.Users.Dto
 
         private static bool BeSupportedRole(string role)
         {
-            return UserRoleNames.All.Contains(role);
+            return UserRoleNames.MvpRoles.Contains(role);
         }
     }
 }

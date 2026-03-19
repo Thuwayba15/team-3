@@ -17,9 +17,15 @@ namespace Team3.Authorization.Users
         public static readonly string[] All =
         [
             Student,
-        Tutor,
-        Parent,
-        Admin
+            Tutor,
+            Parent,
+            Admin
+        ];
+
+        public static readonly string[] MvpRoles =
+        [
+            Student,
+            Admin
         ];
     }
 }

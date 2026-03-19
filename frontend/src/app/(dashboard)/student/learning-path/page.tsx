@@ -1,414 +1,199 @@
 "use client";
 
+import { CheckCircleOutlined, ExperimentOutlined, ReadOutlined, RobotOutlined } from "@ant-design/icons";
+import { Alert, Button, Card, Modal, Progress, Radio, Space, Spin, Typography, message } from "antd";
+import { useEffect, useMemo, useState } from "react";
+import AiTutorDrawer from "@/components/AiTutorDrawer";
 import {
-    CheckCircleFilled,
-    LockOutlined,
-    PlayCircleFilled,
-    CheckCircleOutlined,
-} from "@ant-design/icons";
-import { Button, Card, Progress, Tag, Typography } from "antd";
-import { useState } from "react";
+    studentLearningService,
+    type IDiagnosticQuestionSet,
+    type IDiagnosticResult,
+    type ILessonDetail,
+    type IStudentLearningPath,
+} from "@/services/student/studentLearningService";
 import { useStyles } from "./styles";
-import QuizView from "./QuizView";
 
-const { Text } = Typography;
-
-// ── Types ────────────────────────────────────────────────────────────────────
-
-type TopicStatus = "completed" | "current" | "locked";
-
-interface Topic {
-    name: string;
-    status: TopicStatus;
-    subtitle?: string;
-}
-
-interface Module {
-    title: string;
-    description: string;
-    status: "completed" | "in-progress" | "locked";
-    progress?: number;
-    topics: Topic[];
-}
-
-interface Subject {
-    label: string;
-    grade: string;
-    overallProgress: number;
-    modules: Module[];
-}
-
-// ── Static data ───────────────────────────────────────────────────────────────
-
-const SUBJECTS: Record<string, Subject> = {
-    Mathematics: {
-        label: "Mathematics",
-        grade: "Grade 10",
-        overallProgress: 45,
-        modules: [
-            {
-                title: "Module 1: Algebraic Expressions",
-                description: "Products, factors, and algebraic fractions",
-                status: "completed",
-                topics: [
-                    { name: "Expanding Brackets",    status: "completed" },
-                    { name: "Factorisation",          status: "completed" },
-                    { name: "Algebraic Fractions",    status: "completed" },
-                ],
-            },
-            {
-                title: "Module 2: Exponents",
-                description: "Laws of exponents and exponential equations",
-                status: "in-progress",
-                progress: 60,
-                topics: [
-                    { name: "Laws of Exponents",                  status: "completed" },
-                    {
-                        name: "Simplifying Exponential Expressions",
-                        status: "current",
-                        subtitle: "Recommended Next Step",
-                    },
-                    { name: "Solving Exponential Equations",      status: "locked" },
-                ],
-            },
-            {
-                title: "Module 3: Number Patterns",
-                description: "Linear patterns and general terms",
-                status: "locked",
-                topics: [],
-            },
-        ],
-    },
-    "Physical Sciences": {
-        label: "Physical Sciences",
-        grade: "Grade 10",
-        overallProgress: 30,
-        modules: [
-            {
-                title: "Module 1: Motion & Kinematics",
-                description: "Describing and analysing motion",
-                status: "completed",
-                topics: [
-                    { name: "Speed & Velocity",    status: "completed" },
-                    { name: "Acceleration",        status: "completed" },
-                    { name: "Equations of Motion", status: "completed" },
-                ],
-            },
-            {
-                title: "Module 2: Forces",
-                description: "Newton's laws and applications",
-                status: "in-progress",
-                progress: 40,
-                topics: [
-                    { name: "Newton's First Law",  status: "completed" },
-                    {
-                        name: "Newton's Second Law",
-                        status: "current",
-                        subtitle: "Recommended Next Step",
-                    },
-                    { name: "Newton's Third Law",  status: "locked" },
-                ],
-            },
-            {
-                title: "Module 3: Energy",
-                description: "Work, energy and power",
-                status: "locked",
-                topics: [],
-            },
-        ],
-    },
-    "Life Sciences": {
-        label: "Life Sciences",
-        grade: "Grade 10",
-        overallProgress: 20,
-        modules: [
-            {
-                title: "Module 1: Cell Biology",
-                description: "Structure and function of cells",
-                status: "in-progress",
-                progress: 50,
-                topics: [
-                    { name: "Cell Structure", status: "completed" },
-                    {
-                        name: "Cell Organelles",
-                        status: "current",
-                        subtitle: "Recommended Next Step",
-                    },
-                    { name: "Cell Division", status: "locked" },
-                ],
-            },
-            {
-                title: "Module 2: Genetics",
-                description: "Heredity and variation",
-                status: "locked",
-                topics: [],
-            },
-        ],
-    },
-    English: {
-        label: "English",
-        grade: "Grade 10",
-        overallProgress: 65,
-        modules: [
-            {
-                title: "Module 1: Reading Comprehension",
-                description: "Understanding and analysing texts",
-                status: "completed",
-                topics: [
-                    { name: "Identifying Main Ideas", status: "completed" },
-                    { name: "Inference Skills",       status: "completed" },
-                    { name: "Vocabulary in Context",  status: "completed" },
-                ],
-            },
-            {
-                title: "Module 2: Essay Writing",
-                description: "Structuring and writing essays",
-                status: "in-progress",
-                progress: 70,
-                topics: [
-                    { name: "Paragraph Structure", status: "completed" },
-                    {
-                        name: "Argumentative Essays",
-                        status: "current",
-                        subtitle: "Recommended Next Step",
-                    },
-                    { name: "Narrative Writing", status: "locked" },
-                ],
-            },
-            {
-                title: "Module 3: Language Structures",
-                description: "Grammar and language use",
-                status: "locked",
-                topics: [],
-            },
-        ],
-    },
-};
-
-const SUBJECT_KEYS = Object.keys(SUBJECTS);
-
-// ── Topic row component ───────────────────────────────────────────────────────
-
-function TopicRow({
-    topic,
-    styles,
-    onContinue,
-}: {
-    topic: Topic;
-    styles: ReturnType<typeof useStyles>["styles"];
-    onContinue: (topicName: string) => void;
-}) {
-    if (topic.status === "locked") {
-        return (
-            <div className={styles.topicRow}>
-                <div className={styles.topicLeft}>
-                    <LockOutlined className={styles.topicIconLocked} />
-                    <span className={styles.topicNameLocked}>{topic.name}</span>
-                </div>
-                <span className={styles.lockedTag}>Locked</span>
-            </div>
-        );
-    }
-
-    if (topic.status === "current") {
-        return (
-            <div className={styles.topicRowHighlighted}>
-                <div className={styles.topicLeft}>
-                    <PlayCircleFilled className={styles.topicIcon} />
-                    <div>
-                        <div className={styles.topicName}>{topic.name}</div>
-                        {topic.subtitle && (
-                            <div className={styles.topicSubtitle}>{topic.subtitle}</div>
-                        )}
-                    </div>
-                </div>
-                <Button
-                    type="primary"
-                    size="small"
-                    className={styles.continueBtn}
-                    onClick={() => onContinue(topic.name)}
-                >
-                    Continue
-                </Button>
-            </div>
-        );
-    }
-
-    // completed
-    return (
-        <div className={styles.topicRow}>
-            <div className={styles.topicLeft}>
-                <CheckCircleOutlined className={styles.topicIcon} />
-                <span className={styles.topicName}>{topic.name}</span>
-            </div>
-            <span className={styles.masteredTag}>Mastered</span>
-        </div>
-    );
-}
-
-// ── Page ──────────────────────────────────────────────────────────────────────
+const { Title, Text } = Typography;
 
 export default function StudentLearningPathPage() {
     const { styles } = useStyles();
-    const [activeSubject, setActiveSubject] = useState("Mathematics");
-    const [activeQuiz, setActiveQuiz] = useState<string | null>(null);
+    const [data, setData] = useState<IStudentLearningPath | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+    const [activeLesson, setActiveLesson] = useState<ILessonDetail | null>(null);
+    const [diagnostic, setDiagnostic] = useState<IDiagnosticQuestionSet | null>(null);
+    const [diagnosticAnswers, setDiagnosticAnswers] = useState<Record<string, string>>({});
+    const [diagnosticResult, setDiagnosticResult] = useState<IDiagnosticResult | null>(null);
+    const [aiOpen, setAiOpen] = useState(false);
 
-    const subject = SUBJECTS[activeSubject];
+    const loadLearningPath = async () => {
+        setLoading(true);
+        try {
+            const result = await studentLearningService.getLearningPath();
+            setData(result);
+            setError(null);
+        } catch {
+            setError("Could not load the Life Sciences learning path.");
+        } finally {
+            setLoading(false);
+        }
+    };
 
-    if (activeQuiz) {
-        return <QuizView topicName={activeQuiz} onExit={() => setActiveQuiz(null)} />;
-    }
+    useEffect(() => {
+        void loadLearningPath();
+    }, []);
+
+    const latestDiagnostic = diagnosticResult ?? data?.latestDiagnostic ?? null;
+
+    const recommendedTopicName = useMemo(
+        () => data?.recommendedTopic?.name ?? data?.topics[0]?.name ?? "Life Sciences Topic",
+        [data]
+    );
+
+    const openLesson = async (lessonId: string) => {
+        try {
+            const lesson = await studentLearningService.getLesson(lessonId);
+            setActiveLesson(lesson);
+        } catch {
+            message.error("Could not load lesson details.");
+        }
+    };
+
+    const startDiagnostic = async (topicId: string) => {
+        try {
+            const result = await studentLearningService.startDiagnostic(topicId);
+            setDiagnostic(result);
+            setDiagnosticAnswers({});
+            setDiagnosticResult(null);
+        } catch {
+            message.error("Could not start the diagnostic.");
+        }
+    };
+
+    const submitDiagnostic = async () => {
+        if (!diagnostic) {
+            return;
+        }
+
+        try {
+            const result = await studentLearningService.submitDiagnostic(diagnostic.topicId, diagnosticAnswers);
+            setDiagnosticResult(result);
+            setDiagnostic(null);
+            message.success("Diagnostic submitted.");
+            await loadLearningPath();
+        } catch {
+            message.error("Could not submit the diagnostic.");
+        }
+    };
 
     return (
         <div>
-            {/* Page header */}
             <div className={styles.pageHeader}>
                 <div>
-                    <Typography.Title level={2} style={{ marginBottom: 0 }}>
-                        Learning Path
-                    </Typography.Title>
-                    <Text type="secondary">Your personalized curriculum progression</Text>
+                    <Title level={2} style={{ marginBottom: 0 }}>Learning Path</Title>
+                    <Text type="secondary">Life Sciences curriculum, diagnostics, and lesson content.</Text>
                 </div>
-
-                <div className={styles.subjectTabs}>
-                    {SUBJECT_KEYS.map((key) => (
-                        <button
-                            key={key}
-                            className={`${styles.subjectTab} ${activeSubject === key ? styles.subjectTabActive : ""}`}
-                            onClick={() => setActiveSubject(key)}
-                        >
-                            {key}
-                        </button>
-                    ))}
-                </div>
+                <Button type="primary" icon={<RobotOutlined />} onClick={() => setAiOpen(true)}>
+                    Ask AI
+                </Button>
             </div>
 
-            {/* Subject summary card */}
-            <Card className={styles.subjectSummaryCard}>
-                <div className={styles.subjectSummaryHeader}>
-                    <div>
-                        <h3 className={styles.subjectTitle}>
-                            {subject.label} – {subject.grade}
-                        </h3>
-                    </div>
-                    <div>
-                        <div className={styles.masteredPercent}>{subject.overallProgress}%</div>
-                        <div className={styles.masteredLabel}>Mastered</div>
-                    </div>
-                </div>
-                <div className={styles.progressLabel}>Overall Subject Progress</div>
-                <Progress
-                    percent={subject.overallProgress}
-                    showInfo={false}
-                    strokeColor="#00b8a9"
-                />
-            </Card>
+            {error && <Alert type="error" message={error} style={{ marginBottom: 16 }} />}
 
-            {/* Modules timeline */}
-            <div className={styles.timeline}>
-                {subject.modules.map((mod, idx) => {
-                    const isLast = idx === subject.modules.length - 1;
-                    const connectorClass =
-                        mod.status === "completed"
-                            ? styles.timelineConnectorActive
-                            : styles.timelineConnector;
-
-                    return (
-                        <div key={mod.title} className={styles.timelineItem}>
-                            {/* Left: dot + connector */}
-                            <div className={styles.timelineLeft}>
-                                {mod.status === "completed" && (
-                                    <div className={styles.timelineDot}>
-                                        <CheckCircleFilled />
-                                    </div>
-                                )}
-                                {mod.status === "in-progress" && (
-                                    <div className={styles.timelineDotInProgress}>
-                                        <div className={styles.timelineDotInner} />
-                                    </div>
-                                )}
-                                {mod.status === "locked" && (
-                                    <div className={styles.timelineDotLocked}>
-                                        <LockOutlined />
-                                    </div>
-                                )}
-                                {!isLast && <div className={connectorClass} />}
-                            </div>
-
-                            {/* Right: module card */}
-                            <div className={styles.timelineContent}>
-                                <Card
-                                    className={
-                                        mod.status === "in-progress"
-                                            ? styles.moduleCardActive
-                                            : styles.moduleCard
-                                    }
-                                >
-                                    {/* Module header */}
-                                    <div className={styles.moduleHeader}>
-                                        <div className={styles.moduleTitleRow}>
-                                            <span className={styles.moduleTitle}>{mod.title}</span>
-                                            {mod.status === "completed" && (
-                                                <Tag color="success">Completed</Tag>
-                                            )}
-                                            {mod.status === "in-progress" && (
-                                                <Tag color="processing">In Progress</Tag>
-                                            )}
-                                            {mod.status === "locked" && <Tag>Locked</Tag>}
-                                        </div>
-                                        {mod.status === "completed" && (
-                                            <Button type="link" className={styles.reviewLink}>
-                                                Review
-                                            </Button>
-                                        )}
-                                    </div>
-
-                                    <div className={styles.moduleDesc}>{mod.description}</div>
-
-                                    {/* Progress bar for in-progress */}
-                                    {mod.status === "in-progress" && mod.progress !== undefined && (
-                                        <div className={styles.moduleProgress}>
-                                            <div className={styles.progressPercent}>{mod.progress} %</div>
-                                            <Progress
-                                                percent={mod.progress}
-                                                showInfo={false}
-                                                strokeColor="#00b8a9"
-                                            />
-                                        </div>
-                                    )}
-
-                                    {/* Topics */}
-                                    {mod.topics.length > 0 && (
-                                        <>
-                                            {mod.status === "completed" ? (
-                                                <div className={styles.topicGrid}>
-                                                    {mod.topics.map((topic) => (
-                                                        <div key={topic.name} className={styles.topicGridItem}>
-                                                            <CheckCircleOutlined className={styles.topicIcon} />
-                                                            <span>{topic.name}</span>
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            ) : (
-                                                <div className={styles.topicList}>
-                                                    {mod.topics.map((topic) => (
-                                                        <TopicRow
-                                                            key={topic.name}
-                                                            topic={topic}
-                                                            styles={styles}
-                                                            onContinue={setActiveQuiz}
-                                                        />
-                                                    ))}
-                                                </div>
-                                            )}
-                                        </>
-                                    )}
-                                </Card>
-                            </div>
+            <Spin spinning={loading}>
+                <Card className={styles.subjectSummaryCard}>
+                    <div className={styles.subjectSummaryHeader}>
+                        <div>
+                            <h3 className={styles.subjectTitle}>
+                                {data?.subject?.name ?? "Life Sciences"} - {data?.subject?.gradeLevel ?? ""}
+                            </h3>
+                            <div className={styles.progressLabel}>Recommended Topic: {recommendedTopicName}</div>
                         </div>
-                    );
-                })}
-            </div>
+                        <div>
+                            <div className={styles.masteredPercent}>{Math.round(data?.progress?.masteryScore ?? 0)}%</div>
+                            <div className={styles.masteredLabel}>Mastery</div>
+                        </div>
+                    </div>
+                    <Progress percent={Math.round(data?.progress?.masteryScore ?? 0)} showInfo={false} strokeColor="#00b8a9" />
+                </Card>
+
+                {(data?.topics ?? []).map((topic) => (
+                    <Card key={topic.id} title={`${topic.sequenceOrder}. ${topic.name}`} className={styles.moduleCard}>
+                        <Text type="secondary">{topic.description || "No topic description yet."}</Text>
+                        <div style={{ marginTop: 12, marginBottom: 12 }}>
+                            <Space wrap>
+                                <Button icon={<ExperimentOutlined />} onClick={() => void startDiagnostic(topic.id)}>
+                                    Take Diagnostic
+                                </Button>
+                                {topic.lessons.map((lesson) => (
+                                    <Button key={lesson.id} icon={<ReadOutlined />} onClick={() => void openLesson(lesson.id)}>
+                                        {lesson.title}
+                                    </Button>
+                                ))}
+                            </Space>
+                        </div>
+                    </Card>
+                ))}
+
+                {activeLesson && (
+                    <Card title={activeLesson.title} style={{ marginTop: 16 }}>
+                        <Text strong>{activeLesson.learningObjective || "Learning objective not set yet."}</Text>
+                        <p>{activeLesson.summary || "No lesson summary yet."}</p>
+                        {(activeLesson.translations ?? []).map((translation) => (
+                            <Card key={translation.languageCode} size="small" style={{ marginTop: 12 }}>
+                                <Text strong>{translation.languageName}</Text>
+                                <p>{translation.content}</p>
+                            </Card>
+                        ))}
+                    </Card>
+                )}
+
+                {latestDiagnostic && (
+                    <Card title="Latest Diagnostic Result" style={{ marginTop: 16 }}>
+                        <Space direction="vertical">
+                            <Text><CheckCircleOutlined /> Topic: {latestDiagnostic.topicName}</Text>
+                            <Text>Score: {latestDiagnostic.scorePercent}%</Text>
+                            <Text type="secondary">{latestDiagnostic.recommendation}</Text>
+                        </Space>
+                    </Card>
+                )}
+            </Spin>
+
+            <Modal
+                title={diagnostic ? `Diagnostic - ${diagnostic.topicName}` : "Diagnostic"}
+                open={Boolean(diagnostic)}
+                onCancel={() => setDiagnostic(null)}
+                onOk={() => void submitDiagnostic()}
+                okText="Submit Diagnostic"
+            >
+                <Space direction="vertical" style={{ width: "100%" }}>
+                    {(diagnostic?.questions ?? []).map((question) => (
+                        <Card key={question.id} size="small">
+                            <Text strong>{question.prompt}</Text>
+                            <Radio.Group
+                                style={{ display: "flex", flexDirection: "column", marginTop: 8 }}
+                                value={diagnosticAnswers[question.id]}
+                                onChange={(event) =>
+                                    setDiagnosticAnswers((previous) => ({ ...previous, [question.id]: event.target.value }))
+                                }
+                            >
+                                {question.options.map((option) => (
+                                    <Radio key={option} value={option}>{option}</Radio>
+                                ))}
+                            </Radio.Group>
+                        </Card>
+                    ))}
+                </Space>
+            </Modal>
+
+            <AiTutorDrawer
+                open={aiOpen}
+                onClose={() => setAiOpen(false)}
+                subjectName={data?.subject?.name}
+                topicName={data?.recommendedTopic?.name}
+                lessonTitle={activeLesson?.title}
+                latestDiagnostic={latestDiagnostic}
+            />
         </div>
     );
 }

@@ -159,6 +159,11 @@ namespace Team3.Users
         /// </summary>
         private async Task EnsureRoleExistsAsync(string roleName)
         {
+            if (!UserRoleNames.MvpRoles.Contains(roleName))
+            {
+                throw new UserFriendlyException("Only Student and Admin roles are available in the current MVP.");
+            }
+
             var role = await _roleManager.FindByNameAsync(roleName);
             if (role == null)
             {
@@ -198,7 +203,7 @@ namespace Team3.Users
         private async Task<string> GetPrimaryRoleAsync(User user)
         {
             var roles = await _userManager.GetRolesAsync(user);
-            var matchedRole = roles.FirstOrDefault(UserRoleNames.All.Contains);
+            var matchedRole = roles.FirstOrDefault(UserRoleNames.MvpRoles.Contains);
 
             if (string.IsNullOrWhiteSpace(matchedRole))
             {
@@ -222,22 +227,6 @@ namespace Team3.Users
                         input.GradeLevel!,
                         input.ProgressLevel,
                         input.SubjectInterests));
-                    break;
-
-                case UserRoleNames.Tutor:
-                    await _tutorProfileRepository.InsertAsync(new TutorProfile(
-                        userId,
-                        input.PreferredLanguage,
-                        input.Specialization,
-                        input.Bio,
-                        input.SubjectInterests));
-                    break;
-
-                case UserRoleNames.Parent:
-                    await _parentProfileRepository.InsertAsync(new ParentProfile(
-                        userId,
-                        input.PreferredLanguage,
-                        input.RelationshipNotes));
                     break;
 
                 case UserRoleNames.Admin:
@@ -270,30 +259,6 @@ namespace Team3.Users
                         input.SubjectInterests);
 
                     await _studentProfileRepository.UpdateAsync(studentProfile);
-                    break;
-
-                case UserRoleNames.Tutor:
-                    var tutorProfile = await _tutorProfileRepository.FirstOrDefaultAsync(x => x.UserId == userId)
-                        ?? throw new UserFriendlyException("Tutor profile not found.");
-
-                    tutorProfile.UpdateProfile(
-                        input.PreferredLanguage,
-                        input.Specialization,
-                        input.Bio,
-                        input.SubjectInterests);
-
-                    await _tutorProfileRepository.UpdateAsync(tutorProfile);
-                    break;
-
-                case UserRoleNames.Parent:
-                    var parentProfile = await _parentProfileRepository.FirstOrDefaultAsync(x => x.UserId == userId)
-                        ?? throw new UserFriendlyException("Parent profile not found.");
-
-                    parentProfile.UpdateProfile(
-                        input.PreferredLanguage,
-                        input.RelationshipNotes);
-
-                    await _parentProfileRepository.UpdateAsync(parentProfile);
                     break;
 
                 case UserRoleNames.Admin:
@@ -361,24 +326,6 @@ namespace Team3.Users
                     output.GradeLevel = studentProfile.GradeLevel;
                     output.ProgressLevel = studentProfile.ProgressLevel;
                     output.SubjectInterests = studentProfile.SubjectInterests;
-                    break;
-
-                case UserRoleNames.Tutor:
-                    var tutorProfile = await _tutorProfileRepository.FirstOrDefaultAsync(x => x.UserId == user.Id)
-                        ?? throw new UserFriendlyException("Tutor profile not found.");
-
-                    output.PreferredLanguage = tutorProfile.PreferredLanguage;
-                    output.Specialization = tutorProfile.Specialization;
-                    output.Bio = tutorProfile.Bio;
-                    output.SubjectInterests = tutorProfile.SubjectInterests;
-                    break;
-
-                case UserRoleNames.Parent:
-                    var parentProfile = await _parentProfileRepository.FirstOrDefaultAsync(x => x.UserId == user.Id)
-                        ?? throw new UserFriendlyException("Parent profile not found.");
-
-                    output.PreferredLanguage = parentProfile.PreferredLanguage;
-                    output.RelationshipNotes = parentProfile.RelationshipNotes;
                     break;
 
                 case UserRoleNames.Admin:

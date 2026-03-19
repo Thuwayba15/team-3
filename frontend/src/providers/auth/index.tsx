@@ -31,7 +31,7 @@ const ROLE_STORAGE_KEY = "userRole";
 
 function resolveRole(roles: string[]): AppRole | null {
     const normalized = roles.map((r) => r.toLowerCase()) as AppRole[];
-    const priority: AppRole[] = ["admin", "tutor", "parent", "student"];
+    const priority: AppRole[] = ["admin", "student"];
     return priority.find((r) => normalized.includes(r)) ?? null;
 }
 
@@ -57,8 +57,15 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
         authService
             .getMe()
             .then((me) => {
+                const resolvedRole = resolveRole(me.roles ?? []);
                 const storedRole = localStorage.getItem(ROLE_STORAGE_KEY) as AppRole | null;
-                dispatch(setAuthenticated({ userId: me.userId, role: storedRole }));
+                const role = resolvedRole ?? (storedRole === "admin" || storedRole === "student" ? storedRole : null);
+                if (role) {
+                    localStorage.setItem(ROLE_STORAGE_KEY, role);
+                } else {
+                    localStorage.removeItem(ROLE_STORAGE_KEY);
+                }
+                dispatch(setAuthenticated({ userId: me.userId, role }));
             })
             .catch(() => dispatch(setLoading(false)));
     }, []);
@@ -85,16 +92,17 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
         dispatch(setLoading(true));
         try {
             await authService.register({
-                userName: values.userName,
                 name: values.name,
                 surname: values.surname,
                 emailAddress: values.emailAddress,
                 password: values.password,
-                roleNames: values.role ? [values.role] : [],
+                role: values.role,
+                preferredLanguage: values.preferredLanguage ?? "en",
+                gradeLevel: values.gradeLevel ?? "Grade 12",
             });
             // Auto-login after successful registration
             await login({
-                userNameOrEmailAddress: values.userName,
+                userNameOrEmailAddress: values.emailAddress,
                 password: values.password,
                 rememberClient: false,
             });

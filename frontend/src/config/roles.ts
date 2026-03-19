@@ -9,8 +9,6 @@ export const ROLE_LABELS: Record<AppRole, string> = {
 
 export const ROLE_OPTIONS: IRoleOption[] = [
     { label: ROLE_LABELS.student, value: "student" },
-    { label: ROLE_LABELS.tutor, value: "tutor" },
-    { label: ROLE_LABELS.parent, value: "parent" },
     { label: ROLE_LABELS.admin, value: "admin" },
 ];
 
