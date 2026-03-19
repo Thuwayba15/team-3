@@ -4,6 +4,7 @@ import { PlusOutlined } from "@ant-design/icons";
 import { Alert, Button, Input, Select, Spin, Table, Tag } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/components/layout";
 import { userService, type IUser } from "@/services/users/userService";
 import { useStyles } from "./styles";
@@ -17,23 +18,10 @@ const ROLE_CLASS_BY_NAME: Record<string, RoleTagClass> = {
     STUDENT: "roleTagStudent",
 };
 
-const ROLE_OPTIONS = [
-    { label: "All Roles", value: "" },
-    { label: "Admin",     value: "ADMIN" },
-    { label: "Tutor",     value: "TUTOR" },
-    { label: "Parent",    value: "PARENT" },
-    { label: "Student",   value: "STUDENT" },
-];
-
-const STATUS_OPTIONS = [
-    { label: "All Status", value: "" },
-    { label: "Active",     value: "active" },
-    { label: "Inactive",   value: "inactive" },
-];
-
 /** Admin user management page — fetches and displays all platform users. */
 export default function AdminUsersPage() {
     const { styles } = useStyles();
+    const { t } = useTranslation();
     const [users, setUsers]               = useState<IUser[]>([]);
     const [loading, setLoading]           = useState(true);
     const [error, setError]               = useState<string | null>(null);
@@ -44,9 +32,23 @@ export default function AdminUsersPage() {
     useEffect(() => {
         userService.getAll()
             .then((data) => setUsers(data.items))
-            .catch(() => setError("Failed to load users. Please try again."))
+            .catch(() => setError(t("dashboard.admin.users.errorLoadUsers")))
             .finally(() => setLoading(false));
-    }, []);
+    }, [t]);
+
+    const roleOptions = [
+        { label: t("dashboard.admin.users.allRoles"), value: "" },
+        { label: t("sidebar.admin"), value: "ADMIN" },
+        { label: t("sidebar.tutor"), value: "TUTOR" },
+        { label: t("sidebar.parent"), value: "PARENT" },
+        { label: t("sidebar.student"), value: "STUDENT" },
+    ];
+
+    const statusOptions = [
+        { label: t("dashboard.admin.users.allStatus"), value: "" },
+        { label: t("dashboard.admin.users.active"), value: "active" },
+        { label: t("dashboard.admin.users.inactive"), value: "inactive" },
+    ];
 
     const filtered = users.filter((user) => {
         const matchesSearch = user.fullName.toLowerCase().includes(search.toLowerCase()) ||
@@ -58,18 +60,18 @@ export default function AdminUsersPage() {
 
     const columns: ColumnsType<IUser> = [
         {
-            title: "Name",
+            title: t("dashboard.admin.users.columns.name"),
             dataIndex: "fullName",
             key: "fullName",
             render: (value: string) => <strong>{value}</strong>,
         },
         {
-            title: "Email",
+            title: t("dashboard.admin.users.columns.email"),
             dataIndex: "emailAddress",
             key: "emailAddress",
         },
         {
-            title: "Role",
+            title: t("dashboard.admin.users.columns.role"),
             dataIndex: "roleNames",
             key: "roleNames",
             render: (roleNames: string[]) => {
@@ -87,28 +89,28 @@ export default function AdminUsersPage() {
             },
         },
         {
-            title: "Status",
+            title: t("dashboard.admin.users.columns.status"),
             dataIndex: "isActive",
             key: "isActive",
             render: (isActive: boolean) => (
                 <Tag className={styles.statusTag} color={isActive ? "success" : "warning"}>
-                    {isActive ? "Active" : "Inactive"}
+                    {isActive ? t("dashboard.admin.users.active") : t("dashboard.admin.users.inactive")}
                 </Tag>
             ),
         },
         {
-            title: "Date Joined",
+            title: t("dashboard.admin.users.columns.dateJoined"),
             dataIndex: "creationTime",
             key: "creationTime",
             render: (value: string) => new Date(value).toISOString().split("T")[0],
         },
         {
-            title: "Actions",
+            title: t("dashboard.admin.users.columns.actions"),
             key: "actions",
             render: () => (
                 <div className={styles.actions}>
-                    <Button type="link" className={styles.editLink}>Edit</Button>
-                    <Button type="link" className={styles.disableLink}>Disable</Button>
+                    <Button type="link" className={styles.editLink}>{t("common.edit")}</Button>
+                    <Button type="link" className={styles.disableLink}>{t("dashboard.admin.users.disable")}</Button>
                 </div>
             ),
         },
@@ -116,14 +118,14 @@ export default function AdminUsersPage() {
 
     return (
         <div>
-            <PageHeader title="User Management" subtitle="Manage platform users, roles, and access" />
+            <PageHeader title={t("dashboard.admin.users.title")} subtitle={t("dashboard.admin.users.subtitle")} />
 
             {error && <Alert type="error" message={error} className={styles.errorAlert} />}
 
             <div className={styles.toolbar}>
                 <Input.Search
                     className={styles.search}
-                    placeholder="Search users..."
+                    placeholder={t("dashboard.admin.users.searchPlaceholder")}
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                     allowClear
@@ -131,20 +133,20 @@ export default function AdminUsersPage() {
                 <div className={styles.filters}>
                     <Select
                         className={styles.filterSelect}
-                        options={ROLE_OPTIONS}
+                        options={roleOptions}
                         value={roleFilter}
                         onChange={setRoleFilter}
                     />
                     <Select
                         className={styles.filterSelect}
-                        options={STATUS_OPTIONS}
+                        options={statusOptions}
                         value={statusFilter}
                         onChange={setStatusFilter}
                     />
                 </div>
                 <div className={styles.addButtonWrapper}>
                     <Button type="primary" icon={<PlusOutlined />} className={styles.addButton}>
-                        Add User
+                        {t("dashboard.admin.users.addUser")}
                     </Button>
                 </div>
             </div>

@@ -28,5 +28,14 @@ export const USERS_UPDATE_ENDPOINT = "/api/services/app/User/Update";
 /** Returns app, tenant, and authenticated user login information. */
 export const SESSION_LOGIN_INFO_ENDPOINT = "/api/services/app/Session/GetCurrentLoginInformations";
 
+/** Returns the authenticated user's preferred platform language. */
+export const USER_PROFILE_GET_MY_PLATFORM_LANGUAGE_ENDPOINT = "/api/services/app/UserProfile/GetMyPlatformLanguage";
+
+/** Returns active platform languages for language selectors. */
+export const USER_PROFILE_GET_ACTIVE_LANGUAGES_ENDPOINT = "/api/services/app/UserProfile/GetActiveLanguages";
+
+/** Updates the authenticated user's preferred platform language. */
+export const USER_PROFILE_UPDATE_PLATFORM_LANGUAGE_ENDPOINT = "/api/services/app/UserProfile/UpdatePlatformLanguage";
+
 
 export const REGISTER_ENDPOINT = "/api/services/app/Account/Register";

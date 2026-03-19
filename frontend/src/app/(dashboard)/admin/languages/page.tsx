@@ -3,6 +3,7 @@
 import { Card, Col, Progress, Row, Switch, Table, Typography } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/components/layout";
 import { useStyles } from "./styles";
 
@@ -55,11 +56,12 @@ function getProgressToneClassName(value: number): "progressHigh" | "progressMid"
 /** Admin language management page for translation coverage and language support status. */
 export default function AdminLanguagesPage() {
     const { styles } = useStyles();
+    const { t } = useTranslation();
     const [activeLanguageIds, setActiveLanguageIds] = useState<string[]>(LANGUAGE_OVERVIEW_DATA.map((language) => language.id));
 
     const columns: ColumnsType<IContentTypeProgress> = useMemo(() => [
         {
-            title: "Content Type",
+            title: t("dashboard.admin.languages.contentType"),
             dataIndex: "contentType",
             key: "contentType",
             render: (value: string) => <span className={styles.contentTypeValue}>{value}</span>,
@@ -88,7 +90,7 @@ export default function AdminLanguagesPage() {
             key: "afrikaans",
             render: (value: number) => <span className={`${styles.progressValue} ${styles[getProgressToneClassName(value)]}`}>{value}%</span>,
         },
-    ], [styles]);
+    ], [styles, t]);
 
     const handleToggleLanguage = (languageId: string, checked: boolean): void => {
         setActiveLanguageIds((previousIds) => {
@@ -102,8 +104,8 @@ export default function AdminLanguagesPage() {
     return (
         <div>
             <PageHeader
-                title="Language Management"
-                subtitle="Manage supported languages and translation progress"
+                title={t("dashboard.admin.languages.title")}
+                subtitle={t("dashboard.admin.languages.subtitle")}
             />
 
             <Row gutter={[16, 16]} className={styles.languageCardsRow}>
@@ -122,7 +124,7 @@ export default function AdminLanguagesPage() {
 
                                 <div className={styles.progressBlock}>
                                     <div className={styles.progressHeader}>
-                                        <Text className={styles.progressLabel}>Translation Progress</Text>
+                                        <Text className={styles.progressLabel}>{t("dashboard.admin.languages.translationProgress")}</Text>
                                         <Text className={styles.progressPercent}>{language.progress}%</Text>
                                     </div>
                                     <Progress
@@ -131,7 +133,7 @@ export default function AdminLanguagesPage() {
                                         showInfo={false}
                                         status={isActive ? "active" : "normal"}
                                     />
-                                    <Text className={styles.translatedItemsText}>{language.translatedItems} content items translated</Text>
+                                    <Text className={styles.translatedItemsText}>{`${language.translatedItems} ${t("dashboard.admin.languages.contentItemsTranslated")}`}</Text>
                                 </div>
                             </Card>
                         </Col>
@@ -139,7 +141,7 @@ export default function AdminLanguagesPage() {
                 })}
             </Row>
 
-            <Card title="Translation Status by Content Type" className={styles.tableCard}>
+            <Card title={t("dashboard.admin.languages.translationStatusByContentType")} className={styles.tableCard}>
                 <Table
                     className={styles.table}
                     columns={columns}

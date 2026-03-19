@@ -2,8 +2,8 @@
 
 import {Layout, Menu, Typography } from "antd";
 import { usePathname, useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 import { NAVIGATION_BY_ROLE } from "@/config/navigation";
-import { ROLE_LABELS } from "@/config/roles";
 import type { AppRole } from "@/types/navigation";
 import { useStyles } from "./AppSidebar.style";
 
@@ -19,6 +19,7 @@ interface IAppSidebarProps {
  */
 export const AppSidebar = ({ role, isMobile = false, onNavigate }: IAppSidebarProps) => {
     const { styles } = useStyles();
+    const { t } = useTranslation();
     const router = useRouter();
     const pathname = usePathname();
 
@@ -31,7 +32,7 @@ export const AppSidebar = ({ role, isMobile = false, onNavigate }: IAppSidebarPr
         <>
             <div className={styles.roleLabel}>
                 <Typography.Text className={styles.roleLabelText}>
-                    {ROLE_LABELS[role].toLowerCase()} &nbsp; Menu
+                    {t(`sidebar.${role}`).toLowerCase()} &nbsp; {t("common.menu")}
                 </Typography.Text>
             </div>
 
@@ -45,7 +46,7 @@ export const AppSidebar = ({ role, isMobile = false, onNavigate }: IAppSidebarPr
                     return {
                         key: item.key,
                         icon: <Icon />,
-                        label: item.label,
+                        label: t(item.label),
                     };
                 })}
                 onClick={({ key }) => {
