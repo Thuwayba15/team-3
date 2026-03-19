@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Team3.EntityFrameworkCore;
@@ -11,9 +12,11 @@ using Team3.EntityFrameworkCore;
 namespace Team3.Migrations
 {
     [DbContext(typeof(Team3DbContext))]
-    partial class Team3DbContextModelSnapshot : ModelSnapshot
+    [Migration("20260319132525_AddAssessmentsQuestionsAndTranslations")]
+    partial class AddAssessmentsQuestionsAndTranslations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2104,209 +2107,6 @@ namespace Team3.Migrations
                     b.ToTable("Languages", (string)null);
                 });
 
-            modelBuilder.Entity("Team3.Domain.Assessment.Assessment", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("AssessmentType")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<long?>("CreatorUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("DeleterUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime?>("DeletionTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
-
-                    b.Property<int>("DifficultyLevel")
-                        .HasColumnType("integer");
-
-                    b.Property<bool>("GeneratedByAI")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false);
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<bool>("IsPublished")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false);
-
-                    b.Property<DateTime?>("LastModificationTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<long?>("LastModifierUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<Guid?>("LessonId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
-
-                    b.Property<Guid>("TopicId")
-                        .HasColumnType("uuid");
-
-                    b.Property<decimal>("TotalMarks")
-                        .HasPrecision(10, 2)
-                        .HasColumnType("numeric(10,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LessonId");
-
-                    b.HasIndex("TopicId");
-
-                    b.ToTable("Assessments", (string)null);
-                });
-
-            modelBuilder.Entity("Team3.Domain.Assessment.Question", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid>("AssessmentId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("CorrectAnswer")
-                        .HasMaxLength(10)
-                        .HasColumnType("character varying(10)");
-
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<long?>("CreatorUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("DeleterUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime?>("DeletionTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("DifficultyLevel")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Explanation")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("GeneratedByAI")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(false);
-
-                    b.Property<bool>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("boolean")
-                        .HasDefaultValue(true);
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTime?>("LastModificationTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<long?>("LastModifierUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<decimal>("Marks")
-                        .ValueGeneratedOnAdd()
-                        .HasPrecision(10, 2)
-                        .HasColumnType("numeric(10,2)")
-                        .HasDefaultValue(1m);
-
-                    b.Property<int>("QuestionType")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("SequenceOrder")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasDefaultValue(0);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AssessmentId");
-
-                    b.ToTable("Questions", (string)null);
-                });
-
-            modelBuilder.Entity("Team3.Domain.Assessment.QuestionTranslation", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreationTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<long?>("CreatorUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("ExplanationText")
-                        .HasColumnType("text");
-
-                    b.Property<string>("HintText")
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
-
-                    b.Property<Guid>("LanguageId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime?>("LastModificationTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<long?>("LastModifierUserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("OptionA")
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
-
-                    b.Property<string>("OptionB")
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
-
-                    b.Property<string>("OptionC")
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
-
-                    b.Property<string>("OptionD")
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
-
-                    b.Property<Guid>("QuestionId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("QuestionText")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LanguageId");
-
-                    b.HasIndex("QuestionId", "LanguageId")
-                        .IsUnique();
-
-                    b.ToTable("QuestionTranslations", (string)null);
-                });
-
             modelBuilder.Entity("Team3.Localization.UserLanguagePreference", b =>
                 {
                     b.Property<long>("Id")
@@ -2974,54 +2774,6 @@ namespace Team3.Migrations
                     b.Navigation("LastModifierUser");
                 });
 
-            modelBuilder.Entity("Team3.Domain.Assessment.Assessment", b =>
-                {
-                    b.HasOne("Team3.Academic.Lesson", "Lesson")
-                        .WithMany()
-                        .HasForeignKey("LessonId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.HasOne("Team3.Academic.Topic", "Topic")
-                        .WithMany("Assessments")
-                        .HasForeignKey("TopicId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Lesson");
-
-                    b.Navigation("Topic");
-                });
-
-            modelBuilder.Entity("Team3.Domain.Assessment.Question", b =>
-                {
-                    b.HasOne("Team3.Domain.Assessment.Assessment", "Assessment")
-                        .WithMany("Questions")
-                        .HasForeignKey("AssessmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Assessment");
-                });
-
-            modelBuilder.Entity("Team3.Domain.Assessment.QuestionTranslation", b =>
-                {
-                    b.HasOne("Team3.Configuration.Language", "Language")
-                        .WithMany()
-                        .HasForeignKey("LanguageId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Team3.Domain.Assessment.Question", "Question")
-                        .WithMany("Translations")
-                        .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Language");
-
-                    b.Navigation("Question");
-                });
-
             modelBuilder.Entity("Team3.Localization.UserLanguagePreference", b =>
                 {
                     b.HasOne("Team3.Authorization.Users.User", null)
@@ -3121,8 +2873,6 @@ namespace Team3.Migrations
 
             modelBuilder.Entity("Team3.Academic.Topic", b =>
                 {
-                    b.Navigation("Assessments");
-
                     b.Navigation("Lessons");
                 });
 
@@ -3146,16 +2896,6 @@ namespace Team3.Migrations
                     b.Navigation("Settings");
 
                     b.Navigation("Tokens");
-                });
-
-            modelBuilder.Entity("Team3.Domain.Assessment.Assessment", b =>
-                {
-                    b.Navigation("Questions");
-                });
-
-            modelBuilder.Entity("Team3.Domain.Assessment.Question", b =>
-                {
-                    b.Navigation("Translations");
                 });
 #pragma warning restore 612, 618
         }
