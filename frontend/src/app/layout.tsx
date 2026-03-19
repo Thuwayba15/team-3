@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { AppProviders } from "@/providers/AppProviders";klklm
+import { AppProviders } from "@/providers/AppProviders";
 import "./globals.css";
 import "katex/dist/katex.min.css";
 
