@@ -22,8 +22,20 @@ export const USERS_GET_ALL_ENDPOINT = "/api/services/app/User/GetAll";
 /** Returns a single user by id from the User AppService. */
 export const USERS_GET_ENDPOINT = "/api/services/app/User/Get";
 
+/** Creates a new platform user. */
+export const USERS_CREATE_ENDPOINT = "/api/services/app/User/Create";
+
 /** Updates a user from the User AppService. */
 export const USERS_UPDATE_ENDPOINT = "/api/services/app/User/Update";
+
+/** Activates a platform user. */
+export const USERS_ACTIVATE_ENDPOINT = "/api/services/app/User/Activate";
+
+/** Deactivates a platform user. */
+export const USERS_DEACTIVATE_ENDPOINT = "/api/services/app/User/DeActivate";
+
+/** Returns available platform roles. */
+export const USERS_GET_ROLES_ENDPOINT = "/api/services/app/User/GetRoles";
 
 /** Returns app, tenant, and authenticated user login information. */
 export const SESSION_LOGIN_INFO_ENDPOINT = "/api/services/app/Session/GetCurrentLoginInformations";
