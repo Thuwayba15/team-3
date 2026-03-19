@@ -23,7 +23,8 @@ function CurriculumPageContent() {
     const { subjects, isLoading, isTopicsLoading, topics, isCreatingLesson, createdLesson, isError, errorMessage } = useSubjectState();
     const { getSubjects, getTopicsBySubject, createLesson } = useSubjectActions();
 
-    const [selectedSubjectId, setSelectedSubjectId] = useState<string>("");
+    const [userSelectedSubjectId, setSelectedSubjectId] = useState<string>("");
+    const selectedSubjectId = userSelectedSubjectId || (subjects?.[0]?.id ?? "");
     const [isSubjectModalOpen, setIsSubjectModalOpen] = useState(false);
     const [isLessonModalOpen, setIsLessonModalOpen] = useState(false);
     const [editingSubjectId, setEditingSubjectId] = useState<string | null>(null);
@@ -32,25 +33,12 @@ function CurriculumPageContent() {
     useEffect(() => { getSubjects(); }, []);
 
     useEffect(() => {
-        if (subjects && subjects.length > 0 && !selectedSubjectId) {
-            setSelectedSubjectId(subjects[0].id);
-        }
-    }, [subjects]);
-
-    useEffect(() => {
         if (selectedSubjectId) getTopicsBySubject(selectedSubjectId);
     }, [selectedSubjectId]);
 
     useEffect(() => {
         if (isError && errorMessage) messageApi.error(errorMessage);
     }, [isError, errorMessage]);
-
-    useEffect(() => {
-        if (createdLesson) {
-            setIsLessonModalOpen(false);
-            messageApi.success(`Lesson "${createdLesson.title}" created with ${createdLesson.translations.length} translations.`);
-        }
-    }, [createdLesson]);
 
     const selectedSubject = useMemo(
         () => subjects?.find((s) => s.id === selectedSubjectId) ?? null,
@@ -88,8 +76,12 @@ function CurriculumPageContent() {
         messageApi.info("Subject deletion API coming soon.");
     };
 
-    const handleCreateLesson = (input: IUploadLessonInput): void => {
-        createLesson(input);
+    const handleCreateLesson = async (input: IUploadLessonInput): Promise<void> => {
+        const result = await createLesson(input);
+        if (result) {
+            setIsLessonModalOpen(false);
+            messageApi.success(`Lesson "${result.title}" created with ${result.translations.length} translations.`);
+        }
     };
 
     const handleUpdateDraftItem = (section: DraftSection, itemId: string, reviewStatus: ReviewStatus): void => {

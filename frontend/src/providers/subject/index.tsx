@@ -83,13 +83,15 @@ export const SubjectProvider = ({ children }: ISubjectProviderProps) => {
         }
     };
 
-    const createLesson = async (input: IUploadLessonInput): Promise<void> => {
+    const createLesson = async (input: IUploadLessonInput): Promise<IUploadLessonOutput | undefined> => {
         dispatch(createLessonPending());
         try {
             const response = await apiClient.post<IAbpResponse<IUploadLessonOutput>>(UPLOAD_TEXT_MATERIAL_ENDPOINT, input);
             dispatch(createLessonSuccess(response.data.result));
+            return response.data.result;
         } catch (error) {
             dispatch(createLessonError(resolveErrorMessage(error)));
+            return undefined;
         }
     };
 

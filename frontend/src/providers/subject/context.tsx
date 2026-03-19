@@ -88,7 +88,7 @@ export interface ISubjectContextActions {
     getMySubjects: () => Promise<void>;
     getTopicsBySubject: (subjectId: string) => Promise<void>;
     getLessonsByTopic: (topicId: string) => Promise<void>;
-    createLesson: (input: IUploadLessonInput) => Promise<void>;
+    createLesson: (input: IUploadLessonInput) => Promise<IUploadLessonOutput | undefined>;
 }
 
 export const INITIAL_STATE: ISubjectState = {
