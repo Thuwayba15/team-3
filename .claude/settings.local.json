@@ -2,7 +2,11 @@
   "permissions": {
     "allow": [
       "Bash(docker run:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(find:*)",
+      "Bash(npm run:*)",
+      "Bash(npx next:*)",
+      "Bash(npm install:*)"
     ]
   }
 }

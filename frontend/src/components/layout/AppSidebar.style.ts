@@ -6,11 +6,13 @@ export const useStyles = createStyles(({ css, token }) => ({
         border-right: 1px solid ${token.colorPrimaryBorder};
         display: flex;
         flex-direction: column;
+        height: 100%;
+        overflow-y: auto;
 
         .ant-layout-sider-children {
             display: flex;
             flex-direction: column;
-            height: 100%;
+            min-height: 100%;
         }
     `,
 

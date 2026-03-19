@@ -4,10 +4,11 @@ import { BellOutlined, DownOutlined, LogoutOutlined, MenuOutlined, UserOutlined 
 import { Avatar, Badge, Button, Dropdown, Layout, Select, Typography, message } from "antd";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import { LANGUAGE_OPTIONS } from "@/config/roles";
+import { useTranslation } from "react-i18next";
 import { useAuthActions, useAuthState } from "@/providers/auth";
+import { useI18n } from "@/providers/i18n";
 import { sessionService } from "@/services/sessions/sessionService";
-import { userService } from "@/services/users/userService";
+import { userProfileService } from "@/services/users/userProfileService";
 import { useStyles } from "./AppHeader.style";
 
 const { Text } = Typography;
@@ -17,60 +18,79 @@ interface IAppHeaderProps {
     isMobile: boolean;
 }
 
+const FALLBACK_LANGUAGE_OPTIONS = [
+    { label: "English", value: "en" },
+    { label: "isiZulu", value: "zu" },
+    { label: "Sesotho", value: "st" },
+    { label: "Afrikaans", value: "af" },
+];
+
 /**
  * Global dashboard header used across all role routes.
  */
 export const AppHeader = ({ onOpenNavigation, isMobile }: IAppHeaderProps) => {
     const { styles } = useStyles();
+    const { t } = useTranslation();
     const router = useRouter();
     const { isAuthenticated, userId } = useAuthState();
     const { logout } = useAuthActions();
-    const [, messageContextHolder] = message.useMessage();
-    const [displayName, setDisplayName] = useState("User");
+    const { currentLanguage, setLanguage, isLoading } = useI18n();
+    const [messageApi, messageContextHolder] = message.useMessage();
+    const [displayName, setDisplayName] = useState(t("header.defaultUser"));
     const [emailAddress, setEmailAddress] = useState("-");
     const [userNameDraft, setUserNameDraft] = useState("");
+    const [languageOptions, setLanguageOptions] = useState(FALLBACK_LANGUAGE_OPTIONS);
 
     useEffect(() => {
         if (!isAuthenticated || userId === null) {
             return;
         }
 
-        Promise.all([
-            sessionService.getCurrentLoginInformations(),
-            userService.getById(userId),
-        ])
-            .then(([sessionInfo, user]) => {
+        sessionService.getCurrentLoginInformations()
+            .then((sessionInfo) => {
                 const sessionUser = sessionInfo.user;
-                const resolvedName = sessionUser
-                    ? `${sessionUser.name} ${sessionUser.surname}`.trim()
-                    : user.fullName;
+                if (!sessionUser) {
+                    return;
+                }
 
-                setDisplayName(resolvedName || user.userName);
-                setEmailAddress(sessionUser?.emailAddress || user.emailAddress || "-");
-                setUserNameDraft(user.userName);
+                const resolvedName = `${sessionUser.name} ${sessionUser.surname}`.trim();
+                setDisplayName(resolvedName || sessionUser.userName);
+                setEmailAddress(sessionUser.emailAddress || "-");
+                setUserNameDraft(sessionUser.userName || "");
             })
             .catch(() => {
-                sessionService.getCurrentLoginInformations()
-                    .then((sessionInfo) => {
-                        const sessionUser = sessionInfo.user;
-                        if (!sessionUser) {
-                            return;
-                        }
-
-                        const resolvedName = `${sessionUser.name} ${sessionUser.surname}`.trim();
-                        setDisplayName(resolvedName || sessionUser.userName);
-                        setEmailAddress(sessionUser.emailAddress || "-");
-                        setUserNameDraft(sessionUser.userName || "");
-                    })
-                    .catch(() => {
-                        setDisplayName("User");
-                        setEmailAddress("-");
-                        setUserNameDraft("");
-                    });
+                setDisplayName(t("header.defaultUser"));
+                setEmailAddress("-");
+                setUserNameDraft("");
             });
-    }, [isAuthenticated, userId]);
+    }, [isAuthenticated, t, userId]);
 
     const profileInitial = useMemo(() => displayName.charAt(0).toUpperCase() || "U", [displayName]);
+
+    useEffect(() => {
+        let isCancelled = false;
+
+        userProfileService.getActiveLanguages()
+            .then((languages) => {
+                if (isCancelled || languages.length === 0) {
+                    return;
+                }
+
+                const options = languages.map((language) => ({
+                    label: language.name,
+                    value: language.code.trim().toLowerCase(),
+                }));
+
+                setLanguageOptions(options);
+            })
+            .catch(() => {
+                // fallback options stay in place when language list lookup fails
+            });
+
+        return () => {
+            isCancelled = true;
+        };
+    }, []);
 
     const handleLogout = async (): Promise<void> => {
         await logout();
@@ -87,7 +107,7 @@ export const AppHeader = ({ onOpenNavigation, isMobile }: IAppHeaderProps) => {
                         type="text"
                         icon={<MenuOutlined />}
                         className={styles.iconButton}
-                        aria-label="Open navigation"
+                        aria-label={t("header.openNavigation")}
                         onClick={onOpenNavigation}
                     />
                 )}
@@ -103,13 +123,24 @@ export const AppHeader = ({ onOpenNavigation, isMobile }: IAppHeaderProps) => {
             <div className={styles.controls}>
                 <Select
                     className={styles.select}
-                    defaultValue="en"
-                    options={LANGUAGE_OPTIONS}
-                    aria-label="Language"
+                    value={currentLanguage}
+                    options={languageOptions}
+                    aria-label={t("header.language")}
+                    loading={isLoading}
+                    onChange={(languageCode) => {
+                        void (async () => {
+                            try {
+                                await setLanguage(languageCode);
+                                messageApi.success(t("header.languageUpdated"));
+                            } catch {
+                                messageApi.error(t("header.languageUpdateFailed"));
+                            }
+                        })();
+                    }}
                 />
 
                 <Badge dot>
-                    <Button type="text" icon={<BellOutlined />} className={styles.iconButton} aria-label="Notifications" />
+                    <Button type="text" icon={<BellOutlined />} className={styles.iconButton} aria-label={t("header.notifications")} />
                 </Badge>
 
                 <Dropdown
@@ -117,18 +148,18 @@ export const AppHeader = ({ onOpenNavigation, isMobile }: IAppHeaderProps) => {
                     dropdownRender={() => (
                         <div className={styles.profileDropdown}>
                             <div className={styles.profileRow}>
-                                <Text className={styles.profileLabel}>Email</Text>
+                                <Text className={styles.profileLabel}>{t("header.email")}</Text>
                                 <Text className={styles.profileValue}>{emailAddress}</Text>
                             </div>
 
                             <div className={styles.profileRow}>
-                                <Text className={styles.profileLabel}>Username</Text>
+                                <Text className={styles.profileLabel}>{t("header.username")}</Text>
                                 <Text className={styles.profileValue}>{userNameDraft}</Text>
                             </div>
                         </div>
                     )}
                 >
-                    <button type="button" className={styles.userWrap} aria-label="Open user profile menu">
+                    <button type="button" className={styles.userWrap} aria-label={t("header.openUserMenu")}>
                         <Avatar icon={<UserOutlined />} className={styles.userAvatar}>{profileInitial}</Avatar>
                         <Text>{displayName}</Text>
                         <DownOutlined />
@@ -136,7 +167,7 @@ export const AppHeader = ({ onOpenNavigation, isMobile }: IAppHeaderProps) => {
                 </Dropdown>
 
                 <Button type="link" icon={<LogoutOutlined />} onClick={handleLogout} className={styles.logoutButton}>
-                    Logout
+                    {t("header.logout")}
                 </Button>
             </div>
         </Layout.Header>
