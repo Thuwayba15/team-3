@@ -8,6 +8,7 @@ import {
 } from "@ant-design/icons";
 import { Button, Card, Progress, Tag, Typography } from "antd";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useStyles } from "./styles";
 import QuizView from "./QuizView";
 
@@ -198,6 +199,8 @@ function TopicRow({
     styles: ReturnType<typeof useStyles>["styles"];
     onContinue: (topicName: string) => void;
 }) {
+    const { t } = useTranslation();
+
     if (topic.status === "locked") {
         return (
             <div className={styles.topicRow}>
@@ -205,7 +208,7 @@ function TopicRow({
                     <LockOutlined className={styles.topicIconLocked} />
                     <span className={styles.topicNameLocked}>{topic.name}</span>
                 </div>
-                <span className={styles.lockedTag}>Locked</span>
+                <span className={styles.lockedTag}>{t("dashboard.student.learningPathPage.locked")}</span>
             </div>
         );
     }
@@ -228,7 +231,7 @@ function TopicRow({
                     className={styles.continueBtn}
                     onClick={() => onContinue(topic.name)}
                 >
-                    Continue
+                    {t("dashboard.student.learningPathPage.continue")}
                 </Button>
             </div>
         );
@@ -241,7 +244,7 @@ function TopicRow({
                 <CheckCircleOutlined className={styles.topicIcon} />
                 <span className={styles.topicName}>{topic.name}</span>
             </div>
-            <span className={styles.masteredTag}>Mastered</span>
+            <span className={styles.masteredTag}>{t("dashboard.student.learningPathPage.mastered")}</span>
         </div>
     );
 }
@@ -250,6 +253,7 @@ function TopicRow({
 
 export default function StudentLearningPathPage() {
     const { styles } = useStyles();
+    const { t } = useTranslation();
     const [activeSubject, setActiveSubject] = useState("Mathematics");
     const [activeQuiz, setActiveQuiz] = useState<string | null>(null);
 
@@ -265,9 +269,9 @@ export default function StudentLearningPathPage() {
             <div className={styles.pageHeader}>
                 <div>
                     <Typography.Title level={2} style={{ marginBottom: 0 }}>
-                        Learning Path
+                        {t("dashboard.student.learningPathPage.title")}
                     </Typography.Title>
-                    <Text type="secondary">Your personalized curriculum progression</Text>
+                    <Text type="secondary">{t("dashboard.student.learningPathPage.subtitle")}</Text>
                 </div>
 
                 <div className={styles.subjectTabs}>
@@ -293,10 +297,10 @@ export default function StudentLearningPathPage() {
                     </div>
                     <div>
                         <div className={styles.masteredPercent}>{subject.overallProgress}%</div>
-                        <div className={styles.masteredLabel}>Mastered</div>
+                        <div className={styles.masteredLabel}>{t("dashboard.student.learningPathPage.mastered")}</div>
                     </div>
                 </div>
-                <div className={styles.progressLabel}>Overall Subject Progress</div>
+                <div className={styles.progressLabel}>{t("dashboard.student.learningPathPage.overallSubjectProgress")}</div>
                 <Progress
                     percent={subject.overallProgress}
                     showInfo={false}
@@ -349,16 +353,16 @@ export default function StudentLearningPathPage() {
                                         <div className={styles.moduleTitleRow}>
                                             <span className={styles.moduleTitle}>{mod.title}</span>
                                             {mod.status === "completed" && (
-                                                <Tag color="success">Completed</Tag>
+                                                <Tag color="success">{t("dashboard.student.learningPathPage.completed")}</Tag>
                                             )}
                                             {mod.status === "in-progress" && (
-                                                <Tag color="processing">In Progress</Tag>
+                                                <Tag color="processing">{t("dashboard.student.learningPathPage.inProgress")}</Tag>
                                             )}
-                                            {mod.status === "locked" && <Tag>Locked</Tag>}
+                                            {mod.status === "locked" && <Tag>{t("dashboard.student.learningPathPage.locked")}</Tag>}
                                         </div>
                                         {mod.status === "completed" && (
                                             <Button type="link" className={styles.reviewLink}>
-                                                Review
+                                                {t("dashboard.student.learningPathPage.review")}
                                             </Button>
                                         )}
                                     </div>

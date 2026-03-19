@@ -5,10 +5,10 @@ import { Avatar, Badge, Button, Dropdown, Layout, Select, Typography, message } 
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { getPlatformLanguageSelectOptions } from "@/i18n/platformLanguages";
 import { useAuthActions, useAuthState } from "@/providers/auth";
 import { useI18n } from "@/providers/i18n";
 import { sessionService } from "@/services/sessions/sessionService";
-import { userProfileService } from "@/services/users/userProfileService";
 import { useStyles } from "./AppHeader.style";
 
 const { Text } = Typography;
@@ -17,13 +17,6 @@ interface IAppHeaderProps {
     onOpenNavigation: () => void;
     isMobile: boolean;
 }
-
-const FALLBACK_LANGUAGE_OPTIONS = [
-    { label: "English", value: "en" },
-    { label: "isiZulu", value: "zu" },
-    { label: "Sesotho", value: "st" },
-    { label: "Afrikaans", value: "af" },
-];
 
 /**
  * Global dashboard header used across all role routes.
@@ -39,7 +32,7 @@ export const AppHeader = ({ onOpenNavigation, isMobile }: IAppHeaderProps) => {
     const [displayName, setDisplayName] = useState(t("header.defaultUser"));
     const [emailAddress, setEmailAddress] = useState("-");
     const [userNameDraft, setUserNameDraft] = useState("");
-    const [languageOptions, setLanguageOptions] = useState(FALLBACK_LANGUAGE_OPTIONS);
+    const languageOptions = useMemo(() => getPlatformLanguageSelectOptions(), []);
 
     useEffect(() => {
         if (!isAuthenticated || userId === null) {
@@ -66,31 +59,6 @@ export const AppHeader = ({ onOpenNavigation, isMobile }: IAppHeaderProps) => {
     }, [isAuthenticated, t, userId]);
 
     const profileInitial = useMemo(() => displayName.charAt(0).toUpperCase() || "U", [displayName]);
-
-    useEffect(() => {
-        let isCancelled = false;
-
-        userProfileService.getActiveLanguages()
-            .then((languages) => {
-                if (isCancelled || languages.length === 0) {
-                    return;
-                }
-
-                const options = languages.map((language) => ({
-                    label: language.name,
-                    value: language.code.trim().toLowerCase(),
-                }));
-
-                setLanguageOptions(options);
-            })
-            .catch(() => {
-                // fallback options stay in place when language list lookup fails
-            });
-
-        return () => {
-            isCancelled = true;
-        };
-    }, []);
 
     const handleLogout = async (): Promise<void> => {
         await logout();

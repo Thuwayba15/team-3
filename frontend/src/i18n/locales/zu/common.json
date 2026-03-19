@@ -104,7 +104,125 @@
       "lessonsTitle": "Izifundo Zomfundi",
       "quizzesTitle": "Imibuzo Yomfundi",
       "aiTutorTitle": "Umfundisi we-AI Womfundi",
-      "progressTitle": "Inqubekelaphambili Yomfundi"
+      "progressTitle": "Inqubekelaphambili Yomfundi",
+      "dashboardPage": {
+        "welcomeTitle": "Siyakwamukela futhi, Thabo!",
+        "welcomeSubtitle": "Wenza kahle kakhulu. Usukulungele ukuqhubeka nokufunda?",
+        "askAiTutor": "Buza Umfundisi we-AI",
+        "recommendedNextLesson": "Isifundo Esinconyiwe Esilandelayo",
+        "mathsGrade10": "Izibalo Ibanga le-10",
+        "nextLessonSubtitle": "Kususelwa emiphumeleni yakho yakamuva kwezibalo",
+        "algebraicExpressionsLesson": "Izinkulumo Ze-Algebra: Ukuhlukanisa",
+        "lessonDescription": "Funda indlela yokuhlukanisa ama-trinomial we-quadratic kanye nomehluko wezikwele ezimbili. Lokhu kwakhela phezu kwesifundo sakho sangaphambilini sokwandisa izibiyeli.",
+        "startLesson": "Qala Isifundo",
+        "lessonDuration": "imizuzu engu-25",
+        "masteryHeatmap": "Imephu Yokwazi",
+        "performanceAcrossSubjects": "Umsebenzi wakho kuzo zonke izifundo",
+        "heatmapPlaceholder": "Indawo yokubonisa imephu",
+        "needsWork": "Kudinga umsebenzi",
+        "mastered": "Kwaziwe",
+        "recentQuizResults": "Imiphumela Yakamuva Yemibuzo",
+        "viewAllResults": "Buka Yonke Imiphumela",
+        "upNextTitle": "Okulandelayo",
+        "dates": {
+          "today": "Namuhla",
+          "yesterday": "Izolo",
+          "daysAgo3": "Ezinsukwini ezi-3 ezedlule"
+        },
+        "stats": {
+          "overallProgressScore": "Amaphuzu Enqubekelaphambili",
+          "topicsMastered": "Izihloko Eziqediwe",
+          "lessonsCompleted": "Izifundo Eziqediwe",
+          "badgeThisWeek": "5% kuleli sonto",
+          "badgeNew": "2 ezintsha"
+        },
+        "quizResults": {
+          "linearEquations": "Izibalo Ezimile",
+          "cellStructure": "Ukwakheka Kweseli",
+          "chemicalBonding": "Ukubophezela Kwekhemikhali"
+        },
+        "upNext": {
+          "reviewBiologyNotes": "Buyekeza Amanothi e-Biology",
+          "completePhysicsQuiz": "Qedela Imibuzo ye-Physics",
+          "dueTomorrow": "Kufanele kusasa",
+          "dueFriday": "Kufanele ngoLwesihlanu"
+        }
+      },
+      "progressPage": {
+        "title": "Inqubekelaphambili Yakho",
+        "subtitle": "Landelela uhambo lwakho lokufunda namazinga okuqonda",
+        "masteryHeatmap": "Imephu Yokwazi",
+        "performanceAcrossTopics": "Umsebenzi wakho kuzo zonke izihloko",
+        "performanceOverTime": "Umsebenzi Ngokuhamba Kwesikhathi",
+        "performanceGraphPlaceholder": "Indawo yegrafu yokusebenza",
+        "completedLessons": "Izifundo Eziqediwe",
+        "quizHistory": "Umlando Wemibuzo",
+        "pass": "Phasile",
+        "fail": "Hlulekile",
+        "dates": {
+          "today": "Namuhla",
+          "yesterday": "Izolo",
+          "daysAgo2": "Ezinsukwini ezi-2 ezedlule"
+        },
+        "stats": {
+          "overallScore": "Amaphuzu Wonke",
+          "topicsMastered": "Izihloko Eziqediwe",
+          "quizzesPassed": "Imibuzo Ephasisiwe",
+          "studyStreak": "Uchungechunge Lokufunda"
+        },
+        "heatmap": {
+          "expandingBrackets": "Ukwandisa Izibiyeli",
+          "factorisation": "Ukuhlukanisa",
+          "algebraicFractions": "Amafrakshini e-Algebra",
+          "exponents": "Ama-Exponent",
+          "numberPatterns": "Amaphethini Ezinombolo",
+          "equations": "Izibalo",
+          "geometry": "Ijiyomethri",
+          "dataHandling": "Ukuphathwa Kwedatha"
+        },
+        "lessons": {
+          "introductionToExponents": "Isingeniso Sama-Exponent",
+          "factorisingTrinomials": "Ukuhlukanisa Ama-Trinomial",
+          "differenceOfTwoSquares": "Umehluko Wezikwele Ezimbili"
+        },
+        "quizzes": {
+          "exponentsQuiz1": "Imibuzo yama-Exponent 1",
+          "exponentsQuiz1Meta": "Namuhla - 11am - 9/10",
+          "factorisationTest": "Ukuhlolwa Kokuhlukanisa",
+          "factorisationTestMeta": "Izolo - 11am - 8/10",
+          "algebraicFractions": "Amafrakshini e-Algebra",
+          "algebraicFractionsMeta": "Ngesonto eledlule - 4/10"
+        },
+        "attention": {
+          "title": "Izindawo Ezidinga Ukunakwa",
+          "geometryTitle": "Ijiyomethri: Izakhiwo Zikanxantathu",
+          "geometryDesc": "Izinga lamanje: 30%. Isenzo esinconyiwe: Buyekeza Isifundo 4.",
+          "dataHandlingTitle": "Ukuphathwa Kwedatha: Standard Deviation",
+          "dataHandlingDesc": "Izinga lamanje: 20%. Isenzo esinconyiwe: Cela izibonelo ku-AI Tutor."
+        }
+      },
+      "learningPathPage": {
+        "title": "Indlela Yokufunda",
+        "subtitle": "Ukuqhubeka kohlelo lwakho lokufunda olwenziwe ngokwakho",
+        "overallSubjectProgress": "Inqubekelaphambili Yesifundo Sonke",
+        "completed": "Kuqediwe",
+        "inProgress": "Kuyaqhubeka",
+        "locked": "Kukhiyiwe",
+        "continue": "Qhubeka",
+        "mastered": "Kwaziwe",
+        "review": "Buyekeza",
+        "backToLearningPath": "Buyela Endleleni Yokufunda",
+        "practiceQuiz": "Imibuzo Yokuzijwayeza",
+        "questionCounter": "Umbuzo {{current}} ku-{{total}}",
+        "multipleChoice": "Ukukhetha Okuningana",
+        "correctWellDone": "Kulungile! Wenze kahle.",
+        "correctAnswerIs": "Akukona impela. Impendulo efanele ithi: {{answer}}",
+        "submitAnswer": "Thumela Impendulo",
+        "nextQuestion": "Umbuzo Olandelayo",
+        "seeResults": "Bona Imiphumela",
+        "quizComplete": "Imibuzo Iqediwe!",
+        "quizScoreSummary": "Uphendule kahle imibuzo engu-{{score}} ku-{{total}}."
+      }
     },
     "tutor": {
       "title": "Ideshibhodi Yomfundisi",
@@ -159,7 +277,16 @@
         "translationProgress": "Inqubekelaphambili Yokuhumusha",
         "contentItemsTranslated": "izinto zokuqukethwe zihunyushiwe",
         "translationStatusByContentType": "Isimo Sokuhumusha Ngohlobo Lokuqukethwe",
-        "contentType": "Uhlobo Lokuqukethwe"
+        "contentType": "Uhlobo Lokuqukethwe",
+        "languageNameEnglish": "IsiNgisi",
+        "languageNameIsiZulu": "isiZulu",
+        "languageNameSesotho": "Sesotho",
+        "languageNameAfrikaans": "Afrikaans",
+        "contentTypeUiLabels": "Amalebula e-UI",
+        "contentTypeLessons": "Izifundo",
+        "contentTypeQuizQuestions": "Imibuzo",
+        "contentTypeNotifications": "Izaziso",
+        "contentTypeSystemMessages": "Imiyalezo Yohlelo"
       },
       "aiConfiguration": {
         "title": "Ukuhlelwa kwe-AI",

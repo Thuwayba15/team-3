@@ -11,7 +11,7 @@ const { Text, Title } = Typography;
 
 interface ILanguageOverview {
     id: string;
-    name: string;
+    nameKey: string;
     code: string;
     toneClassName: "toneInfo" | "tonePrimary" | "toneWarning" | "toneSuccess";
     progress: number;
@@ -20,7 +20,7 @@ interface ILanguageOverview {
 
 interface IContentTypeProgress {
     key: string;
-    contentType: string;
+    contentTypeKey: string;
     english: number;
     isiZulu: number;
     sesotho: number;
@@ -28,18 +28,18 @@ interface IContentTypeProgress {
 }
 
 const LANGUAGE_OVERVIEW_DATA: ILanguageOverview[] = [
-    { id: "en", name: "English", code: "EN", toneClassName: "toneInfo", progress: 100, translatedItems: "1,240" },
-    { id: "zu", name: "isiZulu", code: "ZU", toneClassName: "tonePrimary", progress: 78, translatedItems: "967" },
-    { id: "st", name: "Sesotho", code: "ST", toneClassName: "toneWarning", progress: 62, translatedItems: "768" },
-    { id: "af", name: "Afrikaans", code: "AF", toneClassName: "toneSuccess", progress: 85, translatedItems: "1,054" },
+    { id: "en", nameKey: "dashboard.admin.languages.languageNameEnglish", code: "EN", toneClassName: "toneInfo", progress: 100, translatedItems: "1,240" },
+    { id: "zu", nameKey: "dashboard.admin.languages.languageNameIsiZulu", code: "ZU", toneClassName: "tonePrimary", progress: 78, translatedItems: "967" },
+    { id: "st", nameKey: "dashboard.admin.languages.languageNameSesotho", code: "ST", toneClassName: "toneWarning", progress: 62, translatedItems: "768" },
+    { id: "af", nameKey: "dashboard.admin.languages.languageNameAfrikaans", code: "AF", toneClassName: "toneSuccess", progress: 85, translatedItems: "1,054" },
 ];
 
 const CONTENT_PROGRESS_DATA: IContentTypeProgress[] = [
-    { key: "ui-labels", contentType: "UI Labels", english: 100, isiZulu: 100, sesotho: 95, afrikaans: 100 },
-    { key: "lessons", contentType: "Lessons", english: 100, isiZulu: 75, sesotho: 60, afrikaans: 85 },
-    { key: "quiz-questions", contentType: "Quiz Questions", english: 100, isiZulu: 70, sesotho: 55, afrikaans: 80 },
-    { key: "notifications", contentType: "Notifications", english: 100, isiZulu: 90, sesotho: 85, afrikaans: 95 },
-    { key: "system-messages", contentType: "System Messages", english: 100, isiZulu: 85, sesotho: 75, afrikaans: 90 },
+    { key: "ui-labels", contentTypeKey: "dashboard.admin.languages.contentTypeUiLabels", english: 100, isiZulu: 100, sesotho: 95, afrikaans: 100 },
+    { key: "lessons", contentTypeKey: "dashboard.admin.languages.contentTypeLessons", english: 100, isiZulu: 75, sesotho: 60, afrikaans: 85 },
+    { key: "quiz-questions", contentTypeKey: "dashboard.admin.languages.contentTypeQuizQuestions", english: 100, isiZulu: 70, sesotho: 55, afrikaans: 80 },
+    { key: "notifications", contentTypeKey: "dashboard.admin.languages.contentTypeNotifications", english: 100, isiZulu: 90, sesotho: 85, afrikaans: 95 },
+    { key: "system-messages", contentTypeKey: "dashboard.admin.languages.contentTypeSystemMessages", english: 100, isiZulu: 85, sesotho: 75, afrikaans: 90 },
 ];
 
 /** Returns a semantic class name based on translation progress percentage. */
@@ -62,30 +62,30 @@ export default function AdminLanguagesPage() {
     const columns: ColumnsType<IContentTypeProgress> = useMemo(() => [
         {
             title: t("dashboard.admin.languages.contentType"),
-            dataIndex: "contentType",
-            key: "contentType",
-            render: (value: string) => <span className={styles.contentTypeValue}>{value}</span>,
+            dataIndex: "contentTypeKey",
+            key: "contentTypeKey",
+            render: (value: string) => <span className={styles.contentTypeValue}>{t(value)}</span>,
         },
         {
-            title: "English",
+            title: t("dashboard.admin.languages.languageNameEnglish"),
             dataIndex: "english",
             key: "english",
             render: (value: number) => <span className={`${styles.progressValue} ${styles[getProgressToneClassName(value)]}`}>{value}%</span>,
         },
         {
-            title: "isiZulu",
+            title: t("dashboard.admin.languages.languageNameIsiZulu"),
             dataIndex: "isiZulu",
             key: "isiZulu",
             render: (value: number) => <span className={`${styles.progressValue} ${styles[getProgressToneClassName(value)]}`}>{value}%</span>,
         },
         {
-            title: "Sesotho",
+            title: t("dashboard.admin.languages.languageNameSesotho"),
             dataIndex: "sesotho",
             key: "sesotho",
             render: (value: number) => <span className={`${styles.progressValue} ${styles[getProgressToneClassName(value)]}`}>{value}%</span>,
         },
         {
-            title: "Afrikaans",
+            title: t("dashboard.admin.languages.languageNameAfrikaans"),
             dataIndex: "afrikaans",
             key: "afrikaans",
             render: (value: number) => <span className={`${styles.progressValue} ${styles[getProgressToneClassName(value)]}`}>{value}%</span>,
@@ -117,7 +117,7 @@ export default function AdminLanguagesPage() {
                                 <div className={styles.cardHeader}>
                                     <div className={styles.languageMeta}>
                                         <span className={`${styles.languageCode} ${styles[language.toneClassName]}`}>{language.code}</span>
-                                        <Title level={4} className={styles.languageName}>{language.name}</Title>
+                                        <Title level={4} className={styles.languageName}>{t(language.nameKey)}</Title>
                                     </div>
                                     <Switch checked={isActive} onChange={(checked) => handleToggleLanguage(language.id, checked)} />
                                 </div>

@@ -16,10 +16,10 @@ const STAT_CARDS = [
 ];
 
 const LANGUAGE_STATS = [
-    { label: "English", percent: 55 },
-    { label: "IsiZulu", percent: 25 },
-    { label: "Sesotho", percent: 12 },
-    { label: "Afrikaans", percent: 8 },
+    { labelKey: "dashboard.admin.languages.languageNameEnglish", percent: 55 },
+    { labelKey: "dashboard.admin.languages.languageNameIsiZulu", percent: 25 },
+    { labelKey: "dashboard.admin.languages.languageNameSesotho", percent: 12 },
+    { labelKey: "dashboard.admin.languages.languageNameAfrikaans", percent: 8 },
 ];
 
 const ROLE_LEGEND = [
@@ -72,10 +72,10 @@ export default function AdminDashboardPage() {
                 <Col xs={24} lg={10}>
                     <Card title={t("dashboard.admin.languagePreferenceAnalytics")} className={styles.chartCard}>
                         <div className={styles.progressList}>
-                            {LANGUAGE_STATS.map(({ label, percent }) => (
-                                <div key={label} className={styles.progressItem}>
+                            {LANGUAGE_STATS.map(({ labelKey, percent }) => (
+                                <div key={labelKey} className={styles.progressItem}>
                                     <div className={styles.progressHeader}>
-                                        <span>{label}</span>
+                                        <span>{t(labelKey)}</span>
                                         <span>{percent}%</span>
                                     </div>
                                     <Progress percent={percent} showInfo={false} className={styles.progress} />

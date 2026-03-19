@@ -4,6 +4,7 @@ import { ArrowLeftOutlined, CheckCircleFilled, CloseCircleFilled } from "@ant-de
 import { Button, Progress, Tag, Typography } from "antd";
 import { useState } from "react";
 import { createStyles } from "antd-style";
+import { useTranslation } from "react-i18next";
 
 const { Text } = Typography;
 
@@ -426,6 +427,7 @@ interface Props {
 
 export default function QuizView({ topicName, onExit }: Props) {
     const { styles } = useStyles();
+    const { t } = useTranslation();
     const quiz = QUIZ_BANK[topicName] ?? getFallbackQuiz(topicName);
 
     const [questionIndex, setQuestionIndex] = useState(0);
@@ -465,14 +467,14 @@ export default function QuizView({ topicName, onExit }: Props) {
                     onClick={onExit}
                     style={{ marginBottom: 24 }}
                 >
-                    Back to Learning Path
+                    {t("dashboard.student.learningPathPage.backToLearningPath")}
                 </Button>
                 <div className={styles.completionCard}>
-                    <div className={styles.completionTitle}>Quiz Complete!</div>
+                    <div className={styles.completionTitle}>{t("dashboard.student.learningPathPage.quizComplete")}</div>
                     <Text type="secondary">{quiz.topicName}</Text>
                     <div className={styles.completionScore}>{percent}%</div>
                     <Text type="secondary">
-                        You answered {score} out of {total} questions correctly.
+                        {t("dashboard.student.learningPathPage.quizScoreSummary", { score, total })}
                     </Text>
                     <br />
                     <Button
@@ -481,7 +483,7 @@ export default function QuizView({ topicName, onExit }: Props) {
                         style={{ marginTop: 24 }}
                         onClick={onExit}
                     >
-                        Back to Learning Path
+                        {t("dashboard.student.learningPathPage.backToLearningPath")}
                     </Button>
                 </div>
             </div>
@@ -500,15 +502,15 @@ export default function QuizView({ topicName, onExit }: Props) {
                         onClick={onExit}
                         style={{ padding: 0, marginBottom: 4 }}
                     >
-                        Back to Learning Path
+                        {t("dashboard.student.learningPathPage.backToLearningPath")}
                     </Button>
-                    <h2 className={styles.quizTitle}>Practice Quiz</h2>
+                    <h2 className={styles.quizTitle}>{t("dashboard.student.learningPathPage.practiceQuiz")}</h2>
                     <span className={styles.quizSubtitle}>{quiz.topicName}</span>
                 </div>
 
                 <div className={styles.progressBlock}>
                     <div className={styles.questionCounter}>
-                        Question {questionIndex + 1} of {total}
+                        {t("dashboard.student.learningPathPage.questionCounter", { current: questionIndex + 1, total })}
                     </div>
                     <Progress
                         percent={Math.round(((questionIndex + 1) / total) * 100)}
@@ -521,7 +523,7 @@ export default function QuizView({ topicName, onExit }: Props) {
 
             {/* Question card */}
             <div className={styles.questionCard}>
-                <Tag>Multiple Choice</Tag>
+                <Tag>{t("dashboard.student.learningPathPage.multipleChoice")}</Tag>
 
                 <div className={styles.questionText}>{current.text}</div>
 
@@ -571,8 +573,10 @@ export default function QuizView({ topicName, onExit }: Props) {
                         )}
                         <Text>
                             {isCorrect
-                                ? "Correct! Well done."
-                                : `Not quite. The correct answer is: ${current.options[current.correctIndex]}`}
+                                ? t("dashboard.student.learningPathPage.correctWellDone")
+                                : t("dashboard.student.learningPathPage.correctAnswerIs", {
+                                    answer: current.options[current.correctIndex],
+                                })}
                         </Text>
                     </div>
                 )}
@@ -587,11 +591,13 @@ export default function QuizView({ topicName, onExit }: Props) {
                         disabled={selected === null}
                         onClick={handleSubmit}
                     >
-                        Submit Answer
+                        {t("dashboard.student.learningPathPage.submitAnswer")}
                     </Button>
                 ) : (
                     <Button type="primary" className={styles.nextBtn} onClick={handleNext}>
-                        {questionIndex + 1 >= total ? "See Results" : "Next Question"}
+                        {questionIndex + 1 >= total
+                            ? t("dashboard.student.learningPathPage.seeResults")
+                            : t("dashboard.student.learningPathPage.nextQuestion")}
                     </Button>
                 )}
             </div>
