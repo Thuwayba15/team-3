@@ -1,0 +1,199 @@
+{
+  "nav": {
+    "dashboard": "Dashboard",
+    "learningPath": "Tsela ya ho Ithuta",
+    "lessons": "Dithuto",
+    "quizzes": "Dipotso",
+    "aiTutor": "Moruti wa AI",
+    "progress": "Tsoelo-pele",
+    "students": "Baithuti",
+    "interventions": "Dikeno",
+    "learningModules": "Dimojule tsa Thuto",
+    "analytics": "Tlhahlobo",
+    "alerts": "Ditemoso",
+    "childProgress": "Tsoelo-pele ya Ngoana",
+    "curriculum": "Kharikhulamo",
+    "users": "Basebedisi",
+    "settings": "Dipeakanyo",
+    "languages": "Dipuo",
+    "aiConfiguration": "Tlhophiso ya AI",
+    "logout": "Tswa"
+  },
+  "common": {
+    "menu": "Menyu",
+    "save": "Boloka",
+    "cancel": "Hlakola",
+    "delete": "Tlosa",
+    "edit": "Fetola",
+    "loading": "E a jarolla...",
+    "error": "Phoso",
+    "success": "Katleho",
+    "close": "Kwala",
+    "confirm": "Netefatsa",
+    "back": "Morao",
+    "next": "E latelang",
+    "previous": "E fetileng",
+    "search": "Batla",
+    "filter": "Sefa",
+    "clear": "Hlakola",
+    "submit": "Romela",
+    "export": "Romela kantle",
+    "import": "Kenya"
+  },
+  "auth": {
+    "login": {
+      "title": "Kena",
+      "email": "Aterese ya imeile",
+      "password": "Phasewete",
+      "submit": "Kena",
+      "noAccount": "Ha o na akhaonto?",
+      "register": "Ingolise mona",
+      "forgotPassword": "O lebetse phasewete?",
+      "invalidCredentials": "Imeile kapa phasewete e fosahetse"
+    },
+    "register": {
+      "title": "Ingolise",
+      "firstName": "Lebitso",
+      "surname": "Sefane",
+      "email": "Aterese ya imeile",
+      "password": "Phasewete",
+      "confirmPassword": "Netefatsa Phasewete",
+      "role": "Karolo",
+      "selectRole": "Kgetha karolo ya hao",
+      "selectLanguage": "Puo e Ratwang",
+      "submit": "Etsa Akhaonto",
+      "haveAccount": "O se o na le akhaonto?",
+      "loginHere": "Kena mona",
+      "agreeTerms": "Ke dumellana le maemo a tshebeletso"
+    }
+  },
+  "settings": {
+    "title": "Dipeakanyo",
+    "studentTitle": "Dipeakanyo tsa Moithuti",
+    "studentSubtitle": "Leqephe la mohlala",
+    "platformLanguage": "Puo ya Sethala",
+    "platformLanguageDesc": "Kgetha puo ya sebopeho sa app",
+    "selectLanguage": "Kgetha Puo",
+    "updated": "Dipeakanyo di ntjhafaditswe ka katleho"
+  },
+  "header": {
+    "defaultUser": "Mosebedisi",
+    "email": "Imeile",
+    "username": "Lebitso la Mosebedisi",
+    "language": "Puo",
+    "languageUpdated": "Puo e ntjhafaditswe ka katleho",
+    "languageUpdateFailed": "Ho hlolehile ho ntjhafatsa puo. Ka kopo leka hape.",
+    "notifications": "Ditsebiso",
+    "openNavigation": "Bula tsela ya ho tsamaya",
+    "openUserMenu": "Bula menyu ya mosebedisi",
+    "profile": "Profaele",
+    "preferences": "Dikgetho",
+    "logout": "Tswa"
+  },
+  "sidebar": {
+    "admin": "Motsamaisi",
+    "student": "Moithuti",
+    "tutor": "Moruti",
+    "parent": "Motsoali"
+  },
+  "dashboard": {
+    "scaffoldSubtitle": "Leqephe la mohlala",
+    "student": {
+      "title": "Dashboard ya Moithuti",
+      "learningPathTitle": "Tsela ya Thuto ya Moithuti",
+      "lessonsTitle": "Dithuto tsa Moithuti",
+      "quizzesTitle": "Dipotso tsa Moithuti",
+      "aiTutorTitle": "Moruti wa AI wa Moithuti",
+      "progressTitle": "Tsoelo-pele ya Moithuti"
+    },
+    "tutor": {
+      "title": "Dashboard ya Moruti",
+      "studentsTitle": "Baithuti ba Moruti",
+      "interventionsTitle": "Dikeno tsa Moruti",
+      "learningModulesTitle": "Dimojule tsa Moruti",
+      "analyticsTitle": "Tlhahlobo ya Moruti"
+    },
+    "parent": {
+      "title": "Dashboard ya Motsoali",
+      "childProgressTitle": "Tsoelo-pele ya Ngoana",
+      "alertsTitle": "Ditemoso tsa Motsoali"
+    },
+    "admin": {
+      "title": "Tsamaiso ya Sisteme",
+      "subtitle": "Kakaretso ya sethala le bophelo ba sisteme",
+      "trendThisMonth": "+12% kgweding ena",
+      "totalActiveUsers": "Basebedisi bohle ba mafolofolo",
+      "languageUsage": "Tshebediso ya dipuo",
+      "aiApiCallsToday": "Mehala ya AI API (Kajeno)",
+      "systemUptime": "Nako eo Sisteme e Sebetseng",
+      "userDistributionByRole": "Kabo ya basebedisi ka dikarolo",
+      "pieChartPlaceholder": "Sebaka sa pie chart",
+      "legendStudents": "Baithuti (80%)",
+      "legendTutors": "Baruti (5%)",
+      "legendParents": "Batsoali (15%)",
+      "languagePreferenceAnalytics": "Tlhahlobo ya dikgetho tsa puo",
+      "analyticsTitle": "Tlhahlobo ya Motsamaisi",
+      "users": {
+        "title": "Taolo ya Basebedisi",
+        "subtitle": "Laola basebedisi, dikarolo le phihlello",
+        "errorLoadUsers": "Ho hlolehile ho jarolla basebedisi. Leka hape.",
+        "searchPlaceholder": "Batla basebedisi...",
+        "allRoles": "Dikarolo tsohle",
+        "allStatus": "Maemo ohle",
+        "active": "E sebetsa",
+        "inactive": "Ha e sebetse",
+        "addUser": "Eketsa Mosebedisi",
+        "disable": "Koala",
+        "columns": {
+          "name": "Lebitso",
+          "email": "Imeile",
+          "role": "Karolo",
+          "status": "Boemo",
+          "dateJoined": "Letsatsi la ho kenela",
+          "actions": "Diketso"
+        }
+      },
+      "languages": {
+        "title": "Taolo ya Dipuo",
+        "subtitle": "Laola dipuo tse tshehetswang le tsoelo-pele ya phetolelo",
+        "translationProgress": "Tsoelo-pele ya phetolelo",
+        "contentItemsTranslated": "dintho tsa dikahare di fetoletswe",
+        "translationStatusByContentType": "Boemo ba phetolelo ka mofuta wa dikahare",
+        "contentType": "Mofuta wa dikahare"
+      },
+      "aiConfiguration": {
+        "title": "Tlhophiso ya AI",
+        "subtitle": "Laola diprompt tsa AI tutor le dipeakanyo tsa enjene ya dikakaretso",
+        "saved": "Tlhophiso ya AI e bolokilwe.",
+        "promptTemplates": "Ditempolete tsa Prompt",
+        "resetToDefault": "Busetsa ho boiketsetso",
+        "recommendationEngineSettings": "Dipeakanyo tsa enjene ya dikakaretso",
+        "minimumMasteryThreshold": "Moedi o monyane wa boitsebelo",
+        "maximumRetryAttempts": "Boholo ba diteko hape",
+        "difficultyProgression": "Tsoelo-pele ya boima",
+        "progressionModeAdaptive": "E ikamahanyang (AI)",
+        "progressionModeLinear": "Linear (tatellano e thata)",
+        "progressionModeCustom": "Ya moetlo",
+        "contentRecommendationWeight": "Boima ba dikakaretso tsa dikahare",
+        "difficultyAdjustment": "Phetoho ya boima",
+        "autoAdjustDifficulty": "Fetola boima ka boiketsetso",
+        "adjustmentSensitivity": "Kutlwisiso ya phetoho",
+        "minQuestionsBeforeAdjustment": "Dipotso tse fokolang pele ho phetoho",
+        "increaseThreshold": "Moedi wa ho phahamisa (%)",
+        "decreaseThreshold": "Moedi wa ho fokotsa (%)",
+        "high": "Hodimo",
+        "medium": "Bohareng",
+        "low": "Tlase",
+        "saveConfiguration": "Boloka Tlhophiso"
+      },
+      "curriculum": {
+        "title": "Taolo ya Kharikhulamo",
+        "subtitle": "Theha dithuto, kenya ditokomane, mme o hlahlobe meralo e entsweng ke AI"
+      }
+    }
+  },
+  "empty": {
+    "noData": "Ha ho data e fumanehang",
+    "noResults": "Ha ho diphetho tse fumanweng"
+  }
+}

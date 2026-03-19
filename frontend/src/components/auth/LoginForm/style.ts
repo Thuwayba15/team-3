@@ -12,8 +12,12 @@ export const useStyles = createStyles(({ token, css }) => ({
         font-weight: 600;
     `,
 
-    errorAlert: css`
-        margin-bottom: ${token.marginMD}px;
+    inlineError: css`
+        display: block;
+        margin-top: -${token.marginXS}px;
+        margin-bottom: ${token.marginSM}px;
+        font-size: 12px;
+        line-height: 1.35;
     `,
 
     rememberRow: css`
