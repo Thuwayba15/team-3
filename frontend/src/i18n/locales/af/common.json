@@ -104,7 +104,125 @@
       "lessonsTitle": "Student Lesse",
       "quizzesTitle": "Student Vasvrae",
       "aiTutorTitle": "Student AI Tutor",
-      "progressTitle": "Student Vordering"
+      "progressTitle": "Student Vordering",
+      "dashboardPage": {
+        "welcomeTitle": "Welkom terug, Thabo!",
+        "welcomeSubtitle": "Jy maak uitstekende vordering. Gereed om voort te gaan leer?",
+        "askAiTutor": "Vra AI Tutor",
+        "recommendedNextLesson": "Aanbevole Volgende Les",
+        "mathsGrade10": "Wiskunde Graad 10",
+        "nextLessonSubtitle": "Gebaseer op jou onlangse prestasie in Wiskunde",
+        "algebraicExpressionsLesson": "Algebraiese Uitdrukkings: Faktorisering",
+        "lessonDescription": "Leer hoe om kwadratiese trinomiale en die verskil van twee kwadrate te faktoriseer. Dit bou voort op jou vorige les oor die uitwerk van hakies.",
+        "startLesson": "Begin Les",
+        "lessonDuration": "25 min",
+        "masteryHeatmap": "Meesterskap Hittekaart",
+        "performanceAcrossSubjects": "Jou prestasie oor vakke heen",
+        "heatmapPlaceholder": "Hittekaart visualisering plekhouer",
+        "needsWork": "Benodig Werk",
+        "mastered": "Bemeester",
+        "recentQuizResults": "Onlangse Vasvra Resultate",
+        "viewAllResults": "Sien Alle Resultate",
+        "upNextTitle": "Volgende Op",
+        "dates": {
+          "today": "Vandag",
+          "yesterday": "Gister",
+          "daysAgo3": "3 dae gelede"
+        },
+        "stats": {
+          "overallProgressScore": "Algehele Vorderingstelling",
+          "topicsMastered": "Onderwerpe Bemeester",
+          "lessonsCompleted": "Lesse Voltooi",
+          "badgeThisWeek": "5% hierdie week",
+          "badgeNew": "2 nuut"
+        },
+        "quizResults": {
+          "linearEquations": "Lineere Vergelykings",
+          "cellStructure": "Selstruktuur",
+          "chemicalBonding": "Chemiese Binding"
+        },
+        "upNext": {
+          "reviewBiologyNotes": "Hersien Biologie-notas",
+          "completePhysicsQuiz": "Voltooi Fisika Vasvra",
+          "dueTomorrow": "Morre verskuldig",
+          "dueFriday": "Vrydag verskuldig"
+        }
+      },
+      "progressPage": {
+        "title": "Jou Vordering",
+        "subtitle": "Volg jou leerreis en meesterskapvlakke",
+        "masteryHeatmap": "Meesterskap Hittekaart",
+        "performanceAcrossTopics": "Jou prestasie oor alle onderwerpe",
+        "performanceOverTime": "Prestasie Oor Tyd",
+        "performanceGraphPlaceholder": "Prestasie grafiek plekhouer",
+        "completedLessons": "Voltooide Lesse",
+        "quizHistory": "Vasvra Geskiedenis",
+        "pass": "Slaag",
+        "fail": "Druip",
+        "dates": {
+          "today": "Vandag",
+          "yesterday": "Gister",
+          "daysAgo2": "2 dae gelede"
+        },
+        "stats": {
+          "overallScore": "Algehele Telling",
+          "topicsMastered": "Onderwerpe Bemeester",
+          "quizzesPassed": "Vasvrae Geslaag",
+          "studyStreak": "Studie-reeks"
+        },
+        "heatmap": {
+          "expandingBrackets": "Uitwerk van Hakies",
+          "factorisation": "Faktorisering",
+          "algebraicFractions": "Algebraiese Breuke",
+          "exponents": "Eksponente",
+          "numberPatterns": "Getalpatrone",
+          "equations": "Vergelykings",
+          "geometry": "Meetkunde",
+          "dataHandling": "Datahantering"
+        },
+        "lessons": {
+          "introductionToExponents": "Inleiding tot Eksponente",
+          "factorisingTrinomials": "Faktorisering van Trinomiale",
+          "differenceOfTwoSquares": "Verskil van Twee Kwadrate"
+        },
+        "quizzes": {
+          "exponentsQuiz1": "Eksponente Vasvra 1",
+          "exponentsQuiz1Meta": "Vandag - 11vm - 9/10",
+          "factorisationTest": "Faktorisering Toets",
+          "factorisationTestMeta": "Gister - 11vm - 8/10",
+          "algebraicFractions": "Algebraiese Breuke",
+          "algebraicFractionsMeta": "Verlede Week - 4/10"
+        },
+        "attention": {
+          "title": "Gebiede Wat Aandag Nodig Het",
+          "geometryTitle": "Meetkunde: Eienskappe van Driehoeke",
+          "geometryDesc": "Huidige meesterskap: 30%. Aanbevole aksie: Hersien Les 4.",
+          "dataHandlingTitle": "Datahantering: Standaardafwyking",
+          "dataHandlingDesc": "Huidige meesterskap: 20%. Aanbevole aksie: Vra AI Tutor vir voorbeelde."
+        }
+      },
+      "learningPathPage": {
+        "title": "Leerpad",
+        "subtitle": "Jou gepersonaliseerde kurrikulumvordering",
+        "overallSubjectProgress": "Algehele Vakvordering",
+        "completed": "Voltooi",
+        "inProgress": "Aan die gang",
+        "locked": "Gesluit",
+        "continue": "Gaan voort",
+        "mastered": "Bemeester",
+        "review": "Hersien",
+        "backToLearningPath": "Terug na Leerpad",
+        "practiceQuiz": "Oefenvasvra",
+        "questionCounter": "Vraag {{current}} van {{total}}",
+        "multipleChoice": "Meervoudige Keuse",
+        "correctWellDone": "Korrekt! Mooi so.",
+        "correctAnswerIs": "Nie heeltemal nie. Die korrekte antwoord is: {{answer}}",
+        "submitAnswer": "Dien Antwoord In",
+        "nextQuestion": "Volgende Vraag",
+        "seeResults": "Sien Resultate",
+        "quizComplete": "Vasvra Voltooi!",
+        "quizScoreSummary": "Jy het {{score}} uit {{total}} vrae korrek beantwoord."
+      }
     },
     "tutor": {
       "title": "Tutor Dashboard",
@@ -159,7 +277,16 @@
         "translationProgress": "Vertaalvordering",
         "contentItemsTranslated": "inhouditems vertaal",
         "translationStatusByContentType": "Vertaalstatus per Inhoudstipe",
-        "contentType": "Inhoudstipe"
+        "contentType": "Inhoudstipe",
+        "languageNameEnglish": "Engels",
+        "languageNameIsiZulu": "isiZulu",
+        "languageNameSesotho": "Sesotho",
+        "languageNameAfrikaans": "Afrikaans",
+        "contentTypeUiLabels": "UI Etikette",
+        "contentTypeLessons": "Lesse",
+        "contentTypeQuizQuestions": "Vasvra Vrae",
+        "contentTypeNotifications": "Kennisgewings",
+        "contentTypeSystemMessages": "Stelselboodskappe"
       },
       "aiConfiguration": {
         "title": "AI-konfigurasie",

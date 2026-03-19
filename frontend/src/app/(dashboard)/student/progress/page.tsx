@@ -8,18 +8,18 @@ import {
     WarningOutlined,
 } from "@ant-design/icons";
 import { Card, Col, Row, Tag, Typography } from "antd";
+import { useTranslation } from "react-i18next";
 import { useStyles } from "./styles";
-// import { useTranslation } from "react-i18next";
 
 const { Title, Text } = Typography;
 
 // ── Data ─────────────────────────────────────────────────────────────────────
 
 const STATS = [
-    { icon: TrophyOutlined,      iconColor: "#00b8a9", value: "78%",    label: "Overall Score" },
-    { icon: BookOutlined,        iconColor: "#00b8a9", value: "12/20",  label: "Topics Mastered" },
-    { icon: CheckCircleOutlined, iconColor: "#00b8a9", value: "18/22",  label: "Quizzes Passed" },
-    { icon: FireOutlined,        iconColor: "#fa8c16", value: "5 days", label: "Study Streak" },
+    { icon: TrophyOutlined,      iconColor: "#00b8a9", value: "78%",    labelKey: "dashboard.student.progressPage.stats.overallScore" },
+    { icon: BookOutlined,        iconColor: "#00b8a9", value: "12/20",  labelKey: "dashboard.student.progressPage.stats.topicsMastered" },
+    { icon: CheckCircleOutlined, iconColor: "#00b8a9", value: "18/22",  labelKey: "dashboard.student.progressPage.stats.quizzesPassed" },
+    { icon: FireOutlined,        iconColor: "#fa8c16", value: "5 days", labelKey: "dashboard.student.progressPage.stats.studyStreak" },
 ];
 
 const heatColor = (pct: number) => {
@@ -30,36 +30,60 @@ const heatColor = (pct: number) => {
 };
 
 const HEATMAP = [
-    { label: "Expanding Brackets",  percent: 90 },
-    { label: "Factorisation",        percent: 85 },
-    { label: "Algebraic Fractions",  percent: 70 },
-    { label: "Exponents",            percent: 60 },
-    { label: "Number Patterns",      percent: 45 },
-    { label: "Equations",            percent: 40 },
-    { label: "Geometry",             percent: 30 },
-    { label: "Data Handling",        percent: 20 },
+    { labelKey: "dashboard.student.progressPage.heatmap.expandingBrackets", percent: 90 },
+    { labelKey: "dashboard.student.progressPage.heatmap.factorisation", percent: 85 },
+    { labelKey: "dashboard.student.progressPage.heatmap.algebraicFractions", percent: 70 },
+    { labelKey: "dashboard.student.progressPage.heatmap.exponents", percent: 60 },
+    { labelKey: "dashboard.student.progressPage.heatmap.numberPatterns", percent: 45 },
+    { labelKey: "dashboard.student.progressPage.heatmap.equations", percent: 40 },
+    { labelKey: "dashboard.student.progressPage.heatmap.geometry", percent: 30 },
+    { labelKey: "dashboard.student.progressPage.heatmap.dataHandling", percent: 20 },
 ];
 
 const LESSONS = [
-    { title: "Introduction to Exponents", time: "Today",      score: "95%" },
-    { title: "Factorising Trinomials",     time: "Yesterday",  score: "88%" },
-    { title: "Difference of Two Squares", time: "2 days ago", score: "92%" },
+    {
+        titleKey: "dashboard.student.progressPage.lessons.introductionToExponents",
+        timeKey: "dashboard.student.progressPage.dates.today",
+        score: "95%",
+    },
+    {
+        titleKey: "dashboard.student.progressPage.lessons.factorisingTrinomials",
+        timeKey: "dashboard.student.progressPage.dates.yesterday",
+        score: "88%",
+    },
+    {
+        titleKey: "dashboard.student.progressPage.lessons.differenceOfTwoSquares",
+        timeKey: "dashboard.student.progressPage.dates.daysAgo2",
+        score: "92%",
+    },
 ];
 
 const QUIZZES = [
-    { title: "Exponents Quiz 1",    meta: "Today · 11am · 9/10",     pass: true },
-    { title: "Factorisation Test",  meta: "Yesterday · 11am · 8/10", pass: true },
-    { title: "Algebraic Fractions", meta: "Last Week · 4/10",         pass: false },
+    {
+        titleKey: "dashboard.student.progressPage.quizzes.exponentsQuiz1",
+        metaKey: "dashboard.student.progressPage.quizzes.exponentsQuiz1Meta",
+        pass: true,
+    },
+    {
+        titleKey: "dashboard.student.progressPage.quizzes.factorisationTest",
+        metaKey: "dashboard.student.progressPage.quizzes.factorisationTestMeta",
+        pass: true,
+    },
+    {
+        titleKey: "dashboard.student.progressPage.quizzes.algebraicFractions",
+        metaKey: "dashboard.student.progressPage.quizzes.algebraicFractionsMeta",
+        pass: false,
+    },
 ];
 
 const ATTENTION = [
     {
-        title: "Geometry: Properties of Triangles",
-        desc: "Current mastery: 30%. Recommended action: Review Lesson 4.",
+        titleKey: "dashboard.student.progressPage.attention.geometryTitle",
+        descKey: "dashboard.student.progressPage.attention.geometryDesc",
     },
     {
-        title: "Data Handling: Standard Deviation",
-        desc: "Current mastery: 20%. Recommended action: Ask AI Tutor for examples.",
+        titleKey: "dashboard.student.progressPage.attention.dataHandlingTitle",
+        descKey: "dashboard.student.progressPage.attention.dataHandlingDesc",
     },
 ];
 
@@ -67,61 +91,62 @@ const ATTENTION = [
 
 export default function StudentProgressPage() {
     const { styles } = useStyles();
+    const { t } = useTranslation();
 
     return (
         <div>
             {/* Header */}
             <div className={styles.pageHeader}>
-                <Title level={2} style={{ marginBottom: 0 }}>Your Progress</Title>
-                <Text type="secondary">Track your learning journey and mastery levels</Text>
+                <Title level={2} style={{ marginBottom: 0 }}>{t("dashboard.student.progressPage.title")}</Title>
+                <Text type="secondary">{t("dashboard.student.progressPage.subtitle")}</Text>
             </div>
 
             {/* Stat cards */}
             <Row gutter={[16, 16]} className={styles.statsRow}>
-                {STATS.map(({ icon: Icon, iconColor, value, label }) => (
-                    <Col key={label} xs={12} md={6}>
+                {STATS.map(({ icon: Icon, iconColor, value, labelKey }) => (
+                    <Col key={labelKey} xs={12} md={6}>
                         <Card className={styles.statCard}>
                             <Icon className={styles.statIcon} style={{ color: iconColor }} />
                             <div className={styles.statValue}>{value}</div>
-                            <div className={styles.statLabel}>{label}</div>
+                            <div className={styles.statLabel}>{t(labelKey)}</div>
                         </Card>
                     </Col>
                 ))}
             </Row>
 
             {/* Mastery heatmap */}
-            <Card title="Mastery Heatmap" className={styles.sectionCard}>
-                <div className={styles.sectionSubtitle}>Your performance across all topics</div>
+            <Card title={t("dashboard.student.progressPage.masteryHeatmap")} className={styles.sectionCard}>
+                <div className={styles.sectionSubtitle}>{t("dashboard.student.progressPage.performanceAcrossTopics")}</div>
                 <div className={styles.heatmapGrid}>
-                    {HEATMAP.map(({ label, percent }) => (
+                    {HEATMAP.map(({ labelKey, percent }) => (
                         <div
-                            key={label}
+                            key={labelKey}
                             className={styles.heatmapTile}
                             style={{ background: heatColor(percent) }}
                         >
                             <span className={styles.heatmapPercent}>{percent} %</span>
-                            <span className={styles.heatmapLabel}>{label}</span>
+                            <span className={styles.heatmapLabel}>{t(labelKey)}</span>
                         </div>
                     ))}
                 </div>
             </Card>
 
             {/* Performance over time */}
-            <Card title="Performance Over Time" className={styles.sectionCard}>
+            <Card title={t("dashboard.student.progressPage.performanceOverTime")} className={styles.sectionCard}>
                 <div className={styles.chartPlaceholder}>
-                    Performance Graph Visualisation Placeholder
+                    {t("dashboard.student.progressPage.performanceGraphPlaceholder")}
                 </div>
             </Card>
 
             {/* Completed lessons + Quiz history */}
             <Row gutter={[16, 16]} className={styles.bottomRow}>
                 <Col xs={24} md={12}>
-                    <Card title="Completed Lessons" className={styles.listCard}>
-                        {LESSONS.map(({ title, time, score }) => (
-                            <div key={title} className={styles.lessonItem}>
+                    <Card title={t("dashboard.student.progressPage.completedLessons")} className={styles.listCard}>
+                        {LESSONS.map(({ titleKey, timeKey, score }) => (
+                            <div key={titleKey} className={styles.lessonItem}>
                                 <div className={styles.lessonInfo}>
-                                    <span className={styles.lessonTitle}>{title}</span>
-                                    <span className={styles.lessonTime}>{time}</span>
+                                    <span className={styles.lessonTitle}>{t(titleKey)}</span>
+                                    <span className={styles.lessonTime}>{t(timeKey)}</span>
                                 </div>
                                 <span className={styles.lessonScore}>{score}</span>
                             </div>
@@ -130,15 +155,15 @@ export default function StudentProgressPage() {
                 </Col>
 
                 <Col xs={24} md={12}>
-                    <Card title="Quiz History" className={styles.listCard}>
-                        {QUIZZES.map(({ title, meta, pass }) => (
-                            <div key={title} className={styles.quizItem}>
+                    <Card title={t("dashboard.student.progressPage.quizHistory")} className={styles.listCard}>
+                        {QUIZZES.map(({ titleKey, metaKey, pass }) => (
+                            <div key={titleKey} className={styles.quizItem}>
                                 <div className={styles.quizInfo}>
-                                    <span className={styles.quizTitle}>{title}</span>
-                                    <span className={styles.quizMeta}>{meta}</span>
+                                    <span className={styles.quizTitle}>{t(titleKey)}</span>
+                                    <span className={styles.quizMeta}>{t(metaKey)}</span>
                                 </div>
                                 <Tag color={pass ? "success" : "error"}>
-                                    {pass ? "Pass" : "Fail"}
+                                    {pass ? t("dashboard.student.progressPage.pass") : t("dashboard.student.progressPage.fail")}
                                 </Tag>
                             </div>
                         ))}
@@ -151,15 +176,15 @@ export default function StudentProgressPage() {
                 title={
                     <span>
                         <WarningOutlined style={{ color: "#faad14", marginRight: 8 }} />
-                        Areas Needing Attention
+                        {t("dashboard.student.progressPage.attention.title")}
                     </span>
                 }
                 className={styles.attentionCard}
             >
-                {ATTENTION.map(({ title, desc }) => (
-                    <div key={title} className={styles.attentionItem}>
-                        <Text className={styles.attentionTitle}>{title}</Text>
-                        <Text className={styles.attentionDesc}>{desc}</Text>
+                {ATTENTION.map(({ titleKey, descKey }) => (
+                    <div key={titleKey} className={styles.attentionItem}>
+                        <Text className={styles.attentionTitle}>{t(titleKey)}</Text>
+                        <Text className={styles.attentionDesc}>{t(descKey)}</Text>
                     </div>
                 ))}
             </Card>
