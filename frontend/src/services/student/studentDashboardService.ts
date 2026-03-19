@@ -81,6 +81,12 @@ const mapProgressToDashboardData = (result: IStudentDashboardProgressDto): Stude
     const weakTopics = result.weakTopics ?? [];
     const topicMasteries = result.topicMasteries ?? [];
     const revisionAdvices = result.revisionAdvices ?? [];
+    const subjectNameByTopicId = new Map(topicMasteries.map((topic) => [topic.topicId, topic.subjectName]));
+    const subjectNameByTopicName = new Map(topicMasteries.map((topic) => [topic.topicName, topic.subjectName]));
+    const uniqueSubjectNames = Array.from(new Set(topicMasteries.map((topic) => topic.subjectName).filter((name) => name.trim().length > 0)));
+    const resolvedPrimarySubjectName = result.subjectName?.trim().length
+        ? result.subjectName
+        : (uniqueSubjectNames.length === 1 ? uniqueSubjectNames[0] : "");
     const estimatedTotalTopics = topicMasteries.length > 0
         ? topicMasteries.length
         : result.topicsMastered + weakTopics.length;
@@ -89,10 +95,14 @@ const mapProgressToDashboardData = (result: IStudentDashboardProgressDto): Stude
     const areasNeedingAttention = revisionAdvices.length > 0
         ? revisionAdvices.map((advice, index) => {
             const matchingWeakTopic = weakTopics.find((topic) => topic.topicName === advice.topicName);
+            const subjectName = matchingWeakTopic?.topicId
+                ? (subjectNameByTopicId.get(matchingWeakTopic.topicId) ?? resolvedPrimarySubjectName)
+                : (advice.topicName ? (subjectNameByTopicName.get(advice.topicName) ?? resolvedPrimarySubjectName) : resolvedPrimarySubjectName);
+
             return {
                 topicId: matchingWeakTopic?.topicId ?? `attention-${index + 1}`,
                 topicName: advice.topicName ?? "Topic",
-                subjectName: result.subjectName ?? "All Subjects",
+                subjectName,
                 masteryPercent: advice.masteryScore,
                 ruleBasisAction: advice.advice ?? "Review this topic with additional practice.",
             };
@@ -100,7 +110,7 @@ const mapProgressToDashboardData = (result: IStudentDashboardProgressDto): Stude
         : weakTopics.map((topic) => ({
             topicId: topic.topicId,
             topicName: topic.topicName,
-            subjectName: result.subjectName ?? "All Subjects",
+            subjectName: subjectNameByTopicId.get(topic.topicId) ?? resolvedPrimarySubjectName,
             masteryPercent: topic.masteryScore,
             ruleBasisAction: topic.needsRevision
                 ? "Revision is recommended based on your recent activity."
@@ -118,10 +128,14 @@ const mapProgressToDashboardData = (result: IStudentDashboardProgressDto): Stude
         : weakTopics.map((topic) => ({
             topicId: topic.topicId,
             topicName: topic.topicName,
-            subjectName: result.subjectName ?? "All Subjects",
+            subjectName: subjectNameByTopicId.get(topic.topicId) ?? resolvedPrimarySubjectName,
             masteryPercent: topic.masteryScore,
             severityBucket: getSeverityBucket(topic.masteryScore),
         }));
+
+    const recommendedLessonSubjectName = result.recommendedLesson?.topicName
+        ? (subjectNameByTopicName.get(result.recommendedLesson.topicName) ?? resolvedPrimarySubjectName)
+        : resolvedPrimarySubjectName;
 
     const recommendedNextLesson =
         result.recommendedLesson?.lessonId && result.recommendedLesson?.lessonTitle
@@ -129,7 +143,7 @@ const mapProgressToDashboardData = (result: IStudentDashboardProgressDto): Stude
                 lessonId: result.recommendedLesson.lessonId,
                 title: result.recommendedLesson.lessonTitle,
                 topicName: result.recommendedLesson.topicName ?? "Topic",
-                subjectName: result.subjectName ?? "All Subjects",
+                subjectName: recommendedLessonSubjectName,
                 estimatedMinutes: 20,
                 ruleBasisReason: result.recommendedLesson.reason ?? "Recommended based on your current progress.",
             }

@@ -19,16 +19,21 @@ import {
     Col,
     Empty,
     Flex,
+    Pagination,
     Row,
     Space,
     Spin,
     Typography,
 } from "antd";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useStudentDashboard } from "@/providers/student";
 import { useStyles } from "./styles";
+import { getLocalizedAttentionAction, getLocalizedGuidanceMessage } from "./localization";
 
 const { Text, Title } = Typography;
+const HEATMAP_PAGE_SIZE = 12;
+const ATTENTION_PAGE_SIZE = 5;
 
 const getHeatmapTileClassName = (
     severityBucket: "strong" | "moderate" | "weak" | "critical"
@@ -50,11 +55,46 @@ const getHeatmapTileClassName = (
 
 export default function StudentDashboardPage() {
     const { styles } = useStyles();
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const { state, actions } = useStudentDashboard();
+    const [heatmapPage, setHeatmapPage] = useState(1);
+    const [attentionPage, setAttentionPage] = useState(1);
 
     const dashboardData = state.data;
+    const isEnglishLanguage = i18n.resolvedLanguage?.startsWith("en") ?? false;
     const welcomeName = dashboardData?.studentName || t("sidebar.student");
+    const guidanceMessage = dashboardData
+        ? (isEnglishLanguage && dashboardData.guidance?.baseMessage
+            ? dashboardData.guidance.baseMessage
+            : getLocalizedGuidanceMessage(dashboardData.overallScore, t))
+        : "";
+
+    const heatmapTotal = dashboardData?.masteryHeatmap.length ?? 0;
+    const heatmapTotalPages = Math.max(1, Math.ceil(heatmapTotal / HEATMAP_PAGE_SIZE));
+    const currentHeatmapPage = Math.min(heatmapPage, heatmapTotalPages);
+    const attentionTotal = dashboardData?.areasNeedingAttention.length ?? 0;
+    const attentionTotalPages = Math.max(1, Math.ceil(attentionTotal / ATTENTION_PAGE_SIZE));
+    const currentAttentionPage = Math.min(attentionPage, attentionTotalPages);
+
+    const pagedHeatmap = useMemo(() => {
+        if (!dashboardData) {
+            return [];
+        }
+
+        const startIndex = (currentHeatmapPage - 1) * HEATMAP_PAGE_SIZE;
+        const endIndex = startIndex + HEATMAP_PAGE_SIZE;
+        return dashboardData.masteryHeatmap.slice(startIndex, endIndex);
+    }, [currentHeatmapPage, dashboardData]);
+
+    const pagedAttention = useMemo(() => {
+        if (!dashboardData) {
+            return [];
+        }
+
+        const startIndex = (currentAttentionPage - 1) * ATTENTION_PAGE_SIZE;
+        const endIndex = startIndex + ATTENTION_PAGE_SIZE;
+        return dashboardData.areasNeedingAttention.slice(startIndex, endIndex);
+    }, [currentAttentionPage, dashboardData]);
 
     const summaryCards = [
         {
@@ -78,7 +118,7 @@ export default function StudentDashboardPage() {
         {
             key: "attention",
             icon: ExclamationCircleOutlined,
-            label: t("dashboard.student.dashboardPage.revisionAdvice.title"),
+            label: t("dashboard.student.dashboardPage.areasNeedingAttention"),
             value: `${dashboardData?.areasNeedingAttentionCount ?? 0}`,
         },
     ];
@@ -132,7 +172,7 @@ export default function StudentDashboardPage() {
                         {t("dashboard.student.dashboardPage.welcomeTitle", { name: welcomeName })}
                     </Title>
                     <Text type="secondary">
-                        {dashboardData.guidance?.baseMessage || t("dashboard.student.dashboardPage.welcomeSubtitle")}
+                        {guidanceMessage || t("dashboard.student.dashboardPage.welcomeSubtitle")}
                     </Text>
                 </div>
             </div>
@@ -201,39 +241,71 @@ export default function StudentDashboardPage() {
                         {dashboardData.masteryHeatmap.length === 0 ? (
                             <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={t("dashboard.student.dashboardPage.noTopicMasteryData")} />
                         ) : (
-                            <div className={styles.heatmapGrid}>
-                                {dashboardData.masteryHeatmap.map((item) => (
-                                    <div
-                                        key={item.topicId}
-                                        className={`${styles.heatmapTile} ${styles[getHeatmapTileClassName(item.severityBucket)]}`}
-                                    >
-                                        <span className={styles.heatmapPercent}>{Math.round(item.masteryPercent)}%</span>
-                                        <span className={styles.heatmapTopic}>{item.topicName}</span>
-                                        <span className={styles.heatmapSubject}>{item.subjectName}</span>
+                            <>
+                                <div className={styles.heatmapGrid}>
+                                    {pagedHeatmap.map((item) => (
+                                        <div
+                                            key={item.topicId}
+                                            className={`${styles.heatmapTile} ${styles[getHeatmapTileClassName(item.severityBucket)]}`}
+                                        >
+                                            <span className={styles.heatmapPercent}>{Math.round(item.masteryPercent)}%</span>
+                                            <span className={styles.heatmapTopic}>{item.topicName}</span>
+                                            <span className={styles.heatmapSubject}>{item.subjectName}</span>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                {dashboardData.masteryHeatmap.length > HEATMAP_PAGE_SIZE ? (
+                                    <div className={styles.heatmapPagination}>
+                                        <Pagination
+                                            current={currentHeatmapPage}
+                                            pageSize={HEATMAP_PAGE_SIZE}
+                                            total={dashboardData.masteryHeatmap.length}
+                                            onChange={setHeatmapPage}
+                                            size="small"
+                                            showSizeChanger={false}
+                                        />
                                     </div>
-                                ))}
-                            </div>
+                                ) : null}
+                            </>
                         )}
                     </Card>
                 </Col>
 
                 <Col xs={24} lg={8}>
-                    <Card className={styles.attentionCard} title={t("dashboard.student.dashboardPage.revisionAdvice.title")}>
+                    <Card className={styles.attentionCard} title={t("dashboard.student.dashboardPage.areasNeedingAttention")}>
                         {dashboardData.areasNeedingAttention.length === 0 ? (
                             <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={t("dashboard.student.dashboardPage.noWeakTopics")} />
                         ) : (
-                            <Space direction="vertical" size={12} className={styles.fullWidth}>
-                                {dashboardData.areasNeedingAttention.map((topic) => (
-                                    <div key={topic.topicId} className={styles.attentionItem}>
-                                        <div className={styles.attentionHeader}>
-                                            <Text className={styles.attentionTitle}>{topic.topicName}</Text>
-                                            <Text className={styles.attentionPercent}>{Math.round(topic.masteryPercent)}%</Text>
+                            <div>
+                                <Space direction="vertical" size={12} className={styles.attentionList}>
+                                    {pagedAttention.map((topic) => (
+                                        <div key={topic.topicId} className={styles.attentionItem}>
+                                            <div className={styles.attentionHeader}>
+                                                <Text className={styles.attentionTitle}>{topic.topicName}</Text>
+                                                <Text className={styles.attentionPercent}>{Math.round(topic.masteryPercent)}%</Text>
+                                            </div>
+                                            <Text className={styles.attentionMeta}>{topic.subjectName || t("dashboard.student.dashboardPage.allSubjects")}</Text>
+                                            <Text className={styles.attentionDesc}>
+                                                {getLocalizedAttentionAction(topic.masteryPercent, topic.ruleBasisAction, t, isEnglishLanguage)}
+                                            </Text>
                                         </div>
-                                        <Text className={styles.attentionMeta}>{topic.subjectName}</Text>
-                                        <Text className={styles.attentionDesc}>{topic.ruleBasisAction}</Text>
+                                    ))}
+                                </Space>
+
+                                {dashboardData.areasNeedingAttention.length > ATTENTION_PAGE_SIZE ? (
+                                    <div className={styles.attentionPagination}>
+                                        <Pagination
+                                            current={currentAttentionPage}
+                                            pageSize={ATTENTION_PAGE_SIZE}
+                                            total={dashboardData.areasNeedingAttention.length}
+                                            onChange={setAttentionPage}
+                                            size="small"
+                                            showSizeChanger={false}
+                                        />
                                     </div>
-                                ))}
-                            </Space>
+                                ) : null}
+                            </div>
                         )}
                     </Card>
 
@@ -243,7 +315,7 @@ export default function StudentDashboardPage() {
                             <div>
                                 <Text className={styles.guidanceTitle}>{t("dashboard.student.dashboardPage.motivationalGuidanceTitle")}</Text>
                                 <Text className={styles.guidanceText}>
-                                    {dashboardData.guidance?.baseMessage || t("dashboard.student.dashboardPage.motivationalGuidanceFallback")}
+                                    {guidanceMessage || t("dashboard.student.dashboardPage.motivationalGuidanceFallback")}
                                 </Text>
                             </div>
                         </Space>

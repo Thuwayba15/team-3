@@ -201,6 +201,12 @@ export const useStyles = createStyles(({ css, token }) => ({
         }
     `,
 
+    heatmapPagination: css`
+        margin-top: ${token.marginMD}px;
+        display: flex;
+        justify-content: flex-end;
+    `,
+
     heatmapTile: css`
         border-radius: ${token.borderRadius}px;
         padding: 20px 12px 14px;
@@ -261,6 +267,16 @@ export const useStyles = createStyles(({ css, token }) => ({
             font-weight: 600;
             color: #ad6800;
         }
+    `,
+
+    attentionList: css`
+        width: 100%;
+    `,
+
+    attentionPagination: css`
+        margin-top: ${token.marginMD}px;
+        display: flex;
+        justify-content: flex-end;
     `,
 
     attentionItem: css`

@@ -110,6 +110,7 @@
         "welcomeSubtitle": "You're making great progress. Ready to continue learning?",
         "askAiTutor": "Ask AI Tutor",
         "allSubjects": "All Subjects",
+        "areasNeedingAttention": "Areas Needing Attention",
         "loadErrorTitle": "Unable to load your dashboard",
         "retry": "Retry",
         "noDashboardData": "No dashboard data is available yet.",
@@ -119,6 +120,17 @@
         "noWeakTopics": "No weak topics detected.",
         "motivationalGuidanceTitle": "Motivational Guidance",
         "motivationalGuidanceFallback": "Keep showing up. Every lesson builds your confidence.",
+        "motivationalMessages": {
+          "excellent": "Excellent progress! Keep up the momentum.",
+          "good": "Good work! A bit more effort will get you to mastery.",
+          "progress": "You're making progress. Continue practicing to strengthen your skills.",
+          "beginner": "Every expert started as a beginner. Don't give up!"
+        },
+        "attentionActions": {
+          "critical": "Your mastery is currently low. Revisit the core lesson and complete targeted practice questions.",
+          "weak": "You are close to confidence level. Review this topic and attempt a short revision exercise.",
+          "revision": "Do a quick recap and one practice activity to lock in this topic."
+        },
         "completedLessonsSummary": "You have completed {{count}} lessons so far.",
         "refreshProgress": "Refresh Progress",
         "noCompletedLessons": "No completed lessons yet.",
