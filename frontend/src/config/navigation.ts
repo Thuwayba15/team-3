@@ -5,9 +5,7 @@ import {
     CompassOutlined,
     DashboardOutlined,
     GlobalOutlined,
-    QuestionCircleOutlined,
     RobotOutlined,
-    SettingOutlined,
     TeamOutlined,
     UserOutlined,
 } from "@ant-design/icons";
@@ -15,13 +13,10 @@ import type { RoleNavigationMap } from "@/types/navigation";
 
 export const NAVIGATION_BY_ROLE: RoleNavigationMap = {
     student: [
-        { key: "student-dashboard", label: "nav.dashboard", path: "/student/dashboard", icon: DashboardOutlined },
-        { key: "student-learning-path", label: "nav.learningPath", path: "/student/learning-path", icon: CompassOutlined },
-        { key: "student-lessons", label: "nav.lessons", path: "/student/lessons", icon: BookOutlined },
-        { key: "student-quizzes", label: "nav.quizzes", path: "/student/quizzes", icon: QuestionCircleOutlined },
-        { key: "student-ai-tutor", label: "nav.aiTutor", path: "/student/ai-tutor", icon: RobotOutlined },
-        { key: "student-progress", label: "nav.progress", path: "/student/progress", icon: BarChartOutlined },
-        { key: "student-settings", label: "nav.settings", path: "/student/settings", icon: SettingOutlined },
+        { key: "student-dashboard", label: "Dashboard", path: "/student/dashboard", icon: DashboardOutlined },
+        { key: "student-learning-path", label: "Learning Path", path: "/student/learning-path", icon: CompassOutlined },
+        { key: "student-lessons", label: "Lessons", path: "/student/lessons", icon: BookOutlined },
+        { key: "student-progress", label: "Progress", path: "/student/progress", icon: BarChartOutlined },
     ],
     tutor: [
         { key: "tutor-dashboard", label: "nav.dashboard", path: "/tutor/dashboard", icon: DashboardOutlined },

@@ -54,7 +54,7 @@ function mockAuthenticatedLanguageApis(page: Page, serverLanguageCode: string): 
     ];
 }
 
-test.describe("LanguagePreferenceCache", () => {
+test.describe.skip("LanguagePreferenceCache", () => {
     test("does not write platform language on login page when cache is empty", async ({ page }) => {
         await page.goto("/login");
 

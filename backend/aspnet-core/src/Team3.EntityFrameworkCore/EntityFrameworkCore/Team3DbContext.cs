@@ -1,9 +1,12 @@
-﻿using Abp.Zero.EntityFrameworkCore;
+using Abp.Zero.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Team3.Authorization.Roles;
 using Team3.Authorization.Users;
+using Team3.Domain.Parents;
 using Team3.Domain.Students.Team3.Students;
 using Team3.Domain.Subjects;
+using Team3.Domain.Tutoring;
 using Team3.MultiTenancy;
 using Team3.Users;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -14,7 +17,7 @@ namespace Team3.EntityFrameworkCore;
 public class Team3DbContext : AbpZeroDbContext<Tenant, Role, User, Team3DbContext>
 {
     /* Define a DbSet for each entity of the application */
-    //Student
+    // Student
     public DbSet<StudentProfile> StudentProfiles { get; set; }
     // Tutor/Teacher
     public DbSet<TutorProfile> TutorProfiles { get; set; }
@@ -45,6 +48,17 @@ public class Team3DbContext : AbpZeroDbContext<Tenant, Role, User, Team3DbContex
     // Students
     public virtual DbSet<StudentSubject> StudentSubjects { get; set; }
 
+    // Parents
+    public virtual DbSet<ParentStudentLink> ParentStudentLinks { get; set; }
+    public virtual DbSet<StudentAlert> StudentAlerts { get; set; }
+    public virtual DbSet<StudentActivityLog> StudentActivityLogs { get; set; }
+    public virtual DbSet<AssessmentResult> AssessmentResults { get; set; }
+    public virtual DbSet<StudentTopicProgress> StudentTopicProgresses { get; set; }
+
+    // Tutoring
+    public virtual DbSet<StudentTutorRequest> StudentTutorRequests { get; set; }
+    public virtual DbSet<StudentTutorLink> StudentTutorLinks { get; set; }
+
     public Team3DbContext(DbContextOptions<Team3DbContext> options)
         : base(options)
     {
@@ -60,44 +74,55 @@ public class Team3DbContext : AbpZeroDbContext<Tenant, Role, User, Team3DbContex
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
-        modelBuilder.Entity<StudentProfile>(entity =>
-        {
-            entity.ToTable("AppStudentProfiles");
-            entity.HasIndex(x => x.UserId).IsUnique();
 
-            entity.Property(x => x.PreferredLanguage).IsRequired().HasMaxLength(64);
-            entity.Property(x => x.GradeLevel).IsRequired().HasMaxLength(32);
-            entity.Property(x => x.ProgressLevel).HasMaxLength(64);
-            entity.Property(x => x.SubjectInterests).HasMaxLength(512);
+        modelBuilder.Entity<ParentStudentLink>(e =>
+        {
+            e.ToTable("AppParentStudentLinks");
+            e.Property(x => x.RelationshipType).IsRequired().HasMaxLength(32);
+            e.HasIndex(x => new { x.ParentUserId, x.StudentUserId })
+                .IsUnique()
+                .HasFilter("\"IsDeleted\" = false");
         });
 
-        modelBuilder.Entity<TutorProfile>(entity =>
+        modelBuilder.Entity<StudentAlert>(e =>
         {
-            entity.ToTable("AppTutorProfiles");
-            entity.HasIndex(x => x.UserId).IsUnique();
-
-            entity.Property(x => x.PreferredLanguage).IsRequired().HasMaxLength(64);
-            entity.Property(x => x.Specialization).HasMaxLength(128);
-            entity.Property(x => x.Bio).HasMaxLength(1000);
-            entity.Property(x => x.SubjectInterests).HasMaxLength(512);
+            e.ToTable("AppStudentAlerts");
+            e.Property(x => x.Title).IsRequired().HasMaxLength(256);
+            e.Property(x => x.Description).IsRequired().HasMaxLength(1024);
         });
 
-        modelBuilder.Entity<ParentProfile>(entity =>
+        modelBuilder.Entity<StudentActivityLog>(e =>
         {
-            entity.ToTable("AppParentProfiles");
-            entity.HasIndex(x => x.UserId).IsUnique();
-
-            entity.Property(x => x.PreferredLanguage).IsRequired().HasMaxLength(64);
-            entity.Property(x => x.RelationshipNotes).HasMaxLength(256);
+            e.ToTable("AppStudentActivityLogs");
+            e.Property(x => x.Title).IsRequired().HasMaxLength(256);
         });
 
-        modelBuilder.Entity<AdminProfile>(entity =>
+        modelBuilder.Entity<AssessmentResult>(e =>
         {
-            entity.ToTable("AppAdminProfiles");
-            entity.HasIndex(x => x.UserId).IsUnique();
+            e.ToTable("AppAssessmentResults");
+            e.Property(x => x.Title).IsRequired().HasMaxLength(256);
+        });
 
-            entity.Property(x => x.PreferredLanguage).IsRequired().HasMaxLength(64);
-            entity.Property(x => x.Department).HasMaxLength(128);
+        modelBuilder.Entity<StudentTopicProgress>(e =>
+        {
+            e.ToTable("AppStudentTopicProgresses");
+            e.HasIndex(x => new { x.StudentUserId, x.TopicId }).IsUnique();
+        });
+
+        modelBuilder.Entity<StudentTutorRequest>(e =>
+        {
+            e.ToTable("AppStudentTutorRequests");
+            e.HasIndex(x => new { x.StudentUserId, x.TutorUserId })
+                .IsUnique()
+                .HasFilter($"\"Status\" = {(int)StudentTutorRequestStatus.Pending} AND \"IsDeleted\" = false");
+        });
+
+        modelBuilder.Entity<StudentTutorLink>(e =>
+        {
+            e.ToTable("AppStudentTutorLinks");
+            e.HasIndex(x => new { x.StudentUserId, x.TutorUserId })
+                .IsUnique()
+                .HasFilter("\"IsDeleted\" = false");
         });
 
         modelBuilder.Entity<PlatformLanguage>(entity =>
