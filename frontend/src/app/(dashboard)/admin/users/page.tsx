@@ -251,12 +251,6 @@ export default function AdminUsersPage() {
             ),
         },
         {
-            title: t("dashboard.admin.users.columns.lastLogin"),
-            dataIndex: "lastLoginTime",
-            key: "lastLoginTime",
-            render: (value: string | null) => formatDate(value),
-        },
-        {
             title: t("dashboard.admin.users.columns.dateJoined"),
             dataIndex: "creationTime",
             key: "creationTime",
