@@ -2,15 +2,22 @@ import { createStyles } from "antd-style";
 
 export const useStyles = createStyles(({ css, token }) => ({
     root: css`
-        min-height: 100vh;
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
         background: ${token.colorBgLayout};
     `,
 
     body: css`
-        min-height: calc(100vh - 64px);
+        flex: 1;
+        min-height: 0;
+        overflow: hidden;
     `,
 
     content: css`
+        height: 100%;
+        overflow-y: auto;
         padding: ${token.paddingLG}px;
 
         @media (max-width: 991px) {
@@ -22,11 +29,10 @@ export const useStyles = createStyles(({ css, token }) => ({
         background: ${token.colorBgContainer};
         border-radius: ${token.borderRadiusLG}px;
         border: 1px solid ${token.colorBorderSecondary};
-        min-height: calc(100vh - 120px);
+        min-height: 100%;
         padding: ${token.paddingLG}px;
 
         @media (max-width: 991px) {
-            min-height: calc(100vh - 112px);
             padding: ${token.paddingMD}px;
         }
     `,
