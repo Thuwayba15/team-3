@@ -12,10 +12,21 @@ import {
 import { Alert, Button, Card, Empty, Progress, Spin, Tag, Typography, message } from "antd";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useStyles } from "./styles";
 import AiTutorDrawer from "@/components/AiTutorDrawer";
-import { studentLearningPathService, type IStudentLearningPath, type IStudentLearningPathLesson, type IStudentLearningPathTopic } from "@/services/student/studentLearningPathService";
-import { studentSubjectService, type ILessonDetail, type ILessonTranslationSummary, type IStudentSubject } from "@/services/student/studentSubjectService";
+import SubjectSwitcher from "@/components/student/SubjectSwitcher";
+import { useStyles } from "./styles";
+import {
+    studentLearningPathService,
+    type IStudentLearningPath,
+    type IStudentLearningPathLesson,
+    type IStudentLearningPathTopic,
+} from "@/services/student/studentLearningPathService";
+import {
+    studentSubjectService,
+    type ILessonDetail,
+    type ILessonTranslationSummary,
+    type IStudentSubject,
+} from "@/services/student/studentSubjectService";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -133,7 +144,7 @@ function LessonDetail({
             <div className={styles.detailMain}>
                 <div className={styles.breadcrumb}>
                     <Button type="link" icon={<LeftOutlined />} className={styles.backBtn} onClick={onBack} />
-                    <span>{`${subjectPath.subjectName} • ${topic.name}`}</span>
+                    <span>{`${subjectPath.subjectName} · ${topic.name}`}</span>
                 </div>
 
                 <h1 className={styles.lessonHeading}>{lessonDetail?.title ?? lesson.title}</h1>
@@ -225,35 +236,50 @@ function LessonDetail({
 
 function LessonList({
     subjectPath,
-    onSelect,
+    subjects,
+    activeSubjectId,
+    onSelectSubject,
+    onSelectLesson,
 }: {
     subjectPath: IStudentLearningPath;
-    onSelect: (lessonId: string) => void;
+    subjects: IStudentSubject[];
+    activeSubjectId: string | null;
+    onSelectSubject: (subjectId: string) => void;
+    onSelectLesson: (lessonId: string) => void;
 }) {
     const { styles } = useStyles();
 
     return (
         <div>
             <div className={styles.pageHeader}>
-                <Title level={2} style={{ marginBottom: 0 }}>Lessons</Title>
-                <Text type="secondary">{`${subjectPath.subjectName} · adaptive lesson track`}</Text>
+                <div>
+                    <Title level={2} style={{ marginBottom: 0 }}>Lessons</Title>
+                    <Text type="secondary">{`${subjectPath.subjectName} · adaptive lesson track`}</Text>
+                </div>
+
+                <SubjectSwitcher
+                    subjects={subjects}
+                    activeSubjectId={activeSubjectId}
+                    onSelectSubject={onSelectSubject}
+                />
             </div>
 
             {subjectPath.topics.map((topic) => (
                 <Card
                     key={topic.topicId}
-                    title={
+                    title={(
                         <span>
                             <Text type="secondary" style={{ fontSize: 12, fontWeight: 400 }}>
-                                {subjectPath.subjectName} &nbsp;·&nbsp;
+                                {subjectPath.subjectName} ·
                             </Text>
+                            {" "}
                             {topic.name}
                         </span>
-                    }
+                    )}
                     className={styles.moduleCard}
                 >
                     <div style={{ marginBottom: 12, display: "flex", gap: 8, flexWrap: "wrap" }}>
-                        {topic.assignedDifficultyLevel && <Tag color="blue">{getDifficultyLabel(topic.assignedDifficultyLevel)}</Tag>}
+                        {topic.assignedDifficultyLevel ? <Tag color="blue">{getDifficultyLabel(topic.assignedDifficultyLevel)}</Tag> : null}
                         <Text type="secondary">{topic.recommendedAction}</Text>
                     </div>
 
@@ -264,7 +290,7 @@ function LessonList({
                             <div
                                 key={lesson.lessonId}
                                 className={styles.lessonRow}
-                                onClick={() => lesson.status !== "locked" && onSelect(lesson.lessonId)}
+                                onClick={() => lesson.status !== "locked" && onSelectLesson(lesson.lessonId)}
                             >
                                 <div className={styles.lessonLeft}>
                                     <div
@@ -289,9 +315,9 @@ function LessonList({
                                 </div>
                                 <div className={styles.lessonRight}>
                                     {statusTag(lesson.status)}
-                                    {lesson.status !== "locked" && (
+                                    {lesson.status !== "locked" ? (
                                         <RightOutlined style={{ fontSize: 12, color: "#00b8a9" }} />
-                                    )}
+                                    ) : null}
                                 </div>
                             </div>
                         ))
@@ -303,13 +329,16 @@ function LessonList({
 }
 
 export default function StudentLessonsPage() {
+    const { styles } = useStyles();
     const router = useRouter();
     const searchParams = useSearchParams();
+    const subjectIdParam = searchParams.get("subjectId");
+    const lessonIdParam = searchParams.get("lessonId");
     const [messageApi, contextHolder] = message.useMessage();
     const [subjects, setSubjects] = useState<IStudentSubject[]>([]);
     const [subjectPath, setSubjectPath] = useState<IStudentLearningPath | null>(null);
-    const [activeSubjectId, setActiveSubjectId] = useState<string | null>(searchParams.get("subjectId"));
-    const [activeLessonId, setActiveLessonId] = useState<string | null>(searchParams.get("lessonId"));
+    const [activeSubjectId, setActiveSubjectId] = useState<string | null>(subjectIdParam);
+    const [activeLessonId, setActiveLessonId] = useState<string | null>(lessonIdParam);
     const [lessonDetail, setLessonDetail] = useState<ILessonDetail | null>(null);
     const [loading, setLoading] = useState(true);
     const [lessonLoading, setLessonLoading] = useState(false);
@@ -317,9 +346,9 @@ export default function StudentLessonsPage() {
     const [lessonError, setLessonError] = useState<string | null>(null);
 
     useEffect(() => {
-        setActiveSubjectId(searchParams.get("subjectId"));
-        setActiveLessonId(searchParams.get("lessonId"));
-    }, [searchParams]);
+        setActiveSubjectId(subjectIdParam);
+        setActiveLessonId(lessonIdParam);
+    }, [subjectIdParam, lessonIdParam]);
 
     useEffect(() => {
         let cancelled = false;
@@ -335,24 +364,42 @@ export default function StudentLessonsPage() {
                 }
 
                 setSubjects(subjectList);
-                const selectedSubjectId = searchParams.get("subjectId") ?? subjectList[0]?.id ?? null;
-                setActiveSubjectId(selectedSubjectId);
 
-                if (!selectedSubjectId) {
+                const nextSubjectId =
+                    (subjectIdParam && subjectList.some((subject) => subject.id === subjectIdParam) ? subjectIdParam : null)
+                    ?? subjectList[0]?.id
+                    ?? null;
+
+                setActiveSubjectId(nextSubjectId);
+
+                if (!nextSubjectId) {
                     setSubjectPath(null);
+                    setActiveLessonId(null);
                     return;
                 }
 
-                const path = await studentLearningPathService.getSubjectPath(selectedSubjectId);
+                const path = await studentLearningPathService.getSubjectPath(nextSubjectId);
                 if (cancelled) {
                     return;
                 }
 
                 setSubjectPath(path);
 
-                const requestedLessonId = searchParams.get("lessonId");
-                const defaultLessonId = requestedLessonId ?? getCurrentLesson(path)?.lesson.lessonId ?? null;
-                setActiveLessonId(defaultLessonId);
+                const validLessonIds = new Set(path.topics.flatMap((topic) => topic.lessons.map((lesson) => lesson.lessonId)));
+                const nextLessonId =
+                    (lessonIdParam && validLessonIds.has(lessonIdParam) ? lessonIdParam : null)
+                    ?? getCurrentLesson(path)?.lesson.lessonId
+                    ?? null;
+
+                setActiveLessonId(nextLessonId);
+
+                if (nextSubjectId !== subjectIdParam || nextLessonId !== lessonIdParam) {
+                    if (nextLessonId) {
+                        router.replace(`/student/lessons?subjectId=${nextSubjectId}&lessonId=${nextLessonId}`);
+                    } else {
+                        router.replace(`/student/lessons?subjectId=${nextSubjectId}`);
+                    }
+                }
             } catch (loadError) {
                 if (!cancelled) {
                     setError(loadError instanceof Error ? loadError.message : "Failed to load lessons.");
@@ -369,7 +416,7 @@ export default function StudentLessonsPage() {
         return () => {
             cancelled = true;
         };
-    }, [searchParams]);
+    }, [lessonIdParam, router, subjectIdParam]);
 
     useEffect(() => {
         let cancelled = false;
@@ -411,6 +458,13 @@ export default function StudentLessonsPage() {
         const path = await studentLearningPathService.getSubjectPath(subjectId);
         setSubjectPath(path);
         return path;
+    };
+
+    const handleSelectSubject = (subjectId: string) => {
+        setActiveSubjectId(subjectId);
+        setActiveLessonId(null);
+        setLessonDetail(null);
+        router.push(`/student/lessons?subjectId=${subjectId}`);
     };
 
     const handleSelectLesson = (lessonId: string) => {
@@ -467,18 +521,39 @@ export default function StudentLessonsPage() {
             ) : subjects.length === 0 || !subjectPath ? (
                 <Empty description="You are not enrolled in any subjects yet." />
             ) : activeLesson && activeTopic ? (
-                <LessonDetail
-                    subjectPath={subjectPath}
-                    topic={activeTopic}
-                    lesson={activeLesson}
-                    lessonDetail={lessonDetail}
-                    loading={lessonLoading}
-                    error={lessonError}
-                    onBack={handleBackToList}
-                    onComplete={() => void handleCompleteLesson()}
-                />
+                <>
+                    <div className={styles.pageHeader}>
+                        <div>
+                            <Title level={2} style={{ marginBottom: 0 }}>Lessons</Title>
+                            <Text type="secondary">{`${subjectPath.subjectName} · adaptive lesson track`}</Text>
+                        </div>
+
+                        <SubjectSwitcher
+                            subjects={subjects}
+                            activeSubjectId={activeSubjectId}
+                            onSelectSubject={handleSelectSubject}
+                        />
+                    </div>
+
+                    <LessonDetail
+                        subjectPath={subjectPath}
+                        topic={activeTopic}
+                        lesson={activeLesson}
+                        lessonDetail={lessonDetail}
+                        loading={lessonLoading}
+                        error={lessonError}
+                        onBack={handleBackToList}
+                        onComplete={() => void handleCompleteLesson()}
+                    />
+                </>
             ) : (
-                <LessonList subjectPath={subjectPath} onSelect={handleSelectLesson} />
+                <LessonList
+                    subjectPath={subjectPath}
+                    subjects={subjects}
+                    activeSubjectId={activeSubjectId}
+                    onSelectSubject={handleSelectSubject}
+                    onSelectLesson={handleSelectLesson}
+                />
             )}
         </div>
     );

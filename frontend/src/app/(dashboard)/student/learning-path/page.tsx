@@ -8,13 +8,24 @@ import {
 } from "@ant-design/icons";
 import { Alert, Button, Card, Empty, Progress, Spin, Tag, Typography, message } from "antd";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import SubjectEnrollmentModal from "@/components/student/SubjectEnrollmentModal";
+import SubjectSwitcher from "@/components/student/SubjectSwitcher";
 import QuizView from "./QuizView";
 import { useStyles } from "./styles";
 import type { AssessmentType } from "@/services/student/studentAssessmentService";
-import { studentLearningPathService, type IStudentLearningPath, type IStudentLearningPathLesson, type IStudentLearningPathTopic } from "@/services/student/studentLearningPathService";
-import { studentSubjectService, type DifficultyLevel, type IStudentSubject } from "@/services/student/studentSubjectService";
+import {
+    studentLearningPathService,
+    type IStudentLearningPath,
+    type IStudentLearningPathLesson,
+    type IStudentLearningPathTopic,
+} from "@/services/student/studentLearningPathService";
+import {
+    studentSubjectService,
+    type DifficultyLevel,
+    type IStudentSubject,
+} from "@/services/student/studentSubjectService";
 
 const { Text } = Typography;
 
@@ -91,11 +102,11 @@ function LessonRow({
                     <Button type="primary" size="small" className={styles.continueBtn} onClick={() => onOpenLesson(lesson.lessonId)}>
                         Continue
                     </Button>
-                    {lesson.quizAssessmentId && (
+                    {lesson.quizAssessmentId ? (
                         <Button size="small" onClick={() => onOpenQuiz(lesson.quizAssessmentId!)}>
                             Quiz
                         </Button>
-                    )}
+                    ) : null}
                 </div>
             </div>
         );
@@ -111,11 +122,11 @@ function LessonRow({
                 </div>
             </div>
             <div className={styles.topicRight}>
-                {lesson.quizAssessmentId && (
+                {lesson.quizAssessmentId ? (
                     <Button size="small" onClick={() => onOpenQuiz(lesson.quizAssessmentId!)}>
                         Review Quiz
                     </Button>
-                )}
+                ) : null}
                 <span className={styles.masteredTag}>{t("dashboard.student.learningPathPage.completed")}</span>
             </div>
         </div>
@@ -127,49 +138,77 @@ export default function StudentLearningPathPage() {
     const { t } = useTranslation();
     const router = useRouter();
     const searchParams = useSearchParams();
+    const subjectIdParam = searchParams.get("subjectId");
     const [messageApi, contextHolder] = message.useMessage();
     const [subjects, setSubjects] = useState<IStudentSubject[]>([]);
+    const [availableSubjects, setAvailableSubjects] = useState<IStudentSubject[]>([]);
     const [activeSubjectId, setActiveSubjectId] = useState<string | null>(null);
     const [subjectPath, setSubjectPath] = useState<IStudentLearningPath | null>(null);
     const [activeAssessment, setActiveAssessment] = useState<IActiveAssessment | null>(null);
     const [loadingSubjects, setLoadingSubjects] = useState(true);
     const [loadingPath, setLoadingPath] = useState(false);
     const [error, setError] = useState<string | null>(null);
+    const [isEnrollmentOpen, setIsEnrollmentOpen] = useState(false);
+    const [selectedEnrollmentIds, setSelectedEnrollmentIds] = useState<string[]>([]);
+    const [submittingEnrollment, setSubmittingEnrollment] = useState(false);
 
-    useEffect(() => {
-        let cancelled = false;
+    const enrolledSubjectIds = useMemo(() => subjects.map((subject) => subject.id), [subjects]);
 
-        const loadSubjects = async () => {
-            setLoadingSubjects(true);
-            setError(null);
+    const syncSubjectRoute = useCallback((subjectId: string | null) => {
+        if (!subjectId) {
+            router.replace("/student/learning-path");
+            return;
+        }
 
-            try {
-                const data = await studentSubjectService.getMySubjects();
-                if (cancelled) {
-                    return;
-                }
+        router.replace(`/student/learning-path?subjectId=${subjectId}`);
+    }, [router]);
 
-                setSubjects(data);
-                const requestedSubjectId = searchParams.get("subjectId");
-                const subjectExists = requestedSubjectId ? data.some((subject) => subject.id === requestedSubjectId) : false;
-                setActiveSubjectId((current) => current ?? (subjectExists ? requestedSubjectId : data[0]?.id ?? null));
-            } catch (loadError) {
-                if (!cancelled) {
-                    setError(loadError instanceof Error ? loadError.message : "Failed to load subjects.");
-                }
-            } finally {
-                if (!cancelled) {
-                    setLoadingSubjects(false);
+    const loadSubjectCatalog = async (): Promise<IStudentSubject[]> => {
+        const subjectCatalog = await studentSubjectService.getAllSubjects();
+        setAvailableSubjects(subjectCatalog);
+        return subjectCatalog;
+    };
+
+    const loadEnrolledSubjects = useCallback(async (preferredSubjectId?: string | null) => {
+        setLoadingSubjects(true);
+        setError(null);
+
+        try {
+            const [enrolledSubjects, subjectCatalog] = await Promise.all([
+                studentSubjectService.getMySubjects(),
+                loadSubjectCatalog(),
+            ]);
+
+            setSubjects(enrolledSubjects);
+
+            const requestedSubjectId = preferredSubjectId ?? subjectIdParam;
+            const nextSubjectId =
+                (requestedSubjectId && enrolledSubjects.some((subject) => subject.id === requestedSubjectId) ? requestedSubjectId : null)
+                ?? enrolledSubjects[0]?.id
+                ?? null;
+
+            setActiveSubjectId(nextSubjectId);
+
+            if (nextSubjectId !== subjectIdParam) {
+                syncSubjectRoute(nextSubjectId);
+            }
+
+            if (enrolledSubjects.length === 0) {
+                setSubjectPath(null);
+                if (subjectCatalog.length > 0) {
+                    setIsEnrollmentOpen(false);
                 }
             }
-        };
+        } catch (loadError) {
+            setError(loadError instanceof Error ? loadError.message : "Failed to load subjects.");
+        } finally {
+            setLoadingSubjects(false);
+        }
+    }, [subjectIdParam, syncSubjectRoute]);
 
-        void loadSubjects();
-
-        return () => {
-            cancelled = true;
-        };
-    }, [searchParams]);
+    useEffect(() => {
+        void loadEnrolledSubjects();
+    }, [loadEnrolledSubjects]);
 
     const loadSubjectPath = async (subjectId: string) => {
         setLoadingPath(true);
@@ -195,6 +234,11 @@ export default function StudentLearningPathPage() {
         void loadSubjectPath(activeSubjectId);
     }, [activeSubjectId]);
 
+    const handleSelectSubject = (subjectId: string) => {
+        setActiveSubjectId(subjectId);
+        router.push(`/student/learning-path?subjectId=${subjectId}`);
+    };
+
     const handleOpenLesson = (lessonId: string) => {
         if (!activeSubjectId) {
             return;
@@ -213,6 +257,44 @@ export default function StudentLearningPathPage() {
 
         if (currentSubjectId) {
             await loadSubjectPath(currentSubjectId);
+        }
+    };
+
+    const handleSubmitEnrollment = async () => {
+        setSubmittingEnrollment(true);
+
+        try {
+            const result = await studentSubjectService.bulkEnroll({ subjectIds: selectedEnrollmentIds });
+            const enrolledCount = result.enrolledSubjectIds.length;
+
+            if (enrolledCount > 0) {
+                messageApi.success(
+                    enrolledCount === 1
+                        ? "1 subject added to your learning path."
+                        : `${enrolledCount} subjects added to your learning path.`
+                );
+            }
+
+            if (result.alreadyEnrolledSubjectIds.length > 0) {
+                messageApi.info(
+                    result.alreadyEnrolledSubjectIds.length === 1
+                        ? "1 selected subject was already enrolled."
+                        : `${result.alreadyEnrolledSubjectIds.length} selected subjects were already enrolled.`
+                );
+            }
+
+            if (result.notFoundSubjectIds.length > 0) {
+                messageApi.warning("Some selected subjects could not be found.");
+            }
+
+            const preferredSubjectId = result.enrolledSubjectIds[0] ?? activeSubjectId;
+            setSelectedEnrollmentIds([]);
+            setIsEnrollmentOpen(false);
+            await loadEnrolledSubjects(preferredSubjectId);
+        } catch (submitError) {
+            messageApi.error(submitError instanceof Error ? submitError.message : "Failed to enroll in subjects.");
+        } finally {
+            setSubmittingEnrollment(false);
         }
     };
 
@@ -244,18 +326,12 @@ export default function StudentLearningPathPage() {
                     <Text type="secondary">{t("dashboard.student.learningPathPage.subtitle")}</Text>
                 </div>
 
-                <div className={styles.subjectTabs}>
-                    {subjects.map((subject) => (
-                        <button
-                            key={subject.id}
-                            className={`${styles.subjectTab} ${activeSubjectId === subject.id ? styles.subjectTabActive : ""}`}
-                            onClick={() => setActiveSubjectId(subject.id)}
-                            type="button"
-                        >
-                            {subject.name}
-                        </button>
-                    ))}
-                </div>
+                <SubjectSwitcher
+                    subjects={subjects}
+                    activeSubjectId={activeSubjectId}
+                    onSelectSubject={handleSelectSubject}
+                    onAddSubjects={() => setIsEnrollmentOpen(true)}
+                />
             </div>
 
             {loadingSubjects ? (
@@ -265,10 +341,17 @@ export default function StudentLearningPathPage() {
             ) : subjects.length === 0 ? (
                 <Card className={styles.emptyState}>
                     <Empty description="You are not enrolled in any subjects yet." />
+                    {availableSubjects.length > 0 ? (
+                        <div className={styles.emptyActions}>
+                            <Button type="primary" onClick={() => setIsEnrollmentOpen(true)}>
+                                Enroll in subjects
+                            </Button>
+                        </div>
+                    ) : null}
                 </Card>
             ) : (
                 <>
-                    {error && (
+                    {error ? (
                         <Alert
                             type="error"
                             showIcon
@@ -276,9 +359,9 @@ export default function StudentLearningPathPage() {
                             message="Unable to load your learning path"
                             description={error}
                         />
-                    )}
+                    ) : null}
 
-                    {subjectPath && (
+                    {subjectPath ? (
                         <>
                             <Card className={styles.subjectSummaryCard}>
                                 <div className={styles.subjectSummaryHeader}>
@@ -287,12 +370,12 @@ export default function StudentLearningPathPage() {
                                             {subjectPath.subjectName} - {subjectPath.gradeLevel}
                                         </h3>
                                         <div className={styles.summaryMeta}>
-                                            {currentTopic?.assignedDifficultyLevel && (
+                                            {currentTopic?.assignedDifficultyLevel ? (
                                                 <Tag color={getDifficultyTone(currentTopic.assignedDifficultyLevel).color}>
                                                     {getDifficultyTone(currentTopic.assignedDifficultyLevel).label}
                                                 </Tag>
-                                            )}
-                                            {currentTopic?.needsRevision && <Tag color="warning">Revision recommended</Tag>}
+                                            ) : null}
+                                            {currentTopic?.needsRevision ? <Tag color="warning">Revision recommended</Tag> : null}
                                         </div>
                                     </div>
                                     <div>
@@ -311,13 +394,13 @@ export default function StudentLearningPathPage() {
                                 </div>
                             </Card>
 
-                            {currentTopic && currentTopic.diagnosticAssessmentId && currentTopic.assignedDifficultyLevel === null && (
+                            {currentTopic && currentTopic.diagnosticAssessmentId && currentTopic.assignedDifficultyLevel === null ? (
                                 <Alert
                                     type="info"
                                     showIcon
                                     className={styles.infoBanner}
                                     message="Diagnostic required"
-                                    description={
+                                    description={(
                                         <div>
                                             <div style={{ marginBottom: 12 }}>{currentTopic.recommendedAction}</div>
                                             <Button
@@ -327,9 +410,9 @@ export default function StudentLearningPathPage() {
                                                 Start diagnostic
                                             </Button>
                                         </div>
-                                    }
+                                    )}
                                 />
-                            )}
+                            ) : null}
 
                             {loadingPath ? (
                                 <Card className={styles.subjectSummaryCard}>
@@ -349,22 +432,22 @@ export default function StudentLearningPathPage() {
                                         return (
                                             <div key={topic.topicId} className={styles.timelineItem}>
                                                 <div className={styles.timelineLeft}>
-                                                    {topic.status === "completed" && (
+                                                    {topic.status === "completed" ? (
                                                         <div className={styles.timelineDot}>
                                                             <CheckCircleFilled />
                                                         </div>
-                                                    )}
-                                                    {topic.status === "current" && (
+                                                    ) : null}
+                                                    {topic.status === "current" ? (
                                                         <div className={styles.timelineDotInProgress}>
                                                             <div className={styles.timelineDotInner} />
                                                         </div>
-                                                    )}
-                                                    {topic.status === "locked" && (
+                                                    ) : null}
+                                                    {topic.status === "locked" ? (
                                                         <div className={styles.timelineDotLocked}>
                                                             <LockOutlined />
                                                         </div>
-                                                    )}
-                                                    {!isLast && <div className={connectorClass} />}
+                                                    ) : null}
+                                                    {!isLast ? <div className={connectorClass} /> : null}
                                                 </div>
 
                                                 <div className={styles.timelineContent}>
@@ -374,26 +457,26 @@ export default function StudentLearningPathPage() {
                                                         <div className={styles.moduleHeader}>
                                                             <div className={styles.moduleTitleRow}>
                                                                 <span className={styles.moduleTitle}>{topic.name}</span>
-                                                                {topic.status === "completed" && (
+                                                                {topic.status === "completed" ? (
                                                                     <Tag color="success">{t("dashboard.student.learningPathPage.completed")}</Tag>
-                                                                )}
-                                                                {topic.status === "current" && (
+                                                                ) : null}
+                                                                {topic.status === "current" ? (
                                                                     <Tag color="processing">{t("dashboard.student.learningPathPage.inProgress")}</Tag>
-                                                                )}
-                                                                {topic.status === "locked" && (
+                                                                ) : null}
+                                                                {topic.status === "locked" ? (
                                                                     <Tag>{t("dashboard.student.learningPathPage.locked")}</Tag>
-                                                                )}
+                                                                ) : null}
                                                             </div>
                                                         </div>
 
-                                                        {topic.description && (
+                                                        {topic.description ? (
                                                             <div className={styles.moduleDesc}>{topic.description}</div>
-                                                        )}
+                                                        ) : null}
 
                                                         <div className={styles.moduleMeta}>
-                                                            {topic.assignedDifficultyLevel && (
+                                                            {topic.assignedDifficultyLevel ? (
                                                                 <Tag color={difficultyTone.color}>{difficultyTone.label}</Tag>
-                                                            )}
+                                                            ) : null}
                                                             <span className={styles.lessonMetaPill}>
                                                                 Mastery {Math.round(topic.masteryScore)}%
                                                             </span>
@@ -401,12 +484,12 @@ export default function StudentLearningPathPage() {
 
                                                         <div className={styles.topicAction}>{topic.recommendedAction}</div>
 
-                                                        {topic.status === "current" && topic.lessons.length > 0 && (
+                                                        {topic.status === "current" && topic.lessons.length > 0 ? (
                                                             <div className={styles.moduleProgress}>
                                                                 <div className={styles.progressPercent}>{moduleProgress}%</div>
                                                                 <Progress percent={moduleProgress} showInfo={false} strokeColor="#00b8a9" />
                                                             </div>
-                                                        )}
+                                                        ) : null}
 
                                                         {topic.lessons.length > 0 ? (
                                                             topic.status === "completed" ? (
@@ -439,40 +522,42 @@ export default function StudentLearningPathPage() {
                                                             </Text>
                                                         )}
 
-                                                        {topic.status === "current" && topic.diagnosticAssessmentId && topic.assignedDifficultyLevel === null && (
-                                                            <div style={{ marginTop: 16 }}>
-                                                                <Button
-                                                                    type="primary"
-                                                                    className={styles.continueBtn}
-                                                                    onClick={() => handleOpenAssessment(topic.diagnosticAssessmentId!, 1)}
-                                                                >
-                                                                    Start diagnostic
-                                                                </Button>
-                                                            </div>
-                                                        )}
+                                                        {topic.status === "current"
+                                                            && topic.diagnosticAssessmentId
+                                                            && topic.assignedDifficultyLevel === null ? (
+                                                                <div style={{ marginTop: 16 }}>
+                                                                    <Button
+                                                                        type="primary"
+                                                                        className={styles.continueBtn}
+                                                                        onClick={() => handleOpenAssessment(topic.diagnosticAssessmentId!, 1)}
+                                                                    >
+                                                                        Start diagnostic
+                                                                    </Button>
+                                                                </div>
+                                                            ) : null}
 
                                                         {topic.status === "current"
                                                             && topic.assignedDifficultyLevel !== null
                                                             && topic.lessons.every((lesson) => lesson.status === "completed")
-                                                            && topic.lessons.some((lesson) => lesson.quizAssessmentId) && (
-                                                            <div style={{ marginTop: 16 }}>
-                                                                <Button
-                                                                    type="primary"
-                                                                    className={styles.continueBtn}
-                                                                    onClick={() => {
-                                                                        const lessonWithQuiz = topic.lessons.find((lesson) => lesson.quizAssessmentId);
-                                                                        if (!lessonWithQuiz?.quizAssessmentId) {
-                                                                            messageApi.error("No lesson quiz is available yet for this topic.");
-                                                                            return;
-                                                                        }
+                                                            && topic.lessons.some((lesson) => lesson.quizAssessmentId) ? (
+                                                                <div style={{ marginTop: 16 }}>
+                                                                    <Button
+                                                                        type="primary"
+                                                                        className={styles.continueBtn}
+                                                                        onClick={() => {
+                                                                            const lessonWithQuiz = topic.lessons.find((lesson) => lesson.quizAssessmentId);
+                                                                            if (!lessonWithQuiz?.quizAssessmentId) {
+                                                                                messageApi.error("No lesson quiz is available yet for this topic.");
+                                                                                return;
+                                                                            }
 
-                                                                        handleOpenAssessment(lessonWithQuiz.quizAssessmentId, 2);
-                                                                    }}
-                                                                >
-                                                                    Take lesson quiz
-                                                                </Button>
-                                                            </div>
-                                                        )}
+                                                                            handleOpenAssessment(lessonWithQuiz.quizAssessmentId, 2);
+                                                                        }}
+                                                                    >
+                                                                        Take lesson quiz
+                                                                    </Button>
+                                                                </div>
+                                                            ) : null}
                                                     </Card>
                                                 </div>
                                             </div>
@@ -481,9 +566,28 @@ export default function StudentLearningPathPage() {
                                 </div>
                             )}
                         </>
-                    )}
+                    ) : !loadingPath ? (
+                        <Card className={styles.emptyState}>
+                            <Empty description="No learning path is available for this subject yet." />
+                        </Card>
+                    ) : null}
                 </>
             )}
+
+            <SubjectEnrollmentModal
+                open={isEnrollmentOpen}
+                loading={loadingSubjects}
+                submitting={submittingEnrollment}
+                subjects={availableSubjects}
+                enrolledSubjectIds={enrolledSubjectIds}
+                selectedSubjectIds={selectedEnrollmentIds}
+                onCancel={() => {
+                    setSelectedEnrollmentIds([]);
+                    setIsEnrollmentOpen(false);
+                }}
+                onSelectionChange={setSelectedEnrollmentIds}
+                onSubmit={handleSubmitEnrollment}
+            />
         </div>
     );
 }

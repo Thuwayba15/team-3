@@ -1,5 +1,6 @@
 import {
     STUDENT_SUBJECT_BULK_ENROLL_ENDPOINT,
+    STUDENT_SUBJECT_GET_ALL_SUBJECTS_ENDPOINT,
     STUDENT_SUBJECT_GET_LESSON_ENDPOINT,
     STUDENT_SUBJECT_GET_MY_SUBJECTS_ENDPOINT,
 } from "@/constants/api";
@@ -59,6 +60,11 @@ async function getMySubjects(): Promise<IStudentSubject[]> {
     return response.data.result;
 }
 
+async function getAllSubjects(): Promise<IStudentSubject[]> {
+    const response = await apiClient.get<IAbpResponseEnvelope<IStudentSubject[]>>(STUDENT_SUBJECT_GET_ALL_SUBJECTS_ENDPOINT);
+    return response.data.result;
+}
+
 async function bulkEnroll(input: IBulkEnrollInput): Promise<IBulkEnrollOutput> {
     const response = await apiClient.post<IAbpResponseEnvelope<IBulkEnrollOutput>>(STUDENT_SUBJECT_BULK_ENROLL_ENDPOINT, input);
     return response.data.result;
@@ -72,6 +78,7 @@ async function getLesson(lessonId: string): Promise<ILessonDetail> {
 }
 
 export const studentSubjectService = {
+    getAllSubjects,
     getMySubjects,
     bulkEnroll,
     getLesson,

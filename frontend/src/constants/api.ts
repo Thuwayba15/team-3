@@ -58,6 +58,9 @@ export const REGISTER_ENDPOINT = "/api/services/app/Account/Register";
 /** Returns subjects the authenticated student is enrolled in. */
 export const STUDENT_SUBJECT_GET_MY_SUBJECTS_ENDPOINT = "/api/services/app/StudentSubject/GetMySubjects";
 
+/** Returns all active subjects available for student enrollment. */
+export const STUDENT_SUBJECT_GET_ALL_SUBJECTS_ENDPOINT = "/api/services/app/StudentSubject/GetAllSubjects";
+
 /** Enrolls the authenticated student in one or more subjects. */
 export const STUDENT_SUBJECT_BULK_ENROLL_ENDPOINT = "/api/services/app/StudentSubject/BulkEnroll";
 
