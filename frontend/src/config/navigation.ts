@@ -33,7 +33,6 @@ export const NAVIGATION_BY_ROLE: RoleNavigationMap = {
     admin: [
         { key: "admin-dashboard", label: "nav.dashboard", path: "/admin/dashboard", icon: DashboardOutlined },
         { key: "admin-users", label: "nav.users", path: "/admin/users", icon: UserOutlined },
-        { key: "admin-languages", label: "nav.languages", path: "/admin/languages", icon: GlobalOutlined },
         { key: "admin-curriculum", label: "nav.curriculum", path: "/admin/curriculum", icon: BookOutlined },
         { key: "admin-ai-configuration", label: "nav.aiConfiguration", path: "/admin/ai-configuration", icon: RobotOutlined },
     ],

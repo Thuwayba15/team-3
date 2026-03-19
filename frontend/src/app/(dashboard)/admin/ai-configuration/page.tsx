@@ -38,7 +38,7 @@ function AiConfigurationContent() {
     const [messageApi, contextHolder] = message.useMessage();
 
     const { templates, isLoading, isError, errorMessage } = useAIPromptTemplateState();
-    const { getTemplates, createTemplate } = useAIPromptTemplateActions();
+    const { getTemplates, createTemplate, deleteTemplate } = useAIPromptTemplateActions();
 
     const [createModalOpen, setCreateModalOpen] = useState(false);
     const [creating, setCreating] = useState(false);

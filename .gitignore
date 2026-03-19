@@ -1,2 +1,3 @@
 frontend/.claude/settings.local.json
 frontend/.claude/settings.local.json
+backend/aspnet-core/src/Team3.Web.Host/App_Data/Logs/Logs.txt
