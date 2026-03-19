@@ -168,7 +168,7 @@ namespace Team3.Controllers
             {
                 HttpOnly = true,
                 Secure = true,
-                SameSite = sameSite,
+                SameSite = SameSiteMode.None,
                 Path = "/"
             };
         }
