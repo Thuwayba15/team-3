@@ -20,6 +20,6 @@ public interface IAIPromptTemplateAppService : IApplicationService
     /// <summary>Updates an existing prompt template.</summary>
     Task<AIPromptTemplateResponse> UpdateAsync(Guid id, UpdateAIPromptTemplateRequest input);
 
-    /// <summary>Deletes a prompt template by ID.</summary>
+    /// <summary>Deletes a prompt template using the ID its associated with.</summary>
     Task DeleteAsync(Guid id);
 }

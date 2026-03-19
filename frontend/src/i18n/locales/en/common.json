@@ -184,7 +184,16 @@
         "high": "High",
         "medium": "Medium",
         "low": "Low",
-        "saveConfiguration": "Save Configuration"
+        "saveConfiguration": "Save Configuration",
+        "newTemplate": "New Template",
+        "createTemplate": "Create Template",
+        "templateName": "Name",
+        "templatePurpose": "Purpose",
+        "templateText": "Template Text",
+        "temperature": "Temperature",
+        "templateCreated": "Prompt template created successfully.",
+        "noTemplates": "No prompt templates yet. Create one to get started.",
+        "loadError": "Failed to load prompt templates."
       },
       "curriculum": {
         "title": "Curriculum Management",

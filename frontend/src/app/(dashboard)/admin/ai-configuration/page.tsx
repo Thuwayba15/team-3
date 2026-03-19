@@ -4,70 +4,46 @@ import {
     Button,
     Card,
     Col,
+    Empty,
+    Form,
     Input,
     InputNumber,
+    Modal,
+    Popconfirm,
     Row,
     Select,
     Slider,
     Space,
+    Spin,
     Switch,
     Typography,
     message,
 } from "antd";
-import { useState } from "react";
+import { DeleteOutlined, PlusOutlined } from "@ant-design/icons";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/components/layout";
+import { AIPromptTemplateProvider, useAIPromptTemplateActions, useAIPromptTemplateState } from "@/providers/aiPromptTemplate";
+import { IAIPromptTemplate } from "@/services/ai/aiPromptTemplateService";
 import { useStyles } from "./styles";
 
 const { Text, Title } = Typography;
 
 type ProgressionMode = "Adaptive (AI-driven)" | "Linear (Strict sequence)" | "Custom";
 
-interface IPromptTemplate {
-    id: string;
-    name: string;
-    defaultContent: string;
-}
-
-interface IPromptTemplateState extends IPromptTemplate {
-    content: string;
-}
-
-const PROMPT_TEMPLATES: IPromptTemplate[] = [
-    {
-        id: "general",
-        name: "General Tutoring",
-        defaultContent:
-            "You are a helpful, encouraging tutor for South African students. Explain concepts simply and use local examples where appropriate. Always be supportive.",
-    },
-    {
-        id: "math",
-        name: "Mathematics Help",
-        defaultContent:
-            "When explaining math, break down the steps clearly. Do not just give the answer. Guide the student to solve it themselves by asking leading questions.",
-    },
-    {
-        id: "science",
-        name: "Science Explanation",
-        defaultContent:
-            "Use analogies to explain scientific concepts. Relate abstract ideas to everyday phenomena. Ensure safety is emphasized in any practical examples.",
-    },
-];
-
-function buildTemplateState(): IPromptTemplateState[] {
-    return PROMPT_TEMPLATES.map((template) => ({
-        ...template,
-        content: template.defaultContent,
-    }));
-}
-
-/** AI configuration page for prompt templates and recommendation settings. */
-export default function AdminAiConfigurationPage() {
+/** Inner content — consumes the AIPromptTemplateProvider. */
+function AiConfigurationContent() {
     const { styles } = useStyles();
     const { t } = useTranslation();
     const [messageApi, contextHolder] = message.useMessage();
 
-    const [templates, setTemplates] = useState<IPromptTemplateState[]>(buildTemplateState);
+    const { templates, isLoading, isError, errorMessage } = useAIPromptTemplateState();
+    const { getTemplates, createTemplate } = useAIPromptTemplateActions();
+
+    const [createModalOpen, setCreateModalOpen] = useState(false);
+    const [creating, setCreating] = useState(false);
+    const [form] = Form.useForm<Omit<IAIPromptTemplate, "id">>();
+
     const [masteryThreshold, setMasteryThreshold] = useState(70);
     const [maxRetryAttempts, setMaxRetryAttempts] = useState(3);
     const [difficultyProgression, setDifficultyProgression] = useState<ProgressionMode>("Adaptive (AI-driven)");
@@ -79,35 +55,46 @@ export default function AdminAiConfigurationPage() {
     const [increaseThreshold, setIncreaseThreshold] = useState(80);
     const [decreaseThreshold, setDecreaseThreshold] = useState(40);
 
-    const handleTemplateChange = (templateId: string, content: string): void => {
-        setTemplates((previous) =>
-            previous.map((template) =>
-                template.id === templateId
-                    ? {
-                        ...template,
-                        content,
-                    }
-                    : template
-            )
-        );
+    useEffect(() => {
+        getTemplates();
+    }, []);
+
+    useEffect(() => {
+        if (isError && errorMessage) {
+            messageApi.error(errorMessage);
+        }
+    }, [isError, errorMessage]);
+
+    const handleDeleteTemplate = async (id: string): Promise<void> => {
+        await deleteTemplate(id);
+        messageApi.success("Prompt template deleted.");
     };
 
-    const handleTemplateReset = (templateId: string): void => {
-        setTemplates((previous) =>
-            previous.map((template) =>
-                template.id === templateId
-                    ? {
-                        ...template,
-                        content: template.defaultContent,
-                    }
-                    : template
-            )
-        );
+    const handleCreateTemplate = async (values: Omit<IAIPromptTemplate, "id">): Promise<void> => {
+        setCreating(true);
+        await createTemplate(values);
+        setCreating(false);
+        setCreateModalOpen(false);
+        form.resetFields();
+        messageApi.success(t("dashboard.admin.aiConfiguration.templateCreated"));
     };
 
     const handleSaveConfiguration = (): void => {
         messageApi.success(t("dashboard.admin.aiConfiguration.saved"));
     };
+
+    const templateCardTitle = (
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <span>{t("dashboard.admin.aiConfiguration.promptTemplates")}</span>
+            <Button
+                type="primary"
+                icon={<PlusOutlined />}
+                onClick={() => setCreateModalOpen(true)}
+            >
+                {t("dashboard.admin.aiConfiguration.newTemplate")}
+            </Button>
+        </div>
+    );
 
     return (
         <div>
@@ -118,28 +105,48 @@ export default function AdminAiConfigurationPage() {
                 subtitle={t("dashboard.admin.aiConfiguration.subtitle")}
             />
 
-            <Card className={styles.sectionCard} title={t("dashboard.admin.aiConfiguration.promptTemplates")}>
-                <Row gutter={[16, 16]}>
-                    {templates.map((template) => (
-                        <Col key={template.id} xs={24} lg={8}>
-                            <Card className={styles.templateCard}>
-                                <Title level={5} className={styles.templateTitle}>{template.name}</Title>
-                                <Input.TextArea
-                                    className={styles.templateTextArea}
-                                    value={template.content}
-                                    onChange={(event) => handleTemplateChange(template.id, event.target.value)}
-                                    autoSize={{ minRows: 6, maxRows: 8 }}
-                                />
-                                <div className={styles.templateActions}>
-                                    <Button type="text" className={styles.resetButton} onClick={() => handleTemplateReset(template.id)}>
-                                        {t("dashboard.admin.aiConfiguration.resetToDefault")}
-                                    </Button>
-                                    <Button className={styles.editButton}>{t("common.edit")}</Button>
-                                </div>
-                            </Card>
-                        </Col>
-                    ))}
-                </Row>
+            <Card className={styles.sectionCard} title={templateCardTitle}>
+                <Spin spinning={isLoading}>
+                    {!isLoading && (!templates || templates.length === 0) ? (
+                        <Empty description={t("dashboard.admin.aiConfiguration.noTemplates")} />
+                    ) : (
+                        <Row gutter={[16, 16]}>
+                            {templates?.map((template) => (
+                                <Col key={template.id} xs={24} lg={8}>
+                                    <Card className={styles.templateCard}>
+                                        <Title level={5} className={styles.templateTitle}>{template.name}</Title>
+                                        <Text type="secondary" style={{ fontSize: 12 }}>{template.purpose}</Text>
+                                        <Input.TextArea
+                                            className={styles.templateTextArea}
+                                            value={template.templateText}
+                                            readOnly
+                                            autoSize={{ minRows: 6, maxRows: 8 }}
+                                        />
+                                        <div className={styles.templateActions}>
+                                            <Text type="secondary" style={{ fontSize: 12 }}>
+                                                {t("dashboard.admin.aiConfiguration.temperature")}: {template.temperature}
+                                            </Text>
+                                            <Button className={styles.editButton}>{t("common.edit")}</Button>
+                                            <Popconfirm
+                                                title="Delete template?"
+                                                description="This action cannot be undone."
+                                                okText="Delete"
+                                                cancelText="Cancel"
+                                                onConfirm={() => handleDeleteTemplate(template.id)}
+                                            >
+                                                <Button
+                                                    danger
+                                                    icon={<DeleteOutlined />}
+                                                    size="small"
+                                                />
+                                            </Popconfirm>
+                                        </div>
+                                    </Card>
+                                </Col>
+                            ))}
+                        </Row>
+                    )}
+                </Spin>
             </Card>
 
             <Row gutter={[16, 16]} className={styles.settingsRow}>
@@ -257,6 +264,60 @@ export default function AdminAiConfigurationPage() {
             <Button type="primary" className={styles.saveButton} onClick={handleSaveConfiguration}>
                 {t("dashboard.admin.aiConfiguration.saveConfiguration")}
             </Button>
+
+            <Modal
+                title={t("dashboard.admin.aiConfiguration.createTemplate")}
+                open={createModalOpen}
+                onCancel={() => { setCreateModalOpen(false); form.resetFields(); }}
+                onOk={() => form.submit()}
+                okText={t("dashboard.admin.aiConfiguration.createTemplate")}
+                confirmLoading={creating}
+            >
+                <Form
+                    form={form}
+                    layout="vertical"
+                    onFinish={handleCreateTemplate}
+                    initialValues={{ temperature: 0.7 }}
+                >
+                    <Form.Item
+                        name="name"
+                        label={t("dashboard.admin.aiConfiguration.templateName")}
+                        rules={[{ required: true }]}
+                    >
+                        <Input />
+                    </Form.Item>
+                    <Form.Item
+                        name="purpose"
+                        label={t("dashboard.admin.aiConfiguration.templatePurpose")}
+                        rules={[{ required: true }]}
+                    >
+                        <Input />
+                    </Form.Item>
+                    <Form.Item
+                        name="templateText"
+                        label={t("dashboard.admin.aiConfiguration.templateText")}
+                        rules={[{ required: true }]}
+                    >
+                        <Input.TextArea autoSize={{ minRows: 4, maxRows: 8 }} />
+                    </Form.Item>
+                    <Form.Item
+                        name="temperature"
+                        label={t("dashboard.admin.aiConfiguration.temperature")}
+                        rules={[{ required: true }]}
+                    >
+                        <InputNumber min={0} max={2} step={0.1} style={{ width: "100%" }} />
+                    </Form.Item>
+                </Form>
+            </Modal>
         </div>
+    );
+}
+
+/** AI configuration page — wraps content with the AIPromptTemplateProvider. */
+export default function AdminAiConfigurationPage() {
+    return (
+        <AIPromptTemplateProvider>
+            <AiConfigurationContent />
+        </AIPromptTemplateProvider>
     );
 }
