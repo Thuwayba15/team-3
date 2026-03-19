@@ -1,17 +1,14 @@
-using Abp.Domain.Services;
+﻿using Abp.Domain.Services;
 using Ardalis.GuardClauses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Team3.Enums;
 
 #nullable enable
 
 namespace Team3.Academic;
 
-/// <summary>
-/// Provides deterministic recommendation logic for student learning paths.
-/// This domain service ranks weak topics and selects the next lesson without AI dependencies.
-/// </summary>
 public class RecommendationEngine : DomainService
 {
     private const decimal PercentMultiplier = 100m;
@@ -19,180 +16,122 @@ public class RecommendationEngine : DomainService
     private const decimal RevisionBoost = 10m;
     private const decimal EarlySequenceBoostMax = 10m;
 
-    /// <summary>
-    /// Ranks weak topics for a student using subject-level mastery and intervention signals.
-    /// </summary>
-    /// <param name="topics">Active curriculum topics across enrolled subjects.</param>
-    /// <param name="subjectProgresses">Student subject progress records used as topic mastery proxy.</param>
-    /// <param name="maxResults">Maximum ranked items to return.</param>
-    /// <returns>Ordered weak-topic insights (highest priority first).</returns>
-    public virtual IReadOnlyList<TopicWeaknessInsight> RankWeakTopics(
+    public virtual IReadOnlyList<TopicWeaknessInsight> RankWeakTopicsByTopicProgress(
         IReadOnlyCollection<Topic> topics,
-        IReadOnlyCollection<StudentProgress> subjectProgresses,
+        IReadOnlyCollection<StudentTopicProgress> topicProgresses,
         int maxResults = 5)
     {
         Guard.Against.Null(topics);
-        Guard.Against.Null(subjectProgresses);
+        Guard.Against.Null(topicProgresses);
         Guard.Against.NegativeOrZero(maxResults);
 
-        if (topics.Count == 0 || subjectProgresses.Count == 0)
-        {
+        if (topics.Count == 0 || topicProgresses.Count == 0)
             return Array.Empty<TopicWeaknessInsight>();
-        }
 
-        var progressBySubject = subjectProgresses
-            .GroupBy(progress => progress.SubjectId)
-            .ToDictionary(group => group.Key, group => group.OrderByDescending(item => item.UpdatedAt).First());
+        var progressByTopic = topicProgresses
+            .GroupBy(p => p.TopicId)
+            .ToDictionary(g => g.Key, g => g.OrderByDescending(x => x.CreationTime).First());
 
-        var ranked = topics
-            .Where(topic => topic.IsActive && progressBySubject.ContainsKey(topic.SubjectId))
-            .Select(topic => CreateWeaknessInsight(topic, progressBySubject[topic.SubjectId]))
-            .Where(insight => insight.IsWeak)
-            .OrderByDescending(insight => insight.PriorityScore)
-            .ThenBy(insight => insight.MasteryPercent)
-            .ThenBy(insight => insight.TopicSequenceOrder)
+        return topics
+            .Where(t => t.IsActive && progressByTopic.ContainsKey(t.Id))
+            .Select(t => CreateWeaknessInsightFromTopicProgress(t, progressByTopic[t.Id]))
+            .Where(w => w.IsWeak)
+            .OrderByDescending(w => w.PriorityScore)
+            .ThenBy(w => w.MasteryPercent)
+            .ThenBy(w => w.TopicSequenceOrder)
             .Take(maxResults)
             .ToList();
-
-        return ranked;
     }
 
-    /// <summary>
-    /// Selects the next lesson by traversing weak topics in priority order.
-    /// </summary>
-    /// <param name="topics">Active curriculum topics across enrolled subjects.</param>
-    /// <param name="lessons">Lessons available for candidate topics.</param>
-    /// <param name="subjectProgresses">Student subject progress records used as topic mastery proxy.</param>
-    /// <returns>The next recommended published lesson, or null when none is available.</returns>
-    public virtual Lesson? SelectNextLesson(
+    public virtual Lesson? SelectNextLessonByTopicProgress(
         IReadOnlyCollection<Topic> topics,
         IReadOnlyCollection<Lesson> lessons,
-        IReadOnlyCollection<StudentProgress> subjectProgresses)
+        IReadOnlyCollection<StudentTopicProgress> topicProgresses)
     {
         Guard.Against.Null(topics);
         Guard.Against.Null(lessons);
-        Guard.Against.Null(subjectProgresses);
+        Guard.Against.Null(topicProgresses);
 
-        if (topics.Count == 0 || lessons.Count == 0 || subjectProgresses.Count == 0)
-        {
+        if (topics.Count == 0 || lessons.Count == 0 || topicProgresses.Count == 0)
             return null;
-        }
 
-        var weakTopics = RankWeakTopics(topics, subjectProgresses, maxResults: topics.Count);
+        var weakTopics = RankWeakTopicsByTopicProgress(topics, topicProgresses, topics.Count);
         if (weakTopics.Count == 0)
-        {
             return null;
-        }
 
         var lessonsByTopic = lessons
-            .Where(lesson => lesson.IsPublished)
-            .GroupBy(lesson => lesson.TopicId)
+            .Where(l => l.IsPublished)
+            .GroupBy(l => l.TopicId)
             .ToDictionary(
-                group => group.Key,
-                group => group
-                    .OrderBy(lesson => lesson.DifficultyLevel)
-                    .ThenBy(lesson => lesson.EstimatedMinutes)
-                    .ThenBy(lesson => lesson.Title)
+                g => g.Key,
+                g => g
+                    .OrderBy(l => l.DifficultyLevel)
+                    .ThenBy(l => l.EstimatedMinutes)
+                    .ThenBy(l => l.Title)
                     .ToList());
 
         foreach (var weakTopic in weakTopics)
         {
-            if (lessonsByTopic.TryGetValue(weakTopic.TopicId, out var candidateLessons) && candidateLessons.Count > 0)
-            {
-                return candidateLessons[0];
-            }
+            if (lessonsByTopic.TryGetValue(weakTopic.TopicId, out var candidates) && candidates.Count > 0)
+                return candidates[0];
         }
 
         return null;
     }
 
-    private static TopicWeaknessInsight CreateWeaknessInsight(Topic topic, StudentProgress progress)
+    private static TopicWeaknessInsight CreateWeaknessInsightFromTopicProgress(Topic topic, StudentTopicProgress progress)
     {
-        var masteryPercent = ClampPercent(progress.MasteryScore * PercentMultiplier);
+        var masteryPercent = ClampPercent(progress.MasteryScore);
         var thresholdPercent = ClampPercent(topic.MasteryThreshold * PercentMultiplier);
-        var masteryDeficit = Math.Max(0m, thresholdPercent - masteryPercent);
-        var sequenceBoost = ComputeEarlySequenceBoost(topic.SequenceOrder);
+        var deficit = Math.Max(0m, thresholdPercent - masteryPercent);
+        var seqBoost = ComputeEarlySequenceBoost(topic.SequenceOrder);
+        var notCompleted = progress.Status != LearningProgressStatus.Completed;
 
-        var priorityScore = masteryDeficit
-            + (progress.NeedsIntervention ? InterventionBoost : 0m)
-            + (progress.RevisionNeeded ? RevisionBoost : 0m)
-            + sequenceBoost;
+        var priority = deficit
+            + (notCompleted ? RevisionBoost : 0m)
+            + (progress.NeedsRevision ? InterventionBoost : 0m)
+            + seqBoost;
 
-        var isWeak = masteryPercent < thresholdPercent || progress.NeedsIntervention || progress.RevisionNeeded;
+        var isWeak = masteryPercent < thresholdPercent || progress.NeedsRevision || notCompleted;
 
         return new TopicWeaknessInsight(
-            topicId: topic.Id,
-            subjectId: topic.SubjectId,
-            topicName: topic.Name,
-            topicSequenceOrder: topic.SequenceOrder,
-            masteryPercent: masteryPercent,
-            thresholdPercent: thresholdPercent,
-            needsIntervention: progress.NeedsIntervention,
-            revisionNeeded: progress.RevisionNeeded,
-            isWeak: isWeak,
-            priorityScore: priorityScore);
+            topic.Id, topic.SubjectId, topic.Name, topic.SequenceOrder,
+            masteryPercent, thresholdPercent, notCompleted, progress.NeedsRevision, isWeak, priority);
     }
 
-    private static decimal ClampPercent(decimal value)
-    {
-        return Math.Min(PercentMultiplier, Math.Max(0m, decimal.Round(value, 2)));
-    }
+    private static decimal ClampPercent(decimal value) 
+        => Math.Min(PercentMultiplier, Math.Max(0m, decimal.Round(value, 2)));
 
-    private static decimal ComputeEarlySequenceBoost(int sequenceOrder)
-    {
-        var normalizedOrder = Math.Max(0, sequenceOrder);
-        var boost = EarlySequenceBoostMax - Math.Min(EarlySequenceBoostMax, normalizedOrder);
-        return decimal.Round(boost, 2);
-    }
+    private static decimal ComputeEarlySequenceBoost(int sequenceOrder) 
+        => decimal.Round(Math.Max(0m, EarlySequenceBoostMax - sequenceOrder), 2);
 }
 
-/// <summary>
-/// Computed weakness insight used to prioritize topics for recommendation.
-/// </summary>
 public sealed class TopicWeaknessInsight
 {
     public Guid TopicId { get; }
-
     public Guid SubjectId { get; }
-
     public string TopicName { get; }
-
     public int TopicSequenceOrder { get; }
-
     public decimal MasteryPercent { get; }
-
     public decimal ThresholdPercent { get; }
-
     public bool NeedsIntervention { get; }
-
     public bool RevisionNeeded { get; }
-
     public bool IsWeak { get; }
-
     public decimal PriorityScore { get; }
 
-    public TopicWeaknessInsight(
-        Guid topicId,
-        Guid subjectId,
-        string topicName,
-        int topicSequenceOrder,
-        decimal masteryPercent,
-        decimal thresholdPercent,
-        bool needsIntervention,
-        bool revisionNeeded,
-        bool isWeak,
-        decimal priorityScore)
+    public TopicWeaknessInsight(Guid topicId, Guid subjectId, string topicName, int order,
+        decimal masterPercent, decimal threshold, bool intervention, bool revision, bool weak, decimal priority)
     {
         TopicId = Guard.Against.Default(topicId);
         SubjectId = Guard.Against.Default(subjectId);
         TopicName = Guard.Against.NullOrWhiteSpace(topicName).Trim();
-        TopicSequenceOrder = topicSequenceOrder;
-        MasteryPercent = masteryPercent;
-        ThresholdPercent = thresholdPercent;
-        NeedsIntervention = needsIntervention;
-        RevisionNeeded = revisionNeeded;
-        IsWeak = isWeak;
-        PriorityScore = priorityScore;
+        TopicSequenceOrder = order;
+        MasteryPercent = masterPercent;
+        ThresholdPercent = threshold;
+        NeedsIntervention = intervention;
+        RevisionNeeded = revision;
+        IsWeak = weak;
+        PriorityScore = priority;
     }
 }
 
