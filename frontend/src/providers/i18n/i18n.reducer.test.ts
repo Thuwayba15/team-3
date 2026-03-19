@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { I18nActionType, setLanguage, setLoading } from "./actions";
+import { I18nAction, setLanguage, setLoading } from "./actions";
 import { INITIAL_STATE } from "./context";
 import { i18nReducer } from "./reducer";
 
@@ -23,7 +23,7 @@ describe("i18nReducer", () => {
         const unknownAction = {
             type: "UNKNOWN_ACTION",
             payload: "st",
-        } as unknown as { type: I18nActionType; payload: string };
+        } as unknown as I18nAction;
 
         const result = i18nReducer(INITIAL_STATE, unknownAction);
 

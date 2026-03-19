@@ -28,6 +28,7 @@ public class Team3DbContext : AbpZeroDbContext<Tenant, Role, User, Team3DbContex
 
     // Learning material upload entities
     public DbSet<Language> LearningLanguages { get; set; }
+    public DbSet<UserLanguagePreference> UserLanguagePreferences { get; set; }
     public DbSet<Subject> Subjects { get; set; }
     public DbSet<Topic> Topics { get; set; }
     public DbSet<Lesson> Lessons { get; set; }
@@ -42,7 +43,6 @@ public class Team3DbContext : AbpZeroDbContext<Tenant, Role, User, Team3DbContex
     public DbSet<QuestionTranslation> QuestionTranslations { get; set; }
 
     // Per-user platform language preference
-    public virtual DbSet<UserLanguagePreference> UserLanguagePreferences { get; set; }
 
     public Team3DbContext(DbContextOptions<Team3DbContext> options)
         : base(options)

@@ -159,9 +159,17 @@ public class UserAppService : AsyncCrudAppService<User, UserDto, long, PagedUser
 
     protected override IQueryable<User> CreateFilteredQuery(PagedUserResultRequestDto input)
     {
+        var normalizedRoleName = input.RoleName?.ToUpperInvariant();
+        var filteredRoleIds = normalizedRoleName.IsNullOrWhiteSpace()
+            ? null
+            : _roleManager.Roles
+                .Where(role => role.NormalizedName == normalizedRoleName || role.Name == input.RoleName)
+                .Select(role => role.Id);
+
         return Repository.GetAllIncluding(x => x.Roles)
             .WhereIf(!input.Keyword.IsNullOrWhiteSpace(), x => x.UserName.Contains(input.Keyword) || x.Name.Contains(input.Keyword) || x.EmailAddress.Contains(input.Keyword))
-            .WhereIf(input.IsActive.HasValue, x => x.IsActive == input.IsActive);
+            .WhereIf(input.IsActive.HasValue, x => x.IsActive == input.IsActive)
+            .WhereIf(filteredRoleIds != null, x => x.Roles.Any(userRole => filteredRoleIds.Contains(userRole.RoleId)));
     }
 
     protected override async Task<User> GetEntityByIdAsync(long id)

@@ -47,4 +47,29 @@ public class UserAppService_Tests : Team3TestBase
             johnNashUser.ShouldNotBeNull();
         });
     }
+
+    [Fact]
+    public async Task GetUsers_Should_Filter_By_Role()
+    {
+        await _userAppService.CreateAsync(
+            new CreateUserDto
+            {
+                EmailAddress = "admin.user@volosoft.com",
+                IsActive = true,
+                Name = "Admin",
+                Surname = "User",
+                Password = "123qwe",
+                UserName = "admin.user",
+                RoleNames = new[] { "Admin" }
+            });
+
+        var output = await _userAppService.GetAllAsync(new PagedUserResultRequestDto
+        {
+            MaxResultCount = 20,
+            SkipCount = 0,
+            RoleName = "Admin"
+        });
+
+        output.Items.ShouldContain(user => user.UserName == "admin.user");
+    }
 }

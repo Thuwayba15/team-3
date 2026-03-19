@@ -1,0 +1,22 @@
+[
+    {
+        "code": "en",
+        "name": "English",
+        "isDefault": true
+    },
+    {
+        "code": "zu",
+        "name": "isiZulu",
+        "isDefault": false
+    },
+    {
+        "code": "st",
+        "name": "Sesotho",
+        "isDefault": false
+    },
+    {
+        "code": "af",
+        "name": "Afrikaans",
+        "isDefault": false
+    }
+]
