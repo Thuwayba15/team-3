@@ -1,0 +1,199 @@
+{
+  "nav": {
+    "dashboard": "Dashboard",
+    "learningPath": "Learning Path",
+    "lessons": "Lessons",
+    "quizzes": "Quizzes",
+    "aiTutor": "AI Tutor",
+    "progress": "Progress",
+    "students": "Students",
+    "interventions": "Interventions",
+    "learningModules": "Learning Modules",
+    "analytics": "Analytics",
+    "alerts": "Alerts",
+    "childProgress": "Child Progress",
+    "curriculum": "Curriculum",
+    "users": "Users",
+    "settings": "Settings",
+    "languages": "Languages",
+    "aiConfiguration": "AI Configuration",
+    "logout": "Logout"
+  },
+  "common": {
+    "menu": "Menu",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "close": "Close",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "search": "Search",
+    "filter": "Filter",
+    "clear": "Clear",
+    "submit": "Submit",
+    "export": "Export",
+    "import": "Import"
+  },
+  "auth": {
+    "login": {
+      "title": "Login",
+      "email": "Email Address",
+      "password": "Password",
+      "submit": "Sign In",
+      "noAccount": "Don't have an account?",
+      "register": "Register here",
+      "forgotPassword": "Forgot password?",
+      "invalidCredentials": "Invalid email or password"
+    },
+    "register": {
+      "title": "Register",
+      "firstName": "First Name",
+      "surname": "Surname",
+      "email": "Email Address",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "role": "Role",
+      "selectRole": "Select your role",
+      "selectLanguage": "Preferred Language",
+      "submit": "Create Account",
+      "haveAccount": "Already have an account?",
+      "loginHere": "Login here",
+      "agreeTerms": "I agree to the Terms of Service"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "studentTitle": "Student Settings",
+    "studentSubtitle": "Page scaffold placeholder",
+    "platformLanguage": "Platform Language",
+    "platformLanguageDesc": "Choose the language for the application interface",
+    "selectLanguage": "Select Language",
+    "updated": "Settings updated successfully"
+  },
+  "header": {
+    "defaultUser": "User",
+    "email": "Email",
+    "username": "Username",
+    "language": "Language",
+    "languageUpdated": "Language updated successfully",
+    "languageUpdateFailed": "Failed to update language. Please try again.",
+    "notifications": "Notifications",
+    "openNavigation": "Open navigation",
+    "openUserMenu": "Open user profile menu",
+    "profile": "Profile",
+    "preferences": "Preferences",
+    "logout": "Logout"
+  },
+  "sidebar": {
+    "admin": "Admin",
+    "student": "Student",
+    "tutor": "Tutor",
+    "parent": "Parent"
+  },
+  "dashboard": {
+    "scaffoldSubtitle": "Page scaffold placeholder",
+    "student": {
+      "title": "Student Dashboard",
+      "learningPathTitle": "Student Learning Path",
+      "lessonsTitle": "Student Lessons",
+      "quizzesTitle": "Student Quizzes",
+      "aiTutorTitle": "Student AI Tutor",
+      "progressTitle": "Student Progress"
+    },
+    "tutor": {
+      "title": "Tutor Dashboard",
+      "studentsTitle": "Tutor Students",
+      "interventionsTitle": "Tutor Interventions",
+      "learningModulesTitle": "Tutor Learning Modules",
+      "analyticsTitle": "Tutor Analytics"
+    },
+    "parent": {
+      "title": "Parent Dashboard",
+      "childProgressTitle": "Parent Child Progress",
+      "alertsTitle": "Parent Alerts"
+    },
+    "admin": {
+      "title": "System Administration",
+      "subtitle": "Platform overview and system health",
+      "trendThisMonth": "+12% this month",
+      "totalActiveUsers": "Total Active Users",
+      "languageUsage": "Language Usage",
+      "aiApiCallsToday": "AI API Calls (Today)",
+      "systemUptime": "System Uptime",
+      "userDistributionByRole": "User Distribution by Role",
+      "pieChartPlaceholder": "Pie Chart Visualization Placeholder",
+      "legendStudents": "Students (80%)",
+      "legendTutors": "Tutors (5%)",
+      "legendParents": "Parents (15%)",
+      "languagePreferenceAnalytics": "Language Preference Analytics",
+      "analyticsTitle": "Administrator Analytics",
+      "users": {
+        "title": "User Management",
+        "subtitle": "Manage platform users, roles, and access",
+        "errorLoadUsers": "Failed to load users. Please try again.",
+        "searchPlaceholder": "Search users...",
+        "allRoles": "All Roles",
+        "allStatus": "All Status",
+        "active": "Active",
+        "inactive": "Inactive",
+        "addUser": "Add User",
+        "disable": "Disable",
+        "columns": {
+          "name": "Name",
+          "email": "Email",
+          "role": "Role",
+          "status": "Status",
+          "dateJoined": "Date Joined",
+          "actions": "Actions"
+        }
+      },
+      "languages": {
+        "title": "Language Management",
+        "subtitle": "Manage supported languages and translation progress",
+        "translationProgress": "Translation Progress",
+        "contentItemsTranslated": "content items translated",
+        "translationStatusByContentType": "Translation Status by Content Type",
+        "contentType": "Content Type"
+      },
+      "aiConfiguration": {
+        "title": "AI Configuration",
+        "subtitle": "Manage AI tutor prompts and recommendation engine settings",
+        "saved": "AI configuration saved. Backend integration can now persist these values.",
+        "promptTemplates": "Tutoring Prompt Templates",
+        "resetToDefault": "Reset to Default",
+        "recommendationEngineSettings": "Recommendation Engine Settings",
+        "minimumMasteryThreshold": "Minimum Mastery Threshold",
+        "maximumRetryAttempts": "Maximum Retry Attempts",
+        "difficultyProgression": "Difficulty Progression",
+        "progressionModeAdaptive": "Adaptive (AI-driven)",
+        "progressionModeLinear": "Linear (Strict sequence)",
+        "progressionModeCustom": "Custom",
+        "contentRecommendationWeight": "Content Recommendation Weight",
+        "difficultyAdjustment": "Difficulty Adjustment",
+        "autoAdjustDifficulty": "Auto-adjust Difficulty",
+        "adjustmentSensitivity": "Adjustment Sensitivity",
+        "minQuestionsBeforeAdjustment": "Min. Questions Before Adjustment",
+        "increaseThreshold": "Increase Threshold (%)",
+        "decreaseThreshold": "Decrease Threshold (%)",
+        "high": "High",
+        "medium": "Medium",
+        "low": "Low",
+        "saveConfiguration": "Save Configuration"
+      },
+      "curriculum": {
+        "title": "Curriculum Management",
+        "subtitle": "Create subjects, upload source documents, and review AI-generated curriculum drafts"
+      }
+    }
+  },
+  "empty": {
+    "noData": "No data available",
+    "noResults": "No results found"
+  }
+}
