@@ -146,6 +146,23 @@
           "completePhysicsQuiz": "Complete Physics Quiz",
           "dueTomorrow": "Due tomorrow",
           "dueFriday": "Due Friday"
+        },
+        "revisionAdvice": {
+          "title": "Areas Needing Attention",
+          "geometryTitle": "Geometry",
+          "geometryDesc": "Master foundational concepts in shapes and spatial reasoning.",
+          "algebraDesc": "Strengthen your algebraic manipulation skills with guided exercises.",
+          "trigonometryTitle": "Trigonometry",
+          "trigonometryDesc": "Review sine, cosine, and tangent relationships before your next assessment.",
+          "dataHandlingTitle": "Data Handling",
+          "dataHandlingDesc": "Practice interpreting graphs and calculating statistical measures."
+        },
+        "motivationalGuidance": {
+          "excellentProgress": "Excellent progress! You've mastered 8 out of 12 topics this week.",
+          "keepItUp": "Keep it up! Just a few more topics to reach your 90% goal.",
+          "greatEffort": "Great effort! Practice makes perfect. Review the suggested topics to strengthen your foundation.",
+          "almostThere": "You're almost there! Focus on the weak areas and you'll see quick improvements.",
+          "wellDone": "Well done on your dedication to learning!"
         }
       },
       "progressPage": {
