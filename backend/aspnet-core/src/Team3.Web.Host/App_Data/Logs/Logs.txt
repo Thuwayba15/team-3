@@ -11108,3 +11108,9 @@ INFO  2026-03-19 14:43:00,068 [17   ] .Mvc.Infrastructure.ObjectResultExecutor -
 INFO  2026-03-19 14:43:00,069 [17   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Sessions.SessionAppService.GetCurrentLoginInformations (Team3.Application) in 704.3758ms
 INFO  2026-03-19 14:43:00,069 [17   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Sessions.SessionAppService.GetCurrentLoginInformations (Team3.Application)'
 INFO  2026-03-19 14:43:00,069 [17   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/api/services/app/Session/GetCurrentLoginInformations - 200 - application/json;+charset=utf-8 708.8062ms
+INFO  2026-03-19 14:44:04,035 [17   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 OPTIONS https://localhost:44311/api/TokenAuth/Me - - -
+INFO  2026-03-19 14:44:04,035 [17   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-19 14:44:04,038 [17   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 OPTIONS https://localhost:44311/api/TokenAuth/Me - 204 - - 0.3750ms
+INFO  2026-03-19 14:44:04,099 [27   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 OPTIONS https://localhost:44311/api/services/app/UserProfile/GetActiveLanguages - - -
+INFO  2026-03-19 14:44:04,100 [27   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution successful.
+INFO  2026-03-19 14:44:04,101 [27   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 OPTIONS https://localhost:44311/api/services/app/UserProfile/GetActiveLanguages - 204 - - 1.3360ms
