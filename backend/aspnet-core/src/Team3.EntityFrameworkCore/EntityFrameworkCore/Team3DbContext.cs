@@ -37,10 +37,14 @@ public class Team3DbContext : AbpZeroDbContext<Tenant, Role, User, Team3DbContex
     public DbSet<SourceMaterial> SourceMaterials { get; set; }
     public DbSet<StudentEnrollment> StudentEnrollments { get; set; }
     public DbSet<StudentProgress> StudentProgresses { get; set; }
+    public DbSet<StudentLessonProgress> StudentLessonProgresses { get; set; }
+    public DbSet<StudentTopicProgress> StudentTopicProgresses { get; set; }
 
     public DbSet<Assessment> Assessments { get; set; }
     public DbSet<Question> Questions { get; set; }
     public DbSet<QuestionTranslation> QuestionTranslations { get; set; }
+    public DbSet<StudentAssessmentAttempt> StudentAssessmentAttempts { get; set; }
+    public DbSet<StudentAssessmentAnswer> StudentAssessmentAnswers { get; set; }
 
     // Per-user platform language preference
 
@@ -247,6 +251,40 @@ public class Team3DbContext : AbpZeroDbContext<Tenant, Role, User, Team3DbContex
                 .OnDelete(DeleteBehavior.SetNull);
         });
 
+        modelBuilder.Entity<StudentLessonProgress>(entity =>
+        {
+            entity.ToTable("StudentLessonProgresses");
+            entity.HasIndex(x => new { x.StudentId, x.LessonId }).IsUnique();
+
+            entity.HasOne<Lesson>()
+                .WithMany()
+                .HasForeignKey(x => x.LessonId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne<Subject>()
+                .WithMany()
+                .HasForeignKey(x => x.SubjectId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne<Topic>()
+                .WithMany()
+                .HasForeignKey(x => x.TopicId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<StudentTopicProgress>(entity =>
+        {
+            entity.ToTable("StudentTopicProgresses");
+            entity.HasIndex(x => new { x.StudentId, x.TopicId }).IsUnique();
+            entity.Property(x => x.MasteryScore).HasPrecision(10, 2).HasDefaultValue(0m);
+            entity.Property(x => x.NeedsRevision).HasDefaultValue(false);
+
+            entity.HasOne<Topic>()
+                .WithMany()
+                .HasForeignKey(x => x.TopicId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
         modelBuilder.Entity<UserLanguagePreference>(entity =>
         {
             entity.ToTable("AppUserLanguagePreferences");
@@ -316,6 +354,53 @@ public class Team3DbContext : AbpZeroDbContext<Tenant, Role, User, Team3DbContex
                 .WithMany()
                 .HasForeignKey(x => x.LanguageId)
                 .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<StudentAssessmentAttempt>(entity =>
+        {
+            entity.ToTable("StudentAssessmentAttempts");
+            entity.HasIndex(x => new { x.StudentId, x.AssessmentId, x.AttemptNumber }).IsUnique();
+            entity.Property(x => x.Score).HasPrecision(10, 2);
+            entity.Property(x => x.TotalMarks).HasPrecision(10, 2);
+            entity.Property(x => x.Percentage).HasPrecision(10, 2);
+
+            entity.HasOne(x => x.Assessment)
+                .WithMany()
+                .HasForeignKey(x => x.AssessmentId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne<Subject>()
+                .WithMany()
+                .HasForeignKey(x => x.SubjectId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne<Topic>()
+                .WithMany()
+                .HasForeignKey(x => x.TopicId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne<Lesson>()
+                .WithMany()
+                .HasForeignKey(x => x.LessonId)
+                .OnDelete(DeleteBehavior.SetNull);
+        });
+
+        modelBuilder.Entity<StudentAssessmentAnswer>(entity =>
+        {
+            entity.ToTable("StudentAssessmentAnswers");
+            entity.Property(x => x.SelectedOption).HasMaxLength(50);
+            entity.Property(x => x.AnswerText).HasMaxLength(2000);
+            entity.Property(x => x.MarksAwarded).HasPrecision(10, 2);
+
+            entity.HasOne(x => x.Attempt)
+                .WithMany()
+                .HasForeignKey(x => x.AttemptId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(x => x.Question)
+                .WithMany()
+                .HasForeignKey(x => x.QuestionId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
     }
 }
