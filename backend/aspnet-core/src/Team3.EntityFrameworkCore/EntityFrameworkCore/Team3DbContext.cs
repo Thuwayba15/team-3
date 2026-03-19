@@ -36,8 +36,6 @@ public class Team3DbContext : AbpZeroDbContext<Tenant, Role, User, Team3DbContex
     public DbSet<StudentEnrollment> StudentEnrollments { get; set; }
     public DbSet<StudentProgress> StudentProgresses { get; set; }
 
-    public virtual DbSet<PlatformLanguage> PlatformLanguages { get; set; }
-
     // Per-user platform language preference
     public virtual DbSet<UserLanguagePreference> UserLanguagePreferences { get; set; }
 
@@ -232,27 +230,6 @@ public class Team3DbContext : AbpZeroDbContext<Tenant, Role, User, Team3DbContex
                 .WithMany()
                 .HasForeignKey(x => x.GeneratedTopicId)
                 .OnDelete(DeleteBehavior.SetNull);
-        });
-
-        modelBuilder.Entity<PlatformLanguage>(entity =>
-        {
-            // Existing table managed outside this migration stream.
-            entity.ToTable("Languages", tableBuilder => tableBuilder.ExcludeFromMigrations());
-            entity.HasKey(x => x.Id);
-
-            entity.Property(x => x.Code).HasMaxLength(32);
-            entity.Property(x => x.Name).HasMaxLength(128);
-            entity.Property(x => x.NativeName).HasMaxLength(128);
-            entity.Property(x => x.IsActive).IsRequired();
-            entity.Property(x => x.IsDefault).IsRequired();
-            entity.Property(x => x.SortOrder).IsRequired();
-
-            entity.Property(x => x.CreationTime).IsRequired();
-            entity.Property(x => x.CreatorUserId);
-            entity.Property(x => x.LastModificationTime).HasColumnName("LastModificationTime");
-            entity.Property(x => x.IsDeleted).IsRequired();
-            entity.Property(x => x.DeleterUserId);
-            entity.Property(x => x.DeletionTime);
         });
 
         modelBuilder.Entity<UserLanguagePreference>(entity =>
