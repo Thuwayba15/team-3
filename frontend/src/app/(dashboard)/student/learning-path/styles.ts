@@ -12,42 +12,6 @@ export const useStyles = createStyles(({ css, token }) => ({
         margin-bottom: ${token.marginLG}px;
     `,
 
-    subjectTabs: css`
-        display: flex;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 8px;
-    `,
-
-    subjectTab: css`
-        padding: 6px 18px;
-        border-radius: 20px;
-        border: 1px solid ${token.colorBorderSecondary};
-        background: transparent;
-        cursor: pointer;
-        font-size: 14px;
-        color: ${token.colorTextSecondary};
-        font-weight: 500;
-        transition: all 0.2s;
-
-        &:hover {
-            border-color: #00b8a9;
-            color: #00b8a9;
-        }
-    `,
-
-    subjectTabActive: css`
-        background: #00b8a9 !important;
-        border-color: #00b8a9 !important;
-        color: #fff !important;
-
-        &:hover {
-            background: #00a89a !important;
-            border-color: #00a89a !important;
-            color: #fff !important;
-        }
-    `,
-
     subjectSummaryCard: css`
         border-radius: ${token.borderRadiusLG}px;
         border: 1px solid ${token.colorBorderSecondary};
@@ -93,6 +57,25 @@ export const useStyles = createStyles(({ css, token }) => ({
         font-size: 13px;
         color: ${token.colorTextSecondary};
         margin-bottom: 8px;
+    `,
+
+    summaryMeta: css`
+        display: flex;
+        align-items: center;
+        gap: ${token.marginSM}px;
+        flex-wrap: wrap;
+        margin-top: 8px;
+    `,
+
+    helperText: css`
+        font-size: 13px;
+        color: ${token.colorTextSecondary};
+        margin: 0;
+    `,
+
+    infoBanner: css`
+        border-radius: ${token.borderRadiusLG}px;
+        margin-bottom: ${token.marginLG}px;
     `,
 
     /* ── Timeline ─────────────────────────────────────────────── */
@@ -234,6 +217,28 @@ export const useStyles = createStyles(({ css, token }) => ({
         margin-bottom: ${token.marginMD}px;
     `,
 
+    moduleMeta: css`
+        display: flex;
+        align-items: center;
+        gap: ${token.marginSM}px;
+        flex-wrap: wrap;
+        margin-bottom: ${token.marginMD}px;
+    `,
+
+    topicAction: css`
+        font-size: 13px;
+        color: ${token.colorTextSecondary};
+        margin-bottom: ${token.marginMD}px;
+    `,
+
+    lessonMetaPill: css`
+        font-size: 12px;
+        color: ${token.colorTextSecondary};
+        background: ${token.colorFillQuaternary};
+        padding: 4px 10px;
+        border-radius: 999px;
+    `,
+
     reviewLink: css`
         color: #00b8a9 !important;
         font-size: 14px;
@@ -325,6 +330,12 @@ export const useStyles = createStyles(({ css, token }) => ({
         gap: ${token.marginSM}px;
     `,
 
+    topicRowCopy: css`
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    `,
+
     masteredTag: css`
         font-size: 12px;
         color: ${token.colorTextSecondary};
@@ -367,5 +378,19 @@ export const useStyles = createStyles(({ css, token }) => ({
         @media (max-width: 640px) {
             width: 100%;
         }
+    `,
+
+    emptyState: css`
+        border-radius: ${token.borderRadiusLG}px;
+        border: 1px dashed ${token.colorBorderSecondary};
+        background: ${token.colorBgContainer};
+        padding: ${token.paddingXL}px;
+        text-align: center;
+    `,
+
+    emptyActions: css`
+        display: flex;
+        justify-content: center;
+        margin-top: ${token.marginMD}px;
     `,
 }));
