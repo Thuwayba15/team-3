@@ -221,14 +221,24 @@ public class Team3DbContext : AbpZeroDbContext<Tenant, Role, User, Team3DbContex
                 .HasForeignKey(x => x.SubjectId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            entity.HasOne(x => x.GeneratedLesson)
-                .WithMany()
-                .HasForeignKey(x => x.GeneratedLessonId)
-                .OnDelete(DeleteBehavior.SetNull);
-
             entity.HasOne(x => x.GeneratedTopic)
                 .WithMany()
                 .HasForeignKey(x => x.GeneratedTopicId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            entity.HasOne(x => x.GeneratedEasyLesson)
+                .WithMany()
+                .HasForeignKey(x => x.GeneratedEasyLessonId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            entity.HasOne(x => x.GeneratedMediumLesson)
+                .WithMany()
+                .HasForeignKey(x => x.GeneratedMediumLessonId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            entity.HasOne(x => x.GeneratedHardLesson)
+                .WithMany()
+                .HasForeignKey(x => x.GeneratedHardLessonId)
                 .OnDelete(DeleteBehavior.SetNull);
         });
 

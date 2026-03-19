@@ -9244,3 +9244,984 @@ INFO  2026-03-19 11:49:03,487 [18   ] .Mvc.Infrastructure.ObjectResultExecutor -
 INFO  2026-03-19 11:49:03,488 [18   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Sessions.SessionAppService.GetCurrentLoginInformations (Team3.Application) in 695.3957ms
 INFO  2026-03-19 11:49:03,488 [18   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Sessions.SessionAppService.GetCurrentLoginInformations (Team3.Application)'
 INFO  2026-03-19 11:49:03,488 [18   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/api/services/app/Session/GetCurrentLoginInformations - 200 - application/json;+charset=utf-8 745.7572ms
+DEBUG 2026-03-19 12:14:25,139 [2    ] Abp.Modules.AbpModuleManager             - Loading Abp modules...
+DEBUG 2026-03-19 12:14:31,570 [2    ] Abp.Modules.AbpModuleManager             - Found 15 ABP modules in total.
+DEBUG 2026-03-19 12:14:31,614 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Web.Host.Startup.Team3WebHostModule, Team3.Web.Host, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 12:14:31,619 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3WebCoreModule, Team3.Web.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 12:14:31,620 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3ApplicationModule, Team3.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 12:14:31,621 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3CoreModule, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 12:14:31,622 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCoreModule, Abp.ZeroCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 12:14:31,623 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCommonModule, Abp.Zero.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 12:14:31,624 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AbpKernelModule, Abp, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 12:14:31,627 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AutoMapper.AbpAutoMapperModule, Abp.AutoMapper, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 12:14:31,628 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.EntityFrameworkCore.Team3EntityFrameworkModule, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 12:14:31,630 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.EntityFrameworkCore.AbpZeroCoreEntityFrameworkCoreModule, Abp.ZeroCore.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 12:14:31,631 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFrameworkCore.AbpEntityFrameworkCoreModule, Abp.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 12:14:31,632 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFramework.AbpEntityFrameworkCommonModule, Abp.EntityFramework.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 12:14:31,633 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.AbpAspNetCoreModule, Abp.AspNetCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 12:14:31,634 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Web.AbpWebCommonModule, Abp.Web.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 12:14:31,634 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.SignalR.AbpAspNetCoreSignalRModule, Abp.AspNetCore.SignalR, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 12:14:31,639 [2    ] Abp.Modules.AbpModuleManager             - 15 modules loaded.
+DEBUG 2026-03-19 12:14:31,961 [2    ] o.Configuration.LanguageManagementConfig - Converted Abp (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 12:14:31,961 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpZero (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 12:14:31,961 [2    ] o.Configuration.LanguageManagementConfig - Converted Team3 (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 12:14:31,961 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpWeb (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 12:14:33,215 [2    ] ameworkCore.AbpEntityFrameworkCoreModule - Registering DbContext: Team3.EntityFrameworkCore.Team3DbContext, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 12:14:33,644 [2    ] Abp.Localization.LocalizationManager     - Initializing 4 localization sources.
+DEBUG 2026-03-19 12:14:33,748 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Abp
+DEBUG 2026-03-19 12:14:33,780 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpZero
+DEBUG 2026-03-19 12:14:33,790 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Team3
+DEBUG 2026-03-19 12:14:33,797 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpWeb
+DEBUG 2026-03-19 12:14:33,817 [2    ] Abp.BackgroundJobs.BackgroundJobManager  - Start background worker: Abp.BackgroundJobs.BackgroundJobManager
+DEBUG 2026-03-19 12:14:33,836 [2    ] , Culture=neutral, PublicKeyToken=null]] - Start background worker: Abp.Authorization.Users.UserTokenExpirationWorker`2[[Team3.MultiTenancy.Tenant, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Team3.Authorization.Users.User, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]
+DEBUG 2026-03-19 12:14:33,882 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Found 7 classes define auto mapping attributes
+DEBUG 2026-03-19 12:14:33,882 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.CreateUserDto
+DEBUG 2026-03-19 12:14:33,891 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.UserDto
+DEBUG 2026-03-19 12:14:33,892 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.TenantLoginInfoDto
+DEBUG 2026-03-19 12:14:33,893 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.UserLoginInfoDto
+DEBUG 2026-03-19 12:14:33,893 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Roles.Dto.PermissionDto
+DEBUG 2026-03-19 12:14:33,893 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.CreateTenantDto
+DEBUG 2026-03-19 12:14:33,893 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.TenantDto
+WARN  2026-03-19 12:14:37,277 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'SourceMaterial'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 12:14:37,285 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Lesson' has a global query filter defined and is the required end of a relationship with the entity 'LessonMaterial'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 12:14:37,293 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Language' has a global query filter defined and is the required end of a relationship with the entity 'LessonTranslation'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 12:14:37,302 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Subject' has a global query filter defined and is the required end of a relationship with the entity 'StudentEnrollment'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 12:14:37,316 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Subject' has a global query filter defined and is the required end of a relationship with the entity 'StudentProgress'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 12:14:37,537 [2    ] oft.EntityFrameworkCore.Model.Validation - The 'ProcessingStatus' property 'ProcessingStatus' on entity type 'SourceMaterial' is configured with a database-generated default, but has no configured sentinel value. The database-generated default will always be used for inserts when the property has the value '0', since this is the CLR default for the 'ProcessingStatus' type. Consider using a nullable type, using a nullable backing field, or setting the sentinel value for the property to ensure the database default is used when, and only when, appropriate. See https://aka.ms/efcore-docs-default-values for more information.
+INFO  2026-03-19 12:15:09,875 [2    ] tCore.Builder.RequestLocalizationOptions - Supported Request Localization Cultures: en,es-MX,fr,de,it,nl,pt-BR,tr,ru,ar,fa,ja,zh-Hans
+INFO  2026-03-19 12:15:10,850 [9    ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/ - - -
+INFO  2026-03-19 12:15:11,096 [2    ] Microsoft.Hosting.Lifetime               - Application started. Press Ctrl+C to shut down.
+INFO  2026-03-19 12:15:11,100 [2    ] Microsoft.Hosting.Lifetime               - Hosting environment: Development
+INFO  2026-03-19 12:15:11,106 [2    ] Microsoft.Hosting.Lifetime               - Content root path: C:\Users\Welcome\source\repos\Ubuntu\team-3\backend\aspnet-core\src\Team3.Web.Host
+INFO  2026-03-19 12:15:12,832 [9    ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host)'
+INFO  2026-03-19 12:15:13,028 [9    ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "Index", controller = "Home", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller Team3.Web.Host.Controllers.HomeController (Team3.Web.Host).
+INFO  2026-03-19 12:15:14,493 [14   ] vc.Infrastructure.RedirectResultExecutor - Executing RedirectResult, redirecting to /swagger.
+INFO  2026-03-19 12:15:14,541 [14   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host) in 1474.4259ms
+INFO  2026-03-19 12:15:14,547 [14   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host)'
+INFO  2026-03-19 12:15:14,624 [14   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/ - 302 - - 3807.3034ms
+INFO  2026-03-19 12:15:14,702 [9    ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/swagger/ui/abp.js - - -
+INFO  2026-03-19 12:15:14,714 [7    ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/swagger/ui/abp.swagger.js - - -
+INFO  2026-03-19 12:15:14,736 [20   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/_framework/aspnetcore-browser-refresh.js - - -
+INFO  2026-03-19 12:15:14,780 [20   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/_framework/aspnetcore-browser-refresh.js - 200 14933 application/javascript;+charset=utf-8 26.7002ms
+INFO  2026-03-19 12:15:14,846 [24   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/_vs/browserLink - - -
+INFO  2026-03-19 12:15:14,862 [9    ] NetCore.StaticFiles.StaticFileMiddleware - Sending file. Request path: '/swagger/ui/abp.js'. Physical path: 'C:\Users\Welcome\source\repos\Ubuntu\team-3\backend\aspnet-core\src\Team3.Web.Host\wwwroot\swagger\ui\abp.js'
+INFO  2026-03-19 12:15:14,867 [7    ] NetCore.StaticFiles.StaticFileMiddleware - Sending file. Request path: '/swagger/ui/abp.swagger.js'. Physical path: 'C:\Users\Welcome\source\repos\Ubuntu\team-3\backend\aspnet-core\src\Team3.Web.Host\wwwroot\swagger\ui\abp.swagger.js'
+INFO  2026-03-19 12:15:14,885 [7    ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/swagger/ui/abp.swagger.js - 200 8242 text/javascript 161.3724ms
+INFO  2026-03-19 12:15:14,891 [9    ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/swagger/ui/abp.js - 200 3814 text/javascript 201.5370ms
+INFO  2026-03-19 12:15:15,051 [24   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/_vs/browserLink - 200 - text/javascript;+charset=UTF-8 204.7183ms
+INFO  2026-03-19 12:15:15,106 [24   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/AntiForgery/SetCookie - - -
+INFO  2026-03-19 12:15:15,121 [24   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host)'
+INFO  2026-03-19 12:15:15,157 [24   ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "SetCookie", controller = "AntiForgery", area = ""}. Executing controller action with signature Void SetCookie() on controller Team3.Web.Host.Controllers.AntiForgeryController (Team3.Web.Host).
+INFO  2026-03-19 12:15:15,200 [9    ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/swagger/v1/swagger.json - - -
+INFO  2026-03-19 12:15:15,294 [9    ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/swagger/v1/swagger.json - 200 - application/json;charset=utf-8 93.7085ms
+INFO  2026-03-19 12:15:16,700 [9    ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-19 12:15:16,725 [9    ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host) in 1562.8247ms
+INFO  2026-03-19 12:15:16,733 [9    ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host)'
+INFO  2026-03-19 12:15:16,738 [9    ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/AntiForgery/SetCookie - 200 - application/json;+charset=utf-8 1632.6588ms
+INFO  2026-03-19 12:15:29,129 [9    ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/api/services/app/StudentSubject/GetAllSubjects - - -
+INFO  2026-03-19 12:15:29,140 [9    ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.LearningMaterials.Subjects.StudentSubjectAppService.GetAllSubjectsAsync (Team3.Application)'
+INFO  2026-03-19 12:15:29,158 [9    ] c.Infrastructure.ControllerActionInvoker - Route matched with {area = "app", action = "GetAllSubjects", controller = "StudentSubject"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.Collections.Generic.List`1[Team3.LearningMaterials.Dto.SubjectDto]] GetAllSubjectsAsync() on controller Team3.LearningMaterials.Subjects.StudentSubjectAppService (Team3.Application).
+INFO  2026-03-19 12:15:31,439 [24   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-19 12:15:31,459 [24   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.LearningMaterials.Subjects.StudentSubjectAppService.GetAllSubjectsAsync (Team3.Application) in 2296.3808ms
+INFO  2026-03-19 12:15:31,464 [24   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.LearningMaterials.Subjects.StudentSubjectAppService.GetAllSubjectsAsync (Team3.Application)'
+INFO  2026-03-19 12:15:31,478 [24   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/api/services/app/StudentSubject/GetAllSubjects - 200 - application/json;+charset=utf-8 2381.1575ms
+DEBUG 2026-03-19 12:52:58,859 [2    ] Abp.Modules.AbpModuleManager             - Loading Abp modules...
+DEBUG 2026-03-19 12:53:01,021 [2    ] Abp.Modules.AbpModuleManager             - Found 15 ABP modules in total.
+DEBUG 2026-03-19 12:53:01,079 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Web.Host.Startup.Team3WebHostModule, Team3.Web.Host, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 12:53:01,083 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3WebCoreModule, Team3.Web.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 12:53:01,084 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3ApplicationModule, Team3.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 12:53:01,085 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3CoreModule, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 12:53:01,085 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCoreModule, Abp.ZeroCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 12:53:01,086 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCommonModule, Abp.Zero.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 12:53:01,087 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AbpKernelModule, Abp, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 12:53:01,089 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AutoMapper.AbpAutoMapperModule, Abp.AutoMapper, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 12:53:01,090 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.EntityFrameworkCore.Team3EntityFrameworkModule, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 12:53:01,091 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.EntityFrameworkCore.AbpZeroCoreEntityFrameworkCoreModule, Abp.ZeroCore.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 12:53:01,093 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFrameworkCore.AbpEntityFrameworkCoreModule, Abp.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 12:53:01,093 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFramework.AbpEntityFrameworkCommonModule, Abp.EntityFramework.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 12:53:01,094 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.AbpAspNetCoreModule, Abp.AspNetCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 12:53:01,095 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Web.AbpWebCommonModule, Abp.Web.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 12:53:01,096 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.SignalR.AbpAspNetCoreSignalRModule, Abp.AspNetCore.SignalR, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 12:53:01,100 [2    ] Abp.Modules.AbpModuleManager             - 15 modules loaded.
+DEBUG 2026-03-19 12:53:01,269 [2    ] o.Configuration.LanguageManagementConfig - Converted Abp (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 12:53:01,269 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpZero (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 12:53:01,269 [2    ] o.Configuration.LanguageManagementConfig - Converted Team3 (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 12:53:01,269 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpWeb (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 12:53:02,222 [2    ] ameworkCore.AbpEntityFrameworkCoreModule - Registering DbContext: Team3.EntityFrameworkCore.Team3DbContext, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 12:53:02,585 [2    ] Abp.Localization.LocalizationManager     - Initializing 4 localization sources.
+DEBUG 2026-03-19 12:53:02,635 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Abp
+DEBUG 2026-03-19 12:53:02,653 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpZero
+DEBUG 2026-03-19 12:53:02,662 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Team3
+DEBUG 2026-03-19 12:53:02,670 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpWeb
+DEBUG 2026-03-19 12:53:02,687 [2    ] Abp.BackgroundJobs.BackgroundJobManager  - Start background worker: Abp.BackgroundJobs.BackgroundJobManager
+DEBUG 2026-03-19 12:53:02,703 [2    ] , Culture=neutral, PublicKeyToken=null]] - Start background worker: Abp.Authorization.Users.UserTokenExpirationWorker`2[[Team3.MultiTenancy.Tenant, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Team3.Authorization.Users.User, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]
+DEBUG 2026-03-19 12:53:02,739 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Found 7 classes define auto mapping attributes
+DEBUG 2026-03-19 12:53:02,739 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.CreateUserDto
+DEBUG 2026-03-19 12:53:02,746 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.UserDto
+DEBUG 2026-03-19 12:53:02,748 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.TenantLoginInfoDto
+DEBUG 2026-03-19 12:53:02,748 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.UserLoginInfoDto
+DEBUG 2026-03-19 12:53:02,748 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Roles.Dto.PermissionDto
+DEBUG 2026-03-19 12:53:02,749 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.CreateTenantDto
+DEBUG 2026-03-19 12:53:02,749 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.TenantDto
+WARN  2026-03-19 12:53:04,437 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'SourceMaterial'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 12:53:04,441 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Lesson' has a global query filter defined and is the required end of a relationship with the entity 'LessonMaterial'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 12:53:04,445 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Language' has a global query filter defined and is the required end of a relationship with the entity 'LessonTranslation'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 12:53:04,448 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Subject' has a global query filter defined and is the required end of a relationship with the entity 'StudentEnrollment'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 12:53:04,452 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Subject' has a global query filter defined and is the required end of a relationship with the entity 'StudentProgress'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 12:53:04,591 [2    ] oft.EntityFrameworkCore.Model.Validation - The 'ProcessingStatus' property 'ProcessingStatus' on entity type 'SourceMaterial' is configured with a database-generated default, but has no configured sentinel value. The database-generated default will always be used for inserts when the property has the value '0', since this is the CLR default for the 'ProcessingStatus' type. Consider using a nullable type, using a nullable backing field, or setting the sentinel value for the property to ensure the database default is used when, and only when, appropriate. See https://aka.ms/efcore-docs-default-values for more information.
+INFO  2026-03-19 12:53:34,237 [2    ] tCore.Builder.RequestLocalizationOptions - Supported Request Localization Cultures: en,es-MX,fr,de,it,nl,pt-BR,tr,ru,ar,fa,ja,zh-Hans
+INFO  2026-03-19 12:53:34,910 [10   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/ - - -
+INFO  2026-03-19 12:53:35,092 [2    ] Microsoft.Hosting.Lifetime               - Application started. Press Ctrl+C to shut down.
+INFO  2026-03-19 12:53:35,123 [2    ] Microsoft.Hosting.Lifetime               - Hosting environment: Development
+INFO  2026-03-19 12:53:35,129 [2    ] Microsoft.Hosting.Lifetime               - Content root path: C:\Users\Welcome\source\repos\Ubuntu\team-3\backend\aspnet-core\src\Team3.Web.Host
+INFO  2026-03-19 12:53:36,494 [16   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host)'
+INFO  2026-03-19 12:53:36,625 [16   ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "Index", controller = "Home", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller Team3.Web.Host.Controllers.HomeController (Team3.Web.Host).
+INFO  2026-03-19 12:53:37,940 [14   ] vc.Infrastructure.RedirectResultExecutor - Executing RedirectResult, redirecting to /swagger.
+INFO  2026-03-19 12:53:37,976 [14   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host) in 1320.5468ms
+INFO  2026-03-19 12:53:37,981 [14   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host)'
+INFO  2026-03-19 12:53:38,150 [10   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/_vs/browserLink - - -
+INFO  2026-03-19 12:53:38,155 [16   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/swagger/ui/abp.swagger.js - - -
+INFO  2026-03-19 12:53:38,160 [9    ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/_framework/aspnetcore-browser-refresh.js - - -
+INFO  2026-03-19 12:53:38,200 [7    ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/swagger/ui/abp.js - - -
+INFO  2026-03-19 12:53:38,265 [7    ] NetCore.StaticFiles.StaticFileMiddleware - The file /swagger/ui/abp.js was not modified
+INFO  2026-03-19 12:53:38,272 [16   ] NetCore.StaticFiles.StaticFileMiddleware - The file /swagger/ui/abp.swagger.js was not modified
+INFO  2026-03-19 12:53:38,363 [7    ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/swagger/ui/abp.js - 304 - text/javascript 181.3091ms
+INFO  2026-03-19 12:53:38,367 [16   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/swagger/ui/abp.swagger.js - 304 - text/javascript 196.1364ms
+INFO  2026-03-19 12:53:38,362 [14   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/ - 302 - - 3485.4084ms
+INFO  2026-03-19 12:53:38,424 [9    ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/_framework/aspnetcore-browser-refresh.js - 200 14933 application/javascript;+charset=utf-8 272.4758ms
+INFO  2026-03-19 12:53:38,513 [24   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/_vs/browserLink - 200 - text/javascript;+charset=UTF-8 364.2595ms
+INFO  2026-03-19 12:53:38,532 [24   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/AntiForgery/SetCookie - - -
+INFO  2026-03-19 12:53:38,568 [26   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/swagger/v1/swagger.json - - -
+INFO  2026-03-19 12:53:38,574 [24   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host)'
+INFO  2026-03-19 12:53:38,589 [24   ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "SetCookie", controller = "AntiForgery", area = ""}. Executing controller action with signature Void SetCookie() on controller Team3.Web.Host.Controllers.AntiForgeryController (Team3.Web.Host).
+INFO  2026-03-19 12:53:38,694 [26   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/swagger/v1/swagger.json - 200 - application/json;charset=utf-8 109.0325ms
+INFO  2026-03-19 12:53:39,753 [26   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-19 12:53:39,770 [26   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host) in 1176.2101ms
+INFO  2026-03-19 12:53:39,775 [26   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host)'
+INFO  2026-03-19 12:53:39,780 [26   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/AntiForgery/SetCookie - 200 - application/json;+charset=utf-8 1248.0378ms
+INFO  2026-03-19 12:54:28,587 [26   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/api/services/app/StudentSubject/GetAllSubjects - - -
+INFO  2026-03-19 12:54:28,596 [26   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.LearningMaterials.Subjects.StudentSubjectAppService.GetAllSubjectsAsync (Team3.Application)'
+INFO  2026-03-19 12:54:28,612 [26   ] c.Infrastructure.ControllerActionInvoker - Route matched with {area = "app", action = "GetAllSubjects", controller = "StudentSubject"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.Collections.Generic.List`1[Team3.LearningMaterials.Dto.SubjectDto]] GetAllSubjectsAsync() on controller Team3.LearningMaterials.Subjects.StudentSubjectAppService (Team3.Application).
+INFO  2026-03-19 12:54:30,335 [24   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-19 12:54:30,358 [24   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.LearningMaterials.Subjects.StudentSubjectAppService.GetAllSubjectsAsync (Team3.Application) in 1736.11ms
+INFO  2026-03-19 12:54:30,379 [24   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.LearningMaterials.Subjects.StudentSubjectAppService.GetAllSubjectsAsync (Team3.Application)'
+INFO  2026-03-19 12:54:30,389 [24   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/api/services/app/StudentSubject/GetAllSubjects - 200 - application/json;+charset=utf-8 1796.2511ms
+INFO  2026-03-19 12:55:20,643 [26   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/api/services/app/StudentSubject/GetTopicsBySubject?subjectId=70646fa7-c637-455c-a062-8d84dc590b58 - - -
+INFO  2026-03-19 12:55:20,665 [26   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.LearningMaterials.Subjects.StudentSubjectAppService.GetTopicsBySubjectAsync (Team3.Application)'
+INFO  2026-03-19 12:55:20,694 [26   ] c.Infrastructure.ControllerActionInvoker - Route matched with {area = "app", action = "GetTopicsBySubject", controller = "StudentSubject"}. Executing controller action with signature System.Threading.Tasks.Task`1[System.Collections.Generic.List`1[Team3.LearningMaterials.Dto.TopicDto]] GetTopicsBySubjectAsync(System.Guid) on controller Team3.LearningMaterials.Subjects.StudentSubjectAppService (Team3.Application).
+INFO  2026-03-19 12:55:22,702 [24   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-19 12:55:22,717 [24   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.LearningMaterials.Subjects.StudentSubjectAppService.GetTopicsBySubjectAsync (Team3.Application) in 2019.1933ms
+INFO  2026-03-19 12:55:22,720 [24   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.LearningMaterials.Subjects.StudentSubjectAppService.GetTopicsBySubjectAsync (Team3.Application)'
+INFO  2026-03-19 12:55:22,737 [24   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/api/services/app/StudentSubject/GetTopicsBySubject?subjectId=70646fa7-c637-455c-a062-8d84dc590b58 - 200 - application/json;+charset=utf-8 2085.8341ms
+INFO  2026-03-19 12:58:12,721 [23   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 POST https://localhost:44311/api/TokenAuth/Authenticate - application/json 54
+INFO  2026-03-19 12:58:12,740 [23   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution failed.
+INFO  2026-03-19 12:58:12,751 [23   ] pNetCore.Cors.Infrastructure.CorsService - Request origin https://localhost:44311 does not have permission to access the resource.
+INFO  2026-03-19 12:58:12,762 [23   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Controllers.TokenAuthController.Authenticate (Team3.Web.Core)'
+INFO  2026-03-19 12:58:12,781 [23   ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "Authenticate", controller = "TokenAuth", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Team3.Models.TokenAuth.AuthenticateResultModel] Authenticate(Team3.Models.TokenAuth.AuthenticateModel) on controller Team3.Controllers.TokenAuthController (Team3.Web.Core).
+INFO  2026-03-19 12:58:20,373 [23   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-19 12:58:20,386 [23   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Controllers.TokenAuthController.Authenticate (Team3.Web.Core) in 7601.0972ms
+INFO  2026-03-19 12:58:20,390 [23   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Controllers.TokenAuthController.Authenticate (Team3.Web.Core)'
+INFO  2026-03-19 12:58:20,395 [23   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 POST https://localhost:44311/api/TokenAuth/Authenticate - 200 - application/json;+charset=utf-8 7676.8290ms
+INFO  2026-03-19 12:58:20,430 [23   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/swagger/index.html - - -
+INFO  2026-03-19 12:58:21,215 [30   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/swagger/index.html - 200 - text/html;charset=utf-8 735.0090ms
+INFO  2026-03-19 12:58:21,222 [24   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/_vs/browserLink - - -
+INFO  2026-03-19 12:58:21,256 [30   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/swagger/ui/abp.js - - -
+INFO  2026-03-19 12:58:21,295 [23   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/_framework/aspnetcore-browser-refresh.js - - -
+INFO  2026-03-19 12:58:21,301 [26   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/swagger/ui/abp.swagger.js - - -
+INFO  2026-03-19 12:58:21,337 [30   ] NetCore.StaticFiles.StaticFileMiddleware - The file /swagger/ui/abp.js was not modified
+INFO  2026-03-19 12:58:21,366 [23   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/_framework/aspnetcore-browser-refresh.js - 200 14933 application/javascript;+charset=utf-8 80.7616ms
+INFO  2026-03-19 12:58:21,403 [26   ] NetCore.StaticFiles.StaticFileMiddleware - The file /swagger/ui/abp.swagger.js was not modified
+INFO  2026-03-19 12:58:21,415 [26   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/swagger/ui/abp.swagger.js - 304 - text/javascript 148.1221ms
+INFO  2026-03-19 12:58:21,448 [30   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/swagger/ui/abp.js - 304 - text/javascript 181.2024ms
+INFO  2026-03-19 12:58:21,481 [14   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/_vs/browserLink - 200 - text/javascript;+charset=UTF-8 259.5069ms
+INFO  2026-03-19 12:58:21,518 [35   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/AntiForgery/SetCookie - - -
+INFO  2026-03-19 12:58:21,524 [35   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host)'
+INFO  2026-03-19 12:58:21,558 [35   ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "SetCookie", controller = "AntiForgery", area = ""}. Executing controller action with signature Void SetCookie() on controller Team3.Web.Host.Controllers.AntiForgeryController (Team3.Web.Host).
+INFO  2026-03-19 12:58:21,567 [33   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/swagger/v1/swagger.json - - -
+INFO  2026-03-19 12:58:21,610 [33   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/swagger/v1/swagger.json - 200 - application/json;charset=utf-8 43.5071ms
+INFO  2026-03-19 12:58:22,664 [35   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-19 12:58:22,670 [35   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host) in 1107.2877ms
+INFO  2026-03-19 12:58:22,674 [35   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host)'
+INFO  2026-03-19 12:58:22,679 [35   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/AntiForgery/SetCookie - 200 - application/json;+charset=utf-8 1161.0545ms
+INFO  2026-03-19 13:00:41,957 [35   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 POST https://localhost:44311/api/services/app/LearningMaterial/UploadTextMaterial - application/json 1724
+INFO  2026-03-19 13:00:41,993 [35   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution failed.
+INFO  2026-03-19 13:00:41,999 [35   ] pNetCore.Cors.Infrastructure.CorsService - Request origin https://localhost:44311 does not have permission to access the resource.
+INFO  2026-03-19 13:00:42,007 [35   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.LearningMaterials.LearningMaterialAppService.UploadTextMaterialAsync (Team3.Application)'
+INFO  2026-03-19 13:00:42,026 [35   ] c.Infrastructure.ControllerActionInvoker - Route matched with {area = "app", action = "UploadTextMaterial", controller = "LearningMaterial"}. Executing controller action with signature System.Threading.Tasks.Task`1[Team3.LearningMaterials.Dto.UploadTextLearningMaterialOutput] UploadTextMaterialAsync(Team3.LearningMaterials.Dto.UploadTextLearningMaterialInput) on controller Team3.LearningMaterials.LearningMaterialAppService (Team3.Application).
+WARN  2026-03-19 13:00:47,421 [35   ] Mvc.ExceptionHandling.AbpExceptionFilter - Gemini request failed (403). Your API key was reported as leaked. Please use another API key.
+Abp.UI.UserFriendlyException: Gemini request failed (403). Your API key was reported as leaked. Please use another API key.
+   at Team3.LearningMaterials.GeminiPlaceholderTranslationService.SendPromptAsync(String prompt) in C:\Users\Welcome\source\repos\Ubuntu\team-3\backend\aspnet-core\src\Team3.Application\LearningMaterials\GeminiPlaceholderTranslationService.cs:line 130
+   at Team3.LearningMaterials.LearningMaterialAppService.UploadTextMaterialAsync(UploadTextLearningMaterialInput input) in C:\Users\Welcome\source\repos\Ubuntu\team-3\backend\aspnet-core\src\Team3.Application\LearningMaterials\LearningMaterialAppService.cs:line 98
+   at lambda_method2788(Closure, Object)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.AwaitableObjectResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextExceptionFilterAsync>g__Awaited|26_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+INFO  2026-03-19 13:00:47,437 [35   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-19 13:00:47,445 [35   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.LearningMaterials.LearningMaterialAppService.UploadTextMaterialAsync (Team3.Application) in 5413.8156ms
+INFO  2026-03-19 13:00:47,451 [35   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.LearningMaterials.LearningMaterialAppService.UploadTextMaterialAsync (Team3.Application)'
+INFO  2026-03-19 13:00:47,458 [35   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 POST https://localhost:44311/api/services/app/LearningMaterial/UploadTextMaterial - 500 - application/json;+charset=utf-8 5501.1700ms
+DEBUG 2026-03-19 13:05:23,288 [2    ] Abp.Modules.AbpModuleManager             - Loading Abp modules...
+DEBUG 2026-03-19 13:05:26,003 [2    ] Abp.Modules.AbpModuleManager             - Found 15 ABP modules in total.
+DEBUG 2026-03-19 13:05:26,039 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Web.Host.Startup.Team3WebHostModule, Team3.Web.Host, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:05:26,043 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3WebCoreModule, Team3.Web.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:05:26,043 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3ApplicationModule, Team3.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:05:26,045 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3CoreModule, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:05:26,046 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCoreModule, Abp.ZeroCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:05:26,046 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCommonModule, Abp.Zero.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:05:26,047 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AbpKernelModule, Abp, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:05:26,048 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AutoMapper.AbpAutoMapperModule, Abp.AutoMapper, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:05:26,049 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.EntityFrameworkCore.Team3EntityFrameworkModule, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:05:26,049 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.EntityFrameworkCore.AbpZeroCoreEntityFrameworkCoreModule, Abp.ZeroCore.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:05:26,050 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFrameworkCore.AbpEntityFrameworkCoreModule, Abp.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:05:26,052 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFramework.AbpEntityFrameworkCommonModule, Abp.EntityFramework.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:05:26,053 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.AbpAspNetCoreModule, Abp.AspNetCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:05:26,054 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Web.AbpWebCommonModule, Abp.Web.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:05:26,055 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.SignalR.AbpAspNetCoreSignalRModule, Abp.AspNetCore.SignalR, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:05:26,058 [2    ] Abp.Modules.AbpModuleManager             - 15 modules loaded.
+DEBUG 2026-03-19 13:05:26,217 [2    ] o.Configuration.LanguageManagementConfig - Converted Abp (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 13:05:26,218 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpZero (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 13:05:26,218 [2    ] o.Configuration.LanguageManagementConfig - Converted Team3 (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 13:05:26,218 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpWeb (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 13:05:27,011 [2    ] ameworkCore.AbpEntityFrameworkCoreModule - Registering DbContext: Team3.EntityFrameworkCore.Team3DbContext, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:05:27,516 [2    ] Abp.Localization.LocalizationManager     - Initializing 4 localization sources.
+DEBUG 2026-03-19 13:05:27,587 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Abp
+DEBUG 2026-03-19 13:05:27,602 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpZero
+DEBUG 2026-03-19 13:05:27,613 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Team3
+DEBUG 2026-03-19 13:05:27,619 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpWeb
+DEBUG 2026-03-19 13:05:27,635 [2    ] Abp.BackgroundJobs.BackgroundJobManager  - Start background worker: Abp.BackgroundJobs.BackgroundJobManager
+DEBUG 2026-03-19 13:05:27,651 [2    ] , Culture=neutral, PublicKeyToken=null]] - Start background worker: Abp.Authorization.Users.UserTokenExpirationWorker`2[[Team3.MultiTenancy.Tenant, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Team3.Authorization.Users.User, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]
+DEBUG 2026-03-19 13:05:27,706 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Found 7 classes define auto mapping attributes
+DEBUG 2026-03-19 13:05:27,706 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.CreateUserDto
+DEBUG 2026-03-19 13:05:27,715 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.UserDto
+DEBUG 2026-03-19 13:05:27,717 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.TenantLoginInfoDto
+DEBUG 2026-03-19 13:05:27,717 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.UserLoginInfoDto
+DEBUG 2026-03-19 13:05:27,718 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Roles.Dto.PermissionDto
+DEBUG 2026-03-19 13:05:27,718 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.CreateTenantDto
+DEBUG 2026-03-19 13:05:27,718 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.TenantDto
+WARN  2026-03-19 13:05:30,166 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'SourceMaterial'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 13:05:30,170 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Lesson' has a global query filter defined and is the required end of a relationship with the entity 'LessonMaterial'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 13:05:30,174 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Language' has a global query filter defined and is the required end of a relationship with the entity 'LessonTranslation'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 13:05:30,180 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Subject' has a global query filter defined and is the required end of a relationship with the entity 'StudentEnrollment'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 13:05:30,184 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Subject' has a global query filter defined and is the required end of a relationship with the entity 'StudentProgress'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 13:05:30,333 [2    ] oft.EntityFrameworkCore.Model.Validation - The 'ProcessingStatus' property 'ProcessingStatus' on entity type 'SourceMaterial' is configured with a database-generated default, but has no configured sentinel value. The database-generated default will always be used for inserts when the property has the value '0', since this is the CLR default for the 'ProcessingStatus' type. Consider using a nullable type, using a nullable backing field, or setting the sentinel value for the property to ensure the database default is used when, and only when, appropriate. See https://aka.ms/efcore-docs-default-values for more information.
+INFO  2026-03-19 13:06:00,210 [2    ] tCore.Builder.RequestLocalizationOptions - Supported Request Localization Cultures: en,es-MX,fr,de,it,nl,pt-BR,tr,ru,ar,fa,ja,zh-Hans
+INFO  2026-03-19 13:06:00,652 [13   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/ - - -
+INFO  2026-03-19 13:06:00,802 [2    ] Microsoft.Hosting.Lifetime               - Application started. Press Ctrl+C to shut down.
+INFO  2026-03-19 13:06:00,806 [2    ] Microsoft.Hosting.Lifetime               - Hosting environment: Development
+INFO  2026-03-19 13:06:00,810 [2    ] Microsoft.Hosting.Lifetime               - Content root path: C:\Users\Welcome\source\repos\Ubuntu\team-3\backend\aspnet-core\src\Team3.Web.Host
+INFO  2026-03-19 13:06:01,853 [10   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host)'
+INFO  2026-03-19 13:06:01,931 [10   ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "Index", controller = "Home", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller Team3.Web.Host.Controllers.HomeController (Team3.Web.Host).
+INFO  2026-03-19 13:06:03,274 [10   ] vc.Infrastructure.RedirectResultExecutor - Executing RedirectResult, redirecting to /swagger.
+INFO  2026-03-19 13:06:03,297 [10   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host) in 1345.7494ms
+INFO  2026-03-19 13:06:03,300 [10   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host)'
+INFO  2026-03-19 13:06:03,335 [10   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/ - 302 - - 2687.5306ms
+INFO  2026-03-19 13:06:03,439 [8    ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/swagger/ui/abp.js - - -
+INFO  2026-03-19 13:06:03,467 [8    ] NetCore.StaticFiles.StaticFileMiddleware - The file /swagger/ui/abp.js was not modified
+INFO  2026-03-19 13:06:03,477 [18   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/swagger/ui/abp.swagger.js - - -
+INFO  2026-03-19 13:06:03,480 [18   ] NetCore.StaticFiles.StaticFileMiddleware - The file /swagger/ui/abp.swagger.js was not modified
+INFO  2026-03-19 13:06:03,513 [18   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/swagger/ui/abp.swagger.js - 304 - text/javascript 7.6365ms
+INFO  2026-03-19 13:06:03,516 [8    ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/swagger/ui/abp.js - 304 - text/javascript 79.1203ms
+INFO  2026-03-19 13:06:03,519 [12   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/_framework/aspnetcore-browser-refresh.js - - -
+INFO  2026-03-19 13:06:03,556 [12   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/_framework/aspnetcore-browser-refresh.js - 200 14933 application/javascript;+charset=utf-8 12.5713ms
+INFO  2026-03-19 13:06:03,567 [16   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/_vs/browserLink - - -
+INFO  2026-03-19 13:06:03,636 [16   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/_vs/browserLink - 200 - text/javascript;+charset=UTF-8 68.3787ms
+INFO  2026-03-19 13:06:03,679 [16   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/AntiForgery/SetCookie - - -
+INFO  2026-03-19 13:06:03,688 [16   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host)'
+INFO  2026-03-19 13:06:03,697 [16   ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "SetCookie", controller = "AntiForgery", area = ""}. Executing controller action with signature Void SetCookie() on controller Team3.Web.Host.Controllers.AntiForgeryController (Team3.Web.Host).
+INFO  2026-03-19 13:06:03,771 [16   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/swagger/v1/swagger.json - - -
+INFO  2026-03-19 13:06:03,832 [16   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/swagger/v1/swagger.json - 200 - application/json;charset=utf-8 62.1824ms
+INFO  2026-03-19 13:06:04,935 [16   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-19 13:06:04,953 [16   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host) in 1251.8683ms
+INFO  2026-03-19 13:06:04,956 [16   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host)'
+INFO  2026-03-19 13:06:04,960 [16   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/AntiForgery/SetCookie - 200 - application/json;+charset=utf-8 1281.9216ms
+INFO  2026-03-19 13:06:49,091 [18   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 POST https://localhost:44311/api/TokenAuth/Authenticate - application/json 54
+INFO  2026-03-19 13:06:49,107 [18   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution failed.
+INFO  2026-03-19 13:06:49,112 [18   ] pNetCore.Cors.Infrastructure.CorsService - Request origin https://localhost:44311 does not have permission to access the resource.
+INFO  2026-03-19 13:06:49,123 [18   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Controllers.TokenAuthController.Authenticate (Team3.Web.Core)'
+INFO  2026-03-19 13:06:49,157 [18   ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "Authenticate", controller = "TokenAuth", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Team3.Models.TokenAuth.AuthenticateResultModel] Authenticate(Team3.Models.TokenAuth.AuthenticateModel) on controller Team3.Controllers.TokenAuthController (Team3.Web.Core).
+INFO  2026-03-19 13:06:55,082 [16   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-19 13:06:55,109 [16   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Controllers.TokenAuthController.Authenticate (Team3.Web.Core) in 5939.7009ms
+INFO  2026-03-19 13:06:55,115 [16   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Controllers.TokenAuthController.Authenticate (Team3.Web.Core)'
+INFO  2026-03-19 13:06:55,178 [16   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 POST https://localhost:44311/api/TokenAuth/Authenticate - 200 - application/json;+charset=utf-8 6033.7928ms
+INFO  2026-03-19 13:06:55,185 [16   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/swagger/index.html - - -
+INFO  2026-03-19 13:06:55,494 [24   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/swagger/index.html - 200 - text/html;charset=utf-8 278.8571ms
+INFO  2026-03-19 13:06:55,500 [24   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/_vs/browserLink - - -
+INFO  2026-03-19 13:06:55,506 [13   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/_framework/aspnetcore-browser-refresh.js - - -
+INFO  2026-03-19 13:06:55,520 [13   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/_framework/aspnetcore-browser-refresh.js - 200 14933 application/javascript;+charset=utf-8 13.9532ms
+INFO  2026-03-19 13:06:55,631 [13   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/_vs/browserLink - 200 - text/javascript;+charset=UTF-8 68.2257ms
+INFO  2026-03-19 13:06:55,662 [26   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/AntiForgery/SetCookie - - -
+INFO  2026-03-19 13:06:55,666 [24   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/swagger/v1/swagger.json - - -
+INFO  2026-03-19 13:06:55,674 [26   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host)'
+INFO  2026-03-19 13:06:55,683 [26   ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "SetCookie", controller = "AntiForgery", area = ""}. Executing controller action with signature Void SetCookie() on controller Team3.Web.Host.Controllers.AntiForgeryController (Team3.Web.Host).
+INFO  2026-03-19 13:06:55,733 [26   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/swagger/v1/swagger.json - 200 - application/json;charset=utf-8 99.1182ms
+INFO  2026-03-19 13:06:56,716 [18   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-19 13:06:56,722 [18   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host) in 1034.197ms
+INFO  2026-03-19 13:06:56,727 [18   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host)'
+INFO  2026-03-19 13:06:56,732 [18   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/AntiForgery/SetCookie - 200 - application/json;+charset=utf-8 1097.0676ms
+INFO  2026-03-19 13:07:19,649 [18   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 POST https://localhost:44311/api/services/app/LearningMaterial/UploadTextMaterial - application/json 1724
+INFO  2026-03-19 13:07:19,655 [18   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution failed.
+INFO  2026-03-19 13:07:19,661 [18   ] pNetCore.Cors.Infrastructure.CorsService - Request origin https://localhost:44311 does not have permission to access the resource.
+INFO  2026-03-19 13:07:19,703 [18   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.LearningMaterials.LearningMaterialAppService.UploadTextMaterialAsync (Team3.Application)'
+INFO  2026-03-19 13:07:19,722 [18   ] c.Infrastructure.ControllerActionInvoker - Route matched with {area = "app", action = "UploadTextMaterial", controller = "LearningMaterial"}. Executing controller action with signature System.Threading.Tasks.Task`1[Team3.LearningMaterials.Dto.UploadTextLearningMaterialOutput] UploadTextMaterialAsync(Team3.LearningMaterials.Dto.UploadTextLearningMaterialInput) on controller Team3.LearningMaterials.LearningMaterialAppService (Team3.Application).
+ERROR 2026-03-19 13:13:57,800 [3    ] EntityFrameworkCore.Database.Transaction - An error occurred using a transaction.
+ERROR 2026-03-19 13:13:58,002 [3    ] Microsoft.EntityFrameworkCore.Update     - An exception occurred in the database while saving changes for context type 'Team3.EntityFrameworkCore.Team3DbContext'.
+Npgsql.PostgresException (0x80004005): 25P03: terminating connection due to idle-in-transaction timeout
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalTransaction.CreateSavepointAsync(String name, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalTransaction.CreateSavepointAsync(String name, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalTransaction.CreateSavepointAsync(String name, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+  Exception data:
+    Severity: FATAL
+    SqlState: 25P03
+    MessageText: terminating connection due to idle-in-transaction timeout
+    File: postgres.c
+    Line: 3449
+    Routine: ProcessInterrupts
+Npgsql.PostgresException (0x80004005): 25P03: terminating connection due to idle-in-transaction timeout
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalTransaction.CreateSavepointAsync(String name, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalTransaction.CreateSavepointAsync(String name, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalTransaction.CreateSavepointAsync(String name, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+  Exception data:
+    Severity: FATAL
+    SqlState: 25P03
+    MessageText: terminating connection due to idle-in-transaction timeout
+    File: postgres.c
+    Line: 3449
+    Routine: ProcessInterrupts
+ERROR 2026-03-19 13:13:58,211 [3    ] ningMaterials.LearningMaterialAppService - Npgsql.PostgresException (0x80004005): 25P03: terminating connection due to idle-in-transaction timeout
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalTransaction.CreateSavepointAsync(String name, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalTransaction.CreateSavepointAsync(String name, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalTransaction.CreateSavepointAsync(String name, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Abp.EntityFrameworkCore.AbpDbContext.SaveChangesAsync(CancellationToken cancellationToken)
+   at Abp.Zero.EntityFrameworkCore.AbpZeroCommonDbContext`3.SaveChangesAsync(CancellationToken cancellationToken)
+   at Abp.EntityFrameworkCore.Uow.EfCoreUnitOfWork.SaveChangesAsync()
+   at Team3.LearningMaterials.LearningMaterialAppService.UploadTextMaterialAsync(UploadTextLearningMaterialInput input) in C:\Users\Welcome\source\repos\Ubuntu\team-3\backend\aspnet-core\src\Team3.Application\LearningMaterials\LearningMaterialAppService.cs:line 200
+  Exception data:
+    Severity: FATAL
+    SqlState: 25P03
+    MessageText: terminating connection due to idle-in-transaction timeout
+    File: postgres.c
+    Line: 3449
+    Routine: ProcessInterrupts
+Npgsql.PostgresException (0x80004005): 25P03: terminating connection due to idle-in-transaction timeout
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalTransaction.CreateSavepointAsync(String name, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalTransaction.CreateSavepointAsync(String name, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalTransaction.CreateSavepointAsync(String name, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Abp.EntityFrameworkCore.AbpDbContext.SaveChangesAsync(CancellationToken cancellationToken)
+   at Abp.Zero.EntityFrameworkCore.AbpZeroCommonDbContext`3.SaveChangesAsync(CancellationToken cancellationToken)
+   at Abp.EntityFrameworkCore.Uow.EfCoreUnitOfWork.SaveChangesAsync()
+   at Team3.LearningMaterials.LearningMaterialAppService.UploadTextMaterialAsync(UploadTextLearningMaterialInput input) in C:\Users\Welcome\source\repos\Ubuntu\team-3\backend\aspnet-core\src\Team3.Application\LearningMaterials\LearningMaterialAppService.cs:line 200
+  Exception data:
+    Severity: FATAL
+    SqlState: 25P03
+    MessageText: terminating connection due to idle-in-transaction timeout
+    File: postgres.c
+    Line: 3449
+    Routine: ProcessInterrupts
+WARN  2026-03-19 13:14:00,726 [30   ] Mvc.ExceptionHandling.AbpExceptionFilter - DEBUG: PostgresException: 25P03: terminating connection due to idle-in-transaction timeout | 
+Abp.UI.UserFriendlyException: DEBUG: PostgresException: 25P03: terminating connection due to idle-in-transaction timeout | 
+   at Team3.LearningMaterials.LearningMaterialAppService.UploadTextMaterialAsync(UploadTextLearningMaterialInput input) in C:\Users\Welcome\source\repos\Ubuntu\team-3\backend\aspnet-core\src\Team3.Application\LearningMaterials\LearningMaterialAppService.cs:line 226
+   at lambda_method2721(Closure, Object)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.AwaitableObjectResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextExceptionFilterAsync>g__Awaited|26_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+INFO  2026-03-19 13:14:00,751 [30   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-19 13:14:00,761 [30   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.LearningMaterials.LearningMaterialAppService.UploadTextMaterialAsync (Team3.Application) in 401032.6798ms
+INFO  2026-03-19 13:14:00,765 [30   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.LearningMaterials.LearningMaterialAppService.UploadTextMaterialAsync (Team3.Application)'
+INFO  2026-03-19 13:14:00,771 [30   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 POST https://localhost:44311/api/services/app/LearningMaterial/UploadTextMaterial - 500 - application/json;+charset=utf-8 401128.9770ms
+DEBUG 2026-03-19 13:15:59,067 [2    ] Abp.Modules.AbpModuleManager             - Loading Abp modules...
+DEBUG 2026-03-19 13:16:01,653 [2    ] Abp.Modules.AbpModuleManager             - Found 15 ABP modules in total.
+DEBUG 2026-03-19 13:16:01,715 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Web.Host.Startup.Team3WebHostModule, Team3.Web.Host, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:16:01,721 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3WebCoreModule, Team3.Web.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:16:01,723 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3ApplicationModule, Team3.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:16:01,724 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3CoreModule, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:16:01,726 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCoreModule, Abp.ZeroCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:16:01,727 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCommonModule, Abp.Zero.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:16:01,728 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AbpKernelModule, Abp, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:16:01,731 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AutoMapper.AbpAutoMapperModule, Abp.AutoMapper, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:16:01,732 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.EntityFrameworkCore.Team3EntityFrameworkModule, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:16:01,734 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.EntityFrameworkCore.AbpZeroCoreEntityFrameworkCoreModule, Abp.ZeroCore.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:16:01,735 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFrameworkCore.AbpEntityFrameworkCoreModule, Abp.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:16:01,736 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFramework.AbpEntityFrameworkCommonModule, Abp.EntityFramework.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:16:01,737 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.AbpAspNetCoreModule, Abp.AspNetCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:16:01,738 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Web.AbpWebCommonModule, Abp.Web.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:16:01,739 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.SignalR.AbpAspNetCoreSignalRModule, Abp.AspNetCore.SignalR, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:16:01,743 [2    ] Abp.Modules.AbpModuleManager             - 15 modules loaded.
+DEBUG 2026-03-19 13:16:01,916 [2    ] o.Configuration.LanguageManagementConfig - Converted Abp (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 13:16:01,916 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpZero (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 13:16:01,917 [2    ] o.Configuration.LanguageManagementConfig - Converted Team3 (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 13:16:01,917 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpWeb (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 13:16:02,918 [2    ] ameworkCore.AbpEntityFrameworkCoreModule - Registering DbContext: Team3.EntityFrameworkCore.Team3DbContext, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:16:03,501 [2    ] Abp.Localization.LocalizationManager     - Initializing 4 localization sources.
+DEBUG 2026-03-19 13:16:03,609 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Abp
+DEBUG 2026-03-19 13:16:03,638 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpZero
+DEBUG 2026-03-19 13:16:03,656 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Team3
+DEBUG 2026-03-19 13:16:03,665 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpWeb
+DEBUG 2026-03-19 13:16:03,689 [2    ] Abp.BackgroundJobs.BackgroundJobManager  - Start background worker: Abp.BackgroundJobs.BackgroundJobManager
+DEBUG 2026-03-19 13:16:03,709 [2    ] , Culture=neutral, PublicKeyToken=null]] - Start background worker: Abp.Authorization.Users.UserTokenExpirationWorker`2[[Team3.MultiTenancy.Tenant, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Team3.Authorization.Users.User, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]
+DEBUG 2026-03-19 13:16:03,760 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Found 7 classes define auto mapping attributes
+DEBUG 2026-03-19 13:16:03,760 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.CreateUserDto
+DEBUG 2026-03-19 13:16:03,768 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.UserDto
+DEBUG 2026-03-19 13:16:03,770 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.TenantLoginInfoDto
+DEBUG 2026-03-19 13:16:03,771 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.UserLoginInfoDto
+DEBUG 2026-03-19 13:16:03,771 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Roles.Dto.PermissionDto
+DEBUG 2026-03-19 13:16:03,771 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.CreateTenantDto
+DEBUG 2026-03-19 13:16:03,772 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.TenantDto
+WARN  2026-03-19 13:16:07,401 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'SourceMaterial'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 13:16:07,407 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Lesson' has a global query filter defined and is the required end of a relationship with the entity 'LessonMaterial'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 13:16:07,412 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Language' has a global query filter defined and is the required end of a relationship with the entity 'LessonTranslation'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 13:16:07,418 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Subject' has a global query filter defined and is the required end of a relationship with the entity 'StudentEnrollment'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 13:16:07,423 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Subject' has a global query filter defined and is the required end of a relationship with the entity 'StudentProgress'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 13:16:07,641 [2    ] oft.EntityFrameworkCore.Model.Validation - The 'ProcessingStatus' property 'ProcessingStatus' on entity type 'SourceMaterial' is configured with a database-generated default, but has no configured sentinel value. The database-generated default will always be used for inserts when the property has the value '0', since this is the CLR default for the 'ProcessingStatus' type. Consider using a nullable type, using a nullable backing field, or setting the sentinel value for the property to ensure the database default is used when, and only when, appropriate. See https://aka.ms/efcore-docs-default-values for more information.
+INFO  2026-03-19 13:16:35,637 [2    ] tCore.Builder.RequestLocalizationOptions - Supported Request Localization Cultures: en,es-MX,fr,de,it,nl,pt-BR,tr,ru,ar,fa,ja,zh-Hans
+INFO  2026-03-19 13:16:36,438 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/ - - -
+INFO  2026-03-19 13:16:36,675 [2    ] Microsoft.Hosting.Lifetime               - Application started. Press Ctrl+C to shut down.
+INFO  2026-03-19 13:16:36,689 [2    ] Microsoft.Hosting.Lifetime               - Hosting environment: Development
+INFO  2026-03-19 13:16:36,694 [2    ] Microsoft.Hosting.Lifetime               - Content root path: C:\Users\Welcome\source\repos\Ubuntu\team-3\backend\aspnet-core\src\Team3.Web.Host
+INFO  2026-03-19 13:16:38,093 [13   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host)'
+INFO  2026-03-19 13:16:38,269 [13   ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "Index", controller = "Home", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller Team3.Web.Host.Controllers.HomeController (Team3.Web.Host).
+INFO  2026-03-19 13:16:39,602 [13   ] vc.Infrastructure.RedirectResultExecutor - Executing RedirectResult, redirecting to /swagger.
+INFO  2026-03-19 13:16:39,654 [13   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host) in 1341.9659ms
+INFO  2026-03-19 13:16:39,662 [13   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host)'
+INFO  2026-03-19 13:16:39,736 [13   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/ - 302 - - 3318.9990ms
+INFO  2026-03-19 13:16:39,870 [19   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/_vs/browserLink - - -
+INFO  2026-03-19 13:16:39,882 [12   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/swagger/ui/abp.js - - -
+INFO  2026-03-19 13:16:39,889 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/_framework/aspnetcore-browser-refresh.js - - -
+INFO  2026-03-19 13:16:39,895 [20   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/swagger/ui/abp.swagger.js - - -
+INFO  2026-03-19 13:16:39,944 [12   ] NetCore.StaticFiles.StaticFileMiddleware - The file /swagger/ui/abp.js was not modified
+INFO  2026-03-19 13:16:39,993 [20   ] NetCore.StaticFiles.StaticFileMiddleware - The file /swagger/ui/abp.swagger.js was not modified
+INFO  2026-03-19 13:16:40,022 [15   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/_framework/aspnetcore-browser-refresh.js - 200 14933 application/javascript;+charset=utf-8 193.5425ms
+INFO  2026-03-19 13:16:40,034 [20   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/swagger/ui/abp.swagger.js - 304 - text/javascript 155.5611ms
+INFO  2026-03-19 13:16:40,080 [12   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/swagger/ui/abp.js - 304 - text/javascript 204.9160ms
+INFO  2026-03-19 13:16:40,181 [17   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/_vs/browserLink - 200 - text/javascript;+charset=UTF-8 353.6058ms
+INFO  2026-03-19 13:16:40,232 [17   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/AntiForgery/SetCookie - - -
+INFO  2026-03-19 13:16:40,255 [17   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host)'
+INFO  2026-03-19 13:16:40,272 [17   ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "SetCookie", controller = "AntiForgery", area = ""}. Executing controller action with signature Void SetCookie() on controller Team3.Web.Host.Controllers.AntiForgeryController (Team3.Web.Host).
+INFO  2026-03-19 13:16:40,326 [12   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/swagger/v1/swagger.json - - -
+INFO  2026-03-19 13:16:40,441 [12   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/swagger/v1/swagger.json - 200 - application/json;charset=utf-8 114.4930ms
+INFO  2026-03-19 13:16:41,275 [12   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-19 13:16:41,297 [12   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host) in 1018.3193ms
+INFO  2026-03-19 13:16:41,304 [12   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host)'
+INFO  2026-03-19 13:16:41,312 [12   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/AntiForgery/SetCookie - 200 - application/json;+charset=utf-8 1079.8353ms
+INFO  2026-03-19 13:16:52,996 [20   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 POST https://localhost:44311/api/TokenAuth/Authenticate - application/json 54
+INFO  2026-03-19 13:16:53,011 [20   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution failed.
+INFO  2026-03-19 13:16:53,017 [20   ] pNetCore.Cors.Infrastructure.CorsService - Request origin https://localhost:44311 does not have permission to access the resource.
+INFO  2026-03-19 13:16:53,026 [20   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Controllers.TokenAuthController.Authenticate (Team3.Web.Core)'
+INFO  2026-03-19 13:16:53,059 [20   ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "Authenticate", controller = "TokenAuth", area = ""}. Executing controller action with signature System.Threading.Tasks.Task`1[Team3.Models.TokenAuth.AuthenticateResultModel] Authenticate(Team3.Models.TokenAuth.AuthenticateModel) on controller Team3.Controllers.TokenAuthController (Team3.Web.Core).
+INFO  2026-03-19 13:16:58,016 [20   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-19 13:16:58,030 [20   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Controllers.TokenAuthController.Authenticate (Team3.Web.Core) in 4965.7766ms
+INFO  2026-03-19 13:16:58,034 [20   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Controllers.TokenAuthController.Authenticate (Team3.Web.Core)'
+INFO  2026-03-19 13:16:58,040 [20   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 POST https://localhost:44311/api/TokenAuth/Authenticate - 200 - application/json;+charset=utf-8 5044.9618ms
+INFO  2026-03-19 13:16:58,080 [29   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/swagger/index.html - - -
+INFO  2026-03-19 13:16:58,291 [27   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/swagger/index.html - 200 - text/html;charset=utf-8 209.7461ms
+INFO  2026-03-19 13:16:58,332 [27   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/_framework/aspnetcore-browser-refresh.js - - -
+INFO  2026-03-19 13:16:58,338 [17   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/_vs/browserLink - - -
+INFO  2026-03-19 13:16:58,381 [27   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/_framework/aspnetcore-browser-refresh.js - 200 14933 application/javascript;+charset=utf-8 48.0717ms
+INFO  2026-03-19 13:16:58,449 [20   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/_vs/browserLink - 200 - text/javascript;+charset=UTF-8 120.9578ms
+INFO  2026-03-19 13:16:58,454 [29   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/AntiForgery/SetCookie - - -
+INFO  2026-03-19 13:16:58,465 [29   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host)'
+INFO  2026-03-19 13:16:58,473 [29   ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "SetCookie", controller = "AntiForgery", area = ""}. Executing controller action with signature Void SetCookie() on controller Team3.Web.Host.Controllers.AntiForgeryController (Team3.Web.Host).
+INFO  2026-03-19 13:16:58,503 [27   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/swagger/v1/swagger.json - - -
+INFO  2026-03-19 13:16:58,571 [27   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/swagger/v1/swagger.json - 200 - application/json;charset=utf-8 92.5056ms
+INFO  2026-03-19 13:16:59,428 [27   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-19 13:16:59,435 [27   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host) in 956.194ms
+INFO  2026-03-19 13:16:59,441 [27   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host)'
+INFO  2026-03-19 13:16:59,446 [27   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/AntiForgery/SetCookie - 200 - application/json;+charset=utf-8 992.3709ms
+INFO  2026-03-19 13:17:12,579 [27   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 POST https://localhost:44311/api/services/app/LearningMaterial/UploadTextMaterial - application/json 1724
+INFO  2026-03-19 13:17:12,586 [27   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution failed.
+INFO  2026-03-19 13:17:12,591 [27   ] pNetCore.Cors.Infrastructure.CorsService - Request origin https://localhost:44311 does not have permission to access the resource.
+INFO  2026-03-19 13:17:12,627 [27   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.LearningMaterials.LearningMaterialAppService.UploadTextMaterialAsync (Team3.Application)'
+INFO  2026-03-19 13:17:12,643 [27   ] c.Infrastructure.ControllerActionInvoker - Route matched with {area = "app", action = "UploadTextMaterial", controller = "LearningMaterial"}. Executing controller action with signature System.Threading.Tasks.Task`1[Team3.LearningMaterials.Dto.UploadTextLearningMaterialOutput] UploadTextMaterialAsync(Team3.LearningMaterials.Dto.UploadTextLearningMaterialInput) on controller Team3.LearningMaterials.LearningMaterialAppService (Team3.Application).
+ERROR 2026-03-19 13:23:29,406 [29   ] EntityFrameworkCore.Database.Transaction - An error occurred using a transaction.
+ERROR 2026-03-19 13:23:29,584 [29   ] Microsoft.EntityFrameworkCore.Update     - An exception occurred in the database while saving changes for context type 'Team3.EntityFrameworkCore.Team3DbContext'.
+Npgsql.PostgresException (0x80004005): 25P03: terminating connection due to idle-in-transaction timeout
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalTransaction.CreateSavepointAsync(String name, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalTransaction.CreateSavepointAsync(String name, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalTransaction.CreateSavepointAsync(String name, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+  Exception data:
+    Severity: FATAL
+    SqlState: 25P03
+    MessageText: terminating connection due to idle-in-transaction timeout
+    File: postgres.c
+    Line: 3449
+    Routine: ProcessInterrupts
+Npgsql.PostgresException (0x80004005): 25P03: terminating connection due to idle-in-transaction timeout
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalTransaction.CreateSavepointAsync(String name, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalTransaction.CreateSavepointAsync(String name, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalTransaction.CreateSavepointAsync(String name, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+  Exception data:
+    Severity: FATAL
+    SqlState: 25P03
+    MessageText: terminating connection due to idle-in-transaction timeout
+    File: postgres.c
+    Line: 3449
+    Routine: ProcessInterrupts
+ERROR 2026-03-19 13:23:29,709 [29   ] ningMaterials.LearningMaterialAppService - Npgsql.PostgresException (0x80004005): 25P03: terminating connection due to idle-in-transaction timeout
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalTransaction.CreateSavepointAsync(String name, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalTransaction.CreateSavepointAsync(String name, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalTransaction.CreateSavepointAsync(String name, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Abp.EntityFrameworkCore.AbpDbContext.SaveChangesAsync(CancellationToken cancellationToken)
+   at Abp.Zero.EntityFrameworkCore.AbpZeroCommonDbContext`3.SaveChangesAsync(CancellationToken cancellationToken)
+   at Abp.EntityFrameworkCore.Uow.EfCoreUnitOfWork.SaveChangesAsync()
+   at Team3.LearningMaterials.LearningMaterialAppService.UploadTextMaterialAsync(UploadTextLearningMaterialInput input) in C:\Users\Welcome\source\repos\Ubuntu\team-3\backend\aspnet-core\src\Team3.Application\LearningMaterials\LearningMaterialAppService.cs:line 200
+  Exception data:
+    Severity: FATAL
+    SqlState: 25P03
+    MessageText: terminating connection due to idle-in-transaction timeout
+    File: postgres.c
+    Line: 3449
+    Routine: ProcessInterrupts
+Npgsql.PostgresException (0x80004005): 25P03: terminating connection due to idle-in-transaction timeout
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalTransaction.CreateSavepointAsync(String name, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalTransaction.CreateSavepointAsync(String name, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalTransaction.CreateSavepointAsync(String name, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Abp.EntityFrameworkCore.AbpDbContext.SaveChangesAsync(CancellationToken cancellationToken)
+   at Abp.Zero.EntityFrameworkCore.AbpZeroCommonDbContext`3.SaveChangesAsync(CancellationToken cancellationToken)
+   at Abp.EntityFrameworkCore.Uow.EfCoreUnitOfWork.SaveChangesAsync()
+   at Team3.LearningMaterials.LearningMaterialAppService.UploadTextMaterialAsync(UploadTextLearningMaterialInput input) in C:\Users\Welcome\source\repos\Ubuntu\team-3\backend\aspnet-core\src\Team3.Application\LearningMaterials\LearningMaterialAppService.cs:line 200
+  Exception data:
+    Severity: FATAL
+    SqlState: 25P03
+    MessageText: terminating connection due to idle-in-transaction timeout
+    File: postgres.c
+    Line: 3449
+    Routine: ProcessInterrupts
+WARN  2026-03-19 13:23:32,158 [29   ] Mvc.ExceptionHandling.AbpExceptionFilter - DEBUG: PostgresException: 25P03: terminating connection due to idle-in-transaction timeout | 
+Abp.UI.UserFriendlyException: DEBUG: PostgresException: 25P03: terminating connection due to idle-in-transaction timeout | 
+   at Team3.LearningMaterials.LearningMaterialAppService.UploadTextMaterialAsync(UploadTextLearningMaterialInput input) in C:\Users\Welcome\source\repos\Ubuntu\team-3\backend\aspnet-core\src\Team3.Application\LearningMaterials\LearningMaterialAppService.cs:line 226
+   at lambda_method2721(Closure, Object)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.AwaitableObjectResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextExceptionFilterAsync>g__Awaited|26_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+INFO  2026-03-19 13:23:32,173 [29   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-19 13:23:32,181 [29   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.LearningMaterials.LearningMaterialAppService.UploadTextMaterialAsync (Team3.Application) in 379533.3873ms
+INFO  2026-03-19 13:23:32,186 [29   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.LearningMaterials.LearningMaterialAppService.UploadTextMaterialAsync (Team3.Application)'
+INFO  2026-03-19 13:23:32,192 [29   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 POST https://localhost:44311/api/services/app/LearningMaterial/UploadTextMaterial - 500 - application/json;+charset=utf-8 379612.5394ms
+DEBUG 2026-03-19 13:37:04,847 [2    ] Abp.Modules.AbpModuleManager             - Loading Abp modules...
+DEBUG 2026-03-19 13:37:06,336 [2    ] Abp.Modules.AbpModuleManager             - Found 15 ABP modules in total.
+DEBUG 2026-03-19 13:37:06,402 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Web.Host.Startup.Team3WebHostModule, Team3.Web.Host, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:37:06,412 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3WebCoreModule, Team3.Web.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:37:06,414 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3ApplicationModule, Team3.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:37:06,415 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3CoreModule, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:37:06,417 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCoreModule, Abp.ZeroCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:37:06,418 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCommonModule, Abp.Zero.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:37:06,420 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AbpKernelModule, Abp, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:37:06,425 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AutoMapper.AbpAutoMapperModule, Abp.AutoMapper, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:37:06,427 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.EntityFrameworkCore.Team3EntityFrameworkModule, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:37:06,428 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.EntityFrameworkCore.AbpZeroCoreEntityFrameworkCoreModule, Abp.ZeroCore.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:37:06,430 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFrameworkCore.AbpEntityFrameworkCoreModule, Abp.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:37:06,431 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFramework.AbpEntityFrameworkCommonModule, Abp.EntityFramework.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:37:06,433 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.AbpAspNetCoreModule, Abp.AspNetCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:37:06,437 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Web.AbpWebCommonModule, Abp.Web.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:37:06,439 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.SignalR.AbpAspNetCoreSignalRModule, Abp.AspNetCore.SignalR, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:37:06,446 [2    ] Abp.Modules.AbpModuleManager             - 15 modules loaded.
+DEBUG 2026-03-19 13:37:06,677 [2    ] o.Configuration.LanguageManagementConfig - Converted Abp (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 13:37:06,677 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpZero (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 13:37:06,677 [2    ] o.Configuration.LanguageManagementConfig - Converted Team3 (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 13:37:06,677 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpWeb (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 13:37:08,199 [2    ] ameworkCore.AbpEntityFrameworkCoreModule - Registering DbContext: Team3.EntityFrameworkCore.Team3DbContext, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 13:37:09,185 [2    ] Abp.Localization.LocalizationManager     - Initializing 4 localization sources.
+DEBUG 2026-03-19 13:37:09,363 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Abp
+DEBUG 2026-03-19 13:37:09,401 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpZero
+DEBUG 2026-03-19 13:37:09,426 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Team3
+DEBUG 2026-03-19 13:37:09,441 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpWeb
+DEBUG 2026-03-19 13:37:09,473 [2    ] Abp.BackgroundJobs.BackgroundJobManager  - Start background worker: Abp.BackgroundJobs.BackgroundJobManager
+DEBUG 2026-03-19 13:37:09,497 [2    ] , Culture=neutral, PublicKeyToken=null]] - Start background worker: Abp.Authorization.Users.UserTokenExpirationWorker`2[[Team3.MultiTenancy.Tenant, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Team3.Authorization.Users.User, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]
+DEBUG 2026-03-19 13:37:09,595 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Found 7 classes define auto mapping attributes
+DEBUG 2026-03-19 13:37:09,595 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.CreateUserDto
+DEBUG 2026-03-19 13:37:09,606 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.UserDto
+DEBUG 2026-03-19 13:37:09,608 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.TenantLoginInfoDto
+DEBUG 2026-03-19 13:37:09,609 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.UserLoginInfoDto
+DEBUG 2026-03-19 13:37:09,610 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Roles.Dto.PermissionDto
+DEBUG 2026-03-19 13:37:09,610 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.CreateTenantDto
+DEBUG 2026-03-19 13:37:09,610 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.TenantDto
+WARN  2026-03-19 13:37:15,092 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'SourceMaterial'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 13:37:15,099 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Lesson' has a global query filter defined and is the required end of a relationship with the entity 'LessonMaterial'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 13:37:15,106 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Language' has a global query filter defined and is the required end of a relationship with the entity 'LessonTranslation'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 13:37:15,113 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Subject' has a global query filter defined and is the required end of a relationship with the entity 'StudentEnrollment'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 13:37:15,121 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Subject' has a global query filter defined and is the required end of a relationship with the entity 'StudentProgress'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 13:37:15,577 [2    ] oft.EntityFrameworkCore.Model.Validation - The 'ProcessingStatus' property 'ProcessingStatus' on entity type 'SourceMaterial' is configured with a database-generated default, but has no configured sentinel value. The database-generated default will always be used for inserts when the property has the value '0', since this is the CLR default for the 'ProcessingStatus' type. Consider using a nullable type, using a nullable backing field, or setting the sentinel value for the property to ensure the database default is used when, and only when, appropriate. See https://aka.ms/efcore-docs-default-values for more information.
+INFO  2026-03-19 13:37:42,075 [2    ] tCore.Builder.RequestLocalizationOptions - Supported Request Localization Cultures: en,es-MX,fr,de,it,nl,pt-BR,tr,ru,ar,fa,ja,zh-Hans
+INFO  2026-03-19 13:37:42,882 [13   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/ - - -
+INFO  2026-03-19 13:37:43,125 [2    ] Microsoft.Hosting.Lifetime               - Application started. Press Ctrl+C to shut down.
+INFO  2026-03-19 13:37:43,132 [2    ] Microsoft.Hosting.Lifetime               - Hosting environment: Development
+INFO  2026-03-19 13:37:43,144 [2    ] Microsoft.Hosting.Lifetime               - Content root path: C:\Users\Welcome\source\repos\Ubuntu\team-3\backend\aspnet-core\src\Team3.Web.Host
+INFO  2026-03-19 13:37:44,429 [17   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host)'
+INFO  2026-03-19 13:37:44,575 [17   ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "Index", controller = "Home", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller Team3.Web.Host.Controllers.HomeController (Team3.Web.Host).
+INFO  2026-03-19 13:37:45,778 [17   ] vc.Infrastructure.RedirectResultExecutor - Executing RedirectResult, redirecting to /swagger.
+INFO  2026-03-19 13:37:45,821 [17   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host) in 1207.9377ms
+INFO  2026-03-19 13:37:45,827 [17   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host)'
+INFO  2026-03-19 13:37:45,885 [17   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/ - 302 - - 3021.8369ms
+INFO  2026-03-19 13:37:45,942 [16   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/_framework/aspnetcore-browser-refresh.js - - -
+INFO  2026-03-19 13:37:45,981 [14   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/_vs/browserLink - - -
+INFO  2026-03-19 13:37:45,985 [20   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/swagger/ui/abp.js - - -
+INFO  2026-03-19 13:37:45,991 [13   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/swagger/ui/abp.swagger.js - - -
+INFO  2026-03-19 13:37:46,020 [13   ] NetCore.StaticFiles.StaticFileMiddleware - The file /swagger/ui/abp.swagger.js was not modified
+INFO  2026-03-19 13:37:46,059 [20   ] NetCore.StaticFiles.StaticFileMiddleware - The file /swagger/ui/abp.js was not modified
+INFO  2026-03-19 13:37:46,082 [13   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/swagger/ui/abp.swagger.js - 304 - text/javascript 88.4802ms
+INFO  2026-03-19 13:37:46,087 [20   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/swagger/ui/abp.js - 304 - text/javascript 86.5672ms
+INFO  2026-03-19 13:37:46,105 [16   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/_framework/aspnetcore-browser-refresh.js - 200 14933 application/javascript;+charset=utf-8 157.2006ms
+INFO  2026-03-19 13:37:46,179 [20   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/_vs/browserLink - 200 - text/javascript;+charset=UTF-8 238.5002ms
+INFO  2026-03-19 13:37:46,210 [20   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/AntiForgery/SetCookie - - -
+INFO  2026-03-19 13:37:46,229 [20   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host)'
+INFO  2026-03-19 13:37:46,247 [20   ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "SetCookie", controller = "AntiForgery", area = ""}. Executing controller action with signature Void SetCookie() on controller Team3.Web.Host.Controllers.AntiForgeryController (Team3.Web.Host).
+INFO  2026-03-19 13:37:46,258 [14   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/swagger/v1/swagger.json - - -
+INFO  2026-03-19 13:37:46,396 [14   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/swagger/v1/swagger.json - 200 - application/json;charset=utf-8 138.8326ms
+INFO  2026-03-19 13:37:47,275 [14   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-19 13:37:47,301 [14   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host) in 1047.018ms
+INFO  2026-03-19 13:37:47,306 [14   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host)'
+INFO  2026-03-19 13:37:47,312 [14   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/AntiForgery/SetCookie - 200 - application/json;+charset=utf-8 1102.6662ms
+INFO  2026-03-19 13:38:08,197 [16   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 POST https://localhost:44311/api/services/app/LearningMaterial/UploadTextMaterial - application/json 1724
+INFO  2026-03-19 13:38:08,222 [16   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution failed.
+INFO  2026-03-19 13:38:08,231 [16   ] pNetCore.Cors.Infrastructure.CorsService - Request origin https://localhost:44311 does not have permission to access the resource.
+INFO  2026-03-19 13:38:08,251 [16   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.LearningMaterials.LearningMaterialAppService.UploadTextMaterialAsync (Team3.Application)'
+INFO  2026-03-19 13:38:08,291 [16   ] c.Infrastructure.ControllerActionInvoker - Route matched with {area = "app", action = "UploadTextMaterial", controller = "LearningMaterial"}. Executing controller action with signature System.Threading.Tasks.Task`1[Team3.LearningMaterials.Dto.UploadTextLearningMaterialOutput] UploadTextMaterialAsync(Team3.LearningMaterials.Dto.UploadTextLearningMaterialInput) on controller Team3.LearningMaterials.LearningMaterialAppService (Team3.Application).
+ERROR 2026-03-19 13:58:14,352 [20   ] EntityFrameworkCore.Database.Transaction - An error occurred using a transaction.
+ERROR 2026-03-19 13:58:14,536 [20   ] Microsoft.EntityFrameworkCore.Update     - An exception occurred in the database while saving changes for context type 'Team3.EntityFrameworkCore.Team3DbContext'.
+Npgsql.PostgresException (0x80004005): 25P03: terminating connection due to idle-in-transaction timeout
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalTransaction.CreateSavepointAsync(String name, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalTransaction.CreateSavepointAsync(String name, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalTransaction.CreateSavepointAsync(String name, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+  Exception data:
+    Severity: FATAL
+    SqlState: 25P03
+    MessageText: terminating connection due to idle-in-transaction timeout
+    File: postgres.c
+    Line: 3449
+    Routine: ProcessInterrupts
+Npgsql.PostgresException (0x80004005): 25P03: terminating connection due to idle-in-transaction timeout
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalTransaction.CreateSavepointAsync(String name, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalTransaction.CreateSavepointAsync(String name, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalTransaction.CreateSavepointAsync(String name, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+  Exception data:
+    Severity: FATAL
+    SqlState: 25P03
+    MessageText: terminating connection due to idle-in-transaction timeout
+    File: postgres.c
+    Line: 3449
+    Routine: ProcessInterrupts
+ERROR 2026-03-19 13:58:14,741 [20   ] ningMaterials.LearningMaterialAppService - Npgsql.PostgresException (0x80004005): 25P03: terminating connection due to idle-in-transaction timeout
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalTransaction.CreateSavepointAsync(String name, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalTransaction.CreateSavepointAsync(String name, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalTransaction.CreateSavepointAsync(String name, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Abp.EntityFrameworkCore.AbpDbContext.SaveChangesAsync(CancellationToken cancellationToken)
+   at Abp.Zero.EntityFrameworkCore.AbpZeroCommonDbContext`3.SaveChangesAsync(CancellationToken cancellationToken)
+   at Abp.EntityFrameworkCore.Uow.EfCoreUnitOfWork.SaveChangesAsync()
+   at Team3.LearningMaterials.LearningMaterialAppService.UploadTextMaterialAsync(UploadTextLearningMaterialInput input) in C:\Users\Welcome\source\repos\Ubuntu\team-3\backend\aspnet-core\src\Team3.Application\LearningMaterials\LearningMaterialAppService.cs:line 215
+  Exception data:
+    Severity: FATAL
+    SqlState: 25P03
+    MessageText: terminating connection due to idle-in-transaction timeout
+    File: postgres.c
+    Line: 3449
+    Routine: ProcessInterrupts
+Npgsql.PostgresException (0x80004005): 25P03: terminating connection due to idle-in-transaction timeout
+   at Npgsql.Internal.NpgsqlConnector.ReadMessageLong(Boolean async, DataRowLoadingMode dataRowLoadingMode, Boolean readingNotifications, Boolean isReadingPrependedMessage)
+   at System.Runtime.CompilerServices.PoolingAsyncValueTaskMethodBuilder`1.StateMachineBox`1.System.Threading.Tasks.Sources.IValueTaskSource<TResult>.GetResult(Int16 token)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlDataReader.NextResult(Boolean async, Boolean isConsuming, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteReader(Boolean async, CommandBehavior behavior, CancellationToken cancellationToken)
+   at Npgsql.NpgsqlCommand.ExecuteNonQuery(Boolean async, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalTransaction.CreateSavepointAsync(String name, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalTransaction.CreateSavepointAsync(String name, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalTransaction.CreateSavepointAsync(String name, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Update.Internal.BatchExecutor.ExecuteAsync(IEnumerable`1 commandBatches, IRelationalConnection connection, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalDatabase.SaveChangesAsync(IList`1 entries, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(IList`1 entriesToSave, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.ChangeTracking.Internal.StateManager.SaveChangesAsync(StateManager stateManager, Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Npgsql.EntityFrameworkCore.PostgreSQL.Storage.Internal.NpgsqlExecutionStrategy.ExecuteAsync[TState,TResult](TState state, Func`4 operation, Func`4 verifySucceeded, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Microsoft.EntityFrameworkCore.DbContext.SaveChangesAsync(Boolean acceptAllChangesOnSuccess, CancellationToken cancellationToken)
+   at Abp.EntityFrameworkCore.AbpDbContext.SaveChangesAsync(CancellationToken cancellationToken)
+   at Abp.Zero.EntityFrameworkCore.AbpZeroCommonDbContext`3.SaveChangesAsync(CancellationToken cancellationToken)
+   at Abp.EntityFrameworkCore.Uow.EfCoreUnitOfWork.SaveChangesAsync()
+   at Team3.LearningMaterials.LearningMaterialAppService.UploadTextMaterialAsync(UploadTextLearningMaterialInput input) in C:\Users\Welcome\source\repos\Ubuntu\team-3\backend\aspnet-core\src\Team3.Application\LearningMaterials\LearningMaterialAppService.cs:line 215
+  Exception data:
+    Severity: FATAL
+    SqlState: 25P03
+    MessageText: terminating connection due to idle-in-transaction timeout
+    File: postgres.c
+    Line: 3449
+    Routine: ProcessInterrupts
+WARN  2026-03-19 13:58:17,245 [20   ] Mvc.ExceptionHandling.AbpExceptionFilter - DEBUG: PostgresException: 25P03: terminating connection due to idle-in-transaction timeout | 
+Abp.UI.UserFriendlyException: DEBUG: PostgresException: 25P03: terminating connection due to idle-in-transaction timeout | 
+   at Team3.LearningMaterials.LearningMaterialAppService.UploadTextMaterialAsync(UploadTextLearningMaterialInput input) in C:\Users\Welcome\source\repos\Ubuntu\team-3\backend\aspnet-core\src\Team3.Application\LearningMaterials\LearningMaterialAppService.cs:line 237
+   at lambda_method2434(Closure, Object)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.AwaitableObjectResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Awaited|12_0(ControllerActionInvoker invoker, ValueTask`1 actionResultValueTask)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeInnerFilterAsync>g__Awaited|13_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextExceptionFilterAsync>g__Awaited|26_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+INFO  2026-03-19 13:58:17,262 [20   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-19 13:58:17,273 [20   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.LearningMaterials.LearningMaterialAppService.UploadTextMaterialAsync (Team3.Application) in 1208976.7778ms
+INFO  2026-03-19 13:58:17,278 [20   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.LearningMaterials.LearningMaterialAppService.UploadTextMaterialAsync (Team3.Application)'
+INFO  2026-03-19 13:58:17,285 [20   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 POST https://localhost:44311/api/services/app/LearningMaterial/UploadTextMaterial - 500 - application/json;+charset=utf-8 1209094.4336ms
+DEBUG 2026-03-19 14:11:34,017 [2    ] Abp.Modules.AbpModuleManager             - Loading Abp modules...
+DEBUG 2026-03-19 14:11:35,542 [2    ] Abp.Modules.AbpModuleManager             - Found 15 ABP modules in total.
+DEBUG 2026-03-19 14:11:35,602 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Web.Host.Startup.Team3WebHostModule, Team3.Web.Host, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 14:11:35,615 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3WebCoreModule, Team3.Web.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 14:11:35,618 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3ApplicationModule, Team3.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 14:11:35,621 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.Team3CoreModule, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 14:11:35,625 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCoreModule, Abp.ZeroCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 14:11:35,628 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCommonModule, Abp.Zero.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 14:11:35,630 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AbpKernelModule, Abp, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 14:11:35,635 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AutoMapper.AbpAutoMapperModule, Abp.AutoMapper, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 14:11:35,637 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Team3.EntityFrameworkCore.Team3EntityFrameworkModule, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 14:11:35,640 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.EntityFrameworkCore.AbpZeroCoreEntityFrameworkCoreModule, Abp.ZeroCore.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 14:11:35,642 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFrameworkCore.AbpEntityFrameworkCoreModule, Abp.EntityFrameworkCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 14:11:35,644 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFramework.AbpEntityFrameworkCommonModule, Abp.EntityFramework.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 14:11:35,645 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.AbpAspNetCoreModule, Abp.AspNetCore, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 14:11:35,647 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Web.AbpWebCommonModule, Abp.Web.Common, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 14:11:35,648 [2    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.SignalR.AbpAspNetCoreSignalRModule, Abp.AspNetCore.SignalR, Version=10.2.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 14:11:35,655 [2    ] Abp.Modules.AbpModuleManager             - 15 modules loaded.
+DEBUG 2026-03-19 14:11:35,928 [2    ] o.Configuration.LanguageManagementConfig - Converted Abp (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 14:11:35,929 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpZero (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 14:11:35,929 [2    ] o.Configuration.LanguageManagementConfig - Converted Team3 (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 14:11:35,929 [2    ] o.Configuration.LanguageManagementConfig - Converted AbpWeb (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2026-03-19 14:11:37,460 [2    ] ameworkCore.AbpEntityFrameworkCoreModule - Registering DbContext: Team3.EntityFrameworkCore.Team3DbContext, Team3.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2026-03-19 14:11:38,487 [2    ] Abp.Localization.LocalizationManager     - Initializing 4 localization sources.
+DEBUG 2026-03-19 14:11:38,663 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Abp
+DEBUG 2026-03-19 14:11:38,697 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpZero
+DEBUG 2026-03-19 14:11:38,724 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: Team3
+DEBUG 2026-03-19 14:11:38,738 [2    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpWeb
+DEBUG 2026-03-19 14:11:38,768 [2    ] Abp.BackgroundJobs.BackgroundJobManager  - Start background worker: Abp.BackgroundJobs.BackgroundJobManager
+DEBUG 2026-03-19 14:11:38,835 [2    ] , Culture=neutral, PublicKeyToken=null]] - Start background worker: Abp.Authorization.Users.UserTokenExpirationWorker`2[[Team3.MultiTenancy.Tenant, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[Team3.Authorization.Users.User, Team3.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]
+DEBUG 2026-03-19 14:11:38,940 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Found 7 classes define auto mapping attributes
+DEBUG 2026-03-19 14:11:38,940 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.CreateUserDto
+DEBUG 2026-03-19 14:11:38,950 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Users.Dto.UserDto
+DEBUG 2026-03-19 14:11:38,952 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.TenantLoginInfoDto
+DEBUG 2026-03-19 14:11:38,953 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Sessions.Dto.UserLoginInfoDto
+DEBUG 2026-03-19 14:11:38,954 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.Roles.Dto.PermissionDto
+DEBUG 2026-03-19 14:11:38,955 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.CreateTenantDto
+DEBUG 2026-03-19 14:11:38,955 [2    ] Abp.AutoMapper.AbpAutoMapperModule       - Team3.MultiTenancy.Dto.TenantDto
+WARN  2026-03-19 14:11:44,431 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'User' has a global query filter defined and is the required end of a relationship with the entity 'SourceMaterial'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 14:11:44,438 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Lesson' has a global query filter defined and is the required end of a relationship with the entity 'LessonMaterial'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 14:11:44,446 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Language' has a global query filter defined and is the required end of a relationship with the entity 'LessonTranslation'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 14:11:44,453 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Subject' has a global query filter defined and is the required end of a relationship with the entity 'StudentEnrollment'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 14:11:44,462 [2    ] oft.EntityFrameworkCore.Model.Validation - Entity 'Subject' has a global query filter defined and is the required end of a relationship with the entity 'StudentProgress'. This may lead to unexpected results when the required entity is filtered out. Either configure the navigation as optional, or define matching query filters for both entities in the navigation. See https://go.microsoft.com/fwlink/?linkid=2131316 for more information.
+WARN  2026-03-19 14:11:44,901 [2    ] oft.EntityFrameworkCore.Model.Validation - The 'ProcessingStatus' property 'ProcessingStatus' on entity type 'SourceMaterial' is configured with a database-generated default, but has no configured sentinel value. The database-generated default will always be used for inserts when the property has the value '0', since this is the CLR default for the 'ProcessingStatus' type. Consider using a nullable type, using a nullable backing field, or setting the sentinel value for the property to ensure the database default is used when, and only when, appropriate. See https://aka.ms/efcore-docs-default-values for more information.
+INFO  2026-03-19 14:12:12,632 [2    ] tCore.Builder.RequestLocalizationOptions - Supported Request Localization Cultures: en,es-MX,fr,de,it,nl,pt-BR,tr,ru,ar,fa,ja,zh-Hans
+INFO  2026-03-19 14:12:13,882 [14   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/ - - -
+INFO  2026-03-19 14:12:14,267 [2    ] Microsoft.Hosting.Lifetime               - Application started. Press Ctrl+C to shut down.
+INFO  2026-03-19 14:12:14,310 [2    ] Microsoft.Hosting.Lifetime               - Hosting environment: Development
+INFO  2026-03-19 14:12:14,318 [2    ] Microsoft.Hosting.Lifetime               - Content root path: C:\Users\Welcome\source\repos\Ubuntu\team-3\backend\aspnet-core\src\Team3.Web.Host
+INFO  2026-03-19 14:12:15,891 [13   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host)'
+INFO  2026-03-19 14:12:16,113 [13   ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "Index", controller = "Home", area = ""}. Executing controller action with signature Microsoft.AspNetCore.Mvc.IActionResult Index() on controller Team3.Web.Host.Controllers.HomeController (Team3.Web.Host).
+INFO  2026-03-19 14:12:17,752 [20   ] vc.Infrastructure.RedirectResultExecutor - Executing RedirectResult, redirecting to /swagger.
+INFO  2026-03-19 14:12:17,832 [20   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host) in 1645.782ms
+INFO  2026-03-19 14:12:17,839 [20   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Web.Host.Controllers.HomeController.Index (Team3.Web.Host)'
+INFO  2026-03-19 14:12:17,986 [20   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/ - 302 - - 4057.6786ms
+INFO  2026-03-19 14:12:18,011 [16   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/swagger/ui/abp.swagger.js - - -
+INFO  2026-03-19 14:12:18,017 [12   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/_framework/aspnetcore-browser-refresh.js - - -
+INFO  2026-03-19 14:12:18,024 [13   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/swagger/ui/abp.js - - -
+INFO  2026-03-19 14:12:18,031 [18   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/_vs/browserLink - - -
+INFO  2026-03-19 14:12:18,104 [13   ] NetCore.StaticFiles.StaticFileMiddleware - The file /swagger/ui/abp.js was not modified
+INFO  2026-03-19 14:12:18,137 [16   ] NetCore.StaticFiles.StaticFileMiddleware - The file /swagger/ui/abp.swagger.js was not modified
+INFO  2026-03-19 14:12:18,189 [13   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/swagger/ui/abp.js - 304 - text/javascript 226.2254ms
+INFO  2026-03-19 14:12:18,194 [16   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/swagger/ui/abp.swagger.js - 304 - text/javascript 226.1938ms
+INFO  2026-03-19 14:12:18,212 [12   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/_framework/aspnetcore-browser-refresh.js - 200 14933 application/javascript;+charset=utf-8 248.2050ms
+INFO  2026-03-19 14:12:18,348 [25   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/AntiForgery/SetCookie - - -
+INFO  2026-03-19 14:12:18,356 [20   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/_vs/browserLink - 200 - text/javascript;+charset=UTF-8 393.0021ms
+INFO  2026-03-19 14:12:18,376 [25   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host)'
+INFO  2026-03-19 14:12:18,394 [25   ] c.Infrastructure.ControllerActionInvoker - Route matched with {action = "SetCookie", controller = "AntiForgery", area = ""}. Executing controller action with signature Void SetCookie() on controller Team3.Web.Host.Controllers.AntiForgeryController (Team3.Web.Host).
+INFO  2026-03-19 14:12:18,402 [18   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 GET https://localhost:44311/swagger/v1/swagger.json - - -
+INFO  2026-03-19 14:12:18,542 [18   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/swagger/v1/swagger.json - 200 - application/json;charset=utf-8 140.6986ms
+INFO  2026-03-19 14:12:19,411 [25   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-19 14:12:19,447 [25   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host) in 1044.3729ms
+INFO  2026-03-19 14:12:19,454 [25   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.Web.Host.Controllers.AntiForgeryController.SetCookie (Team3.Web.Host)'
+INFO  2026-03-19 14:12:19,461 [25   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 GET https://localhost:44311/AntiForgery/SetCookie - 200 - application/json;+charset=utf-8 1113.9293ms
+INFO  2026-03-19 14:15:02,126 [20   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request starting HTTP/2 POST https://localhost:44311/api/services/app/LearningMaterial/UploadTextMaterial - application/json 1724
+INFO  2026-03-19 14:15:02,144 [20   ] pNetCore.Cors.Infrastructure.CorsService - CORS policy execution failed.
+INFO  2026-03-19 14:15:02,150 [20   ] pNetCore.Cors.Infrastructure.CorsService - Request origin https://localhost:44311 does not have permission to access the resource.
+INFO  2026-03-19 14:15:02,167 [20   ] ft.AspNetCore.Routing.EndpointMiddleware - Executing endpoint 'Team3.LearningMaterials.LearningMaterialAppService.UploadTextMaterialAsync (Team3.Application)'
+INFO  2026-03-19 14:15:02,206 [20   ] c.Infrastructure.ControllerActionInvoker - Route matched with {area = "app", action = "UploadTextMaterial", controller = "LearningMaterial"}. Executing controller action with signature System.Threading.Tasks.Task`1[Team3.LearningMaterials.Dto.UploadTextLearningMaterialOutput] UploadTextMaterialAsync(Team3.LearningMaterials.Dto.UploadTextLearningMaterialInput) on controller Team3.LearningMaterials.LearningMaterialAppService (Team3.Application).
+INFO  2026-03-19 14:15:45,567 [45   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2026-03-19 14:15:45,597 [45   ] c.Infrastructure.ControllerActionInvoker - Executed action Team3.LearningMaterials.LearningMaterialAppService.UploadTextMaterialAsync (Team3.Application) in 43385.1175ms
+INFO  2026-03-19 14:15:45,603 [45   ] ft.AspNetCore.Routing.EndpointMiddleware - Executed endpoint 'Team3.LearningMaterials.LearningMaterialAppService.UploadTextMaterialAsync (Team3.Application)'
+INFO  2026-03-19 14:15:45,611 [45   ] Microsoft.AspNetCore.Hosting.Diagnostics - Request finished HTTP/2 POST https://localhost:44311/api/services/app/LearningMaterial/UploadTextMaterial - 200 - application/json;+charset=utf-8 43488.0747ms
