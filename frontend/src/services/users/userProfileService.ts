@@ -1,5 +1,6 @@
 import {
     USER_PROFILE_GET_ACTIVE_LANGUAGES_ENDPOINT,
+    USER_PROFILE_GET_SUPPORTED_LANGUAGES_ENDPOINT,
     USER_PROFILE_GET_MY_PLATFORM_LANGUAGE_ENDPOINT,
     USER_PROFILE_UPDATE_PLATFORM_LANGUAGE_ENDPOINT,
 } from "@/constants/api";
@@ -40,6 +41,12 @@ async function getActiveLanguages(): Promise<IPlatformLanguageOption[]> {
     return response.data.result.items;
 }
 
+/** Fetches all supported platform languages from the Languages table. */
+async function getSupportedLanguages(): Promise<IPlatformLanguageOption[]> {
+    const response = await apiClient.get<IAbpListResultEnvelope<IPlatformLanguageOption>>(USER_PROFILE_GET_SUPPORTED_LANGUAGES_ENDPOINT);
+    return response.data.result.items;
+}
+
 /** Fetches the authenticated user's preferred platform language. */
 async function getMyProfile(): Promise<IMyProfileResponse> {
     const response = await apiClient.get<IAbpResponseEnvelope<IMyProfileResponse>>(USER_PROFILE_GET_MY_PLATFORM_LANGUAGE_ENDPOINT);
@@ -76,6 +83,7 @@ async function updateMyPlatformLanguage(preferredLanguage: string): Promise<IUpd
 
 export const userProfileService = {
     getActiveLanguages,
+    getSupportedLanguages,
     getMyProfile,
     updateMyPlatformLanguage,
 };
