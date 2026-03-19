@@ -81,6 +81,8 @@
     "email": "Imeile",
     "username": "Lebitso la Mosebedisi",
     "language": "Puo",
+    "languageUpdated": "Puo e ntjhafaditswe ka katleho",
+    "languageUpdateFailed": "Ho hlolehile ho ntjhafatsa puo. Ka kopo leka hape.",
     "notifications": "Ditsebiso",
     "openNavigation": "Bula tsela ya ho tsamaya",
     "openUserMenu": "Bula menyu ya mosebedisi",

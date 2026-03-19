@@ -81,6 +81,8 @@
     "email": "Email",
     "username": "Username",
     "language": "Language",
+    "languageUpdated": "Language updated successfully",
+    "languageUpdateFailed": "Failed to update language. Please try again.",
     "notifications": "Notifications",
     "openNavigation": "Open navigation",
     "openUserMenu": "Open user profile menu",

@@ -39,6 +39,9 @@ namespace Team3.Users
         private readonly IValidator<UpdateMyProfileInput> _updateValidator;
         private readonly IValidator<UpdatePlatformLanguageInput> _updateLanguageValidator;
 
+        /// <summary>
+        /// Initializes dependencies for user profile and platform-language workflows.
+        /// </summary>
         public UserProfileAppService(
             UserManager userManager,
             RoleManager roleManager,
@@ -539,18 +542,50 @@ namespace Team3.Users
         /// </summary>
         private async Task<string> GetPreferredLanguageOrDefaultAsync(long userId)
         {
+            var activeLanguages = await _languageRepository.GetAll()
+                .Where(language => language.IsActive && !language.IsDeleted)
+                .Select(language => new
+                {
+                    language.Code,
+                    language.IsDefault
+                })
+                .ToListAsync();
+
+            if (activeLanguages.Count == 0)
+            {
+                return "en";
+            }
+
+            var defaultCode = activeLanguages
+                .Where(language => language.IsDefault)
+                .Select(language => language.Code)
+                .FirstOrDefault();
+
+            if (string.IsNullOrWhiteSpace(defaultCode))
+            {
+                defaultCode = activeLanguages
+                    .Select(language => language.Code)
+                    .FirstOrDefault(code => string.Equals(code, "en", StringComparison.OrdinalIgnoreCase))
+                    ?? activeLanguages[0].Code;
+            }
+
+            var normalizedDefaultCode = defaultCode.Trim().ToLowerInvariant();
             var userPreference = await _userLanguagePreferenceRepository.FirstOrDefaultAsync(x => x.UserId == userId);
             if (userPreference != null && !string.IsNullOrWhiteSpace(userPreference.LanguageCode))
             {
-                return userPreference.LanguageCode;
+                var normalizedPreferredCode = userPreference.LanguageCode.Trim().ToLowerInvariant();
+                var isActivePreferredLanguage = activeLanguages.Any(language =>
+                    string.Equals(language.Code, normalizedPreferredCode, StringComparison.OrdinalIgnoreCase));
+
+                if (isActivePreferredLanguage)
+                {
+                    return normalizedPreferredCode;
+                }
+
+                Logger.Warn($"User {userId} has inactive or invalid language '{normalizedPreferredCode}'. Falling back to '{normalizedDefaultCode}'.");
             }
 
-            var defaultCode = await _languageRepository.GetAll()
-                .Where(language => language.IsDefault && language.IsActive && !language.IsDeleted)
-                .Select(language => language.Code)
-                .FirstOrDefaultAsync();
-
-            return string.IsNullOrWhiteSpace(defaultCode) ? "en" : defaultCode;
+            return normalizedDefaultCode;
         }
     }
 }

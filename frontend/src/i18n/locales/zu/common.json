@@ -81,6 +81,8 @@
     "email": "I-imeyili",
     "username": "Igama Lomsebenzisi",
     "language": "Ulimi",
+    "languageUpdated": "Ulimi lubuyekezwe ngempumelelo",
+    "languageUpdateFailed": "Kuhlulekile ukubuyekeza ulimi. Sicela uzame futhi.",
     "notifications": "Izaziso",
     "openNavigation": "Vula ukuhamba",
     "openUserMenu": "Vula imenyu yomsebenzisi",

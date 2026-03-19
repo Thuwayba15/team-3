@@ -81,6 +81,8 @@
     "email": "E-pos",
     "username": "Gebruikersnaam",
     "language": "Taal",
+    "languageUpdated": "Taal suksesvol opgedateer",
+    "languageUpdateFailed": "Kon nie taal opdateer nie. Probeer asseblief weer.",
     "notifications": "Kennisgewings",
     "openNavigation": "Maak navigasie oop",
     "openUserMenu": "Maak gebruikerskieslys oop",

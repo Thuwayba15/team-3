@@ -5,7 +5,6 @@ import {
     ReactNode,
     useContext,
     useEffect,
-    useMemo,
     useReducer,
 } from "react";
 import axios from "axios";
@@ -25,6 +24,7 @@ import {
 } from "./context";
 import { authReducer } from "./reducer";
 import { authService } from "@/services/auth/authService";
+import { PLATFORM_LANGUAGE_STORAGE_KEY } from "@/providers/i18n/context";
 import type { AppRole } from "@/types/navigation";
 
 const ROLE_STORAGE_KEY = "userRole";
@@ -110,6 +110,10 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
         } catch {
             // keep UX predictable: clear local auth even if network logout fails
         }
+
+        localStorage.removeItem(ROLE_STORAGE_KEY);
+        localStorage.removeItem(PLATFORM_LANGUAGE_STORAGE_KEY);
+
         dispatch(setUnauthenticated());
     };
 
@@ -117,11 +121,7 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
         dispatch(clearError());
     };
 
-    // Memoize actions to prevent unnecessary re-renders of consuming components
-    const actionsValue = useMemo<IAuthContextActions>(
-        () => ({ login, register, logout, clearAuthError }),
-        []
-    );
+    const actionsValue: IAuthContextActions = { login, register, logout, clearAuthError };
 
     return (
         <AuthStateContext.Provider value={state}>

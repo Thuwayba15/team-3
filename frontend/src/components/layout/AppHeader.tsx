@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 import { useAuthActions, useAuthState } from "@/providers/auth";
 import { useI18n } from "@/providers/i18n";
 import { sessionService } from "@/services/sessions/sessionService";
+import { userProfileService } from "@/services/users/userProfileService";
 import { useStyles } from "./AppHeader.style";
 
 const { Text } = Typography;
@@ -16,6 +17,13 @@ interface IAppHeaderProps {
     onOpenNavigation: () => void;
     isMobile: boolean;
 }
+
+const FALLBACK_LANGUAGE_OPTIONS = [
+    { label: "English", value: "en" },
+    { label: "isiZulu", value: "zu" },
+    { label: "Sesotho", value: "st" },
+    { label: "Afrikaans", value: "af" },
+];
 
 /**
  * Global dashboard header used across all role routes.
@@ -27,10 +35,11 @@ export const AppHeader = ({ onOpenNavigation, isMobile }: IAppHeaderProps) => {
     const { isAuthenticated, userId } = useAuthState();
     const { logout } = useAuthActions();
     const { currentLanguage, setLanguage, isLoading } = useI18n();
-    const [, messageContextHolder] = message.useMessage();
+    const [messageApi, messageContextHolder] = message.useMessage();
     const [displayName, setDisplayName] = useState(t("header.defaultUser"));
     const [emailAddress, setEmailAddress] = useState("-");
     const [userNameDraft, setUserNameDraft] = useState("");
+    const [languageOptions, setLanguageOptions] = useState(FALLBACK_LANGUAGE_OPTIONS);
 
     useEffect(() => {
         if (!isAuthenticated || userId === null) {
@@ -58,15 +67,30 @@ export const AppHeader = ({ onOpenNavigation, isMobile }: IAppHeaderProps) => {
 
     const profileInitial = useMemo(() => displayName.charAt(0).toUpperCase() || "U", [displayName]);
 
-    const languageOptions = useMemo(
-        () => [
-            { label: "English", value: "en" },
-            { label: "isiZulu", value: "zu" },
-            { label: "Sesotho", value: "st" },
-            { label: "Afrikaans", value: "af" },
-        ],
-        []
-    );
+    useEffect(() => {
+        let isCancelled = false;
+
+        userProfileService.getActiveLanguages()
+            .then((languages) => {
+                if (isCancelled || languages.length === 0) {
+                    return;
+                }
+
+                const options = languages.map((language) => ({
+                    label: language.name,
+                    value: language.code.trim().toLowerCase(),
+                }));
+
+                setLanguageOptions(options);
+            })
+            .catch(() => {
+                // fallback options stay in place when language list lookup fails
+            });
+
+        return () => {
+            isCancelled = true;
+        };
+    }, []);
 
     const handleLogout = async (): Promise<void> => {
         await logout();
@@ -104,7 +128,14 @@ export const AppHeader = ({ onOpenNavigation, isMobile }: IAppHeaderProps) => {
                     aria-label={t("header.language")}
                     loading={isLoading}
                     onChange={(languageCode) => {
-                        void setLanguage(languageCode);
+                        void (async () => {
+                            try {
+                                await setLanguage(languageCode);
+                                messageApi.success(t("header.languageUpdated"));
+                            } catch {
+                                messageApi.error(t("header.languageUpdateFailed"));
+                            }
+                        })();
                     }}
                 />
 

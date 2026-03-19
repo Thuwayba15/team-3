@@ -12,7 +12,7 @@ import {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useAuthState } from "@/providers/auth";
-import { userProfileService } from "@/services/users/userProfileService";
+import { IPlatformLanguageOption, userProfileService } from "@/services/users/userProfileService";
 import { setLanguage, setLoading } from "./actions";
 import {
     II18nContextActions,
@@ -30,17 +30,62 @@ interface II18nProviderProps {
     children: ReactNode;
 }
 
-const SUPPORTED_LANGUAGE_CODES = ["en", "zu", "st", "af"] as const;
+const RESOURCE_LANGUAGE_CODES = ["en", "zu", "st", "af"] as const;
 
-function normalizeLanguageCode(languageCode: string | null | undefined): string {
+function normalizeResourceLanguageCode(languageCode: string | null | undefined): string {
     if (!languageCode) {
         return "en";
     }
 
     const normalized = languageCode.trim().toLowerCase();
-    return SUPPORTED_LANGUAGE_CODES.includes(normalized as (typeof SUPPORTED_LANGUAGE_CODES)[number])
+    return RESOURCE_LANGUAGE_CODES.includes(normalized as (typeof RESOURCE_LANGUAGE_CODES)[number])
         ? normalized
         : "en";
+}
+
+function resolveDefaultLanguageCode(activeLanguages: IPlatformLanguageOption[]): string {
+    if (activeLanguages.length === 0) {
+        return "en";
+    }
+
+    const defaultLanguage = activeLanguages.find((language) =>
+        RESOURCE_LANGUAGE_CODES.includes(language.code.trim().toLowerCase() as (typeof RESOURCE_LANGUAGE_CODES)[number]) && language.isDefault
+    );
+
+    if (defaultLanguage) {
+        return defaultLanguage.code.trim().toLowerCase();
+    }
+
+    const englishLanguage = activeLanguages.find((language) => language.code.trim().toLowerCase() === "en");
+    if (englishLanguage) {
+        return "en";
+    }
+
+    const firstSupportedLanguage = activeLanguages.find((language) =>
+        RESOURCE_LANGUAGE_CODES.includes(language.code.trim().toLowerCase() as (typeof RESOURCE_LANGUAGE_CODES)[number])
+    );
+
+    return firstSupportedLanguage ? firstSupportedLanguage.code.trim().toLowerCase() : "en";
+}
+
+function resolveLanguageWithFallback(
+    languageCode: string | null | undefined,
+    activeLanguages: IPlatformLanguageOption[]
+): string {
+    const normalizedLanguageCode = normalizeResourceLanguageCode(languageCode);
+    if (activeLanguages.length === 0) {
+        return normalizedLanguageCode;
+    }
+
+    const isLanguageActive = activeLanguages.some((language) =>
+        language.code.trim().toLowerCase() === normalizedLanguageCode
+    );
+
+    if (isLanguageActive) {
+        return normalizedLanguageCode;
+    }
+
+    return resolveDefaultLanguageCode(activeLanguages);
 }
 
 export const I18nProvider = ({ children }: II18nProviderProps) => {
@@ -50,7 +95,15 @@ export const I18nProvider = ({ children }: II18nProviderProps) => {
     const syncedLanguageUserIdRef = useRef<number | null>(null);
 
     useEffect(() => {
-        const savedLanguage = localStorage.getItem(PLATFORM_LANGUAGE_STORAGE_KEY) ?? "en";
+        const cachedLanguage = localStorage.getItem(PLATFORM_LANGUAGE_STORAGE_KEY);
+        if (!cachedLanguage) {
+            const activeLanguage = normalizeResourceLanguageCode(i18n.language);
+            dispatch(setLanguage(activeLanguage));
+            document.documentElement.lang = activeLanguage;
+            return;
+        }
+
+        const savedLanguage = normalizeResourceLanguageCode(cachedLanguage);
 
         if (i18n.language !== savedLanguage) {
             void i18n.changeLanguage(savedLanguage);
@@ -58,6 +111,43 @@ export const I18nProvider = ({ children }: II18nProviderProps) => {
             dispatch(setLanguage(savedLanguage));
             document.documentElement.lang = savedLanguage;
         }
+
+        if (cachedLanguage !== savedLanguage) {
+            localStorage.setItem(PLATFORM_LANGUAGE_STORAGE_KEY, savedLanguage);
+        }
+    }, [i18n]);
+
+    useEffect(() => {
+        let isCancelled = false;
+
+        const syncCachedLanguageWithActiveLanguages = async (): Promise<void> => {
+            const cachedLanguage = localStorage.getItem(PLATFORM_LANGUAGE_STORAGE_KEY);
+            if (!cachedLanguage) {
+                return;
+            }
+
+            try {
+                const activeLanguages = await userProfileService.getActiveLanguages();
+                const resolvedLanguage = resolveLanguageWithFallback(
+                    cachedLanguage,
+                    activeLanguages
+                );
+
+                if (!isCancelled && normalizeResourceLanguageCode(i18n.language) !== resolvedLanguage) {
+                    await i18n.changeLanguage(resolvedLanguage);
+                }
+
+                localStorage.setItem(PLATFORM_LANGUAGE_STORAGE_KEY, resolvedLanguage);
+            } catch {
+                // keep cached language when active language list lookup fails
+            }
+        };
+
+        void syncCachedLanguageWithActiveLanguages();
+
+        return () => {
+            isCancelled = true;
+        };
     }, [i18n]);
 
     useEffect(() => {
@@ -93,9 +183,10 @@ export const I18nProvider = ({ children }: II18nProviderProps) => {
             dispatch(setLoading(true));
 
             try {
+                const activeLanguages = await userProfileService.getActiveLanguages();
                 const profile = await userProfileService.getMyProfile();
-                const serverLanguageCode = normalizeLanguageCode(profile.preferredLanguage);
-                const activeLanguageCode = normalizeLanguageCode(i18n.language);
+                const serverLanguageCode = resolveLanguageWithFallback(profile.preferredLanguage, activeLanguages);
+                const activeLanguageCode = resolveLanguageWithFallback(i18n.language, activeLanguages);
 
                 if (serverLanguageCode !== activeLanguageCode) {
                     await i18n.changeLanguage(serverLanguageCode);
@@ -122,15 +213,24 @@ export const I18nProvider = ({ children }: II18nProviderProps) => {
     const updateLanguage = useCallback(async (languageCode: string): Promise<void> => {
         dispatch(setLoading(true));
 
+        const normalizedLanguageCode = normalizeResourceLanguageCode(languageCode);
+        const previousLanguageCode = normalizeResourceLanguageCode(i18n.language);
+
         try {
-            const normalizedLanguageCode = normalizeLanguageCode(languageCode);
             await i18n.changeLanguage(normalizedLanguageCode);
-            localStorage.setItem(PLATFORM_LANGUAGE_STORAGE_KEY, normalizedLanguageCode);
 
             if (isAuthenticated && userId !== null) {
-                await userProfileService.updateMyPlatformLanguage(normalizedLanguageCode);
-                syncedLanguageUserIdRef.current = userId;
+                try {
+                    await userProfileService.updateMyPlatformLanguage(normalizedLanguageCode);
+                    syncedLanguageUserIdRef.current = userId;
+                } catch (error) {
+                    await i18n.changeLanguage(previousLanguageCode);
+                    localStorage.setItem(PLATFORM_LANGUAGE_STORAGE_KEY, previousLanguageCode);
+                    throw error;
+                }
             }
+
+            localStorage.setItem(PLATFORM_LANGUAGE_STORAGE_KEY, normalizedLanguageCode);
         } finally {
             dispatch(setLoading(false));
         }
