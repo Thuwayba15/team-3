@@ -74,6 +74,7 @@ export const useStyles = createStyles(({ css, token }) => ({
         display: flex;
         flex-direction: column;
         gap: ${token.marginMD}px;
+        margin-bottom: ${token.marginLG}px;
     `,
 
     progressItem: css``,
@@ -96,6 +97,49 @@ export const useStyles = createStyles(({ css, token }) => ({
         .ant-progress-bg {
             background: ${token.colorPrimary};
         }
+    `,
+
+    legend: css`
+        display: flex;
+        justify-content: center;
+        gap: ${token.marginLG}px;
+        flex-wrap: wrap;
+
+        @media (max-width: 575px) {
+            justify-content: flex-start;
+            gap: ${token.marginSM}px;
+        }
+    `,
+
+    legendItem: css`
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+        color: ${token.colorText};
+
+        @media (max-width: 575px) {
+            width: 100%;
+        }
+    `,
+
+    legendDot: css`
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        flex-shrink: 0;
+    `,
+
+    legendDotPrimary: css`
+        background: ${token.colorPrimary};
+    `,
+
+    legendDotInfo: css`
+        background: ${token.colorInfo};
+    `,
+
+    legendDotWarning: css`
+        background: ${token.colorWarning};
     `,
 
     emptyState: css`
