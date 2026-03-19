@@ -1,15 +1,14 @@
+import type { RoleNavigationMap } from "@/types/navigation";
 import {
     AlertOutlined,
     BarChartOutlined,
     BookOutlined,
     CompassOutlined,
     DashboardOutlined,
-    GlobalOutlined,
     RobotOutlined,
     TeamOutlined,
-    UserOutlined,
+    UserOutlined
 } from "@ant-design/icons";
-import type { RoleNavigationMap } from "@/types/navigation";
 
 export const NAVIGATION_BY_ROLE: RoleNavigationMap = {
     student: [
