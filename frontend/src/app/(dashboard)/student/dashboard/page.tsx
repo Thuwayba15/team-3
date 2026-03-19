@@ -19,6 +19,7 @@ import {
     Tag,
     Typography,
 } from "antd";
+import { useTranslation } from "react-i18next";
 import { useStyles } from "./styles";
 
 const { Text, Title } = Typography;
@@ -27,32 +28,50 @@ const STATS = [
     {
         icon: TrophyOutlined,
         value: "78%",
-        label: "Overall Progress Score",
-        badge: "5% this week",
+        labelKey: "dashboard.student.dashboardPage.stats.overallProgressScore",
+        badgeKey: "dashboard.student.dashboardPage.stats.badgeThisWeek",
     },
     {
         icon: CheckCircleOutlined,
         value: "12",
-        label: "Topics Mastered",
-        badge: "2 new",
+        labelKey: "dashboard.student.dashboardPage.stats.topicsMastered",
+        badgeKey: "dashboard.student.dashboardPage.stats.badgeNew",
     },
     {
         icon: BookOutlined,
         value: "24",
-        label: "Lessons Completed",
-        badge: null,
+        labelKey: "dashboard.student.dashboardPage.stats.lessonsCompleted",
+        badgeKey: null,
     },
 ];
 
 const QUIZ_RESULTS = [
-    { name: "Linear Equations",  date: "Today",       score: 85 },
-    { name: "Cell Structure",    date: "Yesterday",   score: 92 },
-    { name: "Chemical Bonding",  date: "3 days ago",  score: 65 },
+    {
+        nameKey: "dashboard.student.dashboardPage.quizResults.linearEquations",
+        dateKey: "dashboard.student.dashboardPage.dates.today",
+        score: 85,
+    },
+    {
+        nameKey: "dashboard.student.dashboardPage.quizResults.cellStructure",
+        dateKey: "dashboard.student.dashboardPage.dates.yesterday",
+        score: 92,
+    },
+    {
+        nameKey: "dashboard.student.dashboardPage.quizResults.chemicalBonding",
+        dateKey: "dashboard.student.dashboardPage.dates.daysAgo3",
+        score: 65,
+    },
 ];
 
 const UP_NEXT = [
-    { title: "Review Biology Notes",   due: "Due tomorrow" },
-    { title: "Complete Physics Quiz",  due: "Due Friday"   },
+    {
+        titleKey: "dashboard.student.dashboardPage.upNext.reviewBiologyNotes",
+        dueKey: "dashboard.student.dashboardPage.upNext.dueTomorrow",
+    },
+    {
+        titleKey: "dashboard.student.dashboardPage.upNext.completePhysicsQuiz",
+        dueKey: "dashboard.student.dashboardPage.upNext.dueFriday",
+    },
 ];
 
 function quizScoreColor(score: number) {
@@ -63,6 +82,7 @@ function quizScoreColor(score: number) {
 
 export default function StudentDashboardPage() {
     const { styles } = useStyles();
+    const { t } = useTranslation();
 
     return (
         <div>
@@ -70,10 +90,10 @@ export default function StudentDashboardPage() {
             <div className={styles.welcomeSection}>
                 <div>
                     <Title level={2} className={styles.welcomeText}>
-                        Welcome back, Thabo! 👋
+                        {t("dashboard.student.dashboardPage.welcomeTitle")}
                     </Title>
                     <Text type="secondary">
-                        You&apos;re making great progress. Ready to continue learning?
+                        {t("dashboard.student.dashboardPage.welcomeSubtitle")}
                     </Text>
                 </div>
                 <Button
@@ -82,7 +102,7 @@ export default function StudentDashboardPage() {
                     size="large"
                     className={styles.askAiBtn}
                 >
-                    Ask AI Tutor
+                    {t("dashboard.student.dashboardPage.askAiTutor")}
                 </Button>
             </div>
 
@@ -91,19 +111,19 @@ export default function StudentDashboardPage() {
                 <Col xs={24} lg={16}>
                     {/* Stat cards */}
                     <Row gutter={[16, 16]} className={styles.statsRow}>
-                        {STATS.map(({ icon: Icon, value, label, badge }) => (
-                            <Col key={label} xs={24} md={8}>
+                        {STATS.map(({ icon: Icon, value, labelKey, badgeKey }) => (
+                            <Col key={labelKey} xs={24} md={8}>
                                 <Card className={styles.statCard}>
                                     <div className={styles.statHeader}>
                                         <Icon className={styles.statIcon} />
-                                        {badge && (
+                                        {badgeKey && (
                                             <span className={styles.statBadge}>
-                                                <RiseOutlined /> {badge}
+                                                <RiseOutlined /> {t(badgeKey)}
                                             </span>
                                         )}
                                     </div>
                                     <div className={styles.statValue}>{value}</div>
-                                    <div className={styles.statLabel}>{label}</div>
+                                    <div className={styles.statLabel}>{t(labelKey)}</div>
                                 </Card>
                             </Col>
                         ))}
@@ -115,11 +135,11 @@ export default function StudentDashboardPage() {
                         title={
                             <div>
                                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                                    <span>Recommended Next Lesson</span>
-                                    <Tag color="cyan">Maths Grade 10</Tag>
+                                    <span>{t("dashboard.student.dashboardPage.recommendedNextLesson")}</span>
+                                    <Tag color="cyan">{t("dashboard.student.dashboardPage.mathsGrade10")}</Tag>
                                 </div>
                                 <div className={styles.nextLessonSubtitle}>
-                                    Based on your recent performance in Mathematics
+                                    {t("dashboard.student.dashboardPage.nextLessonSubtitle")}
                                 </div>
                             </div>
                         }
@@ -130,11 +150,10 @@ export default function StudentDashboardPage() {
                             </div>
                             <div className={styles.lessonInfo}>
                                 <Text className={styles.lessonTitle}>
-                                    Algebraic Expressions: Factorisation ✓
+                                    {t("dashboard.student.dashboardPage.algebraicExpressionsLesson")}
                                 </Text>
                                 <Text className={styles.lessonDesc}>
-                                    Learn how to factorise quadratic trinomials and difference of two
-                                    squares. This builds on your previous lesson on expanding brackets.
+                                    {t("dashboard.student.dashboardPage.lessonDescription")}
                                 </Text>
                                 <div className={styles.lessonActions}>
                                     <Button
@@ -142,10 +161,10 @@ export default function StudentDashboardPage() {
                                         icon={<PlayCircleOutlined />}
                                         className={styles.startBtn}
                                     >
-                                        Start Lesson
+                                        {t("dashboard.student.dashboardPage.startLesson")}
                                     </Button>
                                     <span className={styles.durationText}>
-                                        <ClockCircleOutlined /> 25 mins
+                                        <ClockCircleOutlined /> {t("dashboard.student.dashboardPage.lessonDuration")}
                                     </span>
                                 </div>
                             </div>
@@ -157,18 +176,18 @@ export default function StudentDashboardPage() {
                         className={styles.heatmapCard}
                         title={
                             <div>
-                                <div>Mastery Heatmap</div>
+                                <div>{t("dashboard.student.dashboardPage.masteryHeatmap")}</div>
                                 <div className={styles.heatmapSubtitle}>
-                                    Your performance across subjects
+                                    {t("dashboard.student.dashboardPage.performanceAcrossSubjects")}
                                 </div>
                             </div>
                         }
                     >
                         <div className={styles.heatmapPlaceholder}>
-                            Heatmap Visualization Placeholder
+                            {t("dashboard.student.dashboardPage.heatmapPlaceholder")}
                         </div>
                         <div className={styles.heatmapLegend}>
-                            <span>Needs Work</span>
+                            <span>{t("dashboard.student.dashboardPage.needsWork")}</span>
                             <div className={styles.legendDots}>
                                 {["#ffd6cc", "#ffd666", "#d4f5a1", "#00b8a9"].map((color) => (
                                     <div
@@ -182,7 +201,7 @@ export default function StudentDashboardPage() {
                                     />
                                 ))}
                             </div>
-                            <span>Mastered</span>
+                            <span>{t("dashboard.student.dashboardPage.mastered")}</span>
                         </div>
                     </Card>
                 </Col>
@@ -190,11 +209,11 @@ export default function StudentDashboardPage() {
                 {/* Right sidebar */}
                 <Col xs={24} lg={8}>
                     {/* Recent quiz results */}
-                    <Card className={styles.quizCard} title="Recent Quiz Results">
-                        {QUIZ_RESULTS.map(({ name, date, score }) => (
-                            <div key={name} className={styles.quizItem}>
+                    <Card className={styles.quizCard} title={t("dashboard.student.dashboardPage.recentQuizResults")}>
+                        {QUIZ_RESULTS.map(({ nameKey, dateKey, score }) => (
+                            <div key={nameKey} className={styles.quizItem}>
                                 <div className={styles.quizHeader}>
-                                    <span className={styles.quizName}>{name}</span>
+                                    <span className={styles.quizName}>{t(nameKey)}</span>
                                     <span
                                         className={styles.quizScore}
                                         style={{ color: quizScoreColor(score) }}
@@ -202,7 +221,7 @@ export default function StudentDashboardPage() {
                                         {score}%
                                     </span>
                                 </div>
-                                <div className={styles.quizDate}>{date}</div>
+                                <div className={styles.quizDate}>{t(dateKey)}</div>
                                 <Progress
                                     percent={score}
                                     showInfo={false}
@@ -213,18 +232,18 @@ export default function StudentDashboardPage() {
                             </div>
                         ))}
                         <Button type="link" className={styles.viewAllLink} style={{ padding: 0, marginTop: 8 }}>
-                            View All Results →
+                            {t("dashboard.student.dashboardPage.viewAllResults")}
                         </Button>
                     </Card>
 
                     {/* Up next */}
-                    <Card className={styles.upNextCard} title="Up Next">
-                        {UP_NEXT.map(({ title, due }) => (
-                            <div key={title} className={styles.upNextItem}>
+                    <Card className={styles.upNextCard} title={t("dashboard.student.dashboardPage.upNextTitle")}>
+                        {UP_NEXT.map(({ titleKey, dueKey }) => (
+                            <div key={titleKey} className={styles.upNextItem}>
                                 <CheckCircleOutlined className={styles.upNextIcon} />
                                 <div className={styles.upNextInfo}>
-                                    <span className={styles.upNextTitle}>{title}</span>
-                                    <span className={styles.upNextDue}>{due}</span>
+                                    <span className={styles.upNextTitle}>{t(titleKey)}</span>
+                                    <span className={styles.upNextDue}>{t(dueKey)}</span>
                                 </div>
                             </div>
                         ))}

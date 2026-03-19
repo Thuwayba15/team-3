@@ -3,22 +3,22 @@ using Abp.Domain.Repositories;
 using Abp.UI;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Team3.Academic;
 using Team3.AI;
 using Team3.Configuration;
 using Team3.Enums;
 using Team3.LearningMaterials.Dto;
-using Abp.Dependency;
 
 namespace Team3.LearningMaterials;
 
 [AbpAllowAnonymous]
 public class LearningMaterialAppService : Team3AppServiceBase, ILearningMaterialAppService
 {
-    private static readonly string[] RequiredTranslationLanguageCodes = ["zu", "st", "af"];
+    private static readonly string[] RequiredLanguageCodes = ["en", "zu", "st", "af"];
+    private static readonly DifficultyLevel[] DifficultyLevels = [DifficultyLevel.Easy, DifficultyLevel.Medium, DifficultyLevel.Hard];
 
-    // Property injection — ABP resolves these automatically, no constructor needed
     public IRepository<Subject, Guid> SubjectRepository { get; set; }
     public IRepository<Topic, Guid> TopicRepository { get; set; }
     public IRepository<Lesson, Guid> LessonRepository { get; set; }
@@ -26,25 +26,25 @@ public class LearningMaterialAppService : Team3AppServiceBase, ILearningMaterial
     public IRepository<SourceMaterial, Guid> SourceMaterialRepository { get; set; }
     public IRepository<Language, Guid> LanguageRepository { get; set; }
 
-
-    
-
-
     [AbpAllowAnonymous]
+    [Abp.Domain.Uow.UnitOfWork(false)]
     public async Task<UploadTextLearningMaterialOutput> UploadTextMaterialAsync(UploadTextLearningMaterialInput input)
     {
+        var translationService = new GeminiPlaceholderTranslationService(SettingManager);
+
         try
         {
-            var TranslationService = new GeminiPlaceholderTranslationService(SettingManager);
-
             var userId = AbpSession.UserId
                 ?? throw new UserFriendlyException("User must be logged in.");
 
             var subject = await SubjectRepository.FirstOrDefaultAsync(input.SubjectId)
                 ?? throw new UserFriendlyException("Subject was not found.");
 
-            var sourceLanguage = await GetLanguageByCodeAsync(input.SourceLanguageCode);
-            var targetLanguages = await GetRequiredTargetLanguagesAsync(sourceLanguage.Code);
+            var allLanguages = await LanguageRepository.GetAllListAsync(
+                x => RequiredLanguageCodes.Contains(x.Code) && x.IsActive);
+
+            var sourceLanguage = allLanguages.FirstOrDefault(x => x.Code == input.SourceLanguageCode.Trim().ToLowerInvariant())
+                ?? throw new UserFriendlyException($"Language '{input.SourceLanguageCode}' is not configured or inactive.");
 
             var sourceMaterial = new SourceMaterial(
                 Guid.NewGuid(),
@@ -62,63 +62,143 @@ public class LearningMaterialAppService : Team3AppServiceBase, ILearningMaterial
             await SourceMaterialRepository.InsertAsync(sourceMaterial);
 
             var topic = await ResolveTopicAsync(subject, input);
+            await CurrentUnitOfWork.SaveChangesAsync();
 
-            var lesson = new Lesson(
-                Guid.NewGuid(),
-                topic.Id,
-                input.Title,
-                input.DifficultyLevel,
-                input.Summary,
-                input.LearningObjective,
-                input.RevisionSummary,
-                input.EstimatedMinutes,
-                input.IsPublished,
-                generatedByAI: false);
-
-            await LessonRepository.InsertAsync(lesson);
-
-            var translationDtos = new List<LessonTranslationDto>();
-
-            var sourceTranslation = new LessonTranslation(
-                Guid.NewGuid(),
-                lesson.Id,
-                sourceLanguage.Id,
-                input.Title,
-                input.Content,
-                input.Summary,
-                input.Examples,
-                input.RevisionSummary,
-                isAutoTranslated: false);
-
-            await LessonTranslationRepository.InsertAsync(sourceTranslation);
-            translationDtos.Add(MapTranslationDto(sourceLanguage, sourceTranslation));
-
-            foreach (var targetLanguage in targetLanguages)
+            // -------------------------------------------------------
+            // ALL GEMINI CALLS IN PARALLEL
+            // Fire off all 3 difficulty rewrites at the same time,
+            // and all language translations at the same time
+            // -------------------------------------------------------
+            var difficultyTasks = DifficultyLevels.Select(async difficulty =>
             {
-                var translationTasks = await Task.WhenAll(
-                    TranslationService.TranslateTextAsync(input.Title, sourceLanguage.Code, targetLanguage.Code),
-                    TranslationService.TranslateTextAsync(input.Content, sourceLanguage.Code, targetLanguage.Code),
-                    TranslationService.TranslateTextAsync(input.Summary ?? string.Empty, sourceLanguage.Code, targetLanguage.Code),
-                    TranslationService.TranslateTextAsync(input.Examples ?? string.Empty, sourceLanguage.Code, targetLanguage.Code),
-                    TranslationService.TranslateTextAsync(input.RevisionSummary ?? string.Empty, sourceLanguage.Code, targetLanguage.Code)
-                );
+                var difficultyLabel = difficulty switch
+                {
+                    DifficultyLevel.Easy => "easy — use simple language, short sentences, basic vocabulary suitable for beginners",
+                    DifficultyLevel.Medium => "medium — use clear language with moderate detail and some subject-specific terms",
+                    DifficultyLevel.Hard => "hard — use advanced language, technical terms, and in-depth detail suitable for advanced students",
+                    _ => "medium"
+                };
 
-                var translation = new LessonTranslation(
-                    Guid.NewGuid(),
-                    lesson.Id,
-                    targetLanguage.Id,
-                    translationTasks[0],
-                    translationTasks[1],
-                    string.IsNullOrWhiteSpace(translationTasks[2]) ? null : translationTasks[2],
-                    string.IsNullOrWhiteSpace(translationTasks[3]) ? null : translationTasks[3],
-                    string.IsNullOrWhiteSpace(translationTasks[4]) ? null : translationTasks[4],
-                    isAutoTranslated: true);
+                var rewritePrompt = $"""
+                Rewrite the following educational lesson content at a {difficultyLabel} difficulty level.
+                Keep the same facts and meaning but adjust the language complexity accordingly.
+                Return only the rewritten content with no commentary.
 
-                await LessonTranslationRepository.InsertAsync(translation);
-                translationDtos.Add(MapTranslationDto(targetLanguage, translation));
+                Original content:
+                {input.Content}
+                """;
+
+                var rewrittenContent = await translationService.SendPromptAsync(rewritePrompt);
+                var rewrittenTitle = $"{input.Title} ({difficulty})";
+                var lessonId = Guid.NewGuid();
+
+                // Translate all non-source languages in parallel
+                var languageTasks = allLanguages
+                    .Where(l => l.Code != sourceLanguage.Code)
+                    .Select(async language =>
+                    {
+                        var fields = await Task.WhenAll(
+                            translationService.TranslateTextAsync(rewrittenTitle, sourceLanguage.Code, language.Code),
+                            translationService.TranslateTextAsync(rewrittenContent, sourceLanguage.Code, language.Code),
+                            string.IsNullOrWhiteSpace(input.Summary)
+                                ? Task.FromResult(string.Empty)
+                                : translationService.TranslateTextAsync(input.Summary, sourceLanguage.Code, language.Code),
+                            string.IsNullOrWhiteSpace(input.Examples)
+                                ? Task.FromResult(string.Empty)
+                                : translationService.TranslateTextAsync(input.Examples, sourceLanguage.Code, language.Code),
+                            string.IsNullOrWhiteSpace(input.RevisionSummary)
+                                ? Task.FromResult(string.Empty)
+                                : translationService.TranslateTextAsync(input.RevisionSummary, sourceLanguage.Code, language.Code)
+                        );
+
+                        return new LessonTranslationDto
+                        {
+                            LanguageCode = language.Code,
+                            LanguageName = language.Name,
+                            Title = fields[0],
+                            Content = fields[1],
+                            Summary = string.IsNullOrWhiteSpace(fields[2]) ? null : fields[2],
+                            Examples = string.IsNullOrWhiteSpace(fields[3]) ? null : fields[3],
+                            RevisionSummary = string.IsNullOrWhiteSpace(fields[4]) ? null : fields[4],
+                            IsAutoTranslated = true
+                        };
+                    });
+
+                var translatedLanguages = await Task.WhenAll(languageTasks);
+
+                var allTranslations = new List<LessonTranslationDto>
+            {
+                // Source language entry
+                new LessonTranslationDto
+                {
+                    LanguageCode = sourceLanguage.Code,
+                    LanguageName = sourceLanguage.Name,
+                    Title = rewrittenTitle,
+                    Content = rewrittenContent,
+                    Summary = input.Summary,
+                    Examples = input.Examples,
+                    RevisionSummary = input.RevisionSummary,
+                    IsAutoTranslated = false
+                }
+            };
+                allTranslations.AddRange(translatedLanguages);
+
+                return (Difficulty: difficulty, LessonId: lessonId, Translations: allTranslations);
+            });
+
+            var generatedLessons = await Task.WhenAll(difficultyTasks);
+
+            // -------------------------------------------------------
+            // SAVE EVERYTHING TO DB
+            // -------------------------------------------------------
+            Guid? easyLessonId = null;
+            Guid? mediumLessonId = null;
+            Guid? hardLessonId = null;
+            var allTranslationDtos = new List<LessonTranslationDto>();
+
+            foreach (var (difficulty, lessonId, translationDtos) in generatedLessons)
+            {
+                var rewrittenTitle = $"{input.Title} ({difficulty})";
+
+                var lesson = new Lesson(
+                    lessonId,
+                    topic.Id,
+                    rewrittenTitle,
+                    difficulty,
+                    input.Summary,
+                    input.LearningObjective,
+                    input.RevisionSummary,
+                    input.EstimatedMinutes,
+                    input.IsPublished,
+                    generatedByAI: false);
+
+                await LessonRepository.InsertAsync(lesson);
+
+                if (difficulty == DifficultyLevel.Easy) easyLessonId = lessonId;
+                else if (difficulty == DifficultyLevel.Medium) mediumLessonId = lessonId;
+                else if (difficulty == DifficultyLevel.Hard) hardLessonId = lessonId;
+
+                foreach (var dto in translationDtos)
+                {
+                    var language = allLanguages.First(x => x.Code == dto.LanguageCode);
+
+                    var translation = new LessonTranslation(
+                        Guid.NewGuid(),
+                        lessonId,
+                        language.Id,
+                        dto.Title,
+                        dto.Content,
+                        dto.Summary,
+                        dto.Examples,
+                        dto.RevisionSummary,
+                        dto.IsAutoTranslated);
+
+                    await LessonTranslationRepository.InsertAsync(translation);
+                    allTranslationDtos.Add(dto);
+                }
             }
 
-            sourceMaterial.MarkCompleted(lesson.Id, topic.Id);
+            sourceMaterial.MarkCompleted(topic.Id, easyLessonId, mediumLessonId, hardLessonId);
             await CurrentUnitOfWork.SaveChangesAsync();
 
             return new UploadTextLearningMaterialOutput
@@ -126,16 +206,13 @@ public class LearningMaterialAppService : Team3AppServiceBase, ILearningMaterial
                 SourceMaterialId = sourceMaterial.Id,
                 SubjectId = subject.Id,
                 TopicId = topic.Id,
-                LessonId = lesson.Id,
-                Title = lesson.Title,
+                LessonId = mediumLessonId ?? easyLessonId ?? Guid.Empty,
+                Title = input.Title,
                 SourceLanguageCode = sourceLanguage.Code,
-                Translations = translationDtos
+                Translations = allTranslationDtos
             };
         }
-        catch (UserFriendlyException)
-        {
-            throw;
-        }
+        catch (UserFriendlyException) { throw; }
         catch (OperationCanceledException ex)
         {
             Logger.Error("Translation request timed out or was cancelled.", ex);
@@ -146,21 +223,6 @@ public class LearningMaterialAppService : Team3AppServiceBase, ILearningMaterial
             Logger.Error(ex.ToString(), ex);
             throw new UserFriendlyException($"DEBUG: {ex.GetType().Name}: {ex.Message} | {ex.InnerException?.Message}");
         }
-    }
-
-    private static LessonTranslationDto MapTranslationDto(Language language, LessonTranslation translation)
-    {
-        return new LessonTranslationDto
-        {
-            LanguageCode = language.Code,
-            LanguageName = language.Name,
-            Title = translation.Title,
-            Content = translation.Content,
-            Summary = translation.Summary,
-            Examples = translation.Examples,
-            RevisionSummary = translation.RevisionSummary,
-            IsAutoTranslated = translation.IsAutoTranslated
-        };
     }
 
     private async Task<Topic> ResolveTopicAsync(Subject subject, UploadTextLearningMaterialInput input)
@@ -191,31 +253,6 @@ public class LearningMaterialAppService : Team3AppServiceBase, ILearningMaterial
 
         await TopicRepository.InsertAsync(newTopic);
         return newTopic;
-    }
-
-    private async Task<Language> GetLanguageByCodeAsync(string code)
-    {
-        var normalizedCode = code.Trim().ToLowerInvariant();
-        var language = await LanguageRepository.FirstOrDefaultAsync(x => x.Code == normalizedCode && x.IsActive);
-        return language ?? throw new UserFriendlyException($"Language '{code}' is not configured or inactive.");
-    }
-
-    private async Task<List<Language>> GetRequiredTargetLanguagesAsync(string sourceLanguageCode)
-    {
-        var targetLanguages = new List<Language>();
-
-        foreach (var languageCode in RequiredTranslationLanguageCodes)
-        {
-            if (string.Equals(languageCode, sourceLanguageCode, StringComparison.OrdinalIgnoreCase))
-                continue;
-
-            var language = await LanguageRepository.FirstOrDefaultAsync(x => x.Code == languageCode && x.IsActive)
-                ?? throw new UserFriendlyException($"Required target language '{languageCode}' is not configured or inactive.");
-
-            targetLanguages.Add(language);
-        }
-
-        return targetLanguages;
     }
 
     private static string BuildTextMaterialUrl(string title)

@@ -18,7 +18,7 @@ public class GeminiPlaceholderTranslationService : ITextTranslationService, ITra
     private static readonly HttpClient GeminiHttpClient = new()
     {
         BaseAddress = new Uri("https://generativelanguage.googleapis.com/"),
-        Timeout = TimeSpan.FromSeconds(120)
+        Timeout = TimeSpan.FromSeconds(12000)
     };
 
     private static readonly IReadOnlyDictionary<string, string> LanguageNames = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
@@ -94,6 +94,48 @@ public class GeminiPlaceholderTranslationService : ITextTranslationService, ITra
         return translatedText.Trim();
     }
 
+    public async Task<string> SendPromptAsync(string prompt)
+    {
+        var apiKey = await ResolveGeminiApiKeyAsync();
+        var model = await ResolveGeminiModelAsync();
+
+        var requestPayload = JsonSerializer.Serialize(new
+        {
+            contents = new[]
+            {
+            new
+            {
+                parts = new[]
+                {
+                    new { text = prompt }
+                }
+            }
+        },
+            generationConfig = new
+            {
+                temperature = 0.1
+            }
+        });
+
+        var endpoint = $"v1beta/models/{Uri.EscapeDataString(model)}:generateContent?key={Uri.EscapeDataString(apiKey)}";
+        using var request = new HttpRequestMessage(HttpMethod.Post, endpoint)
+        {
+            Content = new StringContent(requestPayload, Encoding.UTF8, "application/json")
+        };
+
+        using var response = await GeminiHttpClient.SendAsync(request);
+        var responseBody = await response.Content.ReadAsStringAsync();
+
+        if (!response.IsSuccessStatusCode)
+            throw new UserFriendlyException($"Gemini request failed ({(int)response.StatusCode}). {ExtractGeminiErrorMessage(responseBody)}");
+
+        var result = ExtractTranslatedText(responseBody);
+        if (string.IsNullOrWhiteSpace(result))
+            throw new UserFriendlyException("Gemini returned no text for the prompt.");
+
+        return result.Trim();
+    }
+
     private async Task<string> ResolveGeminiApiKeyAsync()
     {
         var apiKey = await _settingManager.GetSettingValueForApplicationAsync(AppSettingNames.GeminiApiKey);
@@ -108,7 +150,7 @@ public class GeminiPlaceholderTranslationService : ITextTranslationService, ITra
             return apiKey.Trim();
         }
 
-        return "YouCanHardCodeTheApiKeyHere";
+        return "AIzaSyAHLSGQoI-owvhWjQE0deBAogPrz8vgmUA";
         //throw new UserFriendlyException(
           //  $"Gemini API key is not configured. Set '{AppSettingNames.GeminiApiKey}' or the GEMINI_API_KEY environment variable.");
     }

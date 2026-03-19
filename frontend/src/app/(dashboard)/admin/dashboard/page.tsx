@@ -1,26 +1,20 @@
 "use client";
 
-import { ApiOutlined, GlobalOutlined, LineChartOutlined, TeamOutlined } from "@ant-design/icons";
-import { Card, Col, Progress, Row, Typography } from "antd";
+import { CheckCircleOutlined, GlobalOutlined, TeamOutlined } from "@ant-design/icons";
+import { Alert, Card, Col, Progress, Row, Skeleton, Typography } from "antd";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/components/layout";
+import { adminDashboardService, type IAdminDashboardSummary } from "@/services/admin/adminDashboardService";
 import { useStyles } from "./styles";
 
 const { Text } = Typography;
 
-const STAT_CARDS = [
-    { icon: TeamOutlined, value: "12,450", labelKey: "dashboard.admin.totalActiveUsers", trendKey: "dashboard.admin.trendThisMonth" },
-    { icon: GlobalOutlined, value: "4", labelKey: "dashboard.admin.languageUsage" },
-    { icon: ApiOutlined, value: "45.2k", labelKey: "dashboard.admin.aiApiCallsToday" },
-    { icon: LineChartOutlined, value: "99.9%", labelKey: "dashboard.admin.systemUptime" },
-];
-
-const LANGUAGE_STATS = [
-    { label: "English", percent: 55 },
-    { label: "IsiZulu", percent: 25 },
-    { label: "Sesotho", percent: 12 },
-    { label: "Afrikaans", percent: 8 },
-];
+const METRIC_ICONS = {
+    "total-users": TeamOutlined,
+    "active-users": CheckCircleOutlined,
+    "supported-languages": GlobalOutlined,
+} as const;
 
 const ROLE_LEGEND = [
     { labelKey: "dashboard.admin.legendStudents", dotClassName: "legendDotPrimary" as const },
@@ -32,56 +26,81 @@ const ROLE_LEGEND = [
 export default function AdminDashboardPage() {
     const { styles } = useStyles();
     const { t } = useTranslation();
+    const [summary, setSummary] = useState<IAdminDashboardSummary | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        adminDashboardService.getSummary()
+            .then((nextSummary) => setSummary(nextSummary))
+            .catch(() => setError(t("dashboard.admin.errorLoadDashboard")))
+            .finally(() => setLoading(false));
+    }, [t]);
 
     return (
         <div>
             <PageHeader title={t("dashboard.admin.title")} subtitle={t("dashboard.admin.subtitle")} />
 
+            {error ? <Alert type="error" message={error} className={styles.errorAlert} /> : null}
+
             <Row gutter={[16, 16]} className={styles.statsRow}>
-                {STAT_CARDS.map(({ icon: Icon, value, labelKey, trendKey }) => (
-                    <Col key={labelKey} xs={24} sm={12} lg={6}>
-                        <Card className={styles.statCard}>
-                            <div className={styles.statHeader}>
-                                <Icon className={styles.statIcon} />
-                                {trendKey && <span className={styles.trendBadge}>↗ {t(trendKey)}</span>}
-                            </div>
-                            <div className={styles.statValue}>{value}</div>
-                            <div className={styles.statLabel}>{t(labelKey)}</div>
-                        </Card>
-                    </Col>
-                ))}
+                {(summary?.metrics ?? Array.from({ length: 3 })).map((metric, index) => {
+                    const Icon = metric ? METRIC_ICONS[metric.key as keyof typeof METRIC_ICONS] ?? TeamOutlined : TeamOutlined;
+
+                    return (
+                        <Col key={metric?.key ?? index} xs={24} sm={12} lg={8}>
+                            <Card className={styles.statCard}>
+                                {loading || !metric ? (
+                                    <Skeleton active paragraph={{ rows: 2 }} title={false} />
+                                ) : (
+                                    <>
+                                        <div className={styles.statHeader}>
+                                            <Icon className={styles.statIcon} />
+                                            {metric.helperText ? <span className={styles.helperBadge}>{metric.helperText}</span> : null}
+                                        </div>
+                                        <div className={styles.statValue}>{metric.value}</div>
+                                        <div className={styles.statLabel}>{metric.label}</div>
+                                    </>
+                                )}
+                            </Card>
+                        </Col>
+                    );
+                })}
             </Row>
 
             <Row gutter={[16, 16]}>
-                <Col xs={24} lg={14}>
+                <Col xs={24}>
                     <Card title={t("dashboard.admin.userDistributionByRole")} className={styles.chartCard}>
-                        <div className={styles.piePlaceholder}>
-                            <Text type="secondary">{t("dashboard.admin.pieChartPlaceholder")}</Text>
-                        </div>
-                        <div className={styles.legend}>
-                            {ROLE_LEGEND.map(({ labelKey, dotClassName }) => (
-                                <span key={labelKey} className={styles.legendItem}>
-                                    <span className={`${styles.legendDot} ${styles[dotClassName]}`} />
-                                    {t(labelKey)}
-                                </span>
-                            ))}
-                        </div>
-                    </Card>
-                </Col>
-
-                <Col xs={24} lg={10}>
-                    <Card title={t("dashboard.admin.languagePreferenceAnalytics")} className={styles.chartCard}>
-                        <div className={styles.progressList}>
-                            {LANGUAGE_STATS.map(({ label, percent }) => (
-                                <div key={label} className={styles.progressItem}>
-                                    <div className={styles.progressHeader}>
-                                        <span>{label}</span>
-                                        <span>{percent}%</span>
-                                    </div>
-                                    <Progress percent={percent} showInfo={false} className={styles.progress} />
+                        {loading ? (
+                            <Skeleton active paragraph={{ rows: 5 }} title={false} />
+                        ) : summary && summary.roleDistribution.length > 0 ? (
+                            <>
+                                <div className={styles.progressList}>
+                                    {summary.roleDistribution.map((role) => (
+                                        <div key={role.roleName} className={styles.progressItem}>
+                                            <div className={styles.progressHeader}>
+                                                <span>{role.roleName}</span>
+                                                <span>{`${role.count} users`}</span>
+                                            </div>
+                                            <Progress percent={role.percent} showInfo={false} className={styles.progress} />
+                                        </div>
+                                    ))}
                                 </div>
-                            ))}
-                        </div>
+
+                                <div className={styles.legend}>
+                                    {ROLE_LEGEND.map(({ labelKey, dotClassName }) => (
+                                        <span key={labelKey} className={styles.legendItem}>
+                                            <span className={`${styles.legendDot} ${styles[dotClassName]}`} />
+                                            {t(labelKey)}
+                                        </span>
+                                    ))}
+                                </div>
+                            </>
+                        ) : (
+                            <div className={styles.emptyState}>
+                                <Text type="secondary">{t("empty.noData")}</Text>
+                            </div>
+                        )}
                     </Card>
                 </Col>
             </Row>
