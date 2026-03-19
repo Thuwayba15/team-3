@@ -1,0 +1,9 @@
+namespace Team3.Enums;
+
+public enum ProcessingStatus
+{
+    Pending = 1,
+    Processing = 2,
+    Completed = 3,
+    Failed = 4
+}

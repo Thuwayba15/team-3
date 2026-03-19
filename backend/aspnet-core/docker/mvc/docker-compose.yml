@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+
+  abp_host:
+    image: ghcr.io/teboho02/team3-mvc:latest
+    env_file:
+      - .env
+    environment:
+      TZ: "America/Toronto"
+      Kestrel__Endpoints__Http__Url: "http://+:80"
+    ports:
+      - "44312:80"
+    volumes:
+      - "./Mvc-Logs:/app/App_Data/Logs"
+    restart: always

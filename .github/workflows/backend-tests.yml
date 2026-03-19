@@ -1,0 +1,32 @@
+name: Backend Tests
+
+on:
+  push:
+    branches: [ main, dev , dev2]
+  pull_request:
+    branches: [ main, dev , dev2]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+
+    - name: Restore dependencies
+      run: dotnet restore
+      working-directory: backend/aspnet-core
+
+    - name: Build
+      run: dotnet build --no-restore --configuration Release
+      working-directory: backend/aspnet-core
+
+    - name: Run tests
+      run: dotnet test --no-build --configuration Release --verbosity normal
+      working-directory: backend/aspnet-core
