@@ -8,6 +8,7 @@ public class PagedUserResultRequestDto : PagedResultRequestDto, IShouldNormalize
 {
     public string Keyword { get; set; }
     public bool? IsActive { get; set; }
+    public string RoleName { get; set; }
 
     public string Sorting { get; set; }
 
@@ -19,5 +20,6 @@ public class PagedUserResultRequestDto : PagedResultRequestDto, IShouldNormalize
         }
 
         Keyword = Keyword?.Trim();
+        RoleName = RoleName?.Trim();
     }
 }

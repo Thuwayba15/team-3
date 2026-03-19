@@ -3,6 +3,10 @@
 import { createStyles } from "antd-style";
 
 export const useStyles = createStyles(({ css, token }) => ({
+    errorAlert: css`
+        margin-bottom: ${token.marginLG}px;
+    `,
+
     statsRow: css`
         margin-bottom: ${token.marginLG}px;
     `,
@@ -34,7 +38,7 @@ export const useStyles = createStyles(({ css, token }) => ({
         color: ${token.colorPrimary};
     `,
 
-    trendBadge: css`
+    helperBadge: css`
         font-size: 12px;
         color: ${token.colorSuccess};
         background: ${token.colorSuccessBg};
@@ -56,8 +60,6 @@ export const useStyles = createStyles(({ css, token }) => ({
         color: ${token.colorTextSecondary};
     `,
 
-    chartsRow: css``,
-
     chartCard: css`
         border-radius: ${token.borderRadiusLG}px;
         border: 1px solid ${token.colorBorderSecondary};
@@ -68,14 +70,33 @@ export const useStyles = createStyles(({ css, token }) => ({
         }
     `,
 
-    piePlaceholder: css`
-        height: 240px;
-        border: 1px dashed ${token.colorBorder};
-        border-radius: ${token.borderRadius}px;
+    progressList: css`
         display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: ${token.marginMD}px;
+        flex-direction: column;
+        gap: ${token.marginMD}px;
+        margin-bottom: ${token.marginLG}px;
+    `,
+
+    progressItem: css``,
+
+    progressHeader: css`
+        display: flex;
+        justify-content: space-between;
+        font-size: 13px;
+        color: ${token.colorText};
+        margin-bottom: 4px;
+
+        @media (max-width: 575px) {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: ${token.marginXXS}px;
+        }
+    `,
+
+    progress: css`
+        .ant-progress-bg {
+            background: ${token.colorPrimary};
+        }
     `,
 
     legend: css`
@@ -121,31 +142,12 @@ export const useStyles = createStyles(({ css, token }) => ({
         background: ${token.colorWarning};
     `,
 
-    progressList: css`
+    emptyState: css`
+        min-height: 240px;
         display: flex;
-        flex-direction: column;
-        gap: ${token.marginMD}px;
-    `,
-
-    progressItem: css``,
-
-    progressHeader: css`
-        display: flex;
-        justify-content: space-between;
-        font-size: 13px;
-        color: ${token.colorText};
-        margin-bottom: 4px;
-
-        @media (max-width: 575px) {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: ${token.marginXXS}px;
-        }
-    `,
-
-    progress: css`
-        .ant-progress-bg {
-            background: ${token.colorPrimary};
-        }
+        align-items: center;
+        justify-content: center;
+        border: 1px dashed ${token.colorBorderSecondary};
+        border-radius: ${token.borderRadius}px;
     `,
 }));
