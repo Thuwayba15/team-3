@@ -5,13 +5,14 @@
  */
 
 import { apiClient } from "@/lib/api/client";
+import { STUDENT_DASHBOARD_GET_MY_DASHBOARD_ENDPOINT } from "@/constants/api";
 import type { StudentDashboardData } from "@/providers/student/context";
 
 /**
  * Backend response envelope structure matching ABP convention.
  */
-interface IStudentDashboardApiResponse {
-    result: StudentDashboardData;
+interface IAbpResponseEnvelope<T> {
+    result: T;
     targetUrl: string | null;
     success: boolean;
     error: {
@@ -30,13 +31,17 @@ class StudentDashboardService {
      *
      * Endpoint: GET /api/services/app/student-dashboard/get-my-dashboard
      *
+     * @param subjectId - Optional subject UUID to filter dashboard data to a single subject
      * @returns Promise<StudentDashboardData> - Complete dashboard with all data
      * @throws Error if the request fails or returns an error from the backend
      */
-    async getMyDashboard(): Promise<StudentDashboardData> {
+    async getMyDashboard(subjectId?: string): Promise<StudentDashboardData> {
         try {
-            const response = await apiClient.get<IStudentDashboardApiResponse>(
-                "/api/services/app/student-dashboard/get-my-dashboard"
+            const response = await apiClient.get<IAbpResponseEnvelope<StudentDashboardData>>(
+                STUDENT_DASHBOARD_GET_MY_DASHBOARD_ENDPOINT,
+                {
+                    params: subjectId ? { subjectId } : {},
+                }
             );
 
             if (!response.data.success) {

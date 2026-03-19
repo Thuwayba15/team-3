@@ -83,4 +83,5 @@ export const STUDENT_ASSESSMENT_SUBMIT_DIAGNOSTIC_ENDPOINT = "/api/services/app/
 export const STUDENT_ASSESSMENT_SUBMIT_LESSON_QUIZ_ENDPOINT = "/api/services/app/StudentAssessment/SubmitLessonQuiz";
 
 /** Returns student dashboard and progress aggregates. */
+export const STUDENT_DASHBOARD_GET_MY_DASHBOARD_ENDPOINT = "/api/services/app/student-dashboard/get-my-dashboard";
 export const STUDENT_DASHBOARD_GET_PROGRESS_ENDPOINT = "/api/services/app/StudentDashboard/GetProgress";
