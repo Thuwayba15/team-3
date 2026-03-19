@@ -54,3 +54,30 @@ export const USER_PROFILE_UPDATE_PLATFORM_LANGUAGE_ENDPOINT = "/api/services/app
 
 
 export const REGISTER_ENDPOINT = "/api/services/app/Account/Register";
+
+/** Returns subjects the authenticated student is enrolled in. */
+export const STUDENT_SUBJECT_GET_MY_SUBJECTS_ENDPOINT = "/api/services/app/StudentSubject/GetMySubjects";
+
+/** Enrolls the authenticated student in one or more subjects. */
+export const STUDENT_SUBJECT_BULK_ENROLL_ENDPOINT = "/api/services/app/StudentSubject/BulkEnroll";
+
+/** Returns lesson detail and translations for a published lesson. */
+export const STUDENT_SUBJECT_GET_LESSON_ENDPOINT = "/api/services/app/StudentSubject/GetLesson";
+
+/** Returns the adaptive learning path for a student within a subject. */
+export const STUDENT_LEARNING_PATH_GET_SUBJECT_PATH_ENDPOINT = "/api/services/app/StudentLearningPath/GetSubjectPath";
+
+/** Marks a lesson complete for the authenticated student. */
+export const STUDENT_LEARNING_PATH_COMPLETE_LESSON_ENDPOINT = "/api/services/app/StudentLearningPath/CompleteLesson";
+
+/** Returns a student-safe runtime assessment without answer keys. */
+export const STUDENT_ASSESSMENT_GET_ENDPOINT = "/api/services/app/StudentAssessment/GetAssessment";
+
+/** Submits a diagnostic assessment attempt for the authenticated student. */
+export const STUDENT_ASSESSMENT_SUBMIT_DIAGNOSTIC_ENDPOINT = "/api/services/app/StudentAssessment/SubmitDiagnostic";
+
+/** Submits a lesson quiz attempt for the authenticated student. */
+export const STUDENT_ASSESSMENT_SUBMIT_LESSON_QUIZ_ENDPOINT = "/api/services/app/StudentAssessment/SubmitLessonQuiz";
+
+/** Returns student dashboard and progress aggregates. */
+export const STUDENT_DASHBOARD_GET_PROGRESS_ENDPOINT = "/api/services/app/StudentDashboard/GetProgress";

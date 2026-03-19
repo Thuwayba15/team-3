@@ -95,6 +95,25 @@ export const useStyles = createStyles(({ css, token }) => ({
         margin-bottom: 8px;
     `,
 
+    summaryMeta: css`
+        display: flex;
+        align-items: center;
+        gap: ${token.marginSM}px;
+        flex-wrap: wrap;
+        margin-top: 8px;
+    `,
+
+    helperText: css`
+        font-size: 13px;
+        color: ${token.colorTextSecondary};
+        margin: 0;
+    `,
+
+    infoBanner: css`
+        border-radius: ${token.borderRadiusLG}px;
+        margin-bottom: ${token.marginLG}px;
+    `,
+
     /* ── Timeline ─────────────────────────────────────────────── */
     timeline: css`
         position: relative;
@@ -234,6 +253,28 @@ export const useStyles = createStyles(({ css, token }) => ({
         margin-bottom: ${token.marginMD}px;
     `,
 
+    moduleMeta: css`
+        display: flex;
+        align-items: center;
+        gap: ${token.marginSM}px;
+        flex-wrap: wrap;
+        margin-bottom: ${token.marginMD}px;
+    `,
+
+    topicAction: css`
+        font-size: 13px;
+        color: ${token.colorTextSecondary};
+        margin-bottom: ${token.marginMD}px;
+    `,
+
+    lessonMetaPill: css`
+        font-size: 12px;
+        color: ${token.colorTextSecondary};
+        background: ${token.colorFillQuaternary};
+        padding: 4px 10px;
+        border-radius: 999px;
+    `,
+
     reviewLink: css`
         color: #00b8a9 !important;
         font-size: 14px;
@@ -325,6 +366,12 @@ export const useStyles = createStyles(({ css, token }) => ({
         gap: ${token.marginSM}px;
     `,
 
+    topicRowCopy: css`
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    `,
+
     masteredTag: css`
         font-size: 12px;
         color: ${token.colorTextSecondary};
@@ -367,5 +414,13 @@ export const useStyles = createStyles(({ css, token }) => ({
         @media (max-width: 640px) {
             width: 100%;
         }
+    `,
+
+    emptyState: css`
+        border-radius: ${token.borderRadiusLG}px;
+        border: 1px dashed ${token.colorBorderSecondary};
+        background: ${token.colorBgContainer};
+        padding: ${token.paddingXL}px;
+        text-align: center;
     `,
 }));
