@@ -204,6 +204,24 @@ const MODULES: Module[] = [
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
+function serializeLessonContent(content: LessonContent): string {
+    const lines: string[] = [`Lesson: ${content.title}`, ""];
+
+    for (const section of content.sections) {
+        if (section.type === "text") {
+            lines.push(`## ${section.heading}`, section.body, "");
+        } else if (section.type === "highlight") {
+            lines.push(`## ${section.label}`, section.formula, "");
+        } else if (section.type === "example") {
+            lines.push(`## ${section.heading}`, section.intro, "");
+            section.steps.forEach((step, i) => lines.push(`${i + 1}. ${step}`));
+            lines.push("");
+        }
+    }
+
+    return lines.join("\n");
+}
+
 function statusTag(status: LessonStatus) {
     if (status === "completed")  return <Tag color="success">Completed</Tag>;
     if (status === "current")    return <Tag color="processing">In Progress</Tag>;
@@ -354,6 +372,7 @@ function LessonDetail({
                     open={aiOpen}
                     onClose={() => setAiOpen(false)}
                     lessonTitle={content?.title}
+                    lessonContent={serializeLessonContent(content)}
                 />
             </div>
         </div>
