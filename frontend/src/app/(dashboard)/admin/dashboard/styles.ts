@@ -106,31 +106,4 @@ export const useStyles = createStyles(({ css, token }) => ({
         border: 1px dashed ${token.colorBorderSecondary};
         border-radius: ${token.borderRadius}px;
     `,
-
-    loginItem: css`
-        padding-inline: 0 !important;
-        align-items: flex-start !important;
-
-        @media (max-width: 575px) {
-            flex-direction: column;
-            gap: ${token.marginSM}px;
-        }
-    `,
-
-    loginMeta: css`
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-    `,
-
-    loginMetaRight: css`
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-        gap: ${token.marginXXS}px;
-
-        @media (max-width: 575px) {
-            align-items: flex-start;
-        }
-    `,
 }));

@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { adminDashboardService } from "@/services/admin/adminDashboardService";
 
-const { getAllMock, getActiveLanguagesMock } = vi.hoisted(() => ({
+const { getAllMock, getSupportedLanguagesMock } = vi.hoisted(() => ({
     getAllMock: vi.fn(),
-    getActiveLanguagesMock: vi.fn(),
+    getSupportedLanguagesMock: vi.fn(),
 }));
 
 vi.mock("@/services/users/userService", () => ({
@@ -14,7 +14,7 @@ vi.mock("@/services/users/userService", () => ({
 
 vi.mock("@/services/users/userProfileService", () => ({
     userProfileService: {
-        getActiveLanguages: getActiveLanguagesMock,
+        getSupportedLanguages: getSupportedLanguagesMock,
     },
 }));
 
@@ -65,20 +65,18 @@ describe("adminDashboardService", () => {
                 },
             ],
         });
-        getActiveLanguagesMock.mockResolvedValueOnce([
+        getSupportedLanguagesMock.mockResolvedValueOnce([
             { code: "en", name: "English", isDefault: true },
             { code: "zu", name: "isiZulu", isDefault: false },
         ]);
 
         const summary = await adminDashboardService.getSummary();
 
-        expect(summary.metrics).toHaveLength(4);
+        expect(summary.metrics).toHaveLength(3);
         expect(summary.metrics[0]?.value).toBe("3");
         expect(summary.roleDistribution[0]).toEqual(
             expect.objectContaining({ roleName: "Admin", count: 1 })
         );
-        expect(summary.recentLogins).toHaveLength(2);
-        expect(summary.recentLogins[0]?.id).toBe(1);
     });
 
     it("handles missing language data without failing the summary", async () => {
@@ -86,12 +84,11 @@ describe("adminDashboardService", () => {
             totalCount: 0,
             items: [],
         });
-        getActiveLanguagesMock.mockRejectedValueOnce(new Error("unavailable"));
+        getSupportedLanguagesMock.mockRejectedValueOnce(new Error("unavailable"));
 
         const summary = await adminDashboardService.getSummary();
 
-        expect(summary.metrics[3]?.value).toBe("0");
-        expect(summary.recentLogins).toEqual([]);
+        expect(summary.metrics[2]?.value).toBe("0");
         expect(summary.roleDistribution).toEqual([]);
     });
 });

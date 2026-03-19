@@ -46,6 +46,9 @@ export const USER_PROFILE_GET_MY_PLATFORM_LANGUAGE_ENDPOINT = "/api/services/app
 /** Returns active platform languages for language selectors. */
 export const USER_PROFILE_GET_ACTIVE_LANGUAGES_ENDPOINT = "/api/services/app/UserProfile/GetActiveLanguages";
 
+/** Returns all supported platform languages from the Languages table. */
+export const USER_PROFILE_GET_SUPPORTED_LANGUAGES_ENDPOINT = "/api/services/app/LanguageLookup/GetSupportedLanguages";
+
 /** Updates the authenticated user's preferred platform language. */
 export const USER_PROFILE_UPDATE_PLATFORM_LANGUAGE_ENDPOINT = "/api/services/app/UserProfile/UpdatePlatformLanguage";
 
