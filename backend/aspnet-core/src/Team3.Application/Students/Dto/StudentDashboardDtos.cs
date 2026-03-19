@@ -44,6 +44,14 @@ namespace Team3.Students.Dto
         public string? Advice { get; set; }
     }
 
+    public class StudentDashboardTopicMasteryDto
+    {
+        public Guid TopicId { get; set; }
+        public string TopicName { get; set; } = default!;
+        public string SubjectName { get; set; } = default!;
+        public decimal MasteryScore { get; set; }
+    }
+
     public class StudentDashboardProgressDto
     {
         public Guid? SubjectId { get; set; }
@@ -56,6 +64,7 @@ namespace Team3.Students.Dto
         public List<StudentDashboardRecentQuizDto> RecentQuizzes { get; set; } = new();
         public List<StudentDashboardCompletedLessonDto> CompletedLessons { get; set; } = new();
         public List<StudentDashboardWeakTopicDto> WeakTopics { get; set; } = new();
+        public List<StudentDashboardTopicMasteryDto> TopicMasteries { get; set; } = new();
         public StudentDashboardRecommendationDto? RecommendedLesson { get; set; }
         public List<StudentDashboardRevisionAdviceDto> RevisionAdvices { get; set; } = new();
         public string? MotivationalGuidance { get; set; }

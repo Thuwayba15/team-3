@@ -8,6 +8,43 @@ import { apiClient } from "@/lib/api/client";
 import { STUDENT_DASHBOARD_GET_MY_DASHBOARD_ENDPOINT } from "@/constants/api";
 import type { StudentDashboardData } from "@/providers/student/context";
 
+interface IStudentDashboardWeakTopicDto {
+    topicId: string;
+    topicName: string;
+    masteryScore: number;
+    needsRevision: boolean;
+}
+
+interface IStudentDashboardRecommendationDto {
+    lessonId: string | null;
+    lessonTitle: string | null;
+    topicName: string | null;
+    reason: string | null;
+}
+
+interface IStudentDashboardRevisionAdviceDto {
+    topicName: string | null;
+    masteryScore: number;
+    advice: string | null;
+}
+
+interface IStudentDashboardProgressDto {
+    subjectName: string | null;
+    overallScore: number;
+    topicsMastered: number;
+    lessonsCompleted: number;
+    weakTopics: IStudentDashboardWeakTopicDto[];
+    topicMasteries?: Array<{
+        topicId: string;
+        topicName: string;
+        subjectName: string;
+        masteryScore: number;
+    }>;
+    recommendedLesson: IStudentDashboardRecommendationDto | null;
+    revisionAdvices: IStudentDashboardRevisionAdviceDto[];
+    motivationalGuidance: string | null;
+}
+
 /**
  * Backend response envelope structure matching ABP convention.
  */
@@ -24,6 +61,99 @@ interface IAbpResponseEnvelope<T> {
     __abp: boolean;
 }
 
+const getSeverityBucket = (masteryPercent: number): "strong" | "moderate" | "weak" | "critical" => {
+    if (masteryPercent >= 80) {
+        return "strong";
+    }
+
+    if (masteryPercent >= 60) {
+        return "moderate";
+    }
+
+    if (masteryPercent >= 40) {
+        return "weak";
+    }
+
+    return "critical";
+};
+
+const mapProgressToDashboardData = (result: IStudentDashboardProgressDto): StudentDashboardData => {
+    const weakTopics = result.weakTopics ?? [];
+    const topicMasteries = result.topicMasteries ?? [];
+    const revisionAdvices = result.revisionAdvices ?? [];
+    const estimatedTotalTopics = topicMasteries.length > 0
+        ? topicMasteries.length
+        : result.topicsMastered + weakTopics.length;
+    const totalTopics = estimatedTotalTopics > 0 ? estimatedTotalTopics : result.topicsMastered;
+
+    const areasNeedingAttention = revisionAdvices.length > 0
+        ? revisionAdvices.map((advice, index) => {
+            const matchingWeakTopic = weakTopics.find((topic) => topic.topicName === advice.topicName);
+            return {
+                topicId: matchingWeakTopic?.topicId ?? `attention-${index + 1}`,
+                topicName: advice.topicName ?? "Topic",
+                subjectName: result.subjectName ?? "All Subjects",
+                masteryPercent: advice.masteryScore,
+                ruleBasisAction: advice.advice ?? "Review this topic with additional practice.",
+            };
+        })
+        : weakTopics.map((topic) => ({
+            topicId: topic.topicId,
+            topicName: topic.topicName,
+            subjectName: result.subjectName ?? "All Subjects",
+            masteryPercent: topic.masteryScore,
+            ruleBasisAction: topic.needsRevision
+                ? "Revision is recommended based on your recent activity."
+                : "Strengthen this topic with focused practice.",
+        }));
+
+    const masteryHeatmap = topicMasteries.length > 0
+        ? topicMasteries.map((topic) => ({
+            topicId: topic.topicId,
+            topicName: topic.topicName,
+            subjectName: topic.subjectName,
+            masteryPercent: topic.masteryScore,
+            severityBucket: getSeverityBucket(topic.masteryScore),
+        }))
+        : weakTopics.map((topic) => ({
+            topicId: topic.topicId,
+            topicName: topic.topicName,
+            subjectName: result.subjectName ?? "All Subjects",
+            masteryPercent: topic.masteryScore,
+            severityBucket: getSeverityBucket(topic.masteryScore),
+        }));
+
+    const recommendedNextLesson =
+        result.recommendedLesson?.lessonId && result.recommendedLesson?.lessonTitle
+            ? {
+                lessonId: result.recommendedLesson.lessonId,
+                title: result.recommendedLesson.lessonTitle,
+                topicName: result.recommendedLesson.topicName ?? "Topic",
+                subjectName: result.subjectName ?? "All Subjects",
+                estimatedMinutes: 20,
+                ruleBasisReason: result.recommendedLesson.reason ?? "Recommended based on your current progress.",
+            }
+            : undefined;
+
+    return {
+        studentName: "Student",
+        gradeLevel: "",
+        overallScore: result.overallScore,
+        topicsMastered: result.topicsMastered,
+        totalTopics,
+        lessonsCompleted: result.lessonsCompleted,
+        areasNeedingAttentionCount: areasNeedingAttention.length,
+        recommendedNextLesson,
+        areasNeedingAttention,
+        guidance: result.motivationalGuidance
+            ? {
+                baseMessage: result.motivationalGuidance,
+            }
+            : undefined,
+        masteryHeatmap,
+    };
+};
+
 class StudentDashboardService {
     /**
      * Fetches the complete dashboard for the current authenticated student.
@@ -37,7 +167,7 @@ class StudentDashboardService {
      */
     async getMyDashboard(subjectId?: string): Promise<StudentDashboardData> {
         try {
-            const response = await apiClient.get<IAbpResponseEnvelope<StudentDashboardData>>(
+            const response = await apiClient.get<IAbpResponseEnvelope<IStudentDashboardProgressDto>>(
                 STUDENT_DASHBOARD_GET_MY_DASHBOARD_ENDPOINT,
                 {
                     params: subjectId ? { subjectId } : {},
@@ -50,7 +180,7 @@ class StudentDashboardService {
                 );
             }
 
-            return response.data.result;
+            return mapProgressToDashboardData(response.data.result);
         } catch (error) {
             // Re-throw with a user-friendly message
             if (error instanceof Error) {
