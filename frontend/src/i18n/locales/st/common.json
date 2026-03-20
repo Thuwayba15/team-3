@@ -247,6 +247,72 @@
         "seeResults": "Bona Diphetho",
         "quizComplete": "Quiz e Phethilwe!",
         "quizScoreSummary": "O arabile dipotso tse {{score}} ho tse {{total}} ka nepo."
+      },
+      "lessonsPage": {
+        "title": "Dithuto",
+        "adaptiveLessonTrack": "tselana ya dithuto e ikamahanyang",
+        "reviewMode": "Mokgwa wa tlhahlobo",
+        "status": {
+          "completed": "E qetilwe",
+          "inProgress": "E ntse e tswela pele"
+        },
+        "difficulty": {
+          "supportedPace": "Lebelo le tshehetswang",
+          "standardPace": "Lebelo le tloaelehileng",
+          "advancedPace": "Lebelo le phahameng"
+        },
+        "unit": {
+          "minutesShort": "min"
+        },
+        "section": {
+          "summary": "Kakaretso",
+          "lessonContent": "Dikahare tsa thuto",
+          "learningObjective": "Sepheo sa ho ithuta",
+          "examples": "Mehlala",
+          "revisionSummary": "Kakaretso ya tlhahlobo"
+        },
+        "progress": {
+          "topicProgress": "Tsoelo-pele ya sehlooho",
+          "topicCompletion": "Ho phethwa ha sehlooho"
+        },
+        "actions": {
+          "takeQuiz": "Nka Quiz",
+          "reviewOnly": "Tlhahlobo feela",
+          "askAiTutor": "Kopa AI Tutor"
+        },
+        "tag": {
+          "review": "Hlahloba"
+        },
+        "ai": {
+          "needClearerExplanation": "O hloka tlhaloso e hlakileng haholoanyane?",
+          "subtitle": "AI tutor ya hao e ka hlalosa thuto ena ka puo eo o e ratang."
+        },
+        "errors": {
+          "unableToLoadLesson": "Ho hlolehile ho jarolla thuto",
+          "unableToLoadLessons": "Ho hlolehile ho jarolla dithuto",
+          "failedToLoadLessons": "Ho hlolehile ho jarolla dithuto.",
+          "failedToLoadLessonDetail": "Ho hlolehile ho jarolla dintlha tsa thuto.",
+          "failedToOpenLessonQuiz": "Ho hlolehile ho bula quiz ya thuto."
+        },
+        "empty": {
+          "lessonContentComingSoon": "Dikahare tsa thuto di tla fumaneha haufinyane.",
+          "noAdaptiveLessonsForTopicYet": "Ha ho dithuto tse ikamahanyang tse fumanehang bakeng sa sehlooho sena hajoale.",
+          "notEnrolled": "Ha o so ngodisoe dithutong dife kapa dife hajoale."
+        },
+        "messages": {
+          "noLessonQuizForLessonYet": "Ha ho quiz ya thuto e fumanehang bakeng sa thuto ena hajoale."
+        },
+        "serverAction": {
+          "completePreviousTopic": "Qeta sehlooho se fetileng ho bula sena.",
+          "takeDiagnosticAssessment": "Nka tlhahlobo ya boemo ho bula sehlooho sena.",
+          "noLessonForDifficulty": "Ha ho thuto e fumanehang bakeng sa boemo bona ba bothata hajoale.",
+          "noLessonsForTopicYet": "Ha ho dithuto tse fumanehang bakeng sa sehlooho sena hajoale.",
+          "takeLessonQuizForTopic": "Nka quiz ya thuto ho phetha sehlooho sena.",
+          "lessonQuizNotAvailableForTopic": "Quiz ya thuto ha e so fumanehe bakeng sa sehlooho sena hajoale.",
+          "continueCurrentLesson": "Tswela pele ka thuto ya hao ya jwale.",
+          "completedAvailablePath": "O qetile tsela ya ho ithuta e fumanehang bakeng sa sehlooho sena.",
+          "startFirstTopic": "Qala ka sehlooho sa pele se fumanehang."
+        }
       }
     },
     "tutor": {

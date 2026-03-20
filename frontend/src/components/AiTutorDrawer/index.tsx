@@ -18,9 +18,10 @@ export interface AiTutorDrawerProps {
     open: boolean;
     onClose: () => void;
     lessonTitle?: string;
+    lessonContent?: string;
 }
 
-// ── Simulated AI responses ────────────────────────────────────────────────────
+// ── Language config ────────────────────────────────────────────────────────────
 
 const LANG_LABELS: Record<string, string> = {
     en: "English",
@@ -36,51 +37,14 @@ const GREETINGS: Record<string, string> = {
     af: "Hallo! Ek is jou KI-tutor. Vra my enigiets oor hierdie les.",
 };
 
-function getSimulatedReply(question: string, topic: string, lang: string): string {
-    const q = question.toLowerCase();
-
-    const replies: Record<string, Record<string, string>> = {
-        en: {
-            default: `Great question about "${topic}"! Here's how I'd explain it:\n\nThis concept builds on what you've already learned. The key is to break the problem into smaller steps and apply the rules one at a time. Would you like me to walk through a specific example?`,
-            formula: `A formula is a rule written using mathematical symbols. For "${topic}", make sure you know what each variable represents before substituting values. Try writing it out step by step.`,
-            example: `Sure! Let me give you a worked example for "${topic}":\n\n1. Start by identifying what's given.\n2. Choose the correct rule or formula.\n3. Substitute and simplify carefully.\n\nWould you like to try one yourself?`,
-            help: `No problem! "${topic}" can be tricky at first. The best approach is to practise with simple cases before moving to harder ones. Which part specifically is confusing you?`,
-        },
-        zu: {
-            default: `Umbuzo omuhle mayelana no-"${topic}"! Nansi indlela engachaza ngayo:\n\nLeli qiniso lakhiwa phezu kwalokho osufundile. Okunqala ukwenza izinyathelo ezincane.`,
-            formula: `Ifomu iwumthetho obhalwe ngezimpawu zezibalo. Ku-"${topic}", qiniseka ukuthi uyazi lokho okumele kube khona ngaphambi kokukhomba amanani.`,
-            example: `Ngeke! Ake ngikunike isibonelo esisebenzayo ku-"${topic}":\n\n1. Qala ngokubona ukuthi yini enikezwayo.\n2. Khetha imithetho efanele.\n3. Faka amanani kahle.`,
-            help: `Akukho inkinga! "${topic}" ingaba nzima ekuqaleni. Indlela engcono ukuzilolonga ngezimo ezilula kuqala.`,
-        },
-        st: {
-            default: `Potso e ntle mabapi le "${topic}"! Ke tsela eo ke tla e hlalosa kateng:\n\nKgopolo ena e aha ho se o se ithutileng. Se sa bohlokwa ke ho arola bothata ka dikarolo tse nyane.`,
-            formula: `Foromo ke molao o ngotsweng ka dipaki tsa dipalo. Ho "${topic}", netefatsa hore o tseba seo sefapanosana se emang ho sona pele o kenya ditshupuha.`,
-            example: `Ee! A ke go fa mohlala o sebetsang wa "${topic}":\n\n1. Qala ka ho bona se fanoeng.\n2. Kgetha molao o nepahetseng.\n3. Kenya le ho natefaletsa ka hloko.`,
-            help: `Ha ho mathata! "${topic}" e ka ba thata qalong. Mokgwa o motle ke ho itlwaetsa ka mehlala e bonolo pele.`,
-        },
-        af: {
-            default: `Goeie vraag oor "${topic}"! Hier is hoe ek dit sal verduidelik:\n\nHierdie konsep bou op wat jy reeds geleer het. Die sleutel is om die probleem in kleiner stappe op te breek.`,
-            formula: `'n Formule is 'n reël geskryf met wiskundige simbole. Vir "${topic}", maak seker jy weet wat elke veranderlike beteken voordat jy waardes invoeg.`,
-            example: `Natuurlik! Hier is 'n uitgewerkte voorbeeld vir "${topic}":\n\n1. Begin deur te identifiseer wat gegee word.\n2. Kies die korrekte reël.\n3. Vervang en vereenvoudig sorgvuldig.`,
-            help: `Geen probleem nie! "${topic}" kan aanvanklik moeilik wees. Die beste benadering is om eers met eenvoudige gevalle te oefen.`,
-        },
-    };
-
-    const langReplies = replies[lang] ?? replies.en;
-
-    if (q.includes("formula") || q.includes("rule") || q.includes("law"))
-        return langReplies.formula;
-    if (q.includes("example") || q.includes("show") || q.includes("demonstrate"))
-        return langReplies.example;
-    if (q.includes("help") || q.includes("understand") || q.includes("confus") || q.includes("don't get"))
-        return langReplies.help;
-
-    return langReplies.default;
-}
-
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export default function AiTutorDrawer({ open, onClose, lessonTitle = "this lesson" }: AiTutorDrawerProps) {
+export default function AiTutorDrawer({
+    open,
+    onClose,
+    lessonTitle = "this lesson",
+    lessonContent = "",
+}: AiTutorDrawerProps) {
     const { styles } = useStyles();
     const [lang, setLang] = useState("en");
     const [messages, setMessages] = useState<Message[]>([{ role: "ai", text: GREETINGS["en"] }]);
@@ -93,7 +57,7 @@ export default function AiTutorDrawer({ open, onClose, lessonTitle = "this lesso
     if (open && (open !== prevOpen || lang !== prevLang)) {
         setPrevOpen(open);
         setPrevLang(lang);
-        setMessages([{ role: "ai", text: GREETINGS[lang] }]);
+        setMessages([{ role: "ai", text: GREETINGS[lang] ?? GREETINGS["en"] }]);
         setInput("");
     }
 
@@ -109,17 +73,32 @@ export default function AiTutorDrawer({ open, onClose, lessonTitle = "this lesso
         setMessages((prev) => [...prev, { role: "user", text }]);
         setThinking(true);
 
-        await new Promise((r) => setTimeout(r, 1200));
+        try {
+            const res = await fetch("/api/ai-tutor", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    question: text,
+                    lessonTitle,
+                    lessonContent,
+                    language: lang,
+                }),
+            });
 
-        const reply = getSimulatedReply(text, lessonTitle, lang);
-        setMessages((prev) => [...prev, { role: "ai", text: reply }]);
-        setThinking(false);
+            const data = await res.json() as { reply?: string; error?: string };
+            const reply = data.reply ?? data.error ?? "Something went wrong. Please try again.";
+            setMessages((prev) => [...prev, { role: "ai", text: reply }]);
+        } catch {
+            setMessages((prev) => [...prev, { role: "ai", text: "Unable to reach the AI tutor. Please check your connection." }]);
+        } finally {
+            setThinking(false);
+        }
     };
 
     const handleKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
         if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault();
-            send();
+            void send();
         }
     };
 
@@ -198,7 +177,7 @@ export default function AiTutorDrawer({ open, onClose, lessonTitle = "this lesso
                     shape="circle"
                     icon={<SendOutlined />}
                     className={styles.sendBtn}
-                    onClick={send}
+                    onClick={() => void send()}
                     disabled={!input.trim() || thinking}
                 />
             </div>

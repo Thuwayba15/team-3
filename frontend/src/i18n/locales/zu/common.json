@@ -247,6 +247,72 @@
         "seeResults": "Bona Imiphumela",
         "quizComplete": "Imibuzo Iqediwe!",
         "quizScoreSummary": "Uphendule kahle imibuzo engu-{{score}} ku-{{total}}."
+      },
+      "lessonsPage": {
+        "title": "Izifundo",
+        "adaptiveLessonTrack": "umzila wezifundo ozivumelanisa nawe",
+        "reviewMode": "Imodi yokubuyekeza",
+        "status": {
+          "completed": "Kuqediwe",
+          "inProgress": "Kuyaqhubeka"
+        },
+        "difficulty": {
+          "supportedPace": "Ijubane elisekelwayo",
+          "standardPace": "Ijubane elijwayelekile",
+          "advancedPace": "Ijubane eliphezulu"
+        },
+        "unit": {
+          "minutesShort": "min"
+        },
+        "section": {
+          "summary": "Isifinyezo",
+          "lessonContent": "Okuqukethwe yisifundo",
+          "learningObjective": "Inhloso yokufunda",
+          "examples": "Izibonelo",
+          "revisionSummary": "Isifinyezo sokubuyekeza"
+        },
+        "progress": {
+          "topicProgress": "Inqubekelaphambili yesihloko",
+          "topicCompletion": "Ukuqedwa kwesihloko"
+        },
+        "actions": {
+          "takeQuiz": "Thatha Imibuzo",
+          "reviewOnly": "Buyekeza Kuphela",
+          "askAiTutor": "Buza i-AI Tutor"
+        },
+        "tag": {
+          "review": "Buyekeza"
+        },
+        "ai": {
+          "needClearerExplanation": "Udinga incazelo ecacile kakhulu?",
+          "subtitle": "I-AI tutor yakho ingachaza lesi sifundo ngolimi olukhethayo."
+        },
+        "errors": {
+          "unableToLoadLesson": "Ayikwazanga ukulayisha isifundo",
+          "unableToLoadLessons": "Ayikwazanga ukulayisha izifundo",
+          "failedToLoadLessons": "Kuhlulekile ukulayisha izifundo.",
+          "failedToLoadLessonDetail": "Kuhlulekile ukulayisha imininingwane yesifundo.",
+          "failedToOpenLessonQuiz": "Kuhlulekile ukuvula imibuzo yesifundo."
+        },
+        "empty": {
+          "lessonContentComingSoon": "Okuqukethwe yisifundo kuzofika maduze.",
+          "noAdaptiveLessonsForTopicYet": "Azikho izifundo ezizivumelanisa nawe ezitholakalayo kulesi sihloko okwamanje.",
+          "notEnrolled": "Awukabhaliseli noma yiziphi izifundo okwamanje."
+        },
+        "messages": {
+          "noLessonQuizForLessonYet": "Ayikho imibuzo yesifundo etholakalayo kulesi sifundo okwamanje."
+        },
+        "serverAction": {
+          "completePreviousTopic": "Qeda isihloko sangaphambilini ukuze uvule lesi.",
+          "takeDiagnosticAssessment": "Thatha ukuhlola kokuxilonga ukuze uvule lesi sihloko.",
+          "noLessonForDifficulty": "Asikho isifundo esitholakalayo kuleli zinga lobunzima okwamanje.",
+          "noLessonsForTopicYet": "Azikho izifundo ezitholakalayo kulesi sihloko okwamanje.",
+          "takeLessonQuizForTopic": "Thatha imibuzo yesifundo ukuze uqede lesi sihloko.",
+          "lessonQuizNotAvailableForTopic": "Imibuzo yesifundo ayikatholakali kulesi sihloko okwamanje.",
+          "continueCurrentLesson": "Qhubeka nesifundo sakho samanje.",
+          "completedAvailablePath": "Uqedile umzila wokufunda otholakalayo kulesi sifundo.",
+          "startFirstTopic": "Qala ngesihloko sokuqala esitholakalayo."
+        }
       }
     },
     "tutor": {

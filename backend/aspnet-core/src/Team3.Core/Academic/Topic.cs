@@ -31,6 +31,7 @@ public class Topic : FullAuditedEntity<Guid>
 
     public virtual ICollection<Lesson> Lessons { get; private set; } = new List<Lesson>();
     public virtual ICollection<Assessment> Assessments { get; private set; } = new List<Assessment>();
+    public virtual ICollection<TopicTranslation> Translations { get; private set; } = new List<TopicTranslation>();
     protected Topic()
     {
     }
