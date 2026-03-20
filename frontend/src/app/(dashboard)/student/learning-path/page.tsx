@@ -574,10 +574,16 @@ export default function StudentLearningPathPage() {
                                                             topic.status === "completed" ? (
                                                                 <div className={styles.topicGrid}>
                                                                     {topic.lessons.map((lesson) => (
-                                                                        <div key={lesson.lessonId} className={styles.topicGridItem}>
+                                                                        <button
+                                                                            key={lesson.lessonId}
+                                                                            className={styles.topicGridItem}
+                                                                            onClick={() => handleOpenLesson(lesson.lessonId)}
+                                                                            style={{ background: "none", border: "none", textAlign: "left", cursor: "pointer" }}
+                                                                            type="button"
+                                                                        >
                                                                             <CheckCircleOutlined className={styles.topicIcon} />
                                                                             <span>{lesson.title}</span>
-                                                                        </div>
+                                                                        </button>
                                                                     ))}
                                                                 </div>
                                                             ) : (
