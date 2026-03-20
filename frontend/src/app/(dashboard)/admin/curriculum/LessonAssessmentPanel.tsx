@@ -5,7 +5,7 @@ import ReactMarkdown from "react-markdown";
 import type { IAssessmentResult } from "./types";
 import { DIFFICULTY_COLOR, DIFFICULTY_LABEL } from "./types";
 
-const { Text, Title } = Typography;
+const { Text } = Typography;
 
 const OPTION_KEYS = ["A", "B", "C", "D"] as const;
 const OPTION_FIELDS = ["optionA", "optionB", "optionC", "optionD"] as const;
