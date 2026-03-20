@@ -20,6 +20,7 @@ import AiTutorDrawer from "@/components/AiTutorDrawer";
 import { DashboardPageSkeleton } from "@/components/layout";
 import SubjectSwitcher from "@/components/student/SubjectSwitcher";
 import { UI_COLORS } from "@/constants/uiColors";
+import { useI18nState } from "@/providers/i18n";
 import { useStyles } from "./styles";
 import {
     selectLessonAssessmentByDifficulty,
@@ -42,13 +43,29 @@ const { Title, Text } = Typography;
 
 type LessonStatus = "completed" | "current" | "locked";
 
-function statusTag(status: LessonStatus) {
+const SERVER_ACTION_KEY_BY_MESSAGE: Record<string, string> = {
+    "Complete the previous topic to unlock this one.": "dashboard.student.lessonsPage.serverAction.completePreviousTopic",
+    "Take the diagnostic assessment to unlock this topic.": "dashboard.student.lessonsPage.serverAction.takeDiagnosticAssessment",
+    "No lesson is available for the assigned difficulty yet.": "dashboard.student.lessonsPage.serverAction.noLessonForDifficulty",
+    "Take the lesson quiz to complete this topic.": "dashboard.student.lessonsPage.serverAction.takeLessonQuizForTopic",
+    "A lesson quiz is not available for this topic yet.": "dashboard.student.lessonsPage.serverAction.lessonQuizNotAvailableForTopic",
+    "Continue with your current lesson.": "dashboard.student.lessonsPage.serverAction.continueCurrentLesson",
+    "You have completed the available learning path for this subject.": "dashboard.student.lessonsPage.serverAction.completedAvailablePath",
+    "Start with the first available topic.": "dashboard.student.lessonsPage.serverAction.startFirstTopic",
+};
+
+function translateRecommendedAction(action: string, translate: TFunction): string {
+    const key = SERVER_ACTION_KEY_BY_MESSAGE[action.trim()];
+    return key ? translate(key) : action;
+}
+
+function statusTag(status: LessonStatus, translate: TFunction) {
     if (status === "completed") {
-        return <Tag color="success">Completed</Tag>;
+        return <Tag color="success">{translate("dashboard.student.lessonsPage.status.completed")}</Tag>;
     }
 
     if (status === "current") {
-        return <Tag color="processing">In Progress</Tag>;
+        return <Tag color="processing">{translate("dashboard.student.lessonsPage.status.inProgress")}</Tag>;
     }
 
     return null;
@@ -166,9 +183,9 @@ function LessonDetail({
                 <h1 className={styles.lessonHeading}>{lessonDetail?.title ?? lesson.title}</h1>
 
                 <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 16 }}>
-                    <Tag color="blue">{getDifficultyLabel(lesson.difficultyLevel)}</Tag>
-                    <Tag>{`${lesson.estimatedMinutes} min`}</Tag>
-                    {isReviewMode ? <Tag color="success">Review mode</Tag> : null}
+                    <Tag color="blue">{getDifficultyLabel(lesson.difficultyLevel, t)}</Tag>
+                    <Tag>{`${lesson.estimatedMinutes} ${t("dashboard.student.lessonsPage.unit.minutesShort")}`}</Tag>
+                    {isReviewMode ? <Tag color="success">{t("dashboard.student.lessonsPage.reviewMode")}</Tag> : null}
                 </div>
 
                 {loading ? (
@@ -348,8 +365,8 @@ function LessonList({
                                     </div>
                                 </div>
                                 <div className={styles.lessonRight}>
-                                    {statusTag(lesson.status)}
-                                    {lesson.actionState === "review" ? <Tag color="success">Review</Tag> : null}
+                                    {statusTag(lesson.status, t)}
+                                    {lesson.actionState === "review" ? <Tag color="success">{t("dashboard.student.lessonsPage.tag.review")}</Tag> : null}
                                     {lesson.status !== "locked" ? (
                                         <RightOutlined style={{ fontSize: 12, color: UI_COLORS.PRIMARY }} />
                                     ) : null}
@@ -368,6 +385,7 @@ export default function StudentLessonsPage() {
     const { t } = useTranslation();
     const router = useRouter();
     const searchParams = useSearchParams();
+    const { currentLanguage } = useI18nState();
     const subjectIdParam = searchParams.get("subjectId");
     const lessonIdParam = searchParams.get("lessonId");
     const [messageApi, contextHolder] = message.useMessage();
