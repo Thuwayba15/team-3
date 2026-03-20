@@ -14,6 +14,10 @@ import SubjectEnrollmentModal from "@/components/student/SubjectEnrollmentModal"
 import SubjectSwitcher from "@/components/student/SubjectSwitcher";
 import QuizView from "./QuizView";
 import { useStyles } from "./styles";
+import {
+    selectLessonAssessmentByDifficulty,
+    studentAssessmentGenerationService,
+} from "@/services/student/studentAssessmentGenerationService";
 import type { AssessmentType } from "@/services/student/studentAssessmentService";
 import {
     studentLearningPathService,
@@ -61,14 +65,16 @@ function getModuleProgress(topic: IStudentLearningPathTopic) {
 
 function LessonRow({
     lesson,
+    topic,
     styles,
     onOpenLesson,
     onOpenQuiz,
 }: {
     lesson: IStudentLearningPathLesson;
+    topic: IStudentLearningPathTopic;
     styles: ReturnType<typeof useStyles>["styles"];
     onOpenLesson: (lessonId: string) => void;
-    onOpenQuiz: (assessmentId: string) => void;
+    onOpenQuiz: (lesson: IStudentLearningPathLesson, topic: IStudentLearningPathTopic) => void;
 }) {
     const { t } = useTranslation();
 
@@ -102,11 +108,9 @@ function LessonRow({
                     <Button type="primary" size="small" className={styles.continueBtn} onClick={() => onOpenLesson(lesson.lessonId)}>
                         Continue
                     </Button>
-                    {lesson.quizAssessmentId ? (
-                        <Button size="small" onClick={() => onOpenQuiz(lesson.quizAssessmentId!)}>
+                    <Button size="small" onClick={() => onOpenQuiz(lesson, topic)}>
                             Quiz
-                        </Button>
-                    ) : null}
+                    </Button>
                 </div>
             </div>
         );
@@ -122,11 +126,9 @@ function LessonRow({
                 </div>
             </div>
             <div className={styles.topicRight}>
-                {lesson.quizAssessmentId ? (
-                    <Button size="small" onClick={() => onOpenQuiz(lesson.quizAssessmentId!)}>
+                <Button size="small" onClick={() => onOpenQuiz(lesson, topic)}>
                         Review Quiz
-                    </Button>
-                ) : null}
+                </Button>
                 <span className={styles.masteredTag}>{t("dashboard.student.learningPathPage.completed")}</span>
             </div>
         </div>
@@ -268,6 +270,55 @@ export default function StudentLearningPathPage() {
         if (activeSubjectId) {
             router.replace(`/student/learning-path?subjectId=${activeSubjectId}&assessmentId=${assessmentId}&assessmentType=${assessmentType}`);
         }
+    };
+
+    const resolveLessonQuizAssessmentId = async (
+        lessonId: string,
+        assignedDifficultyLevel: IStudentLearningPathTopic["assignedDifficultyLevel"]
+    ) => {
+        try {
+            const assessments = await studentAssessmentGenerationService.getLessonAssessments(lessonId);
+            const selectedAssessment = selectLessonAssessmentByDifficulty(assessments, assignedDifficultyLevel);
+            return selectedAssessment?.assessmentId ?? null;
+        } catch (quizError) {
+            const messageText = quizError instanceof Error ? quizError.message : "No lesson quiz is available yet for this lesson.";
+            if (messageText.toLowerCase().includes("no assessments found")) {
+                return null;
+            }
+
+            throw quizError;
+        }
+    };
+
+    const handleOpenLessonQuiz = async (lesson: IStudentLearningPathLesson, topic: IStudentLearningPathTopic) => {
+        try {
+            const assessmentId = await resolveLessonQuizAssessmentId(lesson.lessonId, topic.assignedDifficultyLevel);
+            if (!assessmentId) {
+                messageApi.info("No lesson quiz is available yet for this lesson.");
+                return;
+            }
+
+            handleOpenAssessment(assessmentId, 2);
+        } catch (quizError) {
+            messageApi.error(quizError instanceof Error ? quizError.message : "Failed to open the lesson quiz.");
+        }
+    };
+
+    const handleOpenTopicQuiz = async (topic: IStudentLearningPathTopic) => {
+        for (const lesson of topic.lessons) {
+            try {
+                const assessmentId = await resolveLessonQuizAssessmentId(lesson.lessonId, topic.assignedDifficultyLevel);
+                if (assessmentId) {
+                    handleOpenAssessment(assessmentId, 2);
+                    return;
+                }
+            } catch (quizError) {
+                messageApi.error(quizError instanceof Error ? quizError.message : "Failed to open the lesson quiz.");
+                return;
+            }
+        }
+
+        messageApi.info("No lesson quiz is available yet for this topic.");
     };
 
     const handleAssessmentFinished = async () => {
@@ -535,9 +586,12 @@ export default function StudentLearningPathPage() {
                                                                         <LessonRow
                                                                             key={lesson.lessonId}
                                                                             lesson={lesson}
+                                                                            topic={topic}
                                                                             styles={styles}
                                                                             onOpenLesson={handleOpenLesson}
-                                                                            onOpenQuiz={(assessmentId) => handleOpenAssessment(assessmentId, 2)}
+                                                                            onOpenQuiz={(selectedLesson, selectedTopic) => {
+                                                                                void handleOpenLessonQuiz(selectedLesson, selectedTopic);
+                                                                            }}
                                                                         />
                                                                     ))}
                                                                 </div>
@@ -566,20 +620,13 @@ export default function StudentLearningPathPage() {
 
                                                         {topic.status === "current"
                                                             && topic.assignedDifficultyLevel !== null
-                                                            && topic.lessons.every((lesson) => lesson.status === "completed")
-                                                            && topic.lessons.some((lesson) => lesson.quizAssessmentId) ? (
+                                                            && topic.lessons.every((lesson) => lesson.status === "completed") ? (
                                                                 <div style={{ marginTop: 16 }}>
                                                                     <Button
                                                                         type="primary"
                                                                         className={styles.continueBtn}
                                                                         onClick={() => {
-                                                                            const lessonWithQuiz = topic.lessons.find((lesson) => lesson.quizAssessmentId);
-                                                                            if (!lessonWithQuiz?.quizAssessmentId) {
-                                                                                messageApi.error("No lesson quiz is available yet for this topic.");
-                                                                                return;
-                                                                            }
-
-                                                                            handleOpenAssessment(lessonWithQuiz.quizAssessmentId, 2);
+                                                                            void handleOpenTopicQuiz(topic);
                                                                         }}
                                                                     >
                                                                         Take lesson quiz

@@ -80,7 +80,7 @@ namespace Team3.Students
                 .ToListAsync();
 
             var lessons = await _lessonRepository.GetAll()
-                .Where(x => topicIds.Contains(x.TopicId) && x.IsPublished)
+                .Where(x => topicIds.Contains(x.TopicId))
                 .OrderBy(x => x.Title)
                 .ToListAsync();
 
@@ -94,7 +94,7 @@ namespace Team3.Students
                 .ToListAsync();
 
             var assessments = await _assessmentRepository.GetAll()
-                .Where(x => x.IsPublished && topicIds.Contains(x.TopicId))
+                .Where(x => topicIds.Contains(x.TopicId))
                 .ToListAsync();
 
             var subjectProgress = await _studentProgressRepository.FirstOrDefaultAsync(x => x.StudentId == studentId && x.SubjectId == subjectId);
@@ -143,7 +143,7 @@ namespace Team3.Students
                     : assignedDifficulty == null
                         ? "Take the diagnostic assessment to unlock this topic."
                         : topicLessons.Count == 0
-                            ? "No published lesson is available for the assigned difficulty yet."
+                            ? "No lesson is available for the assigned difficulty yet."
                             : allLessonsCompleted
                                 ? anyQuizAvailable
                                     ? "Take the lesson quiz to complete this topic."
@@ -261,7 +261,7 @@ namespace Team3.Students
                 ActionState = "available",
                 NextRecommendedAction = quizAssessment != null
                     ? "Take the lesson quiz to complete this topic."
-                    : "No published lesson quiz is available for this lesson yet.",
+                    : "No lesson quiz is available for this lesson yet.",
                 SubjectId = subject.Id,
                 TopicId = topic.Id
             };
@@ -330,7 +330,7 @@ namespace Team3.Students
                     CanComplete = status == "current",
                     QuizAssessmentId = quizAssessment?.Id,
                     QuizStatus = quizAssessment != null ? "available" : "unavailable",
-                    QuizUnavailableReason = quizAssessment == null ? "No published lesson quiz is available for this lesson yet." : null
+                    QuizUnavailableReason = quizAssessment == null ? "No lesson quiz is available for this lesson yet." : null
                 };
             }).ToList();
         }
@@ -366,7 +366,7 @@ namespace Team3.Students
         private async Task<Assessment?> ResolveLessonQuizAsync(Guid lessonId, Guid topicId, DifficultyLevel assignedDifficulty)
         {
             var assessments = await _assessmentRepository.GetAll()
-                .Where(x => x.IsPublished && x.AssessmentType == AssessmentType.Quiz && x.TopicId == topicId && x.LessonId == lessonId)
+                .Where(x => x.AssessmentType == AssessmentType.Quiz && x.TopicId == topicId && x.LessonId == lessonId)
                 .ToListAsync();
 
             return ResolveLessonQuiz(assessments, lessonId, topicId, assignedDifficulty);
@@ -375,7 +375,7 @@ namespace Team3.Students
         private static Assessment? ResolveLessonQuiz(IEnumerable<Assessment> assessments, Guid lessonId, Guid topicId, DifficultyLevel assignedDifficulty)
         {
             var candidates = assessments
-                .Where(x => x.IsPublished && x.AssessmentType == AssessmentType.Quiz && x.TopicId == topicId && x.LessonId == lessonId)
+                .Where(x => x.AssessmentType == AssessmentType.Quiz && x.TopicId == topicId && x.LessonId == lessonId)
                 .OrderBy(x => x.Title)
                 .ToList();
 

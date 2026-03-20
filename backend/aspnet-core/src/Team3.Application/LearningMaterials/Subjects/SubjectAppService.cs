@@ -193,7 +193,7 @@ namespace Team3.LearningMaterials.Subjects
                     ?? throw new UserFriendlyException("Topic not found.");
 
                 var lessons = await LessonRepository.GetAllListAsync(
-                    x => x.TopicId == topicId && x.IsPublished);
+                    x => x.TopicId == topicId);
 
                 return lessons.Select(l => new LessonSummaryDto
                 {

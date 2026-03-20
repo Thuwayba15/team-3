@@ -144,6 +144,9 @@ export const STUDENT_ASSESSMENT_SUBMIT_DIAGNOSTIC_ENDPOINT = "/api/services/app/
 /** Submits a lesson quiz attempt for the authenticated student. */
 export const STUDENT_ASSESSMENT_SUBMIT_LESSON_QUIZ_ENDPOINT = "/api/services/app/StudentAssessment/SubmitLessonQuiz";
 
+/** Returns all generated quiz assessments for a given lesson. */
+export const ASSESSMENT_GENERATION_GET_LESSON_ASSESSMENTS_ENDPOINT = "/api/services/app/AssessmentGeneration/GetLessonAssessments";
+
 /** Returns student dashboard and progress aggregates. */
 export const STUDENT_DASHBOARD_GET_MY_DASHBOARD_ENDPOINT = "/api/services/app/student-dashboard/get-my-dashboard";
 export const STUDENT_DASHBOARD_GET_PROGRESS_ENDPOINT = "/api/services/app/StudentDashboard/GetProgress";

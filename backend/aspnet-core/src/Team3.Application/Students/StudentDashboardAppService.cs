@@ -394,14 +394,14 @@ namespace Team3.Students
             DifficultyLevel assignedDifficulty)
         {
             var selectedLessons = lessons
-                .Where(x => x.TopicId == topicId && x.IsPublished && x.DifficultyLevel == assignedDifficulty)
+                .Where(x => x.TopicId == topicId && x.DifficultyLevel == assignedDifficulty)
                 .OrderBy(x => x.Title)
                 .ToList();
 
             if (selectedLessons.Count == 0)
             {
                 selectedLessons = lessons
-                    .Where(x => x.TopicId == topicId && x.IsPublished && x.DifficultyLevel == DifficultyLevel.Medium)
+                    .Where(x => x.TopicId == topicId && x.DifficultyLevel == DifficultyLevel.Medium)
                     .OrderBy(x => x.Title)
                     .ToList();
             }
@@ -409,7 +409,7 @@ namespace Team3.Students
             if (selectedLessons.Count == 0)
             {
                 selectedLessons = lessons
-                    .Where(x => x.TopicId == topicId && x.IsPublished)
+                    .Where(x => x.TopicId == topicId)
                     .OrderBy(x => x.Title)
                     .ToList();
             }

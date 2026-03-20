@@ -470,11 +470,13 @@ namespace Team3.Services.Assessments
 
                 var assessments = await AssessmentRepository.GetAllListAsync(
                     x => x.LessonId == lessonId && x.AssessmentType == AssessmentType.Quiz);
+                var output = new GeneratedAssessmentOutput();
 
                 if (!assessments.Any())
-                    throw new UserFriendlyException("No assessments found for this lesson. Generate them first.");
-
-                var output = new GeneratedAssessmentOutput();
+                {
+                    Logger.Warn($"No lesson quiz assessments found. LessonId={lessonId}, TopicId={topic.Id}");
+                    return output;
+                }
 
                 foreach (var assessment in assessments.OrderBy(x => x.DifficultyLevel))
                 {

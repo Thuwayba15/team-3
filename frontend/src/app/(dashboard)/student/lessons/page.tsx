@@ -17,6 +17,10 @@ import AiTutorDrawer from "@/components/AiTutorDrawer";
 import SubjectSwitcher from "@/components/student/SubjectSwitcher";
 import { useStyles } from "./styles";
 import {
+    selectLessonAssessmentByDifficulty,
+    studentAssessmentGenerationService,
+} from "@/services/student/studentAssessmentGenerationService";
+import {
     studentLearningPathService,
     type IStudentLearningPath,
     type IStudentLearningPathLesson,
@@ -123,7 +127,6 @@ function LessonDetail({
     loading,
     error,
     onBack,
-    onComplete,
     onOpenQuiz,
 }: {
     subjectPath: IStudentLearningPath;
@@ -133,8 +136,7 @@ function LessonDetail({
     loading: boolean;
     error: string | null;
     onBack: () => void;
-    onComplete: () => void;
-    onOpenQuiz: (assessmentId: string) => void;
+    onOpenQuiz: () => void;
 }) {
     const { styles } = useStyles();
     const [aiOpen, setAiOpen] = useState(false);
@@ -143,7 +145,7 @@ function LessonDetail({
     const completedLessons = topic.lessons.filter((item) => item.status === "completed").length;
     const topicCompletion = topic.lessons.length === 0 ? 0 : Math.round((completedLessons / topic.lessons.length) * 100);
     const isReviewMode = lesson.actionState === "review";
-    const canTakeQuiz = lesson.quizStatus === "available" && Boolean(lesson.quizAssessmentId);
+    const canOpenQuiz = lesson.status !== "locked";
 
     return (
         <div className={styles.detailRoot}>
@@ -181,28 +183,16 @@ function LessonDetail({
                 )}
 
                 <div className={styles.detailFooter}>
-                    {canTakeQuiz ? (
+                    {canOpenQuiz && !isReviewMode ? (
                         <Button
                             type="primary"
                             icon={<RightOutlined />}
                             iconPosition="end"
                             className={styles.nextBtn}
-                            onClick={() => lesson.quizAssessmentId && onOpenQuiz(lesson.quizAssessmentId)}
+                            onClick={onOpenQuiz}
                             disabled={loading || Boolean(error)}
                         >
                             Take Quiz
-                        </Button>
-                    ) : null}
-                    {lesson.canComplete && !canTakeQuiz ? (
-                        <Button
-                            type="primary"
-                            icon={<RightOutlined />}
-                            iconPosition="end"
-                            className={styles.nextBtn}
-                            onClick={onComplete}
-                            disabled={loading || Boolean(error)}
-                        >
-                            Finish Lesson
                         </Button>
                     ) : null}
                     {isReviewMode ? (
@@ -481,10 +471,30 @@ export default function StudentLessonsPage() {
         };
     }, [activeLessonId]);
 
-    const syncPath = async (subjectId: string) => {
-        const path = await studentLearningPathService.getSubjectPath(subjectId);
-        setSubjectPath(path);
-        return path;
+    const resolveLessonQuizAssessmentId = async (
+        lessonId: string,
+        assignedDifficultyLevel: IStudentLearningPathTopic["assignedDifficultyLevel"]
+    ) => {
+        const assessments = await studentAssessmentGenerationService.getLessonAssessments(lessonId);
+        const selectedAssessment = selectLessonAssessmentByDifficulty(assessments, assignedDifficultyLevel);
+        return selectedAssessment?.assessmentId ?? null;
+    };
+
+    const openLessonQuiz = async (
+        lessonId: string,
+        assignedDifficultyLevel: IStudentLearningPathTopic["assignedDifficultyLevel"]
+    ) => {
+        if (!activeSubjectId) {
+            return false;
+        }
+
+        const assessmentId = await resolveLessonQuizAssessmentId(lessonId, assignedDifficultyLevel);
+        if (!assessmentId) {
+            return false;
+        }
+
+        router.push(`/student/learning-path?subjectId=${activeSubjectId}&assessmentId=${assessmentId}&assessmentType=2`);
+        return true;
     };
 
     const handleSelectSubject = (subjectId: string) => {
@@ -509,41 +519,6 @@ export default function StudentLessonsPage() {
         }
 
         router.push(`/student/lessons?subjectId=${activeSubjectId}`);
-    };
-
-    const handleCompleteLesson = async () => {
-        if (!activeLessonId || !activeSubjectId) {
-            return;
-        }
-
-        try {
-            const result = await studentLearningPathService.completeLesson({ lessonId: activeLessonId });
-            const refreshedPath = await syncPath(activeSubjectId);
-            const refreshedTopic = refreshedPath.topics.find((topic) => topic.topicId === result.topicId);
-            const refreshedLesson = refreshedTopic?.lessons.find((lesson) => lesson.lessonId === activeLessonId);
-
-            if (result.actionState === "review") {
-                messageApi.info(result.nextRecommendedAction);
-                return;
-            }
-
-            if (refreshedLesson?.quizAssessmentId) {
-                messageApi.success(result.nextRecommendedAction);
-                router.push(`/student/learning-path?subjectId=${activeSubjectId}&assessmentId=${refreshedLesson.quizAssessmentId}&assessmentType=2`);
-                return;
-            }
-
-            const nextCurrent = getCurrentLesson(refreshedPath);
-            if (nextCurrent) {
-                messageApi.info(result.nextRecommendedAction);
-                router.push(`/student/lessons?subjectId=${activeSubjectId}&lessonId=${nextCurrent.lesson.lessonId}`);
-                return;
-            }
-
-            messageApi.info(result.nextRecommendedAction);
-        } catch (completeError) {
-            messageApi.error(completeError instanceof Error ? completeError.message : "Failed to complete the lesson.");
-        }
     };
 
     const activeTopic = subjectPath?.topics.find((topic) => topic.lessons.some((lesson) => lesson.lessonId === activeLessonId)) ?? null;
@@ -582,8 +557,18 @@ export default function StudentLessonsPage() {
                         loading={lessonLoading}
                         error={lessonError}
                         onBack={handleBackToList}
-                        onComplete={() => void handleCompleteLesson()}
-                        onOpenQuiz={(assessmentId) => router.push(`/student/learning-path?subjectId=${activeSubjectId}&assessmentId=${assessmentId}&assessmentType=2`)}
+                        onOpenQuiz={() => {
+                            void (async () => {
+                                try {
+                                    const opened = await openLessonQuiz(activeLesson.lessonId, activeTopic.assignedDifficultyLevel);
+                                    if (!opened) {
+                                        messageApi.info("No lesson quiz is available yet for this lesson.");
+                                    }
+                                } catch (quizError) {
+                                    messageApi.error(quizError instanceof Error ? quizError.message : "Failed to open the lesson quiz.");
+                                }
+                            })();
+                        }}
                     />
                 </>
             ) : (
