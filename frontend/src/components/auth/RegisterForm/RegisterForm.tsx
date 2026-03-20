@@ -59,8 +59,6 @@ export const RegisterForm = ({ onSubmit, isLoading, errorMessage, onErrorDismiss
       <Form.Item name="role" rules={[{ required: true, message: "Please select your role" }]}>
         <Select placeholder="I am a...">
           <Select.Option value="Student">Student</Select.Option>
-          <Select.Option value="Parent">Parent</Select.Option>
-          <Select.Option value="Tutor">Tutor</Select.Option>
         </Select>
       </Form.Item>
 
