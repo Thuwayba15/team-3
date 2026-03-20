@@ -94,6 +94,29 @@ export const LANGUAGES_UPDATE_ENDPOINT = "/api/services/app/language/update";
 /** Deletes a platform language by id. */
 export const LANGUAGES_DELETE_ENDPOINT = "/api/services/app/language/delete";
 
+/** Returns all active subjects. */
+export const SUBJECT_GET_ALL_ENDPOINT = "/api/services/app/StudentSubject/GetAllSubjects";
+
+/** Returns subjects the logged-in student is enrolled in. */
+export const SUBJECT_GET_MY_ENDPOINT = "/api/services/app/StudentSubject/GetMySubjects";
+
+/** Bulk-enrols the logged-in student in one or more subjects. */
+export const SUBJECT_BULK_ENROLL_ENDPOINT = "/api/services/app/StudentSubject/BulkEnroll";
+
+/** Returns progress for a student in a given subject. */
+export const SUBJECT_GET_PROGRESS_ENDPOINT = "/api/services/app/StudentSubject/GetSubjectProgress";
+
+/** Returns all active topics for a given subject. */
+export const TOPIC_GET_BY_SUBJECT_ENDPOINT = "/api/services/app/StudentSubject/GetTopicsBySubject";
+
+/** Returns all published lessons for a given topic. */
+export const LESSON_GET_BY_TOPIC_ENDPOINT = "/api/services/app/StudentSubject/GetLessonsByTopic";
+
+/** Returns a single lesson with all translations. */
+export const LESSON_GET_ENDPOINT = "/api/services/app/StudentSubject/GetLesson";
+
+/** Uploads text content as a lesson, triggering translation into all active languages. */
+export const UPLOAD_TEXT_MATERIAL_ENDPOINT = "/api/services/app/LearningMaterial/UploadTextMaterial";
 /** Returns subjects the authenticated student is enrolled in. */
 export const STUDENT_SUBJECT_GET_MY_SUBJECTS_ENDPOINT = "/api/services/app/StudentSubject/GetMySubjects";
 

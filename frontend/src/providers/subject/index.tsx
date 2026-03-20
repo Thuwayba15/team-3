@@ -1,0 +1,134 @@
+"use client";
+
+import axios from "axios";
+import { ReactNode, useContext, useMemo, useReducer } from "react";
+import { apiClient } from "@/lib/api/client";
+import {
+    SUBJECT_GET_ALL_ENDPOINT,
+    SUBJECT_GET_MY_ENDPOINT,
+    TOPIC_GET_BY_SUBJECT_ENDPOINT,
+    LESSON_GET_BY_TOPIC_ENDPOINT,
+    UPLOAD_TEXT_MATERIAL_ENDPOINT,
+} from "@/constants/api";
+import {
+    getSubjectsPending, getSubjectsSuccess, getSubjectsError,
+    getMySubjectsPending, getMySubjectsSuccess, getMySubjectsError,
+    getTopicsBySubjectPending, getTopicsBySubjectSuccess, getTopicsBySubjectError,
+    getLessonsByTopicPending, getLessonsByTopicSuccess, getLessonsByTopicError,
+    createLessonPending, createLessonSuccess, createLessonError,
+} from "./actions";
+import type {
+    ISubject, ITopic, ILessonSummary,
+    IUploadLessonInput, IUploadLessonOutput, ILessonTranslation,
+    ISubjectContextActions, ISubjectContextState,
+} from "./context";
+import { INITIAL_STATE, SubjectActionsContext, SubjectStateContext } from "./context";
+import { subjectReducer } from "./reducer";
+
+export type { ISubject, ITopic, ILessonSummary, IUploadLessonInput, IUploadLessonOutput, ILessonTranslation };
+
+interface IAbpResponse<T> {
+    result: T;
+    success: boolean;
+}
+
+interface ISubjectProviderProps {
+    children: ReactNode;
+}
+
+export const SubjectProvider = ({ children }: ISubjectProviderProps) => {
+    const [state, dispatch] = useReducer(subjectReducer, INITIAL_STATE);
+
+    const getSubjects = async (): Promise<void> => {
+        dispatch(getSubjectsPending());
+        try {
+            const response = await apiClient.get<IAbpResponse<ISubject[]>>(SUBJECT_GET_ALL_ENDPOINT);
+            dispatch(getSubjectsSuccess(response.data.result));
+        } catch (error) {
+            dispatch(getSubjectsError(resolveErrorMessage(error)));
+        }
+    };
+
+    const getMySubjects = async (): Promise<void> => {
+        dispatch(getMySubjectsPending());
+        try {
+            const response = await apiClient.get<IAbpResponse<ISubject[]>>(SUBJECT_GET_MY_ENDPOINT);
+            dispatch(getMySubjectsSuccess(response.data.result));
+        } catch (error) {
+            dispatch(getMySubjectsError(resolveErrorMessage(error)));
+        }
+    };
+
+    const getTopicsBySubject = async (subjectId: string): Promise<void> => {
+        dispatch(getTopicsBySubjectPending());
+        try {
+            const response = await apiClient.get<IAbpResponse<ITopic[]>>(TOPIC_GET_BY_SUBJECT_ENDPOINT, {
+                params: { subjectId },
+            });
+            dispatch(getTopicsBySubjectSuccess(response.data.result));
+        } catch (error) {
+            dispatch(getTopicsBySubjectError(resolveErrorMessage(error)));
+        }
+    };
+
+    const getLessonsByTopic = async (topicId: string): Promise<void> => {
+        dispatch(getLessonsByTopicPending());
+        try {
+            const response = await apiClient.get<IAbpResponse<ILessonSummary[]>>(LESSON_GET_BY_TOPIC_ENDPOINT, {
+                params: { topicId },
+            });
+            dispatch(getLessonsByTopicSuccess(response.data.result));
+        } catch (error) {
+            dispatch(getLessonsByTopicError(resolveErrorMessage(error)));
+        }
+    };
+
+    const createLesson = async (input: IUploadLessonInput): Promise<IUploadLessonOutput | undefined> => {
+        dispatch(createLessonPending());
+        try {
+            const response = await apiClient.post<IAbpResponse<IUploadLessonOutput>>(UPLOAD_TEXT_MATERIAL_ENDPOINT, input);
+            dispatch(createLessonSuccess(response.data.result));
+            return response.data.result;
+        } catch (error) {
+            dispatch(createLessonError(resolveErrorMessage(error)));
+            return undefined;
+        }
+    };
+
+    const actionsValue = useMemo<ISubjectContextActions>(
+        () => ({ getSubjects, getMySubjects, getTopicsBySubject, getLessonsByTopic, createLesson }),
+        []
+    );
+
+    return (
+        <SubjectStateContext.Provider value={state}>
+            <SubjectActionsContext.Provider value={actionsValue}>
+                {children}
+            </SubjectActionsContext.Provider>
+        </SubjectStateContext.Provider>
+    );
+};
+
+/** Returns the current subject state. Must be used inside <SubjectProvider>. */
+export const useSubjectState = (): ISubjectContextState => {
+    const context = useContext(SubjectStateContext);
+    if (!context) throw new Error("useSubjectState must be used within SubjectProvider.");
+    return context;
+};
+
+/** Returns subject action methods. Must be used inside <SubjectProvider>. */
+export const useSubjectActions = (): ISubjectContextActions => {
+    const context = useContext(SubjectActionsContext);
+    if (!context) throw new Error("useSubjectActions must be used within SubjectProvider.");
+    return context;
+};
+
+function resolveErrorMessage(error: unknown): string {
+    if (axios.isAxiosError(error)) {
+        const abpMessage: string | undefined = error.response?.data?.error?.message;
+        if (abpMessage) return abpMessage;
+        if (error.response?.status === 403) return "You do not have permission to perform this action.";
+        if (error.response?.status === 404) return "Resource not found.";
+    }
+    return "An unexpected error occurred. Please try again.";
+}
