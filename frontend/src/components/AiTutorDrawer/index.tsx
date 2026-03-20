@@ -127,7 +127,7 @@ export default function AiTutorDrawer({ open, onClose, lessonTitle = "this lesso
         <Drawer
             title={
                 <span style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                    <RobotOutlined style={{ color: "#00b8a9" }} />
+                    <RobotOutlined style={{ color: "#1e40af" }} />
                     AI Tutor
                 </span>
             }
@@ -138,7 +138,7 @@ export default function AiTutorDrawer({ open, onClose, lessonTitle = "this lesso
             styles={{ body: { padding: 0, display: "flex", flexDirection: "column", overflow: "hidden" } }}
         >
             <div className={styles.context}>
-                <div className={styles.contextLabel}>Current lesson</div>
+                <div className={styles.contextTopic}>Current lesson</div>
                 <div className={styles.contextTopic}>{lessonTitle}</div>
             </div>
 

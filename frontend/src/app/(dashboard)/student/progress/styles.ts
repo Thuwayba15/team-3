@@ -152,7 +152,7 @@ export const useStyles = createStyles(({ css, token }) => ({
     lessonScore: css`
         font-size: 14px;
         font-weight: 700;
-        color: #00b8a9;
+        color: #1e40af;
     `,
 
     quizItem: css`
@@ -187,23 +187,23 @@ export const useStyles = createStyles(({ css, token }) => ({
     /* ── Attention card ────────────────────────────────────── */
     attentionCard: css`
         border-radius: ${token.borderRadiusLG}px;
-        border: 1px solid #ffe58f;
-        background: #fffbe6;
+        border: 1px solid #d97706;
+        background: #fef3c7;
 
         .ant-card-head {
             background: transparent;
-            border-bottom: 1px solid #ffe58f;
+            border-bottom: 1px solid #d97706;
         }
 
         .ant-card-head-title {
             font-weight: 600;
-            color: #ad6800;
+            color: #92400e;
         }
     `,
 
     attentionItem: css`
         padding: 10px 0;
-        border-bottom: 1px solid #ffd666;
+        border-bottom: 1px solid #d97706;
 
         &:last-child {
             border-bottom: none;
@@ -213,13 +213,13 @@ export const useStyles = createStyles(({ css, token }) => ({
     attentionTitle: css`
         font-size: 14px;
         font-weight: 600;
-        color: #ad6800;
+        color: #92400e;
         display: block;
         margin-bottom: 2px;
     `,
 
     attentionDesc: css`
         font-size: 13px;
-        color: #875800;
+        color: #78350f;
     `,
 }));

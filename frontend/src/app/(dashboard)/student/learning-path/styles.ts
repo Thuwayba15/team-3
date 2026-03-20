@@ -41,7 +41,7 @@ export const useStyles = createStyles(({ css, token }) => ({
     masteredPercent: css`
         font-size: 28px;
         font-weight: 700;
-        color: #00b8a9;
+        color: #1e40af;
         text-align: right;
         line-height: 1;
     `,
@@ -107,7 +107,7 @@ export const useStyles = createStyles(({ css, token }) => ({
         display: flex;
         align-items: center;
         justify-content: center;
-        background: #00b8a9;
+        background: #1e40af;
         color: #fff;
         font-size: 18px;
         flex-shrink: 0;
@@ -121,7 +121,7 @@ export const useStyles = createStyles(({ css, token }) => ({
         display: flex;
         align-items: center;
         justify-content: center;
-        border: 3px solid #00b8a9;
+        border: 3px solid #1e40af;
         background: ${token.colorBgContainer};
         flex-shrink: 0;
         z-index: 1;
@@ -131,7 +131,7 @@ export const useStyles = createStyles(({ css, token }) => ({
         width: 14px;
         height: 14px;
         border-radius: 50%;
-        background: #00b8a9;
+        background: #1e40af;
     `,
 
     timelineDotLocked: css`
@@ -159,7 +159,7 @@ export const useStyles = createStyles(({ css, token }) => ({
     timelineConnectorActive: css`
         flex: 1;
         width: 2px;
-        background: #00b8a9;
+        background: #1e40af;
         margin: 4px 0;
         min-height: 24px;
     `,
@@ -181,7 +181,7 @@ export const useStyles = createStyles(({ css, token }) => ({
 
     moduleCardActive: css`
         border-radius: ${token.borderRadiusLG}px;
-        border: 2px solid #00b8a9;
+        border: 2px solid #1e40af;
 
         .ant-card-body {
             padding: ${token.paddingLG}px;
@@ -240,13 +240,13 @@ export const useStyles = createStyles(({ css, token }) => ({
     `,
 
     reviewLink: css`
-        color: #00b8a9 !important;
+        color: #1e40af !important;
         font-size: 14px;
         font-weight: 500;
         padding: 0;
 
         &:hover {
-            color: #00a89a !important;
+            color: #1d4ed8 !important;
         }
     `,
 

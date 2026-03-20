@@ -10,11 +10,13 @@ import {
     ReadOutlined,
     RightOutlined,
 } from "@ant-design/icons";
-import { Alert, Button, Card, Empty, Progress, Spin, Tag, Typography, message } from "antd";
+import { Alert, Button, Card, Empty, Progress, Skeleton, Tag, Typography, message } from "antd";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import AiTutorDrawer from "@/components/AiTutorDrawer";
+import { DashboardPageSkeleton } from "@/components/layout";
 import SubjectSwitcher from "@/components/student/SubjectSwitcher";
+import { UI_COLORS } from "@/constants/uiColors";
 import { useStyles } from "./styles";
 import {
     selectLessonAssessmentByDifficulty,
@@ -166,7 +168,7 @@ function LessonDetail({
                 </div>
 
                 {loading ? (
-                    <Spin />
+                    <Skeleton active paragraph={{ rows: 6 }} title={false} />
                 ) : error ? (
                     <Alert type="error" showIcon message="Unable to load lesson" description={error} />
                 ) : sections.length === 0 ? (
@@ -211,7 +213,7 @@ function LessonDetail({
                         <span>Topic Completion</span>
                         <span>{topicCompletion} %</span>
                     </div>
-                    <Progress percent={topicCompletion} showInfo={false} strokeColor="#00b8a9" size="small" />
+                    <Progress percent={topicCompletion} showInfo={false} strokeColor={UI_COLORS.PRIMARY} size="small" />
 
                     <div className={styles.topicList}>
                         {topic.lessons.map((item) => (
@@ -341,7 +343,7 @@ function LessonList({
                                     {statusTag(lesson.status)}
                                     {lesson.actionState === "review" ? <Tag color="success">Review</Tag> : null}
                                     {lesson.status !== "locked" ? (
-                                        <RightOutlined style={{ fontSize: 12, color: "#00b8a9" }} />
+                                        <RightOutlined style={{ fontSize: 12, color: UI_COLORS.PRIMARY }} />
                                     ) : null}
                                 </div>
                             </div>
@@ -537,7 +539,7 @@ export default function StudentLessonsPage() {
             {contextHolder}
 
             {loading ? (
-                <Spin />
+                <DashboardPageSkeleton cardCount={4} />
             ) : error ? (
                 <Alert type="error" showIcon message="Unable to load lessons" description={error} />
             ) : subjects.length === 0 || !subjectPath ? (
