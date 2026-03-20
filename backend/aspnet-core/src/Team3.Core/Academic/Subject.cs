@@ -18,9 +18,7 @@ public class Subject : FullAuditedEntity<Guid>
     public bool IsActive { get; private set; } = true;
 
     public virtual ICollection<Topic> Topics { get; private set; } = new List<Topic>();
-
     public virtual ICollection<SubjectTranslation> Translations { get; private set; } = new List<SubjectTranslation>();
-
     protected Subject()
     {
     }
