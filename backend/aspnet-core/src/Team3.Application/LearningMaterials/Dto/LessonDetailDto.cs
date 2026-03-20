@@ -18,6 +18,8 @@ namespace Team3.LearningMaterials.Dto
         public DifficultyLevel DifficultyLevel { get; set; }
         public int EstimatedMinutes { get; set; }
         public bool IsPublished { get; set; }
+        public string PreferredLanguageCode { get; set; } = "en";
+        public LessonTranslationSummaryDto? SelectedTranslation { get; set; }
         public List<LessonTranslationSummaryDto> Translations { get; set; } = new();
     }
 }

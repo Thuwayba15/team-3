@@ -7,6 +7,7 @@ import {
     LockOutlined,
     MessageOutlined,
     PlayCircleOutlined,
+    ReadOutlined,
     RightOutlined,
 } from "@ant-design/icons";
 import { Alert, Button, Card, Empty, Progress, Skeleton, Tag, Typography, message } from "antd";
@@ -17,6 +18,10 @@ import { DashboardPageSkeleton } from "@/components/layout";
 import SubjectSwitcher from "@/components/student/SubjectSwitcher";
 import { UI_COLORS } from "@/constants/uiColors";
 import { useStyles } from "./styles";
+import {
+    selectLessonAssessmentByDifficulty,
+    studentAssessmentGenerationService,
+} from "@/services/student/studentAssessmentGenerationService";
 import {
     studentLearningPathService,
     type IStudentLearningPath,
@@ -59,7 +64,8 @@ function getDifficultyLabel(level: number) {
 }
 
 function getPreferredTranslation(lesson: ILessonDetail) {
-    return lesson.translations.find((translation) => translation.languageCode.toLowerCase() !== "en")
+    return lesson.selectedTranslation
+        ?? lesson.translations.find((translation) => translation.languageCode.toLowerCase() === lesson.preferredLanguageCode.toLowerCase())
         ?? lesson.translations.find((translation) => translation.languageCode.toLowerCase() === "en")
         ?? lesson.translations[0]
         ?? null;
@@ -123,7 +129,7 @@ function LessonDetail({
     loading,
     error,
     onBack,
-    onComplete,
+    onOpenQuiz,
 }: {
     subjectPath: IStudentLearningPath;
     topic: IStudentLearningPathTopic;
@@ -132,7 +138,7 @@ function LessonDetail({
     loading: boolean;
     error: string | null;
     onBack: () => void;
-    onComplete: () => void;
+    onOpenQuiz: () => void;
 }) {
     const { styles } = useStyles();
     const [aiOpen, setAiOpen] = useState(false);
@@ -140,6 +146,8 @@ function LessonDetail({
     const sections = lessonDetail ? buildLessonSections(lessonDetail, translation) : [];
     const completedLessons = topic.lessons.filter((item) => item.status === "completed").length;
     const topicCompletion = topic.lessons.length === 0 ? 0 : Math.round((completedLessons / topic.lessons.length) * 100);
+    const isReviewMode = lesson.actionState === "review";
+    const canOpenQuiz = lesson.status !== "locked";
 
     return (
         <div className={styles.detailRoot}>
@@ -154,6 +162,7 @@ function LessonDetail({
                 <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 16 }}>
                     <Tag color="blue">{getDifficultyLabel(lesson.difficultyLevel)}</Tag>
                     <Tag>{`${lesson.estimatedMinutes} min`}</Tag>
+                    {isReviewMode ? <Tag color="success">Review mode</Tag> : null}
                 </div>
 
                 {loading ? (
@@ -176,16 +185,23 @@ function LessonDetail({
                 )}
 
                 <div className={styles.detailFooter}>
-                    <Button
-                        type="primary"
-                        icon={<RightOutlined />}
-                        iconPosition="end"
-                        className={styles.nextBtn}
-                        onClick={onComplete}
-                        disabled={loading || Boolean(error)}
-                    >
-                        Complete Lesson
-                    </Button>
+                    {canOpenQuiz && !isReviewMode ? (
+                        <Button
+                            type="primary"
+                            icon={<RightOutlined />}
+                            iconPosition="end"
+                            className={styles.nextBtn}
+                            onClick={onOpenQuiz}
+                            disabled={loading || Boolean(error)}
+                        >
+                            Take Quiz
+                        </Button>
+                    ) : null}
+                    {isReviewMode ? (
+                        <Button disabled icon={<ReadOutlined />}>
+                            Review Only
+                        </Button>
+                    ) : null}
                 </div>
             </div>
 
@@ -317,6 +333,7 @@ function LessonList({
                                 </div>
                                 <div className={styles.lessonRight}>
                                     {statusTag(lesson.status)}
+                                    {lesson.actionState === "review" ? <Tag color="success">Review</Tag> : null}
                                     {lesson.status !== "locked" ? (
                                         <RightOutlined style={{ fontSize: 12, color: UI_COLORS.PRIMARY }} />
                                     ) : null}
@@ -456,10 +473,30 @@ export default function StudentLessonsPage() {
         };
     }, [activeLessonId]);
 
-    const syncPath = async (subjectId: string) => {
-        const path = await studentLearningPathService.getSubjectPath(subjectId);
-        setSubjectPath(path);
-        return path;
+    const resolveLessonQuizAssessmentId = async (
+        lessonId: string,
+        assignedDifficultyLevel: IStudentLearningPathTopic["assignedDifficultyLevel"]
+    ) => {
+        const assessments = await studentAssessmentGenerationService.getLessonAssessments(lessonId);
+        const selectedAssessment = selectLessonAssessmentByDifficulty(assessments, assignedDifficultyLevel);
+        return selectedAssessment?.assessmentId ?? null;
+    };
+
+    const openLessonQuiz = async (
+        lessonId: string,
+        assignedDifficultyLevel: IStudentLearningPathTopic["assignedDifficultyLevel"]
+    ) => {
+        if (!activeSubjectId) {
+            return false;
+        }
+
+        const assessmentId = await resolveLessonQuizAssessmentId(lessonId, assignedDifficultyLevel);
+        if (!assessmentId) {
+            return false;
+        }
+
+        router.push(`/student/learning-path?subjectId=${activeSubjectId}&assessmentId=${assessmentId}&assessmentType=2`);
+        return true;
     };
 
     const handleSelectSubject = (subjectId: string) => {
@@ -484,29 +521,6 @@ export default function StudentLessonsPage() {
         }
 
         router.push(`/student/lessons?subjectId=${activeSubjectId}`);
-    };
-
-    const handleCompleteLesson = async () => {
-        if (!activeLessonId || !activeSubjectId) {
-            return;
-        }
-
-        try {
-            await studentLearningPathService.completeLesson({ lessonId: activeLessonId });
-            const refreshedPath = await syncPath(activeSubjectId);
-            const nextCurrent = getCurrentLesson(refreshedPath);
-
-            if (nextCurrent) {
-                messageApi.success("Lesson completed. Moving to your next lesson.");
-                router.push(`/student/lessons?subjectId=${activeSubjectId}&lessonId=${nextCurrent.lesson.lessonId}`);
-                return;
-            }
-
-            messageApi.success("Lesson completed. Continue in your learning path for the next recommended step.");
-            router.push(`/student/learning-path?subjectId=${activeSubjectId}`);
-        } catch (completeError) {
-            messageApi.error(completeError instanceof Error ? completeError.message : "Failed to complete the lesson.");
-        }
     };
 
     const activeTopic = subjectPath?.topics.find((topic) => topic.lessons.some((lesson) => lesson.lessonId === activeLessonId)) ?? null;
@@ -545,7 +559,18 @@ export default function StudentLessonsPage() {
                         loading={lessonLoading}
                         error={lessonError}
                         onBack={handleBackToList}
-                        onComplete={() => void handleCompleteLesson()}
+                        onOpenQuiz={() => {
+                            void (async () => {
+                                try {
+                                    const opened = await openLessonQuiz(activeLesson.lessonId, activeTopic.assignedDifficultyLevel);
+                                    if (!opened) {
+                                        messageApi.info("No lesson quiz is available yet for this lesson.");
+                                    }
+                                } catch (quizError) {
+                                    messageApi.error(quizError instanceof Error ? quizError.message : "Failed to open the lesson quiz.");
+                                }
+                            })();
+                        }}
                     />
                 </>
             ) : (

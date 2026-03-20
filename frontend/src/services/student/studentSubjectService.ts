@@ -42,6 +42,8 @@ export interface ILessonDetail {
     difficultyLevel: DifficultyLevel;
     estimatedMinutes: number;
     isPublished: boolean;
+    preferredLanguageCode: string;
+    selectedTranslation: ILessonTranslationSummary | null;
     translations: ILessonTranslationSummary[];
 }
 

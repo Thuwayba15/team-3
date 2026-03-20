@@ -4,6 +4,7 @@
  */
 
 export interface NextLessonRecommendation {
+    subjectId: string;
     lessonId: string;
     title: string;
     topicName: string;

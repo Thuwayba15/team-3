@@ -24,6 +24,7 @@ import {
     Space,
     Typography,
 } from "antd";
+import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { DashboardPageSkeleton } from "@/components/layout";
@@ -56,6 +57,7 @@ const getHeatmapTileClassName = (
 export default function StudentDashboardPage() {
     const { styles } = useStyles();
     const { t, i18n } = useTranslation();
+    const router = useRouter();
     const { state, actions } = useStudentDashboard();
     const [heatmapPage, setHeatmapPage] = useState(1);
     const [attentionPage, setAttentionPage] = useState(1);
@@ -213,8 +215,22 @@ export default function StudentDashboardPage() {
                                     <Text className={styles.lessonTitle}>{dashboardData.recommendedNextLesson.title}</Text>
                                     <Text className={styles.lessonDesc}>{dashboardData.recommendedNextLesson.ruleBasisReason}</Text>
                                     <Flex align="center" gap={12} wrap>
-                                        <Button type="primary" icon={<PlayCircleOutlined />} className={styles.startBtn}>
-                                            {t("dashboard.student.dashboardPage.startLesson")}
+                                        <Button
+                                            type="primary"
+                                            icon={<PlayCircleOutlined />}
+                                            className={styles.startBtn}
+                                            onClick={() => {
+                                                const nextLesson = dashboardData.recommendedNextLesson;
+                                                if (!nextLesson || !nextLesson.subjectId || !nextLesson.lessonId) {
+                                                    return;
+                                                }
+
+                                                router.push(`/student/lessons?subjectId=${nextLesson.subjectId}&lessonId=${nextLesson.lessonId}`);
+                                            }}
+                                        >
+                                            {dashboardData.recommendedNextLesson.ruleBasisReason.toLowerCase().includes("review")
+                                                ? "Review lesson"
+                                                : t("dashboard.student.dashboardPage.startLesson")}
                                         </Button>
                                         <span className={styles.durationText}>
                                             <ClockCircleOutlined /> {dashboardData.recommendedNextLesson.estimatedMinutes} mins
