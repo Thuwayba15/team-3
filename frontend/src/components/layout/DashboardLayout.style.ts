@@ -37,6 +37,25 @@ export const useStyles = createStyles(({ css, token }) => ({
         }
     `,
 
+    mobileTopBar: css`
+        display: flex;
+        align-items: center;
+        padding: ${token.paddingSM}px ${token.paddingMD}px;
+        border-bottom: 1px solid ${token.colorBorderSecondary};
+        margin-bottom: ${token.paddingMD}px;
+    `,
+
+    mobileMenuButton: css`
+        color: ${token.colorPrimary};
+        border: none;
+        font-size: 18px;
+
+        &:hover {
+            color: ${token.colorPrimaryHover};
+            background: ${token.colorFillTertiary};
+        }
+    `,
+
     navigationDrawerRoot: css`
         .ant-drawer-content {
             background: ${token.colorBgBase};

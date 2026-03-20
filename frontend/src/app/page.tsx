@@ -27,14 +27,14 @@ const CARDS: CardData[] = [
     title: "Overall Progress Score", 
     value: "78%", 
     detail: "5% this week", 
-    color: "#00d2df",
+    color: "#131B4e",
     items: [{ label: "Mathematics", score: 82 }, { label: "Physical Sciences", score: 65 }] as ProgressItem[]
   },
   { 
     id: 2, 
     type: "quiz",
     title: "Recent Quiz Results", 
-    color: "#52c41a",
+    color: "#1e40af",
     items: [
       { label: "Linear Equations", score: 85, date: "Today" },
       { label: "Cell Structure", score: 92, date: "Yesterday" }
@@ -44,7 +44,7 @@ const CARDS: CardData[] = [
     id: 3, 
     type: "alert",
     title: "Recent Alerts", 
-    color: "#faad14",
+    color: "#d97706",
     items: [{ label: "Struggling with Life Sciences", desc: "Your last two scores were below 50% regarding Cell Structure." }] as AlertItem[]
   }
 ];
@@ -65,24 +65,36 @@ export default function UbuntuLearn() {
       <div className={styles.swooshContainer}>
         <svg width="100%" height="100%" viewBox="0 0 1440 800" fill="none">
           <defs>
-            <linearGradient id="soft_grad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <linearGradient id="soft_grad" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stopColor="#ffffff" />
-              <stop offset="100%" stopColor="#08F1C2" />
+              <stop offset="100%" stopColor="#131B4e" />
+            </linearGradient>
+            <linearGradient id="soft_grad2" x1="100%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#a9bee3" />
+              <stop offset="100%" stopColor="#3426f7" />
             </linearGradient>
           </defs>
           <path d="M-200 150 C 200 50, 700 250, 1600 50" stroke="url(#soft_grad)" strokeWidth="120" strokeOpacity="0.04" strokeLinecap="round" />
+          <path d="M-100 400 C 300 300, 800 500, 1800 350" stroke="url(#soft_grad2)" strokeWidth="80" strokeOpacity="0.03" strokeLinecap="round" />
         </svg>
       </div>
 
       <nav className={styles.glassNav}>
         <a href="/login">Login</a>
-        <a href="#">About</a>
-        <a href="#">Contact Us</a>
+        <a href="/about">About</a>
       </nav>
 
       <div className={styles.brandSection}>
         <img src="https://firebasestorage.googleapis.com/v0/b/grade-12-life-sciences-st.firebasestorage.app/o/image.png?alt=media&token=7477da80-3128-4dc8-833b-92c432ea71b1" alt="Logo" className={styles.mainLogo} />
-        <h1 className={styles.title}>Ubuntu Learn</h1>
+        <h1 className={styles.title} style={{
+          fontSize: 'clamp(32px, 5vw, 56px)',
+          fontWeight: 600,
+          fontFamily: 'Lexend, sans-serif',
+          color: '#1a1a1a',
+          margin: '20px 0 0 0',
+          letterSpacing: '-1px',
+          lineHeight: 1.12,
+        }}>UbuntuLearn</h1>
         <p className={styles.subtitle}>Learn • Funda • Bala • Leer</p>
       </div>
 
@@ -155,12 +167,12 @@ export default function UbuntuLearn() {
                           <div key={idx}>
                             <div className={styles.quizInfo}>
                               <span className={styles.quizLabel}>{qItem.label}</span>
-                              <span className={styles.quizScore} style={{ color: qItem.score < 70 ? '#faad14' : '#52c41a' }}>
+                              <span className={styles.quizScore} style={{ color: qItem.score < 70 ? '#d97706' : '#059669' }}>
                                 {qItem.score}%
                               </span>
                             </div>
                             <span className={styles.quizDate}>{qItem.date}</span>
-                            <Progress percent={qItem.score} showInfo={false} strokeColor={qItem.score < 70 ? '#faad14' : '#52c41a'} strokeWidth={4} />
+                            <Progress percent={qItem.score} showInfo={false} strokeColor={qItem.score < 70 ? '#d97706' : '#059669'} strokeWidth={4} />
                           </div>
                         );
                       })}

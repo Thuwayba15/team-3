@@ -9,6 +9,7 @@ import {
 } from "@ant-design/icons";
 import { Card, Col, Row, Tag, Typography } from "antd";
 import { useTranslation } from "react-i18next";
+import { UI_COLORS } from "@/constants/uiColors";
 import { useStyles } from "./styles";
 
 const { Title, Text } = Typography;
@@ -16,17 +17,26 @@ const { Title, Text } = Typography;
 // ── Data ─────────────────────────────────────────────────────────────────────
 
 const STATS = [
-    { icon: TrophyOutlined,      iconColor: "#00b8a9", value: "78%",    labelKey: "dashboard.student.progressPage.stats.overallScore" },
-    { icon: BookOutlined,        iconColor: "#00b8a9", value: "12/20",  labelKey: "dashboard.student.progressPage.stats.topicsMastered" },
-    { icon: CheckCircleOutlined, iconColor: "#00b8a9", value: "18/22",  labelKey: "dashboard.student.progressPage.stats.quizzesPassed" },
-    { icon: FireOutlined,        iconColor: "#fa8c16", value: "5 days", labelKey: "dashboard.student.progressPage.stats.studyStreak" },
+    { icon: TrophyOutlined,      iconColor: UI_COLORS.PRIMARY, value: "78%",    labelKey: "dashboard.student.progressPage.stats.overallScore" },
+    { icon: BookOutlined,        iconColor: UI_COLORS.PRIMARY, value: "12/20",  labelKey: "dashboard.student.progressPage.stats.topicsMastered" },
+    { icon: CheckCircleOutlined, iconColor: UI_COLORS.PRIMARY, value: "18/22",  labelKey: "dashboard.student.progressPage.stats.quizzesPassed" },
+    { icon: FireOutlined,        iconColor: UI_COLORS.WARNING, value: "5 days", labelKey: "dashboard.student.progressPage.stats.studyStreak" },
 ];
 
 const heatColor = (pct: number) => {
-    if (pct >= 70) return "#00b8a9";
-    if (pct >= 50) return "#fadb14";
-    if (pct >= 35) return "#ffa940";
-    return "#ff7875";
+    if (pct >= 70) {
+        return UI_COLORS.SUCCESS;
+    }
+
+    if (pct >= 50) {
+        return UI_COLORS.WARNING;
+    }
+
+    if (pct >= 35) {
+        return UI_COLORS.ERROR;
+    }
+
+    return UI_COLORS.ERROR;
 };
 
 const HEATMAP = [
@@ -175,7 +185,7 @@ export default function StudentProgressPage() {
             <Card
                 title={
                     <span>
-                        <WarningOutlined style={{ color: "#faad14", marginRight: 8 }} />
+                        <WarningOutlined style={{ color: UI_COLORS.WARNING, marginRight: 8 }} />
                         {t("dashboard.student.progressPage.attention.title")}
                     </span>
                 }

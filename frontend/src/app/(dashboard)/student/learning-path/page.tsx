@@ -6,12 +6,14 @@ import {
     LockOutlined,
     PlayCircleFilled,
 } from "@ant-design/icons";
-import { Alert, Button, Card, Empty, Progress, Spin, Tag, Typography, message } from "antd";
+import { Alert, Button, Card, Empty, Progress, Skeleton, Tag, Typography, message } from "antd";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { DashboardPageSkeleton } from "@/components/layout";
 import SubjectEnrollmentModal from "@/components/student/SubjectEnrollmentModal";
 import SubjectSwitcher from "@/components/student/SubjectSwitcher";
+import { UI_COLORS } from "@/constants/uiColors";
 import QuizView from "./QuizView";
 import { useStyles } from "./styles";
 import type { AssessmentType } from "@/services/student/studentAssessmentService";
@@ -335,9 +337,7 @@ export default function StudentLearningPathPage() {
             </div>
 
             {loadingSubjects ? (
-                <Card className={styles.subjectSummaryCard}>
-                    <Spin />
-                </Card>
+                <DashboardPageSkeleton cardCount={4} />
             ) : subjects.length === 0 ? (
                 <Card className={styles.emptyState}>
                     <Empty description="You are not enrolled in any subjects yet." />
@@ -387,7 +387,7 @@ export default function StudentLearningPathPage() {
                                 <Progress
                                     percent={Math.round(subjectPath.overallProgressPercent)}
                                     showInfo={false}
-                                    strokeColor="#00b8a9"
+                                    strokeColor={UI_COLORS.PRIMARY_ACCENT}
                                 />
                                 <div className={styles.summaryMeta}>
                                     <Text className={styles.helperText}>{subjectPath.recommendedAction}</Text>
@@ -416,7 +416,7 @@ export default function StudentLearningPathPage() {
 
                             {loadingPath ? (
                                 <Card className={styles.subjectSummaryCard}>
-                                    <Spin />
+                                    <Skeleton active paragraph={{ rows: 6 }} title={false} />
                                 </Card>
                             ) : (
                                 <div className={styles.timeline}>
@@ -487,7 +487,7 @@ export default function StudentLearningPathPage() {
                                                         {topic.status === "current" && topic.lessons.length > 0 ? (
                                                             <div className={styles.moduleProgress}>
                                                                 <div className={styles.progressPercent}>{moduleProgress}%</div>
-                                                                <Progress percent={moduleProgress} showInfo={false} strokeColor="#00b8a9" />
+                                                                    <Progress percent={moduleProgress} showInfo={false} strokeColor={UI_COLORS.PRIMARY_ACCENT} />
                                                             </div>
                                                         ) : null}
 
