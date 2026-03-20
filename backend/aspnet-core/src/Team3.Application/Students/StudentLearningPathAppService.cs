@@ -116,7 +116,6 @@ namespace Team3.Students
                 .Where(x => topicIds.Contains(x.TopicId))
                 .ToListAsync();
 
-            var subjectProgress = await _studentProgressRepository.FirstOrDefaultAsync(x => x.StudentId == studentId && x.SubjectId == subjectId);
             var firstUnlockedTopicId = topics
                 .FirstOrDefault(topic => topicProgresses.FirstOrDefault(progress => progress.TopicId == topic.Id)?.Status != LearningProgressStatus.Completed)
                 ?.Id;
@@ -184,8 +183,9 @@ namespace Team3.Students
                 });
             }
 
-            var overallProgressPercent = subjectProgress?.MasteryScore
-                ?? (topicDtos.Count == 0 ? 0m : Math.Round(topicDtos.Count(x => x.Status == "completed") * 100m / topicDtos.Count, 2, MidpointRounding.AwayFromZero));
+            var overallProgressPercent = topicDtos.Count == 0
+                ? 0m
+                : Math.Round(topicDtos.Average(x => x.MasteryScore), 2, MidpointRounding.AwayFromZero);
 
             var currentTopic = topicDtos.FirstOrDefault(x => x.Status == "current");
             var rootAction = currentTopic?.RecommendedAction

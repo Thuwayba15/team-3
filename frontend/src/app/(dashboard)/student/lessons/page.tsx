@@ -10,7 +10,8 @@ import {
     ReadOutlined,
     RightOutlined,
 } from "@ant-design/icons";
-import { Alert, Button, Card, Empty, Progress, Skeleton, Tag, Typography, message } from "antd";
+import { Alert, Button, Card, Empty, Progress, Tag, Skeleton,Typography, message } from "antd";
+import ReactMarkdown from "react-markdown";
 import type { TFunction } from "i18next";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -19,7 +20,6 @@ import AiTutorDrawer from "@/components/AiTutorDrawer";
 import { DashboardPageSkeleton } from "@/components/layout";
 import SubjectSwitcher from "@/components/student/SubjectSwitcher";
 import { UI_COLORS } from "@/constants/uiColors";
-import { useI18nState } from "@/providers/i18n";
 import { useStyles } from "./styles";
 import {
     selectLessonAssessmentByDifficulty,
@@ -38,33 +38,17 @@ import {
     type IStudentSubject,
 } from "@/services/student/studentSubjectService";
 
-const { Title, Text, Paragraph } = Typography;
+const { Title, Text } = Typography;
 
 type LessonStatus = "completed" | "current" | "locked";
 
-const SERVER_ACTION_KEY_BY_MESSAGE: Record<string, string> = {
-    "Complete the previous topic to unlock this one.": "dashboard.student.lessonsPage.serverAction.completePreviousTopic",
-    "Take the diagnostic assessment to unlock this topic.": "dashboard.student.lessonsPage.serverAction.takeDiagnosticAssessment",
-    "No lesson is available for the assigned difficulty yet.": "dashboard.student.lessonsPage.serverAction.noLessonForDifficulty",
-    "Take the lesson quiz to complete this topic.": "dashboard.student.lessonsPage.serverAction.takeLessonQuizForTopic",
-    "A lesson quiz is not available for this topic yet.": "dashboard.student.lessonsPage.serverAction.lessonQuizNotAvailableForTopic",
-    "Continue with your current lesson.": "dashboard.student.lessonsPage.serverAction.continueCurrentLesson",
-    "You have completed the available learning path for this subject.": "dashboard.student.lessonsPage.serverAction.completedAvailablePath",
-    "Start with the first available topic.": "dashboard.student.lessonsPage.serverAction.startFirstTopic",
-};
-
-function translateRecommendedAction(action: string, translate: TFunction): string {
-    const key = SERVER_ACTION_KEY_BY_MESSAGE[action.trim()];
-    return key ? translate(key) : action;
-}
-
-function statusTag(status: LessonStatus, translate: TFunction) {
+function statusTag(status: LessonStatus) {
     if (status === "completed") {
-        return <Tag color="success">{translate("dashboard.student.lessonsPage.status.completed")}</Tag>;
+        return <Tag color="success">Completed</Tag>;
     }
 
     if (status === "current") {
-        return <Tag color="processing">{translate("dashboard.student.lessonsPage.status.inProgress")}</Tag>;
+        return <Tag color="processing">In Progress</Tag>;
     }
 
     return null;
@@ -149,6 +133,7 @@ function LessonDetail({
     error,
     onBack,
     onOpenQuiz,
+    onSelectLesson,
 }: {
     subjectPath: IStudentLearningPath;
     topic: IStudentLearningPathTopic;
@@ -158,6 +143,7 @@ function LessonDetail({
     error: string | null;
     onBack: () => void;
     onOpenQuiz: () => void;
+    onSelectLesson: (lessonId: string) => void;
 }) {
     const { styles } = useStyles();
     const { t } = useTranslation();
@@ -180,9 +166,9 @@ function LessonDetail({
                 <h1 className={styles.lessonHeading}>{lessonDetail?.title ?? lesson.title}</h1>
 
                 <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 16 }}>
-                    <Tag color="blue">{getDifficultyLabel(lesson.difficultyLevel, t)}</Tag>
-                    <Tag>{`${lesson.estimatedMinutes} ${t("dashboard.student.lessonsPage.unit.minutesShort")}`}</Tag>
-                    {isReviewMode ? <Tag color="success">{t("dashboard.student.lessonsPage.reviewMode")}</Tag> : null}
+                    <Tag color="blue">{getDifficultyLabel(lesson.difficultyLevel)}</Tag>
+                    <Tag>{`${lesson.estimatedMinutes} min`}</Tag>
+                    {isReviewMode ? <Tag color="success">Review mode</Tag> : null}
                 </div>
 
                 {loading ? (
@@ -195,11 +181,9 @@ function LessonDetail({
                     sections.map((section) => (
                         <div key={section.heading}>
                             <div className={styles.sectionTitle}>{section.heading}</div>
-                            {section.body.split(/\n{2,}/).map((paragraph) => (
-                                <Paragraph key={`${section.heading}-${paragraph.slice(0, 24)}`} className={styles.sectionText}>
-                                    {paragraph}
-                                </Paragraph>
-                            ))}
+                            <div className={styles.sectionText}>
+                                <ReactMarkdown>{section.body}</ReactMarkdown>
+                            </div>
                         </div>
                     ))
                 )}
@@ -235,7 +219,13 @@ function LessonDetail({
 
                     <div className={styles.topicList}>
                         {topic.lessons.map((item) => (
-                            <div key={item.lessonId} className={styles.topicItem}>
+                            <button
+                                key={item.lessonId}
+                                className={styles.topicItem}
+                                onClick={() => item.status !== "locked" && onSelectLesson(item.lessonId)}
+                                style={{ background: "none", border: "none", cursor: item.status === "locked" ? "default" : "pointer", textAlign: "left", width: "100%" }}
+                                type="button"
+                            >
                                 {item.status === "completed" && (
                                     <div className={styles.topicDotCompleted}>
                                         <CheckOutlined />
@@ -250,7 +240,7 @@ function LessonDetail({
                                 <span className={item.status === "current" ? styles.topicNameCurrent : styles.topicNameOther}>
                                     {item.title}
                                 </span>
-                            </div>
+                            </button>
                         ))}
                     </div>
                 </Card>
@@ -266,7 +256,12 @@ function LessonDetail({
                     </Button>
                 </Card>
 
-                <AiTutorDrawer open={aiOpen} onClose={() => setAiOpen(false)} lessonTitle={lessonDetail?.title ?? lesson.title} />
+                <AiTutorDrawer
+                    open={aiOpen}
+                    onClose={() => setAiOpen(false)}
+                    lessonTitle={lessonDetail?.title ?? lesson.title}
+                    lessonContent={sections.map((s) => `## ${s.heading}\n\n${s.body}`).join("\n\n")}
+                />
             </div>
         </div>
     );
@@ -353,8 +348,8 @@ function LessonList({
                                     </div>
                                 </div>
                                 <div className={styles.lessonRight}>
-                                    {statusTag(lesson.status, t)}
-                                    {lesson.actionState === "review" ? <Tag color="success">{t("dashboard.student.lessonsPage.tag.review")}</Tag> : null}
+                                    {statusTag(lesson.status)}
+                                    {lesson.actionState === "review" ? <Tag color="success">Review</Tag> : null}
                                     {lesson.status !== "locked" ? (
                                         <RightOutlined style={{ fontSize: 12, color: UI_COLORS.PRIMARY }} />
                                     ) : null}
@@ -373,7 +368,6 @@ export default function StudentLessonsPage() {
     const { t } = useTranslation();
     const router = useRouter();
     const searchParams = useSearchParams();
-    const { currentLanguage } = useI18nState();
     const subjectIdParam = searchParams.get("subjectId");
     const lessonIdParam = searchParams.get("lessonId");
     const [messageApi, contextHolder] = message.useMessage();
@@ -582,6 +576,7 @@ export default function StudentLessonsPage() {
                         loading={lessonLoading}
                         error={lessonError}
                         onBack={handleBackToList}
+                        onSelectLesson={handleSelectLesson}
                         onOpenQuiz={() => {
                             void (async () => {
                                 try {
