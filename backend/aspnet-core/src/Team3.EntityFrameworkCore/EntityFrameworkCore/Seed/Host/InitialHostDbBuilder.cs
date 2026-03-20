@@ -13,8 +13,8 @@ public class InitialHostDbBuilder
     {
         new DefaultEditionCreator(_context).Create();
         new DefaultLanguagesCreator(_context).Create();
-        new DefaultLearningLanguagesCreator(_context).Create();
-        new InitialSubjectsBuilder(_context).Create();
+        new DefaultLearningLanguagesCreator(_context).Create(); // seeds en, zu, st, af
+        new InitialSubjectsBuilder(_context).Create();         // needs languages to exist first
         new HostRoleAndUserCreator(_context).Create();
         new DefaultSettingsCreator(_context).Create();
         new DefaultPlatformRoleCreator(_context).Create();

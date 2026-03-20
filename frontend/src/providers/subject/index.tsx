@@ -1,7 +1,8 @@
 "use client";
 
 import axios from "axios";
-import { ReactNode, useContext, useMemo, useReducer } from "react";
+import { ReactNode, useContext, useEffect, useMemo, useReducer } from "react";
+import { useI18nState } from "@/providers/i18n";
 import { apiClient } from "@/lib/api/client";
 import {
     SUBJECT_GET_ALL_ENDPOINT,
@@ -40,6 +41,7 @@ interface ISubjectProviderProps {
 
 export const SubjectProvider = ({ children }: ISubjectProviderProps) => {
     const [state, dispatch] = useReducer(subjectReducer, INITIAL_STATE);
+    const { currentLanguage } = useI18nState();
 
     const getSubjects = async (): Promise<void> => {
         dispatch(getSubjectsPending());
@@ -113,6 +115,35 @@ export const SubjectProvider = ({ children }: ISubjectProviderProps) => {
         () => ({ getSubjects, getMySubjects, getTopicsBySubject, getLessonsByTopic, getLesson, createLesson }),
         []
     );
+
+    // refresh subject/topic/lesson data when language preference changes
+    useEffect(() => {
+        if (state.mySubjects && state.mySubjects.length > 0) {
+            void getMySubjects();
+        }
+
+        if (state.topics && state.topics.length > 0) {
+            const subjectId = state.topics[0]?.subjectId;
+            if (subjectId) {
+                void getTopicsBySubject(subjectId);
+            }
+        }
+
+        if (state.subjects && state.subjects.length > 0) {
+            void getSubjects();
+        }
+
+        if (state.lessons && state.lessons.length > 0) {
+            const topicId = state.lessons[0]?.topicId;
+            if (topicId) {
+                void getLessonsByTopic(topicId);
+            }
+        }
+
+        if (state.selectedLesson?.id) {
+            void getLesson(state.selectedLesson.id);
+        }
+    }, [currentLanguage]);
 
     return (
         <SubjectStateContext.Provider value={state}>

@@ -264,6 +264,72 @@
         "seeResults": "See Results",
         "quizComplete": "Quiz Complete!",
         "quizScoreSummary": "You answered {{score}} out of {{total}} questions correctly."
+      },
+      "lessonsPage": {
+        "title": "Lessons",
+        "adaptiveLessonTrack": "adaptive lesson track",
+        "reviewMode": "Review mode",
+        "status": {
+          "completed": "Completed",
+          "inProgress": "In Progress"
+        },
+        "difficulty": {
+          "supportedPace": "Supported pace",
+          "standardPace": "Standard pace",
+          "advancedPace": "Advanced pace"
+        },
+        "unit": {
+          "minutesShort": "min"
+        },
+        "section": {
+          "summary": "Summary",
+          "lessonContent": "Lesson Content",
+          "learningObjective": "Learning Objective",
+          "examples": "Examples",
+          "revisionSummary": "Revision Summary"
+        },
+        "progress": {
+          "topicProgress": "Topic Progress",
+          "topicCompletion": "Topic Completion"
+        },
+        "actions": {
+          "takeQuiz": "Take Quiz",
+          "reviewOnly": "Review Only",
+          "askAiTutor": "Ask AI Tutor"
+        },
+        "tag": {
+          "review": "Review"
+        },
+        "ai": {
+          "needClearerExplanation": "Need a clearer explanation?",
+          "subtitle": "Your AI tutor can break this lesson down in your preferred language."
+        },
+        "errors": {
+          "unableToLoadLesson": "Unable to load lesson",
+          "unableToLoadLessons": "Unable to load lessons",
+          "failedToLoadLessons": "Failed to load lessons.",
+          "failedToLoadLessonDetail": "Failed to load lesson detail.",
+          "failedToOpenLessonQuiz": "Failed to open the lesson quiz."
+        },
+        "empty": {
+          "lessonContentComingSoon": "Lesson content coming soon.",
+          "noAdaptiveLessonsForTopicYet": "No adaptive lessons are available for this topic yet.",
+          "notEnrolled": "You are not enrolled in any subjects yet."
+        },
+        "messages": {
+          "noLessonQuizForLessonYet": "No lesson quiz is available for this lesson."
+        },
+        "serverAction": {
+          "completePreviousTopic": "Complete the previous topic to unlock this one.",
+          "takeDiagnosticAssessment": "Take the diagnostic assessment to unlock this topic.",
+          "noLessonForDifficulty": "No lesson is available for the assigned difficulty yet.",
+          "noLessonsForTopicYet": "No lessons are available for this topic yet.",
+          "takeLessonQuizForTopic": "Take the lesson quiz to complete this topic.",
+          "lessonQuizNotAvailableForTopic": "A lesson quiz is not available for this topic yet.",
+          "continueCurrentLesson": "Continue with your current lesson.",
+          "completedAvailablePath": "You have completed the available learning path for this subject.",
+          "startFirstTopic": "Start with the first available topic."
+        }
       }
     },
     "tutor": {
