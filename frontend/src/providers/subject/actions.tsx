@@ -1,4 +1,4 @@
-import type { ISubject, ITopic, ILessonSummary, IUploadLessonOutput } from "./context";
+import type { ISubject, ITopic, ILessonSummary, ILessonDetail, IUploadLessonOutput } from "./context";
 
 export enum SubjectActionType {
     // All subjects
@@ -20,6 +20,11 @@ export enum SubjectActionType {
     GetLessonsByTopicPending = "GET_LESSONS_BY_TOPIC_PENDING",
     GetLessonsByTopicSuccess = "GET_LESSONS_BY_TOPIC_SUCCESS",
     GetLessonsByTopicError = "GET_LESSONS_BY_TOPIC_ERROR",
+
+    // Get lesson detail
+    GetLessonPending = "GET_LESSON_PENDING",
+    GetLessonSuccess = "GET_LESSON_SUCCESS",
+    GetLessonError = "GET_LESSON_ERROR",
 
     // Create lesson
     CreateLessonPending = "CREATE_LESSON_PENDING",
@@ -85,6 +90,20 @@ export interface IGetLessonsByTopicErrorAction {
     payload: string;
 }
 
+export interface IGetLessonPendingAction {
+    type: SubjectActionType.GetLessonPending;
+}
+
+export interface IGetLessonSuccessAction {
+    type: SubjectActionType.GetLessonSuccess;
+    payload: ILessonDetail;
+}
+
+export interface IGetLessonErrorAction {
+    type: SubjectActionType.GetLessonError;
+    payload: string;
+}
+
 export interface ICreateLessonPendingAction {
     type: SubjectActionType.CreateLessonPending;
 }
@@ -112,6 +131,9 @@ export type SubjectAction =
     | IGetLessonsByTopicPendingAction
     | IGetLessonsByTopicSuccessAction
     | IGetLessonsByTopicErrorAction
+    | IGetLessonPendingAction
+    | IGetLessonSuccessAction
+    | IGetLessonErrorAction
     | ICreateLessonPendingAction
     | ICreateLessonSuccessAction
     | ICreateLessonErrorAction;
@@ -171,6 +193,20 @@ export const getLessonsByTopicSuccess = (lessons: ILessonSummary[]): IGetLessons
 
 export const getLessonsByTopicError = (message: string): IGetLessonsByTopicErrorAction => ({
     type: SubjectActionType.GetLessonsByTopicError,
+    payload: message,
+});
+
+export const getLessonPending = (): IGetLessonPendingAction => ({
+    type: SubjectActionType.GetLessonPending,
+});
+
+export const getLessonSuccess = (lesson: ILessonDetail): IGetLessonSuccessAction => ({
+    type: SubjectActionType.GetLessonSuccess,
+    payload: lesson,
+});
+
+export const getLessonError = (message: string): IGetLessonErrorAction => ({
+    type: SubjectActionType.GetLessonError,
     payload: message,
 });
 
