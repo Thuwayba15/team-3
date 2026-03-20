@@ -35,13 +35,23 @@ export const subjectReducer = (state: ISubjectState, action: SubjectAction): ISu
 
         // Lessons by topic
         case SubjectActionType.GetLessonsByTopicPending:
-            return { ...state, isTopicsLoading: true, isError: false, errorMessage: null, lessons: undefined };
+            return { ...state, isLessonsLoading: true, isError: false, errorMessage: null, lessons: undefined };
 
         case SubjectActionType.GetLessonsByTopicSuccess:
-            return { ...state, isTopicsLoading: false, lessons: action.payload };
+            return { ...state, isLessonsLoading: false, lessons: action.payload };
 
         case SubjectActionType.GetLessonsByTopicError:
-            return { ...state, isTopicsLoading: false, isError: true, errorMessage: action.payload };
+            return { ...state, isLessonsLoading: false, isError: true, errorMessage: action.payload };
+
+        // Lesson detail
+        case SubjectActionType.GetLessonPending:
+            return { ...state, isLessonLoading: true, isError: false, errorMessage: null, selectedLesson: undefined };
+
+        case SubjectActionType.GetLessonSuccess:
+            return { ...state, isLessonLoading: false, selectedLesson: action.payload };
+
+        case SubjectActionType.GetLessonError:
+            return { ...state, isLessonLoading: false, isError: true, errorMessage: action.payload };
 
         // Create lesson
         case SubjectActionType.CreateLessonPending:

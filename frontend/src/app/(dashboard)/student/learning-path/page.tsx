@@ -6,14 +6,20 @@ import {
     LockOutlined,
     PlayCircleFilled,
 } from "@ant-design/icons";
-import { Alert, Button, Card, Empty, Progress, Spin, Tag, Typography, message } from "antd";
+import { Alert, Button, Card, Empty, Progress, Skeleton, Tag, Typography, message } from "antd";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { DashboardPageSkeleton } from "@/components/layout";
 import SubjectEnrollmentModal from "@/components/student/SubjectEnrollmentModal";
 import SubjectSwitcher from "@/components/student/SubjectSwitcher";
+import { UI_COLORS } from "@/constants/uiColors";
 import QuizView from "./QuizView";
 import { useStyles } from "./styles";
+import {
+    selectLessonAssessmentByDifficulty,
+    studentAssessmentGenerationService,
+} from "@/services/student/studentAssessmentGenerationService";
 import type { AssessmentType } from "@/services/student/studentAssessmentService";
 import {
     studentLearningPathService,
@@ -61,14 +67,16 @@ function getModuleProgress(topic: IStudentLearningPathTopic) {
 
 function LessonRow({
     lesson,
+    topic,
     styles,
     onOpenLesson,
     onOpenQuiz,
 }: {
     lesson: IStudentLearningPathLesson;
+    topic: IStudentLearningPathTopic;
     styles: ReturnType<typeof useStyles>["styles"];
     onOpenLesson: (lessonId: string) => void;
-    onOpenQuiz: (assessmentId: string) => void;
+    onOpenQuiz: (lesson: IStudentLearningPathLesson, topic: IStudentLearningPathTopic) => void;
 }) {
     const { t } = useTranslation();
 
@@ -102,11 +110,9 @@ function LessonRow({
                     <Button type="primary" size="small" className={styles.continueBtn} onClick={() => onOpenLesson(lesson.lessonId)}>
                         Continue
                     </Button>
-                    {lesson.quizAssessmentId ? (
-                        <Button size="small" onClick={() => onOpenQuiz(lesson.quizAssessmentId!)}>
+                    <Button size="small" onClick={() => onOpenQuiz(lesson, topic)}>
                             Quiz
-                        </Button>
-                    ) : null}
+                    </Button>
                 </div>
             </div>
         );
@@ -122,11 +128,9 @@ function LessonRow({
                 </div>
             </div>
             <div className={styles.topicRight}>
-                {lesson.quizAssessmentId ? (
-                    <Button size="small" onClick={() => onOpenQuiz(lesson.quizAssessmentId!)}>
+                <Button size="small" onClick={() => onOpenQuiz(lesson, topic)}>
                         Review Quiz
-                    </Button>
-                ) : null}
+                </Button>
                 <span className={styles.masteredTag}>{t("dashboard.student.learningPathPage.completed")}</span>
             </div>
         </div>
@@ -139,6 +143,8 @@ export default function StudentLearningPathPage() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const subjectIdParam = searchParams.get("subjectId");
+    const assessmentIdParam = searchParams.get("assessmentId");
+    const assessmentTypeParam = searchParams.get("assessmentType");
     const [messageApi, contextHolder] = message.useMessage();
     const [subjects, setSubjects] = useState<IStudentSubject[]>([]);
     const [availableSubjects, setAvailableSubjects] = useState<IStudentSubject[]>([]);
@@ -234,6 +240,20 @@ export default function StudentLearningPathPage() {
         void loadSubjectPath(activeSubjectId);
     }, [activeSubjectId]);
 
+    useEffect(() => {
+        if (!assessmentIdParam) {
+            return;
+        }
+
+        const parsedAssessmentType = Number(assessmentTypeParam) as AssessmentType;
+        if (parsedAssessmentType === 1 || parsedAssessmentType === 2) {
+            setActiveAssessment({
+                assessmentId: assessmentIdParam,
+                assessmentType: parsedAssessmentType,
+            });
+        }
+    }, [assessmentIdParam, assessmentTypeParam]);
+
     const handleSelectSubject = (subjectId: string) => {
         setActiveSubjectId(subjectId);
         router.push(`/student/learning-path?subjectId=${subjectId}`);
@@ -249,11 +269,67 @@ export default function StudentLearningPathPage() {
 
     const handleOpenAssessment = (assessmentId: string, assessmentType: AssessmentType) => {
         setActiveAssessment({ assessmentId, assessmentType });
+        if (activeSubjectId) {
+            router.replace(`/student/learning-path?subjectId=${activeSubjectId}&assessmentId=${assessmentId}&assessmentType=${assessmentType}`);
+        }
+    };
+
+    const resolveLessonQuizAssessmentId = async (
+        lessonId: string,
+        assignedDifficultyLevel: IStudentLearningPathTopic["assignedDifficultyLevel"]
+    ) => {
+        try {
+            const assessments = await studentAssessmentGenerationService.getLessonAssessments(lessonId);
+            const selectedAssessment = selectLessonAssessmentByDifficulty(assessments, assignedDifficultyLevel);
+            return selectedAssessment?.assessmentId ?? null;
+        } catch (quizError) {
+            const messageText = quizError instanceof Error ? quizError.message : "No lesson quiz is available yet for this lesson.";
+            if (messageText.toLowerCase().includes("no assessments found")) {
+                return null;
+            }
+
+            throw quizError;
+        }
+    };
+
+    const handleOpenLessonQuiz = async (lesson: IStudentLearningPathLesson, topic: IStudentLearningPathTopic) => {
+        try {
+            const assessmentId = await resolveLessonQuizAssessmentId(lesson.lessonId, topic.assignedDifficultyLevel);
+            if (!assessmentId) {
+                messageApi.info("No lesson quiz is available yet for this lesson.");
+                return;
+            }
+
+            handleOpenAssessment(assessmentId, 2);
+        } catch (quizError) {
+            messageApi.error(quizError instanceof Error ? quizError.message : "Failed to open the lesson quiz.");
+        }
+    };
+
+    const handleOpenTopicQuiz = async (topic: IStudentLearningPathTopic) => {
+        for (const lesson of topic.lessons) {
+            try {
+                const assessmentId = await resolveLessonQuizAssessmentId(lesson.lessonId, topic.assignedDifficultyLevel);
+                if (assessmentId) {
+                    handleOpenAssessment(assessmentId, 2);
+                    return;
+                }
+            } catch (quizError) {
+                messageApi.error(quizError instanceof Error ? quizError.message : "Failed to open the lesson quiz.");
+                return;
+            }
+        }
+
+        messageApi.info("No lesson quiz is available yet for this topic.");
     };
 
     const handleAssessmentFinished = async () => {
         const currentSubjectId = activeSubjectId;
         setActiveAssessment(null);
+
+        if (currentSubjectId) {
+            router.replace(`/student/learning-path?subjectId=${currentSubjectId}`);
+        }
 
         if (currentSubjectId) {
             await loadSubjectPath(currentSubjectId);
@@ -307,7 +383,12 @@ export default function StudentLearningPathPage() {
                 <QuizView
                     assessmentId={activeAssessment.assessmentId}
                     assessmentType={activeAssessment.assessmentType}
-                    onExit={() => setActiveAssessment(null)}
+                    onExit={() => {
+                        setActiveAssessment(null);
+                        if (activeSubjectId) {
+                            router.replace(`/student/learning-path?subjectId=${activeSubjectId}`);
+                        }
+                    }}
                     onComplete={handleAssessmentFinished}
                 />
             </>
@@ -335,9 +416,7 @@ export default function StudentLearningPathPage() {
             </div>
 
             {loadingSubjects ? (
-                <Card className={styles.subjectSummaryCard}>
-                    <Spin />
-                </Card>
+                <DashboardPageSkeleton cardCount={4} />
             ) : subjects.length === 0 ? (
                 <Card className={styles.emptyState}>
                     <Empty description="You are not enrolled in any subjects yet." />
@@ -387,7 +466,7 @@ export default function StudentLearningPathPage() {
                                 <Progress
                                     percent={Math.round(subjectPath.overallProgressPercent)}
                                     showInfo={false}
-                                    strokeColor="#00b8a9"
+                                    strokeColor={UI_COLORS.PRIMARY_ACCENT}
                                 />
                                 <div className={styles.summaryMeta}>
                                     <Text className={styles.helperText}>{subjectPath.recommendedAction}</Text>
@@ -416,7 +495,7 @@ export default function StudentLearningPathPage() {
 
                             {loadingPath ? (
                                 <Card className={styles.subjectSummaryCard}>
-                                    <Spin />
+                                    <Skeleton active paragraph={{ rows: 6 }} title={false} />
                                 </Card>
                             ) : (
                                 <div className={styles.timeline}>
@@ -487,7 +566,7 @@ export default function StudentLearningPathPage() {
                                                         {topic.status === "current" && topic.lessons.length > 0 ? (
                                                             <div className={styles.moduleProgress}>
                                                                 <div className={styles.progressPercent}>{moduleProgress}%</div>
-                                                                <Progress percent={moduleProgress} showInfo={false} strokeColor="#00b8a9" />
+                                                                    <Progress percent={moduleProgress} showInfo={false} strokeColor={UI_COLORS.PRIMARY_ACCENT} />
                                                             </div>
                                                         ) : null}
 
@@ -495,10 +574,16 @@ export default function StudentLearningPathPage() {
                                                             topic.status === "completed" ? (
                                                                 <div className={styles.topicGrid}>
                                                                     {topic.lessons.map((lesson) => (
-                                                                        <div key={lesson.lessonId} className={styles.topicGridItem}>
+                                                                        <button
+                                                                            key={lesson.lessonId}
+                                                                            className={styles.topicGridItem}
+                                                                            onClick={() => handleOpenLesson(lesson.lessonId)}
+                                                                            style={{ background: "none", border: "none", textAlign: "left", cursor: "pointer" }}
+                                                                            type="button"
+                                                                        >
                                                                             <CheckCircleOutlined className={styles.topicIcon} />
                                                                             <span>{lesson.title}</span>
-                                                                        </div>
+                                                                        </button>
                                                                     ))}
                                                                 </div>
                                                             ) : (
@@ -507,9 +592,12 @@ export default function StudentLearningPathPage() {
                                                                         <LessonRow
                                                                             key={lesson.lessonId}
                                                                             lesson={lesson}
+                                                                            topic={topic}
                                                                             styles={styles}
                                                                             onOpenLesson={handleOpenLesson}
-                                                                            onOpenQuiz={(assessmentId) => handleOpenAssessment(assessmentId, 2)}
+                                                                            onOpenQuiz={(selectedLesson, selectedTopic) => {
+                                                                                void handleOpenLessonQuiz(selectedLesson, selectedTopic);
+                                                                            }}
                                                                         />
                                                                     ))}
                                                                 </div>
@@ -538,20 +626,13 @@ export default function StudentLearningPathPage() {
 
                                                         {topic.status === "current"
                                                             && topic.assignedDifficultyLevel !== null
-                                                            && topic.lessons.every((lesson) => lesson.status === "completed")
-                                                            && topic.lessons.some((lesson) => lesson.quizAssessmentId) ? (
+                                                            && topic.lessons.every((lesson) => lesson.status === "completed") ? (
                                                                 <div style={{ marginTop: 16 }}>
                                                                     <Button
                                                                         type="primary"
                                                                         className={styles.continueBtn}
                                                                         onClick={() => {
-                                                                            const lessonWithQuiz = topic.lessons.find((lesson) => lesson.quizAssessmentId);
-                                                                            if (!lessonWithQuiz?.quizAssessmentId) {
-                                                                                messageApi.error("No lesson quiz is available yet for this topic.");
-                                                                                return;
-                                                                            }
-
-                                                                            handleOpenAssessment(lessonWithQuiz.quizAssessmentId, 2);
+                                                                            void handleOpenTopicQuiz(topic);
                                                                         }}
                                                                     >
                                                                         Take lesson quiz

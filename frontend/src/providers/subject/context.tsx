@@ -27,6 +27,19 @@ export interface ILessonSummary {
     isPublished: boolean;
 }
 
+export interface ILessonDetail {
+    id: string;
+    topicId: string;
+    title: string;
+    summary: string | null;
+    learningObjective: string | null;
+    revisionSummary: string | null;
+    difficultyLevel: number;
+    estimatedMinutes: number;
+    isPublished: boolean;
+    translations: ILessonTranslation[];
+}
+
 export interface ILessonTranslation {
     languageCode: string;
     languageName: string;
@@ -70,6 +83,8 @@ export interface IUploadLessonOutput {
 export interface ISubjectState {
     isLoading: boolean;
     isTopicsLoading: boolean;
+    isLessonsLoading: boolean;
+    isLessonLoading: boolean;
     isCreatingLesson: boolean;
     isSuccess: boolean;
     isError: boolean;
@@ -78,6 +93,7 @@ export interface ISubjectState {
     mySubjects?: ISubject[];
     topics?: ITopic[];
     lessons?: ILessonSummary[];
+    selectedLesson?: ILessonDetail;
     createdLesson?: IUploadLessonOutput;
 }
 
@@ -88,12 +104,15 @@ export interface ISubjectContextActions {
     getMySubjects: () => Promise<void>;
     getTopicsBySubject: (subjectId: string) => Promise<void>;
     getLessonsByTopic: (topicId: string) => Promise<void>;
+    getLesson: (lessonId: string) => Promise<void>;
     createLesson: (input: IUploadLessonInput) => Promise<IUploadLessonOutput | undefined>;
 }
 
 export const INITIAL_STATE: ISubjectState = {
     isLoading: false,
     isTopicsLoading: false,
+    isLessonsLoading: false,
+    isLessonLoading: false,
     isCreatingLesson: false,
     isSuccess: false,
     isError: false,

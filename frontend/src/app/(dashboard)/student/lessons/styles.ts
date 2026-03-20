@@ -33,7 +33,7 @@ export const useStyles = createStyles(({ css, token }) => ({
         }
 
         &:hover .lesson-title {
-            color: #00b8a9;
+            color: #1e40af;
         }
     `,
 
@@ -55,13 +55,13 @@ export const useStyles = createStyles(({ css, token }) => ({
     `,
 
     lessonIconCompleted: css`
-        background: #e6fffb;
-        color: #00b8a9;
+        background: #e0f2fe;
+        color: #1e40af;
     `,
 
     lessonIconCurrent: css`
-        background: #e6fffb;
-        color: #00b8a9;
+        background: #e0f2fe;
+        color: #1e40af;
     `,
 
     lessonIconLocked: css`
@@ -107,7 +107,7 @@ export const useStyles = createStyles(({ css, token }) => ({
 
     breadcrumb: css`
         font-size: 13px;
-        color: #00b8a9;
+        color: #1e40af;
         margin-bottom: ${token.marginSM}px;
         display: flex;
         align-items: center;
@@ -120,7 +120,7 @@ export const useStyles = createStyles(({ css, token }) => ({
         margin-right: ${token.marginSM}px;
 
         &:hover {
-            color: #00b8a9 !important;
+            color: #1e40af !important;
         }
     `,
 
@@ -145,8 +145,8 @@ export const useStyles = createStyles(({ css, token }) => ({
     `,
 
     highlightBox: css`
-        background: #f0fafa;
-        border-left: 4px solid #00b8a9;
+        background: #f0f9ff;
+        border-left: 4px solid #1e40af;
         border-radius: 0 ${token.borderRadius}px ${token.borderRadius}px 0;
         padding: ${token.paddingMD}px ${token.paddingLG}px;
         margin: ${token.marginMD}px 0;
@@ -155,7 +155,7 @@ export const useStyles = createStyles(({ css, token }) => ({
     highlightLabel: css`
         font-size: 13px;
         font-weight: 600;
-        color: #00b8a9;
+        color: #1e40af;
         margin-bottom: ${token.marginSM}px;
     `,
 
@@ -200,7 +200,7 @@ export const useStyles = createStyles(({ css, token }) => ({
         width: 22px;
         height: 22px;
         border-radius: 50%;
-        background: #00b8a9;
+        background: #1e40af;
         color: #fff;
         font-size: 12px;
         font-weight: 700;
@@ -220,14 +220,14 @@ export const useStyles = createStyles(({ css, token }) => ({
     `,
 
     nextBtn: css`
-        background: #00b8a9 !important;
-        border-color: #00b8a9 !important;
+        background: #1e40af !important;
+        border-color: #1e40af !important;
         height: 40px;
         padding: 0 28px;
 
         &:hover {
-            background: #00a89a !important;
-            border-color: #00a89a !important;
+            background: #1d4ed8 !important;
+            border-color: #1d4ed8 !important;
         }
     `,
 
@@ -282,7 +282,7 @@ export const useStyles = createStyles(({ css, token }) => ({
         width: 18px;
         height: 18px;
         border-radius: 50%;
-        background: #00b8a9;
+        background: #1e40af;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -295,7 +295,7 @@ export const useStyles = createStyles(({ css, token }) => ({
         width: 18px;
         height: 18px;
         border-radius: 50%;
-        border: 2px solid #00b8a9;
+        border: 2px solid #1e40af;
         background: ${token.colorBgContainer};
         display: flex;
         align-items: center;
@@ -307,7 +307,7 @@ export const useStyles = createStyles(({ css, token }) => ({
         width: 8px;
         height: 8px;
         border-radius: 50%;
-        background: #00b8a9;
+        background: #1e40af;
     `,
 
     topicDotLocked: css`
@@ -340,7 +340,7 @@ export const useStyles = createStyles(({ css, token }) => ({
 
     aiIcon: css`
         font-size: 32px;
-        color: #00b8a9;
+        color: #1e40af;
         margin-bottom: ${token.marginSM}px;
     `,
 
@@ -359,13 +359,13 @@ export const useStyles = createStyles(({ css, token }) => ({
     `,
 
     aiLink: css`
-        color: #00b8a9 !important;
+        color: #1e40af !important;
         font-size: 13px;
         font-weight: 500;
         padding: 0;
 
         &:hover {
-            color: #00a89a !important;
+            color: #1d4ed8 !important;
         }
     `,
 }));

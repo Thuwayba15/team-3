@@ -37,7 +37,7 @@ export default function RegisterPage() {
           <defs>
             <linearGradient id="soft_grad" x1="0%" y1="0%" x2="100%" y2="0%">
               <stop offset="0%" stopColor="#ffffff" />
-              <stop offset="100%" stopColor="#08F1C2" />
+              <stop offset="100%" stopColor="#131B4e" />
             </linearGradient>
           </defs>
           <path d="M-200 150 C 200 50, 700 250, 1600 50" stroke="url(#soft_grad)" strokeWidth="120" strokeOpacity="0.04" strokeLinecap="round" />
@@ -48,7 +48,7 @@ export default function RegisterPage() {
         <Link href="/" className={styles.brandLink}>
           <div className={styles.brandSection}>
             <img src="https://firebasestorage.googleapis.com/v0/b/grade-12-life-sciences-st.firebasestorage.app/o/image.png?alt=media&token=7477da80-3128-4dc8-833b-92c432ea71b1" alt="Logo" className={styles.mainLogo} />
-            <h1 className={styles.title}>Ubuntu Learn</h1>
+            <h1 className={styles.title}>UbuntuLearn</h1>
             <p className={styles.subtitle}>Learn • Funda • Bala • Leer</p>
           </div>
         </Link>
