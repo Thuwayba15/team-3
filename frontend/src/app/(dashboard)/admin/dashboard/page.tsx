@@ -16,12 +16,6 @@ const METRIC_ICONS = {
     "supported-languages": GlobalOutlined,
 } as const;
 
-const ROLE_LEGEND = [
-    { labelKey: "dashboard.admin.legendStudents", dotClassName: "legendDotPrimary" as const },
-    { labelKey: "dashboard.admin.legendTutors", dotClassName: "legendDotInfo" as const },
-    { labelKey: "dashboard.admin.legendParents", dotClassName: "legendDotWarning" as const },
-];
-
 /** Admin dashboard — system overview with key platform metrics. */
 export default function AdminDashboardPage() {
     const { styles } = useStyles();
@@ -84,15 +78,6 @@ export default function AdminDashboardPage() {
                                             </div>
                                             <Progress percent={role.percent} showInfo={false} className={styles.progress} />
                                         </div>
-                                    ))}
-                                </div>
-
-                                <div className={styles.legend}>
-                                    {ROLE_LEGEND.map(({ labelKey, dotClassName }) => (
-                                        <span key={labelKey} className={styles.legendItem}>
-                                            <span className={`${styles.legendDot} ${styles[dotClassName]}`} />
-                                            {t(labelKey)}
-                                        </span>
                                     ))}
                                 </div>
                             </>
