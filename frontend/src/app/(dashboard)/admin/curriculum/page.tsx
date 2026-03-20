@@ -1,166 +1,67 @@
 "use client";
 
-import {
-    DeleteOutlined,
-    EditOutlined,
-    FileAddOutlined,
-    RobotOutlined,
-    UploadOutlined,
-} from "@ant-design/icons";
-import {
-    Button,
-    Card,
-    Col,
-    Empty,
-    Form,
-    Input,
-    List,
-    Modal,
-    Popconfirm,
-    Row,
-    Space,
-    Steps,
-    Table,
-    Tabs,
-    Tag,
-    Typography,
-    Upload,
-    message,
-} from "antd";
-import type { ColumnsType } from "antd/es/table";
-import type { UploadChangeParam, UploadFile, UploadProps } from "antd/es/upload/interface";
+import { BookOutlined, DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
+import { Button, Card, Col, Descriptions, Drawer, Form, List, Popconfirm, Row, Select, Space, Spin, Tabs, Tag, Typography, message } from "antd";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import ReactMarkdown from "react-markdown";
+import { apiClient } from "@/lib/api/client";
+import { GENERATE_LESSON_QUIZ_ENDPOINT, GET_LESSON_ASSESSMENTS_ENDPOINT } from "@/constants/api";
 import { PageHeader } from "@/components/layout";
-import { subjectService, ISubject } from "@/services/curriculum/subjectService";
-import { useStyles } from "./styles";
+import { SubjectProvider, useSubjectActions, useSubjectState } from "@/providers/subject";
+import type { ISubject, IUploadLessonInput } from "@/providers/subject";
+import { AiDraftReview } from "./AiDraftReview";
+import { CreateLessonModal } from "./CreateLessonModal";
+import { LessonAssessmentPanel } from "./LessonAssessmentPanel";
+import { LessonTranslationsPanel } from "./LessonTranslationsPanel";
+import { SubjectFormModal } from "./SubjectFormModal";
+import type { IAiDraft, IAiDraftItem, IAssessmentResult, ISubjectFormValues, DraftSection, ReviewStatus } from "./types";
 
 const { Text, Title } = Typography;
-const { Dragger } = Upload;
 
-type ReviewStatus = "Pending" | "Approved" | "Changes Requested";
-type DraftSection = "topics" | "lessons" | "assessments";
-
-interface IAiDraftItem {
-    id: string;
-    title: string;
-    detail: string;
-    confidence: number;
-    reviewStatus: ReviewStatus;
-}
-
-interface IAiDraft {
-    generatedAt: string;
-    topics: IAiDraftItem[];
-    lessons: IAiDraftItem[];
-    assessments: IAiDraftItem[];
-}
-
-interface ISubjectFormValues {
-    name: string;
-    gradeLevel: string;
-    description: string;
-}
-
-function createDraftTemplate(subjectName: string): IAiDraft {
-    return {
-        generatedAt: new Date().toLocaleString(),
-        topics: [
-            {
-                id: "topic-1",
-                title: `${subjectName}: Foundations`,
-                detail: "AI grouped introductory concepts into one onboarding unit.",
-                confidence: 94,
-                reviewStatus: "Pending",
-            },
-            {
-                id: "topic-2",
-                title: `${subjectName}: Applied Practice`,
-                detail: "AI proposed practical, exam-aligned application themes.",
-                confidence: 88,
-                reviewStatus: "Pending",
-            },
-        ],
-        lessons: [
-            {
-                id: "lesson-1",
-                title: "Lesson Sequence A",
-                detail: "AI created scaffolded sequencing from beginner to advanced outcomes.",
-                confidence: 86,
-                reviewStatus: "Pending",
-            },
-            {
-                id: "lesson-2",
-                title: "Lesson Sequence B",
-                detail: "AI recommended reinforcement lessons for difficult concepts.",
-                confidence: 82,
-                reviewStatus: "Pending",
-            },
-        ],
-        assessments: [
-            {
-                id: "assessment-1",
-                title: "Baseline Diagnostic",
-                detail: "AI added a first-week diagnostic to calibrate learner level.",
-                confidence: 89,
-                reviewStatus: "Pending",
-            },
-            {
-                id: "assessment-2",
-                title: "End-of-Unit Checkpoint",
-                detail: "AI proposed periodic formative checks after each concept block.",
-                confidence: 91,
-                reviewStatus: "Pending",
-            },
-        ],
-    };
-}
-
-function getConfidenceClassName(value: number): "confidenceHigh" | "confidenceMedium" | "confidenceLow" {
-    if (value >= 90) {
-        return "confidenceHigh";
-    }
-    if (value >= 75) {
-        return "confidenceMedium";
-    }
-    return "confidenceLow";
-}
-
-function getReviewStatusClassName(status: ReviewStatus): "reviewPending" | "reviewApproved" | "reviewChanges" {
-    if (status === "Approved") {
-        return "reviewApproved";
-    }
-    if (status === "Changes Requested") {
-        return "reviewChanges";
-    }
-    return "reviewPending";
-}
-
-/** Admin curriculum management page for subject CRUD and AI-assisted curriculum review workflow. */
-export default function AdminCurriculumPage() {
-    const { styles } = useStyles();
+function CurriculumPageContent() {
     const { t } = useTranslation();
     const [messageApi, messageContextHolder] = message.useMessage();
     const [form] = Form.useForm<ISubjectFormValues>();
 
-    const [subjects, setSubjects] = useState<ISubject[]>([]);
-    const [loadingSubjects, setLoadingSubjects] = useState(true);
-    const [selectedSubjectId, setSelectedSubjectId] = useState<string>("");
+    const { subjects, isLoading, isTopicsLoading, topics, isLessonsLoading, lessons, isLessonLoading, selectedLesson, isCreatingLesson, createdLesson, isError, errorMessage } = useSubjectState();
+    const { getSubjects, getTopicsBySubject, getLessonsByTopic, getLesson, createLesson } = useSubjectActions();
 
+    const [userSelectedSubjectId, setSelectedSubjectId] = useState<string>("");
+    const selectedSubjectId = userSelectedSubjectId || (subjects?.[0]?.id ?? "");
+    const [selectedTopicId, setSelectedTopicId] = useState<string>("");
+    const [isLessonDrawerOpen, setIsLessonDrawerOpen] = useState(false);
+    const [assessments, setAssessments] = useState<IAssessmentResult[] | undefined>(undefined);
+    const [isAssessmentsLoading, setIsAssessmentsLoading] = useState(false);
+    const [isGeneratingQuiz, setIsGeneratingQuiz] = useState(false);
+    const [currentLessonId, setCurrentLessonId] = useState<string | null>(null);
+    const [currentLessonDifficulty, setCurrentLessonDifficulty] = useState<number>(1);
     const [isSubjectModalOpen, setIsSubjectModalOpen] = useState(false);
+    const [isLessonModalOpen, setIsLessonModalOpen] = useState(false);
     const [editingSubjectId, setEditingSubjectId] = useState<string | null>(null);
-
-    const [documentsBySubject, setDocumentsBySubject] = useState<Record<string, UploadFile[]>>({});
     const [draftBySubject, setDraftBySubject] = useState<Record<string, IAiDraft>>({});
 
+    useEffect(() => { getSubjects(); }, []);
+
+    useEffect(() => {
+        if (selectedSubjectId) {
+            getTopicsBySubject(selectedSubjectId);
+            setSelectedTopicId("");
+        }
+    }, [selectedSubjectId]);
+
+    useEffect(() => {
+        if (isError && errorMessage) messageApi.error(errorMessage);
+    }, [isError, errorMessage]);
+
     const selectedSubject = useMemo(
-        () => subjects.find((subject) => subject.id === selectedSubjectId) ?? null,
+        () => subjects?.find((s) => s.id === selectedSubjectId) ?? null,
         [subjects, selectedSubjectId]
     );
 
-    const selectedDocuments = useMemo(
-        () => (selectedSubject ? documentsBySubject[selectedSubject.id] ?? [] : []),
-        [documentsBySubject, selectedSubject]
+    const selectedTopic = useMemo(
+        () => topics?.find((t) => t.id === selectedTopicId) ?? null,
+        [topics, selectedTopicId]
     );
 
     const selectedDraft = useMemo(
@@ -168,31 +69,9 @@ export default function AdminCurriculumPage() {
         [draftBySubject, selectedSubject]
     );
 
-    const flowStep = selectedDraft ? 2 : selectedDocuments.length > 0 ? 1 : 0;
-
-    useEffect(() => {
-        subjectService.getAll()
-            .then((data) => {
-                setSubjects(data);
-                if (data.length > 0) setSelectedSubjectId(data[0].id);
-            })
-            .catch(() => messageApi.error("Failed to load subjects."))
-            .finally(() => setLoadingSubjects(false));
-    }, []);
-
-    const openCreateSubjectModal = (): void => {
-        setEditingSubjectId(null);
-        form.resetFields();
-        setIsSubjectModalOpen(true);
-    };
-
-    const openEditSubjectModal = (subject: ISubject): void => {
+    const openEditModal = (subject: ISubject): void => {
         setEditingSubjectId(subject.id);
-        form.setFieldsValue({
-            name: subject.name,
-            gradeLevel: subject.gradeLevel,
-            description: subject.description,
-        });
+        form.setFieldsValue({ name: subject.name, gradeLevel: subject.gradeLevel, description: subject.description });
         setIsSubjectModalOpen(true);
     };
 
@@ -203,451 +82,347 @@ export default function AdminCurriculumPage() {
     };
 
     const handleSubmitSubject = async (): Promise<void> => {
-        const values = await form.validateFields();
+        await form.validateFields();
+        messageApi.info("Subject management API coming soon.");
+        closeSubjectModal();
+    };
 
+    const handleDelete = (subjectId: string): void => {
+        if (selectedSubjectId === subjectId && subjects && subjects.length > 0) {
+            setSelectedSubjectId(subjects.find((s) => s.id !== subjectId)?.id ?? "");
+        }
+        setDraftBySubject((prev) => { const next = { ...prev }; delete next[subjectId]; return next; });
+        messageApi.info("Subject deletion API coming soon.");
+    };
+
+    const handleCreateLesson = async (input: IUploadLessonInput): Promise<void> => {
+        const result = await createLesson(input);
+        if (result) {
+            setIsLessonModalOpen(false);
+            messageApi.success(`Lesson "${result.title}" created with ${result.translations.length} translations.`);
+        }
+    };
+
+    const handleSelectTopic = (topicId: string): void => {
+        setSelectedTopicId(topicId);
+        getLessonsByTopic(topicId);
+    };
+
+    const loadAssessments = async (lessonId: string): Promise<void> => {
+        setIsAssessmentsLoading(true);
         try {
-            if (editingSubjectId) {
-                const existing = subjects.find((s) => s.id === editingSubjectId)!;
-                const updated = await subjectService.update(editingSubjectId, {
-                    ...values,
-                    isActive: existing.isActive,
-                });
-                setSubjects((previous) =>
-                    previous.map((subject) => (subject.id === editingSubjectId ? updated : subject))
-                );
-                messageApi.success("Subject updated.");
-            } else {
-                const created = await subjectService.create(values);
-                setSubjects((previous) => [created, ...previous]);
-                setSelectedSubjectId(created.id);
-                messageApi.success("Subject created.");
-            }
-            closeSubjectModal();
+            const response = await apiClient.get<{ result: { assessments: IAssessmentResult[] } }>(GET_LESSON_ASSESSMENTS_ENDPOINT, {
+                params: { lessonId },
+            });
+            setAssessments(response.data.result?.assessments ?? []);
         } catch {
-            messageApi.error("Failed to save subject.");
+            setAssessments([]);
+        } finally {
+            setIsAssessmentsLoading(false);
         }
     };
 
-    const handleDeleteSubject = async (subjectId: string): Promise<void> => {
+    const handleViewLesson = async (lessonId: string, difficultyLevel: number): Promise<void> => {
+        setIsLessonDrawerOpen(true);
+        setAssessments(undefined);
+        setCurrentLessonId(lessonId);
+        setCurrentLessonDifficulty(difficultyLevel);
+        getLesson(lessonId);
+        loadAssessments(lessonId);
+    };
+
+    const handleGenerateQuiz = async (): Promise<void> => {
+        if (!currentLessonId) return;
+        setIsGeneratingQuiz(true);
         try {
-            await subjectService.remove(subjectId);
-
-            setSubjects((previous) => {
-                const updated = previous.filter((subject) => subject.id !== subjectId);
-                if (updated.length === 0) {
-                    setSelectedSubjectId("");
-                } else if (selectedSubjectId === subjectId) {
-                    setSelectedSubjectId(updated[0].id);
-                }
-                return updated;
-            });
-
-            setDocumentsBySubject((previous) => {
-                const next = { ...previous };
-                delete next[subjectId];
-                return next;
-            });
-
-            setDraftBySubject((previous) => {
-                const next = { ...previous };
-                delete next[subjectId];
-                return next;
-            });
-
-            messageApi.success("Subject deleted.");
+            await apiClient.post(GENERATE_LESSON_QUIZ_ENDPOINT, { lessonId: currentLessonId, difficultyLevel: currentLessonDifficulty, isPublished: true });
+            messageApi.success("Quiz generated successfully.");
+            loadAssessments(currentLessonId);
         } catch {
-            messageApi.error("Failed to delete subject.");
+            messageApi.error("Failed to generate quiz. Please try again.");
+        } finally {
+            setIsGeneratingQuiz(false);
         }
     };
 
-    const handleUploadChange = (info: UploadChangeParam<UploadFile>): void => {
-        if (!selectedSubject) {
-            return;
-        }
-
-        setDocumentsBySubject((previous) => ({
-            ...previous,
-            [selectedSubject.id]: info.fileList,
-        }));
-    };
-
-    const handleGenerateDraft = (): void => {
-        if (!selectedSubject) {
-            messageApi.warning("Create or select a subject first.");
-            return;
-        }
-
-        if (selectedDocuments.length === 0) {
-            messageApi.warning("Upload at least one curriculum source document first.");
-            return;
-        }
-
-        setDraftBySubject((previous) => ({
-            ...previous,
-            [selectedSubject.id]: createDraftTemplate(selectedSubject.name),
-        }));
-
-        messageApi.success("AI draft generated. Review topics, lessons, and assessments below.");
-    };
-
-    const updateDraftItemStatus = (section: DraftSection, itemId: string, reviewStatus: ReviewStatus): void => {
-        if (!selectedSubject) {
-            return;
-        }
-
-        setDraftBySubject((previous) => {
-            const existingDraft = previous[selectedSubject.id];
-            if (!existingDraft) {
-                return previous;
-            }
-
-            const updatedSection = existingDraft[section].map((item) =>
-                item.id === itemId
-                    ? {
-                        ...item,
-                        reviewStatus,
-                    }
-                    : item
-            );
-
-            return {
-                ...previous,
-                [selectedSubject.id]: {
-                    ...existingDraft,
-                    [section]: updatedSection,
-                },
-            };
-        });
-    };
-
-    const approveAllDraftItems = (): void => {
-        if (!selectedSubject || !selectedDraft) {
-            return;
-        }
-
-        const updateStatus = (items: IAiDraftItem[]): IAiDraftItem[] => items.map((item) => ({ ...item, reviewStatus: "Approved" }));
-
-        setDraftBySubject((previous) => ({
-            ...previous,
+    const handleUpdateItemStatus = (section: DraftSection, itemId: string, status: ReviewStatus): void => {
+        if (!selectedSubject || !selectedDraft) return;
+        setDraftBySubject((prev) => ({
+            ...prev,
             [selectedSubject.id]: {
                 ...selectedDraft,
-                topics: updateStatus(selectedDraft.topics),
-                lessons: updateStatus(selectedDraft.lessons),
-                assessments: updateStatus(selectedDraft.assessments),
+                [section]: selectedDraft[section].map((item) =>
+                    item.id === itemId ? { ...item, reviewStatus: status } : item
+                ),
             },
         }));
+    };
 
+    const handleApproveAll = (): void => {
+        if (!selectedSubject || !selectedDraft) return;
+        const approve = (items: IAiDraftItem[]) => items.map((item) => ({ ...item, reviewStatus: "Approved" as ReviewStatus }));
+        setDraftBySubject((prev) => ({
+            ...prev,
+            [selectedSubject.id]: {
+                ...selectedDraft,
+                topics: approve(selectedDraft.topics),
+                lessons: approve(selectedDraft.lessons),
+                assessments: approve(selectedDraft.assessments),
+            },
+        }));
         messageApi.success("All draft items approved.");
     };
 
-    const subjectColumns: ColumnsType<ISubject> = [
-        {
-            title: "Subject",
-            dataIndex: "name",
-            key: "name",
-            render: (value: string, record: ISubject) => (
-                <div className={styles.subjectNameCell}>
-                    <Text className={styles.subjectName}>{value}</Text>
-                    <Text className={styles.subjectCode}>{record.gradeLevel}</Text>
-                </div>
-            ),
-        },
-        {
-            title: "Actions",
-            key: "actions",
-            width: 130,
-            render: (_value: unknown, record: ISubject) => (
-                <Space size={8}>
-                    <Button
-                        type="text"
-                        icon={<EditOutlined />}
-                        className={styles.iconAction}
-                        onClick={(event) => {
-                            event.stopPropagation();
-                            openEditSubjectModal(record);
-                        }}
-                    />
-                    <Popconfirm
-                        title="Delete subject?"
-                        description="This also removes uploaded files and generated drafts for the subject."
-                        okText="Delete"
-                        cancelText="Cancel"
-                        onConfirm={(event) => {
-                            event?.stopPropagation();
-                            handleDeleteSubject(record.id);
-                        }}
-                        onCancel={(event) => event?.stopPropagation()}
-                    >
-                        <Button
-                            type="text"
-                            icon={<DeleteOutlined />}
-                            className={styles.deleteAction}
-                            onClick={(event) => event.stopPropagation()}
-                        />
-                    </Popconfirm>
-                </Space>
-            ),
-        },
-    ];
+    const subjectOptions = subjects?.map((s) => ({
+        label: `${s.name}${s.gradeLevel ? ` — ${s.gradeLevel}` : ""}`,
+        value: s.id,
+    })) ?? [];
 
-    const createDraftColumns = (section: DraftSection): ColumnsType<IAiDraftItem> => [
-        {
-            title: "Item",
-            dataIndex: "title",
-            key: "title",
-            render: (value: string, record: IAiDraftItem) => (
-                <div className={styles.reviewItemCell}>
-                    <Text className={styles.reviewItemTitle}>{value}</Text>
-                    <Text className={styles.reviewItemDetail}>{record.detail}</Text>
-                </div>
-            ),
-        },
-        {
-            title: "Confidence",
-            dataIndex: "confidence",
-            key: "confidence",
-            width: 120,
-            render: (value: number) => <span className={`${styles.confidenceText} ${styles[getConfidenceClassName(value)]}`}>{value}%</span>,
-        },
-        {
-            title: "Review",
-            dataIndex: "reviewStatus",
-            key: "reviewStatus",
-            width: 170,
-            render: (value: ReviewStatus) => (
-                <Tag className={`${styles.reviewStatusTag} ${styles[getReviewStatusClassName(value)]}`}>{value}</Tag>
-            ),
-        },
-        {
-            title: "Actions",
-            key: "actions",
-            width: 210,
-            render: (_value: unknown, record: IAiDraftItem) => (
-                <Space size={6} wrap>
-                    <Button
-                        size="small"
-                        className={styles.approveAction}
-                        onClick={() => updateDraftItemStatus(section, record.id, "Approved")}
-                    >
-                        Approve
-                    </Button>
-                    <Button
-                        size="small"
-                        className={styles.requestChangesAction}
-                        onClick={() => updateDraftItemStatus(section, record.id, "Changes Requested")}
-                    >
-                        Request Changes
-                    </Button>
-                </Space>
-            ),
-        },
-    ];
-
-    const uploadProps: UploadProps = {
-        accept: ".pdf,.doc,.docx",
-        beforeUpload: () => false,
-        fileList: selectedDocuments,
-        onChange: handleUploadChange,
-        disabled: !selectedSubject,
-        multiple: false,
-    };
+    const topicOptions = topics?.map((t) => ({
+        label: `${t.sequenceOrder}. ${t.name}`,
+        value: t.id,
+    })) ?? [];
 
     return (
         <div>
             {messageContextHolder}
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                <PageHeader title={t("dashboard.admin.curriculum.title")} subtitle={t("dashboard.admin.curriculum.subtitle")} />
+                <Button type="primary" icon={<BookOutlined />} onClick={() => setIsLessonModalOpen(true)} style={{ marginTop: 8 }}>
+                    Create Lessons
+                </Button>
+            </div>
 
-            <PageHeader
-                title={t("dashboard.admin.curriculum.title")}
-                subtitle={t("dashboard.admin.curriculum.subtitle")}
-            />
-
-            <Row gutter={[16, 16]}>
-                <Col xs={24} lg={10}>
-                    <Card className={styles.panelCard}>
-                        <div className={styles.panelHeader}>
-                            <div>
-                                <Title level={4} className={styles.panelTitle}>Subjects</Title>
-                                <Text className={styles.panelSubtitle}>Create, edit, and manage available subjects.</Text>
-                            </div>
-                            <Button type="primary" icon={<FileAddOutlined />} className={styles.primaryButton} onClick={openCreateSubjectModal}>
-                                Add Subject
-                            </Button>
-                        </div>
-
-                        <Table
-                            className={styles.subjectTable}
-                            columns={subjectColumns}
-                            dataSource={subjects}
-                            rowKey="id"
-                            loading={loadingSubjects}
-                            pagination={false}
-                            scroll={{ x: "max-content" }}
-                            onRow={(record) => ({
-                                onClick: () => setSelectedSubjectId(record.id),
-                            })}
-                            rowClassName={(record) => (record.id === selectedSubjectId ? styles.selectedSubjectRow : "")}
-                        />
-                    </Card>
-                </Col>
-
-                <Col xs={24} lg={14}>
-                    <Card className={styles.panelCard}>
-                        <div className={styles.panelHeader}>
-                            <div>
-                                <Title level={4} className={styles.panelTitle}>Document Upload</Title>
-                                <Text className={styles.panelSubtitle}>Choose a subject and upload a textbook or study guide.</Text>
-                            </div>
-                            {selectedSubject && <Tag className={styles.selectedSubjectTag}>{selectedSubject.name}</Tag>}
-                        </div>
-
-                        <Steps
-                            className={styles.steps}
-                            current={flowStep}
-                            items={[
-                                { title: "Select Subject" },
-                                { title: "Upload Document" },
-                                { title: "Review AI Draft" },
-                            ]}
-                        />
-
-                        <Dragger {...uploadProps} className={styles.uploadDragger}>
-                            <p className="ant-upload-drag-icon">
-                                <UploadOutlined className={styles.uploadIcon} />
-                            </p>
-                            <p className={styles.uploadTitle}>Drop curriculum source file here or click to upload</p>
-                            <p className={styles.uploadHint}>Supported formats: PDF, DOC, DOCX</p>
-                        </Dragger>
-
-                        {selectedDocuments.length > 0 && (
-                            <List
-                                className={styles.fileList}
-                                dataSource={selectedDocuments}
-                                renderItem={(file) => (
-                                    <List.Item className={styles.fileItem}>
-                                        <Text className={styles.fileName}>{file.name}</Text>
-                                        <Text className={styles.fileSize}>{typeof file.size === "number" ? `${Math.round(file.size / 1024)} KB` : "Uploaded"}</Text>
-                                    </List.Item>
-                                )}
+            <Card style={{ marginBottom: 16 }}>
+                <Row gutter={[24, 16]} align="bottom">
+                    <Col xs={24} md={12}>
+                        <Text strong style={{ display: "block", marginBottom: 6 }}>Subject</Text>
+                        <Space.Compact style={{ width: "100%" }}>
+                            <Select
+                                style={{ flex: 1 }}
+                                placeholder="Select a subject"
+                                loading={isLoading}
+                                value={selectedSubjectId || undefined}
+                                onChange={(val) => setSelectedSubjectId(val)}
+                                options={subjectOptions}
                             />
-                        )}
+                            {selectedSubject && (
+                                <>
+                                    <Button
+                                        icon={<EditOutlined />}
+                                        onClick={() => openEditModal(selectedSubject)}
+                                    />
+                                    <Popconfirm
+                                        title="Delete subject?"
+                                        description="This also removes generated drafts for the subject."
+                                        okText="Delete"
+                                        cancelText="Cancel"
+                                        onConfirm={() => handleDelete(selectedSubject.id)}
+                                    >
+                                        <Button icon={<DeleteOutlined />} danger />
+                                    </Popconfirm>
+                                </>
+                            )}
+                        </Space.Compact>
+                    </Col>
 
-                        <div className={styles.generateRow}>
-                            <Button
-                                type="primary"
-                                icon={<RobotOutlined />}
-                                className={styles.primaryButton}
-                                disabled={!selectedSubject || selectedDocuments.length === 0}
-                                onClick={handleGenerateDraft}
-                            >
-                                Generate AI Curriculum Draft
-                            </Button>
-                        </div>
-
-                    </Card>
-                </Col>
-            </Row>
-
-            <Card className={styles.reviewCard}>
-                <div className={styles.panelHeader}>
-                    <div>
-                        <Title level={4} className={styles.panelTitle}>AI Draft Review</Title>
-                        <Text className={styles.panelSubtitle}>Review generated topics, lessons, and assessments before publishing.</Text>
-                    </div>
-                    <Button className={styles.approveAllButton} onClick={approveAllDraftItems} disabled={!selectedDraft}>
-                        Approve All
-                    </Button>
-                </div>
-
-                {!selectedDraft ? (
-                    <Empty description="Generate a draft to start review." />
-                ) : (
-                    <>
-                        <Text className={styles.generatedAt}>Generated: {selectedDraft.generatedAt}</Text>
-
-                        <Tabs
-                            className={styles.reviewTabs}
-                            items={[
-                                {
-                                    key: "topics",
-                                    label: "Topics",
-                                    children: (
-                                        <Table
-                                            className={styles.reviewTable}
-                                            rowKey="id"
-                                            columns={createDraftColumns("topics")}
-                                            dataSource={selectedDraft.topics}
-                                            pagination={false}
-                                            scroll={{ x: "max-content" }}
-                                        />
-                                    ),
-                                },
-                                {
-                                    key: "lessons",
-                                    label: "Lessons",
-                                    children: (
-                                        <Table
-                                            className={styles.reviewTable}
-                                            rowKey="id"
-                                            columns={createDraftColumns("lessons")}
-                                            dataSource={selectedDraft.lessons}
-                                            pagination={false}
-                                            scroll={{ x: "max-content" }}
-                                        />
-                                    ),
-                                },
-                                {
-                                    key: "assessments",
-                                    label: "Assessments",
-                                    children: (
-                                        <Table
-                                            className={styles.reviewTable}
-                                            rowKey="id"
-                                            columns={createDraftColumns("assessments")}
-                                            dataSource={selectedDraft.assessments}
-                                            pagination={false}
-                                            scroll={{ x: "max-content" }}
-                                        />
-                                    ),
-                                },
-                            ]}
-                        />
-                    </>
-                )}
+                    <Col xs={24} md={12}>
+                        <Text strong style={{ display: "block", marginBottom: 6 }}>Topic</Text>
+                        <Spin spinning={isTopicsLoading} size="small">
+                            <Select
+                                style={{ width: "100%" }}
+                                placeholder={selectedSubjectId ? "Select a topic" : "Select a subject first"}
+                                disabled={!selectedSubjectId || isTopicsLoading}
+                                value={selectedTopicId || undefined}
+                                onChange={handleSelectTopic}
+                                options={topicOptions}
+                            />
+                        </Spin>
+                    </Col>
+                </Row>
             </Card>
 
-            <Modal
-                title={editingSubjectId ? "Edit Subject" : "Create Subject"}
-                open={isSubjectModalOpen}
-                onCancel={closeSubjectModal}
-                onOk={handleSubmitSubject}
-                okText={editingSubjectId ? "Save Changes" : "Create Subject"}
+            {selectedTopicId && (
+                <Card style={{ marginBottom: 16 }}>
+                    <Title level={5} style={{ marginBottom: 12, marginTop: 0 }}>
+                        Lessons — {selectedTopic?.name}
+                    </Title>
+                    <Spin spinning={isLessonsLoading}>
+                        <List
+                            dataSource={lessons ?? []}
+                            locale={{ emptyText: "No lessons found for this topic." }}
+                            renderItem={(lesson) => (
+                                <List.Item
+                                    key={lesson.id}
+                                    actions={[
+                                        <Button
+                                            key="view"
+                                            type="text"
+                                            icon={<EyeOutlined />}
+                                            onClick={() => handleViewLesson(lesson.id, lesson.difficultyLevel)}
+                                        >
+                                            View
+                                        </Button>,
+                                    ]}
+                                >
+                                    <List.Item.Meta
+                                        title={<Text strong>{lesson.title}</Text>}
+                                        description={
+                                            <Space size={8}>
+                                                <Text type="secondary" style={{ fontSize: 12 }}>
+                                                    {lesson.estimatedMinutes} min
+                                                </Text>
+                                                <Text type="secondary" style={{ fontSize: 12 }}>
+                                                    Difficulty {lesson.difficultyLevel}
+                                                </Text>
+                                                <Tag color={lesson.isPublished ? "green" : "default"}>
+                                                    {lesson.isPublished ? "Published" : "Draft"}
+                                                </Tag>
+                                            </Space>
+                                        }
+                                    />
+                                </List.Item>
+                            )}
+                        />
+                    </Spin>
+                </Card>
+            )}
+
+            <LessonTranslationsPanel createdLesson={createdLesson} />
+
+            <AiDraftReview selectedDraft={selectedDraft} onApproveAll={handleApproveAll} onUpdateItemStatus={handleUpdateItemStatus} />
+
+            <SubjectFormModal open={isSubjectModalOpen} editingSubjectId={editingSubjectId} form={form} onCancel={closeSubjectModal} onOk={handleSubmitSubject} />
+
+            <CreateLessonModal
+                open={isLessonModalOpen}
+                subjects={subjects ?? []}
+                initialSubjectId={selectedSubjectId}
+                isCreating={isCreatingLesson}
+                onCancel={() => setIsLessonModalOpen(false)}
+                onSubmit={handleCreateLesson}
+            />
+
+            <Drawer
+                title={selectedLesson?.title ?? "Lesson Detail"}
+                open={isLessonDrawerOpen}
+                onClose={() => setIsLessonDrawerOpen(false)}
+                width={700}
             >
-                <Form form={form} layout="vertical" className={styles.subjectForm}>
-                    <Form.Item<ISubjectFormValues>
-                        label="Subject Name"
-                        name="name"
-                        rules={[{ required: true, message: "Subject name is required." }]}
-                    >
-                        <Input placeholder="e.g. Mathematics" />
-                    </Form.Item>
-
-                    <Form.Item<ISubjectFormValues>
-                        label="Grade Level"
-                        name="gradeLevel"
-                        rules={[{ required: true, message: "Grade level is required." }]}
-                    >
-                        <Input placeholder="e.g. Grade 10" maxLength={32} />
-                    </Form.Item>
-
-                    <Form.Item<ISubjectFormValues>
-                        label="Description"
-                        name="description"
-                        rules={[{ required: true, message: "Description is required." }]}
-                    >
-                        <Input.TextArea rows={4} placeholder="Briefly describe the subject curriculum scope." />
-                    </Form.Item>
-                </Form>
-            </Modal>
+                <Spin spinning={isLessonLoading}>
+                    {selectedLesson && (
+                        <Tabs
+                            defaultActiveKey="details"
+                            items={[
+                                {
+                                    key: "details",
+                                    label: "Details",
+                                    children: (
+                                        <Descriptions column={2} size="small">
+                                            <Descriptions.Item label="Duration">{selectedLesson.estimatedMinutes} min</Descriptions.Item>
+                                            <Descriptions.Item label="Difficulty">{selectedLesson.difficultyLevel}</Descriptions.Item>
+                                            <Descriptions.Item label="Status">
+                                                <Tag color={selectedLesson.isPublished ? "green" : "default"}>
+                                                    {selectedLesson.isPublished ? "Published" : "Draft"}
+                                                </Tag>
+                                            </Descriptions.Item>
+                                            <Descriptions.Item label="Translations">{selectedLesson.translations.length}</Descriptions.Item>
+                                            {selectedLesson.learningObjective && (
+                                                <Descriptions.Item label="Learning Objective" span={2}>
+                                                    {selectedLesson.learningObjective}
+                                                </Descriptions.Item>
+                                            )}
+                                            {selectedLesson.summary && (
+                                                <Descriptions.Item label="Summary" span={2}>
+                                                    {selectedLesson.summary}
+                                                </Descriptions.Item>
+                                            )}
+                                            {selectedLesson.revisionSummary && (
+                                                <Descriptions.Item label="Revision Summary" span={2}>
+                                                    {selectedLesson.revisionSummary}
+                                                </Descriptions.Item>
+                                            )}
+                                        </Descriptions>
+                                    ),
+                                },
+                                {
+                                    key: "translations",
+                                    label: `Translations (${selectedLesson.translations.length})`,
+                                    children: selectedLesson.translations.length > 0 ? (
+                                        <Tabs
+                                            tabPosition="left"
+                                            items={selectedLesson.translations.map((t) => ({
+                                                key: t.languageCode,
+                                                label: t.languageName,
+                                                children: (
+                                                    <div style={{ paddingLeft: 8 }}>
+                                                        {t.isAutoTranslated && (
+                                                            <Tag color="blue" style={{ marginBottom: 12 }}>Auto-translated</Tag>
+                                                        )}
+                                                        {[
+                                                            { label: "Title", value: t.title },
+                                                            { label: "Content", value: t.content },
+                                                            { label: "Summary", value: t.summary },
+                                                            { label: "Examples", value: t.examples },
+                                                            { label: "Revision Summary", value: t.revisionSummary },
+                                                        ].filter((f) => f.value).map((field) => (
+                                                            <div key={field.label} style={{ marginBottom: 16 }}>
+                                                                <Text strong style={{ display: "block", marginBottom: 4 }}>{field.label}</Text>
+                                                                <div
+                                                                    style={{
+                                                                        padding: "10px 14px",
+                                                                        background: "#fafafa",
+                                                                        borderRadius: 6,
+                                                                        border: "1px solid #f0f0f0",
+                                                                        lineHeight: 1.7,
+                                                                        fontSize: 13,
+                                                                    }}
+                                                                >
+                                                                    <ReactMarkdown>{field.value ?? ""}</ReactMarkdown>
+                                                                </div>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                ),
+                                            }))}
+                                        />
+                                    ) : <Text type="secondary">No translations available.</Text>,
+                                },
+                                {
+                                    key: "assessment",
+                                    label: `Assessment${assessments ? ` (${assessments.length})` : ""}`,
+                                    children: (
+                                        <div>
+                                            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16 }}>
+                                                <Button
+                                                    type="primary"
+                                                    loading={isGeneratingQuiz}
+                                                    onClick={handleGenerateQuiz}
+                                                >
+                                                    Generate {["Easy", "Medium", "Hard"][currentLessonDifficulty - 1]} Quiz
+                                                </Button>
+                                            </div>
+                                            <LessonAssessmentPanel
+                                                assessments={assessments}
+                                                isLoading={isAssessmentsLoading}
+                                            />
+                                        </div>
+                                    ),
+                                },
+                            ]}
+                        />
+                    )}
+                </Spin>
+            </Drawer>
         </div>
+    );
+}
+
+/** Admin curriculum management page for subject CRUD and AI-assisted curriculum review workflow. */
+export default function AdminCurriculumPage() {
+    return (
+        <SubjectProvider>
+            <CurriculumPageContent />
+        </SubjectProvider>
     );
 }

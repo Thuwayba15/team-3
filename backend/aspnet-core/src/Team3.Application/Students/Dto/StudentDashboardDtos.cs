@@ -31,9 +31,13 @@ namespace Team3.Students.Dto
 
     public class StudentDashboardRecommendationDto
     {
+        public Guid? SubjectId { get; set; }
+        public string? SubjectName { get; set; }
         public Guid? LessonId { get; set; }
         public string? LessonTitle { get; set; }
         public string? TopicName { get; set; }
+        public int? EstimatedMinutes { get; set; }
+        public string? ActionState { get; set; }
         public string? Reason { get; set; }
     }
 

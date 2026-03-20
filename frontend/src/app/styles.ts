@@ -15,6 +15,13 @@ export const useStyles = createStyles(({ css, token }) => ({
     z-index: 1;
     pointer-events: none;
   `,
+  swooshContainer2: css`
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.6;
+  `,
   glassNav: css`
     position: absolute;
     top: 80px;
@@ -46,7 +53,6 @@ export const useStyles = createStyles(({ css, token }) => ({
     top: 25%;
     left: 12%;
     z-index: 5;
-    /* Add these lines below */
     display: flex;
     flex-direction: column;
     align-items: center; 
@@ -55,7 +61,6 @@ export const useStyles = createStyles(({ css, token }) => ({
 
   mainLogo: css`
     width: 150px;
-    /* Remove any default margins if they exist or use this to be safe */
     display: block;
   `,
 
@@ -100,7 +105,7 @@ export const useStyles = createStyles(({ css, token }) => ({
   `,
   cardStackWrapper: css`
     position: absolute;
-    bottom: 0px;
+    bottom: -50px;
     left: 10%;
     width: 450px;
     height: 550px;

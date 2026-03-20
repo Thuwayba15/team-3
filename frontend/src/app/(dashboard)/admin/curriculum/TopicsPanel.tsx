@@ -1,7 +1,7 @@
 "use client";
 
-import { Card, Empty, List, Spin, Typography } from "antd";
-import type { ISubject, ITopic } from "@/providers/subject";
+import { Card, Empty, List, Spin, Tag, Typography } from "antd";
+import type { ILessonSummary, ISubject, ITopic } from "@/providers/subject";
 import { useStyles } from "./styles";
 
 const { Text, Title } = Typography;
@@ -10,10 +10,23 @@ interface ITopicsPanelProps {
     selectedSubject: ISubject | null;
     topics?: ITopic[];
     isTopicsLoading: boolean;
+    selectedTopicId: string;
+    onSelectTopic: (topicId: string) => void;
+    lessons?: ILessonSummary[];
+    isLessonsLoading: boolean;
 }
 
-export function TopicsPanel({ selectedSubject, topics, isTopicsLoading }: ITopicsPanelProps) {
+export function TopicsPanel({
+    selectedSubject,
+    topics,
+    isTopicsLoading,
+    selectedTopicId,
+    onSelectTopic,
+    lessons,
+    isLessonsLoading,
+}: ITopicsPanelProps) {
     const { styles } = useStyles();
+    const selectedTopic = topics?.find((t) => t.id === selectedTopicId);
 
     return (
         <Card className={styles.panelCard}>
@@ -22,7 +35,7 @@ export function TopicsPanel({ selectedSubject, topics, isTopicsLoading }: ITopic
                     <Title level={4} className={styles.panelTitle}>
                         {selectedSubject ? `Topics — ${selectedSubject.name}` : "Topics"}
                     </Title>
-                    <Text className={styles.panelSubtitle}>Topics for the selected subject.</Text>
+                    <Text className={styles.panelSubtitle}>Click a topic to view its lessons.</Text>
                 </div>
             </div>
 
@@ -34,7 +47,16 @@ export function TopicsPanel({ selectedSubject, topics, isTopicsLoading }: ITopic
                         dataSource={topics ?? []}
                         locale={{ emptyText: "No topics found for this subject." }}
                         renderItem={(topic) => (
-                            <List.Item key={topic.id}>
+                            <List.Item
+                                key={topic.id}
+                                onClick={() => onSelectTopic(topic.id)}
+                                style={{
+                                    cursor: "pointer",
+                                    background: topic.id === selectedTopicId ? "var(--ant-color-primary-bg)" : undefined,
+                                    borderRadius: 8,
+                                    padding: "8px 12px",
+                                }}
+                            >
                                 <List.Item.Meta
                                     title={<Text strong>{topic.sequenceOrder}. {topic.name}</Text>}
                                     description={topic.description ?? "No description provided."}
@@ -44,6 +66,38 @@ export function TopicsPanel({ selectedSubject, topics, isTopicsLoading }: ITopic
                     />
                 )}
             </Spin>
+
+            {selectedTopic && (
+                <div style={{ marginTop: 24 }}>
+                    <Title level={5} className={styles.panelTitle} style={{ marginBottom: 12 }}>
+                        Lessons — {selectedTopic.name}
+                    </Title>
+                    <Spin spinning={isLessonsLoading}>
+                        <List
+                            dataSource={lessons ?? []}
+                            locale={{ emptyText: "No lessons found for this topic." }}
+                            renderItem={(lesson) => (
+                                <List.Item key={lesson.id}>
+                                    <List.Item.Meta
+                                        title={<Text strong>{lesson.title}</Text>}
+                                        description={
+                                            <span>
+                                                <Text type="secondary" style={{ fontSize: 12 }}>
+                                                    {lesson.estimatedMinutes} min · Difficulty {lesson.difficultyLevel}
+                                                </Text>
+                                                {" "}
+                                                <Tag color={lesson.isPublished ? "green" : "default"} style={{ marginLeft: 4 }}>
+                                                    {lesson.isPublished ? "Published" : "Draft"}
+                                                </Tag>
+                                            </span>
+                                        }
+                                    />
+                                </List.Item>
+                            )}
+                        />
+                    </Spin>
+                </div>
+            )}
         </Card>
     );
 }

@@ -18,7 +18,11 @@ export interface IStudentLearningPathLesson {
     difficultyLevel: DifficultyLevel;
     estimatedMinutes: number;
     status: LearningPathStatus;
+    actionState: "available" | "review" | "locked";
+    canComplete: boolean;
     quizAssessmentId: string | null;
+    quizStatus: "available" | "unavailable";
+    quizUnavailableReason?: string | null;
 }
 
 export interface IStudentLearningPathTopic {
@@ -50,6 +54,7 @@ export interface ICompleteLessonInput {
 export interface ICompleteLessonOutput {
     lessonId: string;
     status: string;
+    actionState: "available" | "review" | "locked";
     nextRecommendedAction: string;
     subjectId: string;
     topicId: string;

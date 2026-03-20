@@ -22,19 +22,19 @@ export const useStyles = createStyles(({ css, token }) => ({
         transition: all 0.2s;
 
         &:hover {
-            border-color: #00b8a9;
-            color: #00b8a9;
+            border-color: #1e40af;
+            color: #1e40af;
         }
     `,
 
     subjectTabActive: css`
-        background: #00b8a9 !important;
-        border-color: #00b8a9 !important;
+        background: #1e40af !important;
+        border-color: #1e40af !important;
         color: #fff !important;
 
         &:hover {
-            background: #00a89a !important;
-            border-color: #00a89a !important;
+            background: #1d4ed8 !important;
+            border-color: #1d4ed8 !important;
             color: #fff !important;
         }
     `,

@@ -1,11 +1,11 @@
 "use client";
 
-import { Drawer, Grid, Layout } from "antd";
+import { Button, Drawer, Grid, Layout } from "antd";
+import { MenuOutlined } from "@ant-design/icons";
 import { usePathname, useRouter } from "next/navigation";
 import { ReactNode, useEffect, useMemo, useState } from "react";
 import { useAuthState } from "@/providers/auth";
 import type { AppRole } from "@/types/navigation";
-import { AppHeader } from "./AppHeader";
 import { AppSidebar } from "./AppSidebar";
 import { useStyles } from "./DashboardLayout.style";
 
@@ -62,8 +62,6 @@ export const DashboardLayout = ({ children }: IDashboardLayoutProps) => {
 
     return (
         <Layout className={styles.root}>
-            <AppHeader onOpenNavigation={handleOpenNavigation} isMobile={isMobile} />
-
             <Layout className={styles.body}>
                 {isMobile ? (
                     <Drawer
@@ -81,7 +79,20 @@ export const DashboardLayout = ({ children }: IDashboardLayoutProps) => {
                 )}
 
                 <Layout.Content className={styles.content}>
-                    <div className={styles.contentSurface}>{children}</div>
+                    <div className={styles.contentSurface}>
+                        {isMobile && (
+                            <div className={styles.mobileTopBar}>
+                                <Button
+                                    type="text"
+                                    icon={<MenuOutlined />}
+                                    className={styles.mobileMenuButton}
+                                    aria-label="Open navigation"
+                                    onClick={handleOpenNavigation}
+                                />
+                            </div>
+                        )}
+                        {children}
+                    </div>
                 </Layout.Content>
             </Layout>
         </Layout>
