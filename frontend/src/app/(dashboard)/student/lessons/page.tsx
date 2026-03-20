@@ -17,6 +17,7 @@ import AiTutorDrawer from "@/components/AiTutorDrawer";
 import { DashboardPageSkeleton } from "@/components/layout";
 import SubjectSwitcher from "@/components/student/SubjectSwitcher";
 import { UI_COLORS } from "@/constants/uiColors";
+import { useI18nState } from "@/providers/i18n";
 import { useStyles } from "./styles";
 import {
     selectLessonAssessmentByDifficulty,
@@ -351,6 +352,7 @@ export default function StudentLessonsPage() {
     const { styles } = useStyles();
     const router = useRouter();
     const searchParams = useSearchParams();
+    const { currentLanguage } = useI18nState();
     const subjectIdParam = searchParams.get("subjectId");
     const lessonIdParam = searchParams.get("lessonId");
     const [messageApi, contextHolder] = message.useMessage();
@@ -435,7 +437,7 @@ export default function StudentLessonsPage() {
         return () => {
             cancelled = true;
         };
-    }, [lessonIdParam, router, subjectIdParam]);
+    }, [currentLanguage, lessonIdParam, router, subjectIdParam]);
 
     useEffect(() => {
         let cancelled = false;
@@ -471,7 +473,7 @@ export default function StudentLessonsPage() {
         return () => {
             cancelled = true;
         };
-    }, [activeLessonId]);
+    }, [activeLessonId, currentLanguage]);
 
     const resolveLessonQuizAssessmentId = async (
         lessonId: string,
