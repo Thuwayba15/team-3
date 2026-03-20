@@ -10,13 +10,15 @@ import {
     ReadOutlined,
     RightOutlined,
 } from "@ant-design/icons";
-import { Alert, Button, Card, Empty, Progress, Skeleton, Tag, Typography, message } from "antd";
+import { Alert, Button, Card, Empty, Progress, Tag, Skeleton,Typography, message } from "antd";
+import ReactMarkdown from "react-markdown";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import AiTutorDrawer from "@/components/AiTutorDrawer";
 import { DashboardPageSkeleton } from "@/components/layout";
 import SubjectSwitcher from "@/components/student/SubjectSwitcher";
 import { UI_COLORS } from "@/constants/uiColors";
+import { useI18n } from "@/providers/i18n";
 import { useStyles } from "./styles";
 import {
     selectLessonAssessmentByDifficulty,
@@ -35,17 +37,17 @@ import {
     type IStudentSubject,
 } from "@/services/student/studentSubjectService";
 
-const { Title, Text, Paragraph } = Typography;
+const { Title, Text } = Typography;
 
 type LessonStatus = "completed" | "current" | "locked";
 
-function statusTag(status: LessonStatus) {
+function statusTag(status: LessonStatus, styles: ReturnType<typeof useStyles>["styles"]) {
     if (status === "completed") {
-        return <Tag color="success">Completed</Tag>;
+        return <Tag className={styles.completedTag}>Completed</Tag>;
     }
 
     if (status === "current") {
-        return <Tag color="processing">In Progress</Tag>;
+        return <Tag className={styles.currentTag}>In Progress</Tag>;
     }
 
     return null;
@@ -130,6 +132,7 @@ function LessonDetail({
     error,
     onBack,
     onOpenQuiz,
+    onSelectLesson,
 }: {
     subjectPath: IStudentLearningPath;
     topic: IStudentLearningPathTopic;
@@ -139,6 +142,7 @@ function LessonDetail({
     error: string | null;
     onBack: () => void;
     onOpenQuiz: () => void;
+    onSelectLesson: (lessonId: string) => void;
 }) {
     const { styles } = useStyles();
     const [aiOpen, setAiOpen] = useState(false);
@@ -162,7 +166,7 @@ function LessonDetail({
                 <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 16 }}>
                     <Tag color="blue">{getDifficultyLabel(lesson.difficultyLevel)}</Tag>
                     <Tag>{`${lesson.estimatedMinutes} min`}</Tag>
-                    {isReviewMode ? <Tag color="success">Review mode</Tag> : null}
+                    {isReviewMode ? <Tag className={styles.reviewTag}>Review mode</Tag> : null}
                 </div>
 
                 {loading ? (
@@ -175,11 +179,9 @@ function LessonDetail({
                     sections.map((section) => (
                         <div key={section.heading}>
                             <div className={styles.sectionTitle}>{section.heading}</div>
-                            {section.body.split(/\n{2,}/).map((paragraph) => (
-                                <Paragraph key={`${section.heading}-${paragraph.slice(0, 24)}`} className={styles.sectionText}>
-                                    {paragraph}
-                                </Paragraph>
-                            ))}
+                            <div className={styles.sectionText}>
+                                <ReactMarkdown>{section.body}</ReactMarkdown>
+                            </div>
                         </div>
                     ))
                 )}
@@ -215,7 +217,13 @@ function LessonDetail({
 
                     <div className={styles.topicList}>
                         {topic.lessons.map((item) => (
-                            <div key={item.lessonId} className={styles.topicItem}>
+                            <button
+                                key={item.lessonId}
+                                className={styles.topicItem}
+                                onClick={() => item.status !== "locked" && onSelectLesson(item.lessonId)}
+                                style={{ background: "none", border: "none", cursor: item.status === "locked" ? "default" : "pointer", textAlign: "left", width: "100%" }}
+                                type="button"
+                            >
                                 {item.status === "completed" && (
                                     <div className={styles.topicDotCompleted}>
                                         <CheckOutlined />
@@ -230,7 +238,7 @@ function LessonDetail({
                                 <span className={item.status === "current" ? styles.topicNameCurrent : styles.topicNameOther}>
                                     {item.title}
                                 </span>
-                            </div>
+                            </button>
                         ))}
                     </div>
                 </Card>
@@ -246,7 +254,12 @@ function LessonDetail({
                     </Button>
                 </Card>
 
-                <AiTutorDrawer open={aiOpen} onClose={() => setAiOpen(false)} lessonTitle={lessonDetail?.title ?? lesson.title} />
+                <AiTutorDrawer
+                    open={aiOpen}
+                    onClose={() => setAiOpen(false)}
+                    lessonTitle={lessonDetail?.title ?? lesson.title}
+                    lessonContent={sections.map((s) => `## ${s.heading}\n\n${s.body}`).join("\n\n")}
+                />
             </div>
         </div>
     );
@@ -332,8 +345,8 @@ function LessonList({
                                     </div>
                                 </div>
                                 <div className={styles.lessonRight}>
-                                    {statusTag(lesson.status)}
-                                    {lesson.actionState === "review" ? <Tag color="success">Review</Tag> : null}
+                                    {statusTag(lesson.status, styles)}
+                                    {lesson.actionState === "review" ? <Tag className={styles.reviewTag}>Review</Tag> : null}
                                     {lesson.status !== "locked" ? (
                                         <RightOutlined style={{ fontSize: 12, color: UI_COLORS.PRIMARY }} />
                                     ) : null}
@@ -351,6 +364,7 @@ export default function StudentLessonsPage() {
     const { styles } = useStyles();
     const router = useRouter();
     const searchParams = useSearchParams();
+    const { currentLanguage } = useI18n();
     const subjectIdParam = searchParams.get("subjectId");
     const lessonIdParam = searchParams.get("lessonId");
     const [messageApi, contextHolder] = message.useMessage();
@@ -471,7 +485,7 @@ export default function StudentLessonsPage() {
         return () => {
             cancelled = true;
         };
-    }, [activeLessonId]);
+    }, [activeLessonId, currentLanguage]);
 
     const resolveLessonQuizAssessmentId = async (
         lessonId: string,
@@ -559,6 +573,7 @@ export default function StudentLessonsPage() {
                         loading={lessonLoading}
                         error={lessonError}
                         onBack={handleBackToList}
+                        onSelectLesson={handleSelectLesson}
                         onOpenQuiz={() => {
                             void (async () => {
                                 try {

@@ -1,6 +1,7 @@
 "use client";
 
 import { createStyles } from "antd-style";
+import { UI_COLORS } from "@/constants/uiColors";
 
 export const useStyles = createStyles(({ css, token }) => ({
 
@@ -87,6 +88,24 @@ export const useStyles = createStyles(({ css, token }) => ({
         align-items: center;
         gap: ${token.marginSM}px;
         flex-shrink: 0;
+    `,
+
+    completedTag: css`
+        color: ${UI_COLORS.PRIMARY};
+        background: #dbeafe;
+        border-color: #bfdbfe;
+    `,
+
+    currentTag: css`
+        color: ${UI_COLORS.PRIMARY};
+        background: #eff6ff;
+        border-color: #bfdbfe;
+    `,
+
+    reviewTag: css`
+        color: #1d4ed8;
+        background: #f8fafc;
+        border-color: #cbd5e1;
     `,
 
     /* ── Detail view ──────────────────────────────────────────── */

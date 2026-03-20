@@ -1,6 +1,7 @@
 "use client";
 
 import { createStyles } from "antd-style";
+import { UI_COLORS } from "@/constants/uiColors";
 
 export const useStyles = createStyles(({ css, token }) => ({
     pageHeader: css`
@@ -285,8 +286,8 @@ export const useStyles = createStyles(({ css, token }) => ({
         justify-content: space-between;
         padding: 10px 12px;
         border-radius: ${token.borderRadius}px;
-        background: #f0fafa;
-        border: 1px solid #b7e8e4;
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
         margin: 4px 0;
     `,
 
@@ -298,7 +299,7 @@ export const useStyles = createStyles(({ css, token }) => ({
 
     topicIcon: css`
         font-size: 16px;
-        color: #00b8a9;
+        color: ${UI_COLORS.PRIMARY};
         flex-shrink: 0;
     `,
 
@@ -320,7 +321,7 @@ export const useStyles = createStyles(({ css, token }) => ({
 
     topicSubtitle: css`
         font-size: 12px;
-        color: #00b8a9;
+        color: ${UI_COLORS.PRIMARY};
         margin-top: 1px;
     `,
 
@@ -347,16 +348,28 @@ export const useStyles = createStyles(({ css, token }) => ({
     `,
 
     continueBtn: css`
-        background: #00b8a9 !important;
-        border-color: #00b8a9 !important;
+        background: ${UI_COLORS.PRIMARY} !important;
+        border-color: ${UI_COLORS.PRIMARY} !important;
         font-size: 13px;
         height: 32px;
         padding: 0 16px;
 
         &:hover {
-            background: #00a89a !important;
-            border-color: #00a89a !important;
+            background: #1d4ed8 !important;
+            border-color: #1d4ed8 !important;
         }
+    `,
+
+    completedTag: css`
+        color: ${UI_COLORS.PRIMARY};
+        background: #dbeafe;
+        border-color: #bfdbfe;
+    `,
+
+    currentTag: css`
+        color: ${UI_COLORS.PRIMARY};
+        background: #eff6ff;
+        border-color: #bfdbfe;
     `,
 
     /* Completed topics row (3-column grid) */

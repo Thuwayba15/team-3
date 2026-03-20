@@ -466,7 +466,7 @@ export default function StudentLearningPathPage() {
                                 <Progress
                                     percent={Math.round(subjectPath.overallProgressPercent)}
                                     showInfo={false}
-                                    strokeColor={UI_COLORS.PRIMARY_ACCENT}
+                                    strokeColor={UI_COLORS.PRIMARY}
                                 />
                                 <div className={styles.summaryMeta}>
                                     <Text className={styles.helperText}>{subjectPath.recommendedAction}</Text>
@@ -537,10 +537,10 @@ export default function StudentLearningPathPage() {
                                                             <div className={styles.moduleTitleRow}>
                                                                 <span className={styles.moduleTitle}>{topic.name}</span>
                                                                 {topic.status === "completed" ? (
-                                                                    <Tag color="success">{t("dashboard.student.learningPathPage.completed")}</Tag>
+                                                                    <Tag className={styles.completedTag}>{t("dashboard.student.learningPathPage.completed")}</Tag>
                                                                 ) : null}
                                                                 {topic.status === "current" ? (
-                                                                    <Tag color="processing">{t("dashboard.student.learningPathPage.inProgress")}</Tag>
+                                                                    <Tag className={styles.currentTag}>{t("dashboard.student.learningPathPage.inProgress")}</Tag>
                                                                 ) : null}
                                                                 {topic.status === "locked" ? (
                                                                     <Tag>{t("dashboard.student.learningPathPage.locked")}</Tag>
@@ -564,20 +564,26 @@ export default function StudentLearningPathPage() {
                                                         <div className={styles.topicAction}>{topic.recommendedAction}</div>
 
                                                         {topic.status === "current" && topic.lessons.length > 0 ? (
-                                                            <div className={styles.moduleProgress}>
-                                                                <div className={styles.progressPercent}>{moduleProgress}%</div>
-                                                                    <Progress percent={moduleProgress} showInfo={false} strokeColor={UI_COLORS.PRIMARY_ACCENT} />
-                                                            </div>
-                                                        ) : null}
+                                                                <div className={styles.moduleProgress}>
+                                                                    <div className={styles.progressPercent}>{moduleProgress}%</div>
+                                                                    <Progress percent={moduleProgress} showInfo={false} strokeColor={UI_COLORS.PRIMARY} />
+                                                                </div>
+                                                            ) : null}
 
                                                         {topic.lessons.length > 0 ? (
                                                             topic.status === "completed" ? (
                                                                 <div className={styles.topicGrid}>
                                                                     {topic.lessons.map((lesson) => (
-                                                                        <div key={lesson.lessonId} className={styles.topicGridItem}>
+                                                                        <button
+                                                                            key={lesson.lessonId}
+                                                                            className={styles.topicGridItem}
+                                                                            onClick={() => handleOpenLesson(lesson.lessonId)}
+                                                                            style={{ background: "none", border: "none", textAlign: "left", cursor: "pointer" }}
+                                                                            type="button"
+                                                                        >
                                                                             <CheckCircleOutlined className={styles.topicIcon} />
                                                                             <span>{lesson.title}</span>
-                                                                        </div>
+                                                                        </button>
                                                                     ))}
                                                                 </div>
                                                             ) : (
