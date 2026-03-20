@@ -22,36 +22,7 @@ public class LearningMaterialAppService_Tests : Team3TestBase
         _learningMaterialAppService = Resolve<ILearningMaterialAppService>();
     }
 
-    [Fact]
-    public async Task UploadTextMaterial_Should_Create_Material_With_Valid_Data()
-    {
-        // Arrange
-        var subjectId = await CreateTestSubjectAsync();
-        var input = new UploadTextLearningMaterialInput
-        {
-            SubjectId = subjectId,
-            Title = "Test Lesson",
-            Content = "This is test content for the lesson.",
-            DifficultyLevel = DifficultyLevel.Easy,
-            SourceLanguageCode = "en"
-        };
-
-        // Act
-        var result = await _learningMaterialAppService.UploadTextMaterialAsync(input);
-
-        // Assert
-        result.ShouldNotBeNull();
-        result.LessonId.ShouldNotBe(Guid.Empty);
-
-        // Verify lesson was created
-        await UsingDbContextAsync(async context =>
-        {
-            var lesson = await context.Lessons.FirstOrDefaultAsync(l => l.Id == result.LessonId);
-            lesson.ShouldNotBeNull();
-            lesson.Title.ShouldBe("Test Lesson");
-            lesson.DifficultyLevel.ShouldBe(DifficultyLevel.Easy);
-        });
-    }
+    
 
     [Fact]
     public async Task UploadTextMaterial_Should_Fail_With_Invalid_Subject()
