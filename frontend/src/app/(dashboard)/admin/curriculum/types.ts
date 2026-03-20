@@ -1,4 +1,38 @@
 export type ReviewStatus = "Pending" | "Approved" | "Changes Requested";
+
+export interface IQuestionTranslation {
+    languageCode: string;
+    languageName: string;
+    questionText: string;
+    optionA: string;
+    optionB: string;
+    optionC: string;
+    optionD: string;
+    explanationText: string;
+}
+
+export interface IAssessmentQuestion {
+    questionId: string;
+    questionType: number;
+    correctAnswer: string;
+    marks: number;
+    sequenceOrder: number;
+    translations: IQuestionTranslation[];
+}
+
+export interface IAssessmentResult {
+    assessmentId: string;
+    topicId: string;
+    lessonId: string | null;
+    title: string;
+    assessmentType: number;
+    difficultyLevel: number;
+    totalMarks: number;
+    questions: IAssessmentQuestion[];
+}
+
+export const DIFFICULTY_LABEL: Record<number, string> = { 1: "Easy", 2: "Medium", 3: "Hard" };
+export const DIFFICULTY_COLOR: Record<number, string> = { 1: "green", 2: "orange", 3: "red" };
 export type DraftSection = "topics" | "lessons" | "assessments";
 
 export interface IAiDraftItem {

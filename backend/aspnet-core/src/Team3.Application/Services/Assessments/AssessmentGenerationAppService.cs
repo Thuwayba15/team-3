@@ -68,8 +68,11 @@ namespace Team3.Services.Assessments
 
                 var lessonContent = $"Title: {lesson.Title}\nSummary: {lesson.Summary}\nLearning Objective: {lesson.LearningObjective}";
 
-                // Generate all difficulties in parallel
-                var difficultyTasks = AllDifficulties.Select(async difficulty =>
+                var difficultiesToGenerate = input.DifficultyLevel.HasValue
+                    ? [input.DifficultyLevel.Value]
+                    : AllDifficulties;
+
+                var difficultyTasks = difficultiesToGenerate.Select(async difficulty =>
                 {
                     var questions = await GenerateQuestionsFromGemini(
                         translationService, lessonContent, difficulty, allLanguages, AssessmentType.Quiz);
