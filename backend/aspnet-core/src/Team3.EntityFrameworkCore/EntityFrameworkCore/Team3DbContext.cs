@@ -49,8 +49,6 @@ public class Team3DbContext : AbpZeroDbContext<Tenant, Role, User, Team3DbContex
     public DbSet<StudentAssessmentAttempt> StudentAssessmentAttempts { get; set; }
     public DbSet<StudentAssessmentAnswer> StudentAssessmentAnswers { get; set; }
 
-    public DbSet<SubjectTranslation> SubjectTranslations { get; set; }
-    public DbSet<TopicTranslation> TopicTranslations { get; set; }
 
     // Per-user platform language preference
 
