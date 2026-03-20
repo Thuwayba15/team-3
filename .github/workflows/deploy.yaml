@@ -1,15 +1,14 @@
 name: Deploy
 
 on:
-  workflow_run:
-    workflows: ["Playwright Tests"]
+  pull_request:
     branches: [main]
-    types: [completed]
+  push:
+    branches: [main]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     permissions:
       contents: read
       packages: write
@@ -87,6 +86,7 @@ jobs:
               printf 'Authentication__JwtBearer__SecurityKey=%s\n' '${{ secrets.JWT_SECURITY_KEY }}'
               printf 'Authentication__JwtBearer__Issuer=Team3\n'
               printf 'Authentication__JwtBearer__Audience=Team3\n'
+              printf 'GEMINI_API_KEY=%s\n' '${{ secrets.GEMINI_API_KEY }}'
             } > /opt/team3/.env
 
             # ── Deploy ────────────────────────────────────────────────
