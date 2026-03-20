@@ -7,14 +7,25 @@ import {
     LockOutlined,
     MessageOutlined,
     PlayCircleOutlined,
+    ReadOutlined,
     RightOutlined,
 } from "@ant-design/icons";
-import { Alert, Button, Card, Empty, Progress, Spin, Tag, Typography, message } from "antd";
+import { Alert, Button, Card, Empty, Progress, Tag, Skeleton,Typography, message } from "antd";
+import ReactMarkdown from "react-markdown";
+import type { TFunction } from "i18next";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import AiTutorDrawer from "@/components/AiTutorDrawer";
+import { DashboardPageSkeleton } from "@/components/layout";
 import SubjectSwitcher from "@/components/student/SubjectSwitcher";
+import { UI_COLORS } from "@/constants/uiColors";
+import { useI18nState } from "@/providers/i18n";
 import { useStyles } from "./styles";
+import {
+    selectLessonAssessmentByDifficulty,
+    studentAssessmentGenerationService,
+} from "@/services/student/studentAssessmentGenerationService";
 import {
     studentLearningPathService,
     type IStudentLearningPath,
@@ -28,73 +39,90 @@ import {
     type IStudentSubject,
 } from "@/services/student/studentSubjectService";
 
-const { Title, Text, Paragraph } = Typography;
+const { Title, Text } = Typography;
 
 type LessonStatus = "completed" | "current" | "locked";
 
-function statusTag(status: LessonStatus) {
+const SERVER_ACTION_KEY_BY_MESSAGE: Record<string, string> = {
+    "Complete the previous topic to unlock this one.": "dashboard.student.lessonsPage.serverAction.completePreviousTopic",
+    "Take the diagnostic assessment to unlock this topic.": "dashboard.student.lessonsPage.serverAction.takeDiagnosticAssessment",
+    "No lesson is available for the assigned difficulty yet.": "dashboard.student.lessonsPage.serverAction.noLessonForDifficulty",
+    "Take the lesson quiz to complete this topic.": "dashboard.student.lessonsPage.serverAction.takeLessonQuizForTopic",
+    "A lesson quiz is not available for this topic yet.": "dashboard.student.lessonsPage.serverAction.lessonQuizNotAvailableForTopic",
+    "Continue with your current lesson.": "dashboard.student.lessonsPage.serverAction.continueCurrentLesson",
+    "You have completed the available learning path for this subject.": "dashboard.student.lessonsPage.serverAction.completedAvailablePath",
+    "Start with the first available topic.": "dashboard.student.lessonsPage.serverAction.startFirstTopic",
+};
+
+function translateRecommendedAction(action: string, translate: TFunction): string {
+    const key = SERVER_ACTION_KEY_BY_MESSAGE[action.trim()];
+    return key ? translate(key) : action;
+}
+
+function statusTag(status: LessonStatus, translate: TFunction) {
     if (status === "completed") {
-        return <Tag color="success">Completed</Tag>;
+        return <Tag color="success">{translate("dashboard.student.lessonsPage.status.completed")}</Tag>;
     }
 
     if (status === "current") {
-        return <Tag color="processing">In Progress</Tag>;
+        return <Tag color="processing">{translate("dashboard.student.lessonsPage.status.inProgress")}</Tag>;
     }
 
     return null;
 }
 
-function getDifficultyLabel(level: number) {
+function getDifficultyLabel(level: number, translate: TFunction) {
     if (level === 1) {
-        return "Supported pace";
+        return translate("dashboard.student.lessonsPage.difficulty.supportedPace");
     }
 
     if (level === 3) {
-        return "Advanced pace";
+        return translate("dashboard.student.lessonsPage.difficulty.advancedPace");
     }
 
-    return "Standard pace";
+    return translate("dashboard.student.lessonsPage.difficulty.standardPace");
 }
 
 function getPreferredTranslation(lesson: ILessonDetail) {
-    return lesson.translations.find((translation) => translation.languageCode.toLowerCase() !== "en")
+    return lesson.selectedTranslation
+        ?? lesson.translations.find((translation) => translation.languageCode.toLowerCase() === lesson.preferredLanguageCode.toLowerCase())
         ?? lesson.translations.find((translation) => translation.languageCode.toLowerCase() === "en")
         ?? lesson.translations[0]
         ?? null;
 }
 
-function buildLessonSections(lesson: ILessonDetail, translation: ILessonTranslationSummary | null) {
+function buildLessonSections(lesson: ILessonDetail, translation: ILessonTranslationSummary | null, translate: TFunction) {
     const sections: Array<{ heading: string; body: string }> = [];
 
     if (translation?.summary || lesson.summary) {
         sections.push({
-            heading: "Summary",
+            heading: translate("dashboard.student.lessonsPage.section.summary"),
             body: translation?.summary || lesson.summary,
         });
     }
 
     if (translation?.content) {
         sections.push({
-            heading: "Lesson Content",
+            heading: translate("dashboard.student.lessonsPage.section.lessonContent"),
             body: translation.content,
         });
     } else if (lesson.learningObjective) {
         sections.push({
-            heading: "Learning Objective",
+            heading: translate("dashboard.student.lessonsPage.section.learningObjective"),
             body: lesson.learningObjective,
         });
     }
 
     if (translation?.examples) {
         sections.push({
-            heading: "Examples",
+            heading: translate("dashboard.student.lessonsPage.section.examples"),
             body: translation.examples,
         });
     }
 
     if (translation?.revisionSummary || lesson.revisionSummary) {
         sections.push({
-            heading: "Revision Summary",
+            heading: translate("dashboard.student.lessonsPage.section.revisionSummary"),
             body: translation?.revisionSummary || lesson.revisionSummary,
         });
     }
@@ -121,7 +149,8 @@ function LessonDetail({
     loading,
     error,
     onBack,
-    onComplete,
+    onOpenQuiz,
+    onSelectLesson,
 }: {
     subjectPath: IStudentLearningPath;
     topic: IStudentLearningPathTopic;
@@ -130,14 +159,18 @@ function LessonDetail({
     loading: boolean;
     error: string | null;
     onBack: () => void;
-    onComplete: () => void;
+    onOpenQuiz: () => void;
+    onSelectLesson: (lessonId: string) => void;
 }) {
     const { styles } = useStyles();
+    const { t } = useTranslation();
     const [aiOpen, setAiOpen] = useState(false);
     const translation = lessonDetail ? getPreferredTranslation(lessonDetail) : null;
-    const sections = lessonDetail ? buildLessonSections(lessonDetail, translation) : [];
+    const sections = lessonDetail ? buildLessonSections(lessonDetail, translation, t) : [];
     const completedLessons = topic.lessons.filter((item) => item.status === "completed").length;
     const topicCompletion = topic.lessons.length === 0 ? 0 : Math.round((completedLessons / topic.lessons.length) * 100);
+    const isReviewMode = lesson.actionState === "review";
+    const canOpenQuiz = lesson.status !== "locked";
 
     return (
         <div className={styles.detailRoot}>
@@ -150,54 +183,66 @@ function LessonDetail({
                 <h1 className={styles.lessonHeading}>{lessonDetail?.title ?? lesson.title}</h1>
 
                 <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 16 }}>
-                    <Tag color="blue">{getDifficultyLabel(lesson.difficultyLevel)}</Tag>
-                    <Tag>{`${lesson.estimatedMinutes} min`}</Tag>
+                    <Tag color="blue">{getDifficultyLabel(lesson.difficultyLevel, t)}</Tag>
+                    <Tag>{`${lesson.estimatedMinutes} ${t("dashboard.student.lessonsPage.unit.minutesShort")}`}</Tag>
+                    {isReviewMode ? <Tag color="success">{t("dashboard.student.lessonsPage.reviewMode")}</Tag> : null}
                 </div>
 
                 {loading ? (
-                    <Spin />
+                    <Skeleton active paragraph={{ rows: 6 }} title={false} />
                 ) : error ? (
-                    <Alert type="error" showIcon message="Unable to load lesson" description={error} />
+                    <Alert type="error" showIcon message={t("dashboard.student.lessonsPage.errors.unableToLoadLesson")} description={error} />
                 ) : sections.length === 0 ? (
-                    <Empty description="Lesson content coming soon." />
+                    <Empty description={t("dashboard.student.lessonsPage.empty.lessonContentComingSoon")} />
                 ) : (
                     sections.map((section) => (
                         <div key={section.heading}>
                             <div className={styles.sectionTitle}>{section.heading}</div>
-                            {section.body.split(/\n{2,}/).map((paragraph) => (
-                                <Paragraph key={`${section.heading}-${paragraph.slice(0, 24)}`} className={styles.sectionText}>
-                                    {paragraph}
-                                </Paragraph>
-                            ))}
+                            <div className={styles.sectionText}>
+                                <ReactMarkdown>{section.body}</ReactMarkdown>
+                            </div>
                         </div>
                     ))
                 )}
 
                 <div className={styles.detailFooter}>
-                    <Button
-                        type="primary"
-                        icon={<RightOutlined />}
-                        iconPosition="end"
-                        className={styles.nextBtn}
-                        onClick={onComplete}
-                        disabled={loading || Boolean(error)}
-                    >
-                        Complete Lesson
-                    </Button>
+                    {canOpenQuiz && !isReviewMode ? (
+                        <Button
+                            type="primary"
+                            icon={<RightOutlined />}
+                            iconPosition="end"
+                            className={styles.nextBtn}
+                            onClick={onOpenQuiz}
+                            disabled={loading || Boolean(error)}
+                        >
+                            {t("dashboard.student.lessonsPage.actions.takeQuiz")}
+                        </Button>
+                    ) : null}
+                    {isReviewMode ? (
+                        <Button disabled icon={<ReadOutlined />}>
+                            {t("dashboard.student.lessonsPage.actions.reviewOnly")}
+                        </Button>
+                    ) : null}
                 </div>
             </div>
 
             <div className={styles.progressPanel}>
-                <Card title="Topic Progress" className={styles.progressCard}>
+                <Card title={t("dashboard.student.lessonsPage.progress.topicProgress")} className={styles.progressCard}>
                     <div className={styles.completionRow}>
-                        <span>Topic Completion</span>
+                        <span>{t("dashboard.student.lessonsPage.progress.topicCompletion")}</span>
                         <span>{topicCompletion} %</span>
                     </div>
-                    <Progress percent={topicCompletion} showInfo={false} strokeColor="#00b8a9" size="small" />
+                    <Progress percent={topicCompletion} showInfo={false} strokeColor={UI_COLORS.PRIMARY} size="small" />
 
                     <div className={styles.topicList}>
                         {topic.lessons.map((item) => (
-                            <div key={item.lessonId} className={styles.topicItem}>
+                            <button
+                                key={item.lessonId}
+                                className={styles.topicItem}
+                                onClick={() => item.status !== "locked" && onSelectLesson(item.lessonId)}
+                                style={{ background: "none", border: "none", cursor: item.status === "locked" ? "default" : "pointer", textAlign: "left", width: "100%" }}
+                                type="button"
+                            >
                                 {item.status === "completed" && (
                                     <div className={styles.topicDotCompleted}>
                                         <CheckOutlined />
@@ -212,23 +257,28 @@ function LessonDetail({
                                 <span className={item.status === "current" ? styles.topicNameCurrent : styles.topicNameOther}>
                                     {item.title}
                                 </span>
-                            </div>
+                            </button>
                         ))}
                     </div>
                 </Card>
 
                 <Card className={styles.aiCard}>
                     <MessageOutlined className={styles.aiIcon} />
-                    <div className={styles.aiTitle}>Need a clearer explanation?</div>
+                    <div className={styles.aiTitle}>{t("dashboard.student.lessonsPage.ai.needClearerExplanation")}</div>
                     <div className={styles.aiSubtitle}>
-                        Your AI tutor can break this lesson down in your preferred language.
+                        {t("dashboard.student.lessonsPage.ai.subtitle")}
                     </div>
                     <Button type="link" className={styles.aiLink} onClick={() => setAiOpen(true)}>
-                        Ask AI Tutor
+                        {t("dashboard.student.lessonsPage.actions.askAiTutor")}
                     </Button>
                 </Card>
 
-                <AiTutorDrawer open={aiOpen} onClose={() => setAiOpen(false)} lessonTitle={lessonDetail?.title ?? lesson.title} />
+                <AiTutorDrawer
+                    open={aiOpen}
+                    onClose={() => setAiOpen(false)}
+                    lessonTitle={lessonDetail?.title ?? lesson.title}
+                    lessonContent={sections.map((s) => `## ${s.heading}\n\n${s.body}`).join("\n\n")}
+                />
             </div>
         </div>
     );
@@ -248,13 +298,14 @@ function LessonList({
     onSelectLesson: (lessonId: string) => void;
 }) {
     const { styles } = useStyles();
+    const { t } = useTranslation();
 
     return (
         <div>
             <div className={styles.pageHeader}>
                 <div>
-                    <Title level={2} style={{ marginBottom: 0 }}>Lessons</Title>
-                    <Text type="secondary">{`${subjectPath.subjectName} · adaptive lesson track`}</Text>
+                    <Title level={2} style={{ marginBottom: 0 }}>{t("dashboard.student.lessonsPage.title")}</Title>
+                    <Text type="secondary">{`${subjectPath.subjectName} · ${t("dashboard.student.lessonsPage.adaptiveLessonTrack")}`}</Text>
                 </div>
 
                 <SubjectSwitcher
@@ -279,12 +330,12 @@ function LessonList({
                     className={styles.moduleCard}
                 >
                     <div style={{ marginBottom: 12, display: "flex", gap: 8, flexWrap: "wrap" }}>
-                        {topic.assignedDifficultyLevel ? <Tag color="blue">{getDifficultyLabel(topic.assignedDifficultyLevel)}</Tag> : null}
-                        <Text type="secondary">{topic.recommendedAction}</Text>
+                        {topic.assignedDifficultyLevel ? <Tag color="blue">{getDifficultyLabel(topic.assignedDifficultyLevel, t)}</Tag> : null}
+                        <Text type="secondary">{translateRecommendedAction(topic.recommendedAction, t)}</Text>
                     </div>
 
                     {topic.lessons.length === 0 ? (
-                        <Empty description="No adaptive lessons are available for this topic yet." />
+                        <Empty description={t("dashboard.student.lessonsPage.empty.noAdaptiveLessonsForTopicYet")} />
                     ) : (
                         topic.lessons.map((lesson) => (
                             <div
@@ -309,14 +360,15 @@ function LessonList({
                                     <div>
                                         <div className={`${styles.lessonTitle} lesson-title`}>{lesson.title}</div>
                                         <div className={styles.lessonMeta}>
-                                            {`${lesson.estimatedMinutes} min · ${getDifficultyLabel(lesson.difficultyLevel)}`}
+                                            {`${lesson.estimatedMinutes} ${t("dashboard.student.lessonsPage.unit.minutesShort")} · ${getDifficultyLabel(lesson.difficultyLevel, t)}`}
                                         </div>
                                     </div>
                                 </div>
                                 <div className={styles.lessonRight}>
-                                    {statusTag(lesson.status)}
+                                    {statusTag(lesson.status, t)}
+                                    {lesson.actionState === "review" ? <Tag color="success">{t("dashboard.student.lessonsPage.tag.review")}</Tag> : null}
                                     {lesson.status !== "locked" ? (
-                                        <RightOutlined style={{ fontSize: 12, color: "#00b8a9" }} />
+                                        <RightOutlined style={{ fontSize: 12, color: UI_COLORS.PRIMARY }} />
                                     ) : null}
                                 </div>
                             </div>
@@ -330,8 +382,10 @@ function LessonList({
 
 export default function StudentLessonsPage() {
     const { styles } = useStyles();
+    const { t } = useTranslation();
     const router = useRouter();
     const searchParams = useSearchParams();
+    const { currentLanguage } = useI18nState();
     const subjectIdParam = searchParams.get("subjectId");
     const lessonIdParam = searchParams.get("lessonId");
     const [messageApi, contextHolder] = message.useMessage();
@@ -402,7 +456,7 @@ export default function StudentLessonsPage() {
                 }
             } catch (loadError) {
                 if (!cancelled) {
-                    setError(loadError instanceof Error ? loadError.message : "Failed to load lessons.");
+                    setError(loadError instanceof Error ? loadError.message : t("dashboard.student.lessonsPage.errors.failedToLoadLessons"));
                 }
             } finally {
                 if (!cancelled) {
@@ -416,7 +470,7 @@ export default function StudentLessonsPage() {
         return () => {
             cancelled = true;
         };
-    }, [lessonIdParam, router, subjectIdParam]);
+    }, [currentLanguage, lessonIdParam, router, subjectIdParam]);
 
     useEffect(() => {
         let cancelled = false;
@@ -437,7 +491,7 @@ export default function StudentLessonsPage() {
                 }
             } catch (loadError) {
                 if (!cancelled) {
-                    setLessonError(loadError instanceof Error ? loadError.message : "Failed to load lesson detail.");
+                    setLessonError(loadError instanceof Error ? loadError.message : t("dashboard.student.lessonsPage.errors.failedToLoadLessonDetail"));
                     setLessonDetail(null);
                 }
             } finally {
@@ -452,12 +506,32 @@ export default function StudentLessonsPage() {
         return () => {
             cancelled = true;
         };
-    }, [activeLessonId]);
+    }, [activeLessonId, currentLanguage]);
 
-    const syncPath = async (subjectId: string) => {
-        const path = await studentLearningPathService.getSubjectPath(subjectId);
-        setSubjectPath(path);
-        return path;
+    const resolveLessonQuizAssessmentId = async (
+        lessonId: string,
+        assignedDifficultyLevel: IStudentLearningPathTopic["assignedDifficultyLevel"]
+    ) => {
+        const assessments = await studentAssessmentGenerationService.getLessonAssessments(lessonId);
+        const selectedAssessment = selectLessonAssessmentByDifficulty(assessments, assignedDifficultyLevel);
+        return selectedAssessment?.assessmentId ?? null;
+    };
+
+    const openLessonQuiz = async (
+        lessonId: string,
+        assignedDifficultyLevel: IStudentLearningPathTopic["assignedDifficultyLevel"]
+    ) => {
+        if (!activeSubjectId) {
+            return false;
+        }
+
+        const assessmentId = await resolveLessonQuizAssessmentId(lessonId, assignedDifficultyLevel);
+        if (!assessmentId) {
+            return false;
+        }
+
+        router.push(`/student/learning-path?subjectId=${activeSubjectId}&assessmentId=${assessmentId}&assessmentType=2`);
+        return true;
     };
 
     const handleSelectSubject = (subjectId: string) => {
@@ -484,29 +558,6 @@ export default function StudentLessonsPage() {
         router.push(`/student/lessons?subjectId=${activeSubjectId}`);
     };
 
-    const handleCompleteLesson = async () => {
-        if (!activeLessonId || !activeSubjectId) {
-            return;
-        }
-
-        try {
-            await studentLearningPathService.completeLesson({ lessonId: activeLessonId });
-            const refreshedPath = await syncPath(activeSubjectId);
-            const nextCurrent = getCurrentLesson(refreshedPath);
-
-            if (nextCurrent) {
-                messageApi.success("Lesson completed. Moving to your next lesson.");
-                router.push(`/student/lessons?subjectId=${activeSubjectId}&lessonId=${nextCurrent.lesson.lessonId}`);
-                return;
-            }
-
-            messageApi.success("Lesson completed. Continue in your learning path for the next recommended step.");
-            router.push(`/student/learning-path?subjectId=${activeSubjectId}`);
-        } catch (completeError) {
-            messageApi.error(completeError instanceof Error ? completeError.message : "Failed to complete the lesson.");
-        }
-    };
-
     const activeTopic = subjectPath?.topics.find((topic) => topic.lessons.some((lesson) => lesson.lessonId === activeLessonId)) ?? null;
     const activeLesson = activeTopic?.lessons.find((lesson) => lesson.lessonId === activeLessonId) ?? null;
 
@@ -515,17 +566,17 @@ export default function StudentLessonsPage() {
             {contextHolder}
 
             {loading ? (
-                <Spin />
+                <DashboardPageSkeleton cardCount={4} />
             ) : error ? (
-                <Alert type="error" showIcon message="Unable to load lessons" description={error} />
+                <Alert type="error" showIcon message={t("dashboard.student.lessonsPage.errors.unableToLoadLessons")} description={error} />
             ) : subjects.length === 0 || !subjectPath ? (
-                <Empty description="You are not enrolled in any subjects yet." />
+                <Empty description={t("dashboard.student.lessonsPage.empty.notEnrolled")} />
             ) : activeLesson && activeTopic ? (
                 <>
                     <div className={styles.pageHeader}>
                         <div>
-                            <Title level={2} style={{ marginBottom: 0 }}>Lessons</Title>
-                            <Text type="secondary">{`${subjectPath.subjectName} · adaptive lesson track`}</Text>
+                            <Title level={2} style={{ marginBottom: 0 }}>{t("dashboard.student.lessonsPage.title")}</Title>
+                            <Text type="secondary">{`${subjectPath.subjectName} · ${t("dashboard.student.lessonsPage.adaptiveLessonTrack")}`}</Text>
                         </div>
 
                         <SubjectSwitcher
@@ -543,7 +594,19 @@ export default function StudentLessonsPage() {
                         loading={lessonLoading}
                         error={lessonError}
                         onBack={handleBackToList}
-                        onComplete={() => void handleCompleteLesson()}
+                        onSelectLesson={handleSelectLesson}
+                        onOpenQuiz={() => {
+                            void (async () => {
+                                try {
+                                    const opened = await openLessonQuiz(activeLesson.lessonId, activeTopic.assignedDifficultyLevel);
+                                    if (!opened) {
+                                        messageApi.info(t("dashboard.student.lessonsPage.messages.noLessonQuizForLessonYet"));
+                                    }
+                                } catch (quizError) {
+                                    messageApi.error(quizError instanceof Error ? quizError.message : t("dashboard.student.lessonsPage.errors.failedToOpenLessonQuiz"));
+                                }
+                            })();
+                        }}
                     />
                 </>
             ) : (

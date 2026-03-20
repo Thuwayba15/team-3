@@ -4,10 +4,8 @@ import { createStyles } from "antd-style";
 
 export const useStyles = createStyles(({ css, token }) => ({
     loadingState: css`
+        width: 100%;
         min-height: 320px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
     `,
 
     errorState: css`
@@ -39,15 +37,15 @@ export const useStyles = createStyles(({ css, token }) => ({
     `,
 
     askAiBtn: css`
-        background: #00b8a9 !important;
-        border-color: #00b8a9 !important;
+        background: #1e40af !important;
+        border-color: #1e40af !important;
         display: flex;
         align-items: center;
         gap: 6px;
 
         &:hover {
-            background: #00a89a !important;
-            border-color: #00a89a !important;
+            background: #1d4ed8 !important;
+            border-color: #1d4ed8 !important;
         }
     `,
 
@@ -72,7 +70,7 @@ export const useStyles = createStyles(({ css, token }) => ({
 
     statIcon: css`
         font-size: 22px;
-        color: #00b8a9;
+        color: #1e40af;
     `,
 
     statValue: css`
@@ -152,12 +150,12 @@ export const useStyles = createStyles(({ css, token }) => ({
     `,
 
     startBtn: css`
-        background: #00b8a9 !important;
-        border-color: #00b8a9 !important;
+        background: #1e40af !important;
+        border-color: #1e40af !important;
 
         &:hover {
-            background: #00a89a !important;
-            border-color: #00a89a !important;
+            background: #1d4ed8 !important;
+            border-color: #1d4ed8 !important;
         }
     `,
 
@@ -237,35 +235,35 @@ export const useStyles = createStyles(({ css, token }) => ({
     `,
 
     heatStrongTile: css`
-        background: #00b8a9;
+        background: #059669;
     `,
 
     heatModerateTile: css`
-        background: #7cb305;
+        background: #d97706;
     `,
 
     heatWeakTile: css`
-        background: #faad14;
+        background: #f59e0b;
     `,
 
     heatCriticalTile: css`
-        background: #ff7875;
+        background: #dc2626;
     `,
 
     attentionCard: css`
         border-radius: ${token.borderRadiusLG}px;
-        border: 1px solid #ffe58f;
-        background: #fffbe6;
+        border: 1px solid #d97706;
+        background: #fef3c7;
         margin-bottom: ${token.marginLG}px;
 
         .ant-card-head {
             background: transparent;
-            border-bottom: 1px solid #ffe58f;
+            border-bottom: 1px solid #d97706;
         }
 
         .ant-card-head-title {
             font-weight: 600;
-            color: #ad6800;
+            color: #92400e;
         }
     `,
 
@@ -282,8 +280,8 @@ export const useStyles = createStyles(({ css, token }) => ({
     attentionItem: css`
         padding: ${token.paddingSM}px;
         border-radius: ${token.borderRadius}px;
-        border: 1px solid #ffe58f;
-        background: #fff7e6;
+        border: 1px solid #d97706;
+        background: #fef3c7;
     `,
 
     attentionHeader: css`
@@ -296,25 +294,25 @@ export const useStyles = createStyles(({ css, token }) => ({
     attentionTitle: css`
         font-size: 14px;
         font-weight: 600;
-        color: #ad6800;
+        color: #92400e;
     `,
 
     attentionPercent: css`
         font-size: 13px;
         font-weight: 600;
-        color: #ad6800;
+        color: #92400e;
     `,
 
     attentionMeta: css`
         display: block;
-        color: #ad6800;
+        color: #92400e;
         font-size: 12px;
         margin-top: 4px;
     `,
 
     attentionDesc: css`
         display: block;
-        color: #875800;
+        color: #78350f;
         font-size: 13px;
         margin-top: 6px;
     `,
@@ -323,11 +321,11 @@ export const useStyles = createStyles(({ css, token }) => ({
         border-radius: ${token.borderRadiusLG}px;
         border: 1px solid ${token.colorBorderSecondary};
         margin-bottom: ${token.marginLG}px;
-        background: linear-gradient(135deg, #f0fffb 0%, #e6f7ff 100%);
+        background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
     `,
 
     guidanceIcon: css`
-        color: #00b8a9;
+        color: #1e40af;
         font-size: 18px;
         margin-top: 2px;
     `,
@@ -357,7 +355,7 @@ export const useStyles = createStyles(({ css, token }) => ({
     `,
 
     completedIcon: css`
-        color: #00b8a9;
+        color: #059669;
         font-size: 16px;
     `,
 }));

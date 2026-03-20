@@ -117,6 +117,12 @@ export const LESSON_GET_ENDPOINT = "/api/services/app/StudentSubject/GetLesson";
 
 /** Uploads text content as a lesson, triggering translation into all active languages. */
 export const UPLOAD_TEXT_MATERIAL_ENDPOINT = "/api/services/app/LearningMaterial/UploadTextMaterial";
+
+/** Generates a quiz assessment for a lesson. */
+export const GENERATE_LESSON_QUIZ_ENDPOINT = "/api/services/app/AssessmentGeneration/GenerateLessonQuiz";
+
+/** Returns all assessments generated for a lesson. */
+export const GET_LESSON_ASSESSMENTS_ENDPOINT = "/api/services/app/AssessmentGeneration/GetLessonAssessments";
 /** Returns subjects the authenticated student is enrolled in. */
 export const STUDENT_SUBJECT_GET_MY_SUBJECTS_ENDPOINT = "/api/services/app/StudentSubject/GetMySubjects";
 
@@ -143,6 +149,9 @@ export const STUDENT_ASSESSMENT_SUBMIT_DIAGNOSTIC_ENDPOINT = "/api/services/app/
 
 /** Submits a lesson quiz attempt for the authenticated student. */
 export const STUDENT_ASSESSMENT_SUBMIT_LESSON_QUIZ_ENDPOINT = "/api/services/app/StudentAssessment/SubmitLessonQuiz";
+
+/** Returns all generated quiz assessments for a given lesson. */
+export const ASSESSMENT_GENERATION_GET_LESSON_ASSESSMENTS_ENDPOINT = "/api/services/app/AssessmentGeneration/GetLessonAssessments";
 
 /** Returns student dashboard and progress aggregates. */
 export const STUDENT_DASHBOARD_GET_MY_DASHBOARD_ENDPOINT = "/api/services/app/student-dashboard/get-my-dashboard";

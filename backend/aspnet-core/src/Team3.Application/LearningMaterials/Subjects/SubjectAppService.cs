@@ -7,8 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Team3.Academic;
+using Team3.Application.Localization;
 using Team3.Configuration;
 using Team3.LearningMaterials.Dto;
+using Team3.Localization;
 
 namespace Team3.LearningMaterials.Subjects
 {
@@ -22,14 +24,29 @@ namespace Team3.LearningMaterials.Subjects
         public IRepository<StudentEnrollment, Guid> EnrollmentRepository { get; set; }
         public IRepository<StudentProgress, Guid> ProgressRepository { get; set; }
         public IRepository<Language, Guid> LanguageRepository { get; set; }
+        public IRepository<UserLanguagePreference, long> UserLanguagePreferenceRepository { get; set; }
+        public IRepository<SubjectTranslation, Guid> SubjectTranslationRepository { get; set; }
+        public IRepository<TopicTranslation, Guid> TopicTranslationRepository { get; set; }
+        private readonly ILanguageResolver _languageResolver;
+
+        public StudentSubjectAppService(ILanguageResolver languageResolver)
+        {
+            _languageResolver = languageResolver;
+        }
 
         // GET /subjects
         public async Task<List<SubjectDto>> GetAllSubjectsAsync()
         {
             try
             {
+                var userId = AbpSession.UserId ?? 0;
+                var languageCode = await _languageResolver.GetUserPreferredLanguageCodeAsync(userId);
+                
                 var subjects = await SubjectRepository.GetAllListAsync(x => x.IsActive);
-                return subjects.Select(MapSubjectDto).ToList();
+                var translations = await SubjectTranslationRepository.GetAllListAsync();
+                var languages = await LanguageRepository.GetAllListAsync();
+                
+                return subjects.Select(s => MapSubjectDtoWithTranslation(s, languageCode, translations, languages)).ToList();
             }
             catch (Exception ex)
             {
@@ -45,6 +62,8 @@ namespace Team3.LearningMaterials.Subjects
                 var studentId = AbpSession.UserId
                     ?? throw new UserFriendlyException("You must be logged in.");
 
+                var languageCode = await _languageResolver.GetUserPreferredLanguageCodeAsync(studentId);
+                
                 var enrollments = await EnrollmentRepository.GetAllListAsync(
                     x => x.StudentId == studentId && x.IsActive);
 
@@ -53,7 +72,10 @@ namespace Team3.LearningMaterials.Subjects
                 var subjects = await SubjectRepository.GetAllListAsync(
                     x => subjectIds.Contains(x.Id) && x.IsActive);
 
-                return subjects.Select(MapSubjectDto).ToList();
+                var translations = await SubjectTranslationRepository.GetAllListAsync();
+                var languages = await LanguageRepository.GetAllListAsync();
+
+                return subjects.Select(s => MapSubjectDtoWithTranslation(s, languageCode, translations, languages)).ToList();
             }
             catch (UserFriendlyException) { throw; }
             catch (Exception ex)
@@ -159,21 +181,19 @@ namespace Team3.LearningMaterials.Subjects
                 var subject = await SubjectRepository.FirstOrDefaultAsync(subjectId)
                     ?? throw new UserFriendlyException("Subject not found.");
 
+                var userId = AbpSession.UserId ?? 0;
+                var languageCode = await _languageResolver.GetUserPreferredLanguageCodeAsync(userId);
+
                 var topics = await TopicRepository.GetAllListAsync(
                     x => x.SubjectId == subjectId && x.IsActive);
 
+                var translations = await TopicTranslationRepository.GetAllListAsync();
+                var languages = await LanguageRepository.GetAllListAsync();
+
                 return topics
                     .OrderBy(x => x.SequenceOrder)
-                    .Select(t => new TopicDto
-                    {
-                        Id = t.Id,
-                        SubjectId = t.SubjectId,
-                        Name = t.Name,
-                        Description = t.Description,
-                        DifficultyLevel = t.DifficultyLevel,
-                        SequenceOrder = t.SequenceOrder,
-                        IsActive = t.IsActive
-                    }).ToList();
+                    .Select(t => MapTopicDtoWithTranslation(t, languageCode, translations, languages))
+                    .ToList();
             }
             catch (UserFriendlyException) { throw; }
             catch (Exception ex)
@@ -191,7 +211,7 @@ namespace Team3.LearningMaterials.Subjects
                     ?? throw new UserFriendlyException("Topic not found.");
 
                 var lessons = await LessonRepository.GetAllListAsync(
-                    x => x.TopicId == topicId && x.IsPublished);
+                    x => x.TopicId == topicId);
 
                 return lessons.Select(l => new LessonSummaryDto
                 {
@@ -215,14 +235,43 @@ namespace Team3.LearningMaterials.Subjects
         {
             try
             {
+                var studentId = AbpSession.UserId
+                    ?? throw new UserFriendlyException("You must be logged in.");
+
                 var lesson = await LessonRepository.FirstOrDefaultAsync(lessonId)
                     ?? throw new UserFriendlyException("Lesson not found.");
+                var topic = await TopicRepository.FirstOrDefaultAsync(lesson.TopicId)
+                    ?? throw new UserFriendlyException("Topic not found.");
+                var enrollment = await EnrollmentRepository.FirstOrDefaultAsync(
+                    x => x.StudentId == studentId && x.SubjectId == topic.SubjectId && x.IsActive);
+
+                if (enrollment == null)
+                    throw new UserFriendlyException("You are not enrolled in this subject.");
 
                 var translations = await LessonTranslationRepository.GetAllListAsync(
                     x => x.LessonId == lessonId);
 
                 var languages = await LanguageRepository.GetAllListAsync();
                 var languageMap = languages.ToDictionary(x => x.Id);
+                var preferredLanguageCode = await GetPreferredLanguageCodeAsync(studentId);
+                var orderedTranslations = translations
+                    .OrderByDescending(t =>
+                        languageMap.TryGetValue(t.LanguageId, out var lang)
+                        && string.Equals(lang.Code, preferredLanguageCode, StringComparison.OrdinalIgnoreCase))
+                    .ThenByDescending(t =>
+                        languageMap.TryGetValue(t.LanguageId, out var lang)
+                        && string.Equals(lang.Code, "en", StringComparison.OrdinalIgnoreCase))
+                    .ThenBy(t => languageMap.TryGetValue(t.LanguageId, out var lang) ? lang.Name : "Unknown")
+                    .ToList();
+
+                LessonTranslation? selectedTranslation = orderedTranslations
+                    .FirstOrDefault(t =>
+                        languageMap.TryGetValue(t.LanguageId, out var lang)
+                        && string.Equals(lang.Code, preferredLanguageCode, StringComparison.OrdinalIgnoreCase))
+                    ?? orderedTranslations.FirstOrDefault(t =>
+                        languageMap.TryGetValue(t.LanguageId, out var lang)
+                        && string.Equals(lang.Code, "en", StringComparison.OrdinalIgnoreCase))
+                    ?? orderedTranslations.FirstOrDefault();
 
                 return new LessonDetailDto
                 {
@@ -235,7 +284,19 @@ namespace Team3.LearningMaterials.Subjects
                     DifficultyLevel = lesson.DifficultyLevel,
                     EstimatedMinutes = lesson.EstimatedMinutes,
                     IsPublished = lesson.IsPublished,
-                    Translations = translations.Select(t => new LessonTranslationSummaryDto
+                    PreferredLanguageCode = preferredLanguageCode,
+                    SelectedTranslation = selectedTranslation == null ? null : new LessonTranslationSummaryDto
+                    {
+                        LanguageCode = languageMap.TryGetValue(selectedTranslation.LanguageId, out var selectedLang) ? selectedLang.Code : selectedTranslation.LanguageId.ToString(),
+                        LanguageName = languageMap.TryGetValue(selectedTranslation.LanguageId, out var selectedLang2) ? selectedLang2.Name : "Unknown",
+                        Title = selectedTranslation.Title,
+                        Content = selectedTranslation.Content,
+                        Summary = selectedTranslation.Summary,
+                        Examples = selectedTranslation.Examples,
+                        RevisionSummary = selectedTranslation.RevisionSummary,
+                        IsAutoTranslated = selectedTranslation.IsAutoTranslated
+                    },
+                    Translations = orderedTranslations.Select(t => new LessonTranslationSummaryDto
                     {
                         LanguageCode = languageMap.TryGetValue(t.LanguageId, out var lang) ? lang.Code : t.LanguageId.ToString(),
                         LanguageName = languageMap.TryGetValue(t.LanguageId, out var lang2) ? lang2.Name : "Unknown",
@@ -255,6 +316,18 @@ namespace Team3.LearningMaterials.Subjects
             }
         }
 
+        private async Task<string> GetPreferredLanguageCodeAsync(long userId)
+        {
+            var preference = await UserLanguagePreferenceRepository.FirstOrDefaultAsync(x => x.UserId == userId);
+            if (preference != null && !string.IsNullOrWhiteSpace(preference.LanguageCode))
+            {
+                return preference.LanguageCode.Trim().ToLowerInvariant();
+            }
+
+            var defaultLanguage = await LanguageRepository.FirstOrDefaultAsync(x => x.IsDefault && x.IsActive);
+            return defaultLanguage?.Code?.Trim().ToLowerInvariant() ?? "en";
+        }
+
         private static SubjectDto MapSubjectDto(Subject s) => new()
         {
             Id = s.Id,
@@ -263,5 +336,119 @@ namespace Team3.LearningMaterials.Subjects
             GradeLevel = s.GradeLevel,
             IsActive = s.IsActive
         };
+
+        /// <summary>
+        /// Maps Subject to DTO with translation fallback.
+        /// Falls back to English or core entity values if translation not found.
+        /// </summary>
+        private SubjectDto MapSubjectDtoWithTranslation(Subject s, string languageCode, List<SubjectTranslation> allTranslations, List<Language> allLanguages)
+        {
+            // Build a map of language code to language ID for quick lookup
+            var languageCodeToId = allLanguages.ToDictionary(l => l.Code, l => l.Id);
+            
+            // Try to find translation for preferred language
+            if (languageCodeToId.TryGetValue(languageCode, out var preferredLangId))
+            {
+                var translation = allTranslations.FirstOrDefault(t => t.SubjectId == s.Id && t.LanguageId == preferredLangId);
+                if (translation != null)
+                {
+                    return new SubjectDto
+                    {
+                        Id = s.Id,
+                        Name = translation.Name ?? s.Name,
+                        Description = translation.Description ?? s.Description,
+                        GradeLevel = s.GradeLevel,
+                        IsActive = s.IsActive
+                    };
+                }
+            }
+            
+            // Fallback to English translation if preferred language not found
+            if (languageCode != "en" && languageCodeToId.TryGetValue("en", out var englishLangId))
+            {
+                var englishTranslation = allTranslations.FirstOrDefault(t => t.SubjectId == s.Id && t.LanguageId == englishLangId);
+                if (englishTranslation != null)
+                {
+                    return new SubjectDto
+                    {
+                        Id = s.Id,
+                        Name = englishTranslation.Name ?? s.Name,
+                        Description = englishTranslation.Description ?? s.Description,
+                        GradeLevel = s.GradeLevel,
+                        IsActive = s.IsActive
+                    };
+                }
+            }
+
+            // Fallback to core entity values
+            return new SubjectDto
+            {
+                Id = s.Id,
+                Name = s.Name,
+                Description = s.Description,
+                GradeLevel = s.GradeLevel,
+                IsActive = s.IsActive
+            };
+        }
+
+        /// <summary>
+        /// Maps Topic to DTO with translation fallback.
+        /// Falls back to English or core entity values if translation not found.
+        /// </summary>
+        private TopicDto MapTopicDtoWithTranslation(Topic t, string languageCode, List<TopicTranslation> allTranslations, List<Language> allLanguages)
+        {
+            // Build a map of language code to language ID for quick lookup
+            var languageCodeToId = allLanguages.ToDictionary(l => l.Code, l => l.Id);
+            
+            // Try to find translation for preferred language
+            if (languageCodeToId.TryGetValue(languageCode, out var preferredLangId))
+            {
+                var translation = allTranslations.FirstOrDefault(x => x.TopicId == t.Id && x.LanguageId == preferredLangId);
+                if (translation != null)
+                {
+                    return new TopicDto
+                    {
+                        Id = t.Id,
+                        SubjectId = t.SubjectId,
+                        Name = translation.Name ?? t.Name,
+                        Description = translation.Description ?? t.Description,
+                        DifficultyLevel = t.DifficultyLevel,
+                        SequenceOrder = t.SequenceOrder,
+                        IsActive = t.IsActive
+                    };
+                }
+            }
+            
+            // Fallback to English translation if preferred language not found
+            if (languageCode != "en" && languageCodeToId.TryGetValue("en", out var englishLangId))
+            {
+                var englishTranslation = allTranslations.FirstOrDefault(x => x.TopicId == t.Id && x.LanguageId == englishLangId);
+                if (englishTranslation != null)
+                {
+                    return new TopicDto
+                    {
+                        Id = t.Id,
+                        SubjectId = t.SubjectId,
+                        Name = englishTranslation.Name ?? t.Name,
+                        Description = englishTranslation.Description ?? t.Description,
+                        DifficultyLevel = t.DifficultyLevel,
+                        SequenceOrder = t.SequenceOrder,
+                        IsActive = t.IsActive
+                    };
+                }
+            }
+
+            // Fallback to core entity values
+            return new TopicDto
+            {
+                Id = t.Id,
+                SubjectId = t.SubjectId,
+                Name = t.Name,
+                Description = t.Description,
+                DifficultyLevel = t.DifficultyLevel,
+                SequenceOrder = t.SequenceOrder,
+                IsActive = t.IsActive
+            };
+        }
     }
 }

@@ -5,16 +5,16 @@ import { createStyles } from "antd-style";
 export const useStyles = createStyles(({ css, token }) => ({
     context: css`
         padding: ${token.paddingMD}px;
-        background: #f0fafa;
-        border-bottom: 1px solid #b7e8e4;
+        background: ${token.colorFillSecondary};
+        border-bottom: 1px solid ${token.colorBorderSecondary};
         flex-shrink: 0;
     `,
 
-    contextLabel: css`
+    timestamp: css`
         font-size: 11px;
         text-transform: uppercase;
         letter-spacing: 0.06em;
-        color: #00b8a9;
+        color: #1e40af;
         font-weight: 600;
         margin-bottom: 2px;
     `,
@@ -75,13 +75,13 @@ export const useStyles = createStyles(({ css, token }) => ({
     `,
 
     bubbleUser: css`
-        background: #00b8a9;
+        background: #1e40af;
         color: #fff;
         border-radius: 12px 4px 12px 12px;
     `,
 
     avatarAi: css`
-        background: #00b8a9 !important;
+        background: #1e40af !important;
         flex-shrink: 0;
     `,
 
@@ -109,14 +109,14 @@ export const useStyles = createStyles(({ css, token }) => ({
     `,
 
     sendBtn: css`
-        background: #00b8a9 !important;
-        border-color: #00b8a9 !important;
+        background: #1e40af !important;
+        border-color: #1e40af !important;
         height: 40px;
         width: 40px;
 
         &:hover {
-            background: #00a89a !important;
-            border-color: #00a89a !important;
+            background: #1d4ed8 !important;
+            border-color: #1d4ed8 !important;
         }
 
         &:disabled {

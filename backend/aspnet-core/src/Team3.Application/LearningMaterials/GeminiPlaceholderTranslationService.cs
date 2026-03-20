@@ -150,7 +150,7 @@ public class GeminiPlaceholderTranslationService : ITextTranslationService, ITra
             return apiKey.Trim();
         }
 
-        return "GeminiAPIKeyPlaceholder";
+        return "GeminiPlaeholderApiKey"; // Placeholder value to allow development without a real API key. Replace with actual key in production.
         //throw new UserFriendlyException(
           //  $"Gemini API key is not configured. Set '{AppSettingNames.GeminiApiKey}' or the GEMINI_API_KEY environment variable.");
     }

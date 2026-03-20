@@ -1,13 +1,15 @@
 "use client";
 
 import axios from "axios";
-import { ReactNode, useContext, useMemo, useReducer } from "react";
+import { ReactNode, useContext, useEffect, useMemo, useReducer } from "react";
+import { useI18nState } from "@/providers/i18n";
 import { apiClient } from "@/lib/api/client";
 import {
     SUBJECT_GET_ALL_ENDPOINT,
     SUBJECT_GET_MY_ENDPOINT,
     TOPIC_GET_BY_SUBJECT_ENDPOINT,
     LESSON_GET_BY_TOPIC_ENDPOINT,
+    LESSON_GET_ENDPOINT,
     UPLOAD_TEXT_MATERIAL_ENDPOINT,
 } from "@/constants/api";
 import {
@@ -15,17 +17,18 @@ import {
     getMySubjectsPending, getMySubjectsSuccess, getMySubjectsError,
     getTopicsBySubjectPending, getTopicsBySubjectSuccess, getTopicsBySubjectError,
     getLessonsByTopicPending, getLessonsByTopicSuccess, getLessonsByTopicError,
+    getLessonPending, getLessonSuccess, getLessonError,
     createLessonPending, createLessonSuccess, createLessonError,
 } from "./actions";
 import type {
-    ISubject, ITopic, ILessonSummary,
+    ISubject, ITopic, ILessonSummary, ILessonDetail,
     IUploadLessonInput, IUploadLessonOutput, ILessonTranslation,
     ISubjectContextActions, ISubjectContextState,
 } from "./context";
 import { INITIAL_STATE, SubjectActionsContext, SubjectStateContext } from "./context";
 import { subjectReducer } from "./reducer";
 
-export type { ISubject, ITopic, ILessonSummary, IUploadLessonInput, IUploadLessonOutput, ILessonTranslation };
+export type { ISubject, ITopic, ILessonSummary, ILessonDetail, IUploadLessonInput, IUploadLessonOutput, ILessonTranslation };
 
 interface IAbpResponse<T> {
     result: T;
@@ -38,6 +41,7 @@ interface ISubjectProviderProps {
 
 export const SubjectProvider = ({ children }: ISubjectProviderProps) => {
     const [state, dispatch] = useReducer(subjectReducer, INITIAL_STATE);
+    const { currentLanguage } = useI18nState();
 
     const getSubjects = async (): Promise<void> => {
         dispatch(getSubjectsPending());
@@ -83,6 +87,18 @@ export const SubjectProvider = ({ children }: ISubjectProviderProps) => {
         }
     };
 
+    const getLesson = async (lessonId: string): Promise<void> => {
+        dispatch(getLessonPending());
+        try {
+            const response = await apiClient.get<IAbpResponse<ILessonDetail>>(LESSON_GET_ENDPOINT, {
+                params: { lessonId },
+            });
+            dispatch(getLessonSuccess(response.data.result));
+        } catch (error) {
+            dispatch(getLessonError(resolveErrorMessage(error)));
+        }
+    };
+
     const createLesson = async (input: IUploadLessonInput): Promise<IUploadLessonOutput | undefined> => {
         dispatch(createLessonPending());
         try {
@@ -96,9 +112,38 @@ export const SubjectProvider = ({ children }: ISubjectProviderProps) => {
     };
 
     const actionsValue = useMemo<ISubjectContextActions>(
-        () => ({ getSubjects, getMySubjects, getTopicsBySubject, getLessonsByTopic, createLesson }),
+        () => ({ getSubjects, getMySubjects, getTopicsBySubject, getLessonsByTopic, getLesson, createLesson }),
         []
     );
+
+    // refresh subject/topic/lesson data when language preference changes
+    useEffect(() => {
+        if (state.mySubjects && state.mySubjects.length > 0) {
+            void getMySubjects();
+        }
+
+        if (state.topics && state.topics.length > 0) {
+            const subjectId = state.topics[0]?.subjectId;
+            if (subjectId) {
+                void getTopicsBySubject(subjectId);
+            }
+        }
+
+        if (state.subjects && state.subjects.length > 0) {
+            void getSubjects();
+        }
+
+        if (state.lessons && state.lessons.length > 0) {
+            const topicId = state.lessons[0]?.topicId;
+            if (topicId) {
+                void getLessonsByTopic(topicId);
+            }
+        }
+
+        if (state.selectedLesson?.id) {
+            void getLesson(state.selectedLesson.id);
+        }
+    }, [currentLanguage]);
 
     return (
         <SubjectStateContext.Provider value={state}>

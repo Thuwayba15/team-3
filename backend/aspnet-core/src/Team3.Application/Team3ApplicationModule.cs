@@ -5,6 +5,7 @@ using Team3.Authorization;
 
 using Castle.MicroKernel.Registration;
 using FluentValidation;
+using Team3.Application.Localization;
 using Team3.LearningMaterials.Dto;
 using Team3.LearningMaterials;
 using Team3.Users.Dto;
@@ -45,6 +46,12 @@ IocManager.RegisterAssemblyByConvention(thisAssembly);
         IocManager.IocContainer.Register(
             Component.For<IValidator<UpdatePlatformLanguageInput>>()
                 .ImplementedBy<UpdatePlatformLanguageInputValidator>()
+                .LifestyleTransient()
+        );
+
+        IocManager.IocContainer.Register(
+            Component.For<ILanguageResolver>()
+                .ImplementedBy<LanguageResolver>()
                 .LifestyleTransient()
         );
 

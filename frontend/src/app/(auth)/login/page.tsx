@@ -29,9 +29,9 @@ export default function LoginPage() {
       <div className={styles.swooshContainer}>
         <svg width="100%" height="100%" viewBox="0 0 1440 800" fill="none" preserveAspectRatio="none">
           <defs>
-            <linearGradient id="soft_grad" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#ffffff" />
-              <stop offset="100%" stopColor="#08F1C2" />
+            <linearGradient id="soft_grad" x1="100%" y1="100%" x2="100%" y2="50%">
+              <stop offset="0%" stopColor="#a9bee3" />
+              <stop offset="100%" stopColor="#3426f7" />
             </linearGradient>
           </defs>
           <path d="M-200 150 C 200 50, 700 250, 1600 50" stroke="url(#soft_grad)" strokeWidth="120" strokeOpacity="0.04" strokeLinecap="round" />
@@ -42,7 +42,7 @@ export default function LoginPage() {
 
         <div className={styles.brandSection}>
           <img src="https://firebasestorage.googleapis.com/v0/b/grade-12-life-sciences-st.firebasestorage.app/o/image.png?alt=media&token=7477da80-3128-4dc8-833b-92c432ea71b1" alt="Logo" className={styles.mainLogo} />
-          <h1 className={styles.title}>Ubuntu Learn</h1>
+          <h1 className={styles.title}>UbuntuLearn</h1>
           <p className={styles.subtitle}>Learn • Funda • Bala • Leer</p>
 
         </div>
@@ -68,9 +68,7 @@ export default function LoginPage() {
             
             <div className={styles.footerActions}>
               <p>Don&apos;t have an account? <Link href="/register" className={styles.regLink}>Create an account</Link></p>
-              
-              <div className={styles.educationTeaser}>
-              </div>
+
             </div>
           </motion.div>
         </div>
