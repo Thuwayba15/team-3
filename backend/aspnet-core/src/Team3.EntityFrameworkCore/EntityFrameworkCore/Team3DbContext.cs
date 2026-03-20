@@ -37,6 +37,7 @@ public class Team3DbContext : AbpZeroDbContext<Tenant, Role, User, Team3DbContex
     public DbSet<SourceMaterial> SourceMaterials { get; set; }
     public DbSet<StudentEnrollment> StudentEnrollments { get; set; }
     public DbSet<StudentProgress> StudentProgresses { get; set; }
+    public DbSet<AIPromptTemplate> AIPromptTemplates { get; set; }
     public DbSet<StudentLessonProgress> StudentLessonProgresses { get; set; }
     public DbSet<StudentTopicProgress> StudentTopicProgresses { get; set; }
 
@@ -283,6 +284,16 @@ public class Team3DbContext : AbpZeroDbContext<Tenant, Role, User, Team3DbContex
                 .WithMany()
                 .HasForeignKey(x => x.TopicId)
                 .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<AIPromptTemplate>(entity =>
+        {
+            entity.ToTable("AIPromptTemplates");
+
+            entity.Property(x => x.Name).IsRequired().HasMaxLength(100);
+            entity.Property(x => x.Purpose).IsRequired().HasMaxLength(500);
+            entity.Property(x => x.TemplateText).IsRequired().HasColumnType("text");
+            entity.Property(x => x.Temperature).IsRequired();
         });
 
         modelBuilder.Entity<UserLanguagePreference>(entity =>
