@@ -14,6 +14,7 @@ import { DashboardPageSkeleton } from "@/components/layout";
 import SubjectEnrollmentModal from "@/components/student/SubjectEnrollmentModal";
 import SubjectSwitcher from "@/components/student/SubjectSwitcher";
 import { UI_COLORS } from "@/constants/uiColors";
+import { useI18nState } from "@/providers/i18n";
 import QuizView from "./QuizView";
 import { useStyles } from "./styles";
 import {
@@ -140,6 +141,7 @@ function LessonRow({
 export default function StudentLearningPathPage() {
     const { styles } = useStyles();
     const { t } = useTranslation();
+    const { currentLanguage } = useI18nState();
     const router = useRouter();
     const searchParams = useSearchParams();
     const subjectIdParam = searchParams.get("subjectId");
@@ -157,6 +159,55 @@ export default function StudentLearningPathPage() {
     const [isEnrollmentOpen, setIsEnrollmentOpen] = useState(false);
     const [selectedEnrollmentIds, setSelectedEnrollmentIds] = useState<string[]>([]);
     const [submittingEnrollment, setSubmittingEnrollment] = useState(false);
+
+    const translateServerAction = useCallback((action: string | null | undefined): string => {
+        if (!action) {
+            return "";
+        }
+
+        const normalized = action.trim().toLowerCase();
+
+        if (normalized === "complete the previous topic to unlock this one.") {
+            return t("dashboard.student.lessonsPage.serverAction.completePreviousTopic");
+        }
+
+        if (normalized === "take the diagnostic assessment to unlock this topic.") {
+            return t("dashboard.student.lessonsPage.serverAction.takeDiagnosticAssessment");
+        }
+
+        if (
+            normalized === "no lesson is available for the assigned difficulty yet."
+            || normalized === "no lesson is available for assigned difficulty yet."
+        ) {
+            return t("dashboard.student.lessonsPage.serverAction.noLessonForDifficulty");
+        }
+
+        if (normalized === "take the lesson quiz to complete this topic.") {
+            return t("dashboard.student.lessonsPage.serverAction.takeLessonQuizForTopic");
+        }
+
+        if (normalized === "a lesson quiz is not available for this topic yet.") {
+            return t("dashboard.student.lessonsPage.serverAction.lessonQuizNotAvailableForTopic");
+        }
+
+        if (normalized === "no lessons are available for this topic yet.") {
+            return t("dashboard.student.lessonsPage.serverAction.noLessonsForTopicYet");
+        }
+
+        if (normalized === "continue with your current lesson.") {
+            return t("dashboard.student.lessonsPage.serverAction.continueCurrentLesson");
+        }
+
+        if (normalized === "you have completed the available learning path for this subject.") {
+            return t("dashboard.student.lessonsPage.serverAction.completedAvailablePath");
+        }
+
+        if (normalized === "start with the first available topic.") {
+            return t("dashboard.student.lessonsPage.serverAction.startFirstTopic");
+        }
+
+        return action;
+    }, [t]);
 
     const enrolledSubjectIds = useMemo(() => subjects.map((subject) => subject.id), [subjects]);
 
@@ -214,7 +265,7 @@ export default function StudentLearningPathPage() {
 
     useEffect(() => {
         void loadEnrolledSubjects();
-    }, [loadEnrolledSubjects]);
+    }, [currentLanguage, loadEnrolledSubjects]);
 
     const loadSubjectPath = async (subjectId: string) => {
         setLoadingPath(true);
@@ -238,7 +289,7 @@ export default function StudentLearningPathPage() {
         }
 
         void loadSubjectPath(activeSubjectId);
-    }, [activeSubjectId]);
+    }, [activeSubjectId, currentLanguage]);
 
     useEffect(() => {
         if (!assessmentIdParam) {
@@ -469,7 +520,7 @@ export default function StudentLearningPathPage() {
                                     strokeColor={UI_COLORS.PRIMARY_ACCENT}
                                 />
                                 <div className={styles.summaryMeta}>
-                                    <Text className={styles.helperText}>{subjectPath.recommendedAction}</Text>
+                                    <Text className={styles.helperText}>{translateServerAction(subjectPath.recommendedAction)}</Text>
                                 </div>
                             </Card>
 
@@ -481,7 +532,7 @@ export default function StudentLearningPathPage() {
                                     message="Diagnostic required"
                                     description={(
                                         <div>
-                                            <div style={{ marginBottom: 12 }}>{currentTopic.recommendedAction}</div>
+                                            <div style={{ marginBottom: 12 }}>{translateServerAction(currentTopic.recommendedAction)}</div>
                                             <Button
                                                 type="primary"
                                                 onClick={() => handleOpenAssessment(currentTopic.diagnosticAssessmentId!, 1)}
@@ -561,7 +612,7 @@ export default function StudentLearningPathPage() {
                                                             </span>
                                                         </div>
 
-                                                        <div className={styles.topicAction}>{topic.recommendedAction}</div>
+                                                        <div className={styles.topicAction}>{translateServerAction(topic.recommendedAction)}</div>
 
                                                         {topic.status === "current" && topic.lessons.length > 0 ? (
                                                             <div className={styles.moduleProgress}>
@@ -599,8 +650,8 @@ export default function StudentLearningPathPage() {
                                                         ) : (
                                                             <Text className={styles.helperText}>
                                                                 {topic.status === "locked"
-                                                                    ? "This topic will unlock after you complete the previous one."
-                                                                    : "No lessons are available for this topic yet."}
+                                                                    ? t("dashboard.student.lessonsPage.serverAction.completePreviousTopic")
+                                                                    : t("dashboard.student.lessonsPage.serverAction.noLessonsForTopicYet")}
                                                             </Text>
                                                         )}
 

@@ -31,6 +31,8 @@ namespace Team3.Students
         private readonly IRepository<StudentAssessmentAttempt, Guid> _attemptRepository;
         private readonly IRepository<Language, Guid> _languageRepository;
         private readonly IRepository<UserLanguagePreference, long> _userLanguagePreferenceRepository;
+        private readonly IRepository<SubjectTranslation, Guid> _subjectTranslationRepository;
+        private readonly IRepository<TopicTranslation, Guid> _topicTranslationRepository;
 
         public StudentLearningPathAppService(
             IRepository<Subject, Guid> subjectRepository,
@@ -44,7 +46,9 @@ namespace Team3.Students
             IRepository<StudentProgress, Guid> studentProgressRepository,
             IRepository<StudentAssessmentAttempt, Guid> attemptRepository,
             IRepository<Language, Guid> languageRepository,
-            IRepository<UserLanguagePreference, long> userLanguagePreferenceRepository)
+            IRepository<UserLanguagePreference, long> userLanguagePreferenceRepository,
+            IRepository<SubjectTranslation, Guid> subjectTranslationRepository,
+            IRepository<TopicTranslation, Guid> topicTranslationRepository)
         {
             _subjectRepository = subjectRepository;
             _topicRepository = topicRepository;
@@ -58,6 +62,8 @@ namespace Team3.Students
             _attemptRepository = attemptRepository;
             _languageRepository = languageRepository;
             _userLanguagePreferenceRepository = userLanguagePreferenceRepository;
+            _subjectTranslationRepository = subjectTranslationRepository;
+            _topicTranslationRepository = topicTranslationRepository;
         }
 
         public async Task<StudentLearningPathDto> GetSubjectPathAsync(Guid subjectId)
@@ -68,13 +74,26 @@ namespace Team3.Students
             await EnsureStudentHasAccessToSubjectAsync(studentId, subjectId);
 
             var preferredLanguageCode = await GetPreferredLanguageCodeAsync(studentId);
-            var languageMap = (await _languageRepository.GetAllListAsync()).ToDictionary(x => x.Id);
+            var languages = await _languageRepository.GetAllListAsync();
+            var languageMap = languages.ToDictionary(x => x.Id);
+            var languageCodeToId = languages
+                .Where(x => !string.IsNullOrWhiteSpace(x.Code))
+                .GroupBy(x => x.Code.Trim().ToLowerInvariant())
+                .ToDictionary(group => group.Key, group => group.First().Id);
             var topics = await _topicRepository.GetAll()
                 .Where(x => x.SubjectId == subjectId && x.IsActive)
                 .OrderBy(x => x.SequenceOrder)
                 .ToListAsync();
 
             var topicIds = topics.Select(x => x.Id).ToList();
+            var subjectTranslations = await _subjectTranslationRepository.GetAll()
+                .Where(x => x.SubjectId == subjectId)
+                .ToListAsync();
+            var topicTranslations = await _topicTranslationRepository.GetAll()
+                .Where(x => topicIds.Contains(x.TopicId))
+                .ToListAsync();
+            var translatedSubjectName = ResolveTranslatedSubjectName(subject, subjectTranslations, languageCodeToId, preferredLanguageCode);
+
             var topicProgresses = await _topicProgressRepository.GetAll()
                 .Where(x => x.StudentId == studentId && topicIds.Contains(x.TopicId))
                 .ToListAsync();
@@ -153,7 +172,7 @@ namespace Team3.Students
                 topicDtos.Add(new StudentLearningPathTopicDto
                 {
                     TopicId = topic.Id,
-                    Name = topic.Name,
+                    Name = ResolveTranslatedTopicName(topic, topicTranslations, languageCodeToId, preferredLanguageCode),
                     Description = topic.Description,
                     Status = topicStatus,
                     AssignedDifficultyLevel = assignedDifficulty,
@@ -177,7 +196,7 @@ namespace Team3.Students
             return new StudentLearningPathDto
             {
                 SubjectId = subject.Id,
-                SubjectName = subject.Name,
+                SubjectName = translatedSubjectName,
                 GradeLevel = subject.GradeLevel,
                 OverallProgressPercent = overallProgressPercent,
                 RecommendedAction = rootAction,
@@ -361,6 +380,72 @@ namespace Team3.Students
             return translations.FirstOrDefault(x => languageMap.TryGetValue(x.LanguageId, out var language) && string.Equals(language.Code, preferredLanguageCode, StringComparison.OrdinalIgnoreCase))
                    ?? translations.FirstOrDefault(x => languageMap.TryGetValue(x.LanguageId, out var language) && string.Equals(language.Code, "en", StringComparison.OrdinalIgnoreCase))
                    ?? translations.FirstOrDefault();
+        }
+
+        private static string ResolveTranslatedSubjectName(
+            Subject subject,
+            IReadOnlyCollection<SubjectTranslation> subjectTranslations,
+            IReadOnlyDictionary<string, Guid> languageCodeToId,
+            string preferredLanguageCode)
+        {
+            var translation = SelectBestSubjectTranslation(subjectTranslations, languageCodeToId, preferredLanguageCode);
+            return translation?.Name ?? subject.Name;
+        }
+
+        private static SubjectTranslation? SelectBestSubjectTranslation(
+            IReadOnlyCollection<SubjectTranslation> subjectTranslations,
+            IReadOnlyDictionary<string, Guid> languageCodeToId,
+            string preferredLanguageCode)
+        {
+            var normalizedPreferredLanguageCode = preferredLanguageCode.Trim().ToLowerInvariant();
+            if (languageCodeToId.TryGetValue(normalizedPreferredLanguageCode, out var preferredLanguageId))
+            {
+                var preferredTranslation = subjectTranslations.FirstOrDefault(x => x.LanguageId == preferredLanguageId);
+                if (preferredTranslation != null)
+                {
+                    return preferredTranslation;
+                }
+            }
+
+            if (languageCodeToId.TryGetValue("en", out var englishLanguageId))
+            {
+                return subjectTranslations.FirstOrDefault(x => x.LanguageId == englishLanguageId);
+            }
+
+            return subjectTranslations.FirstOrDefault();
+        }
+
+        private static string ResolveTranslatedTopicName(
+            Topic topic,
+            IReadOnlyCollection<TopicTranslation> topicTranslations,
+            IReadOnlyDictionary<string, Guid> languageCodeToId,
+            string preferredLanguageCode)
+        {
+            var translation = SelectBestTopicTranslation(topicTranslations.Where(x => x.TopicId == topic.Id).ToList(), languageCodeToId, preferredLanguageCode);
+            return translation?.Name ?? topic.Name;
+        }
+
+        private static TopicTranslation? SelectBestTopicTranslation(
+            IReadOnlyCollection<TopicTranslation> topicTranslations,
+            IReadOnlyDictionary<string, Guid> languageCodeToId,
+            string preferredLanguageCode)
+        {
+            var normalizedPreferredLanguageCode = preferredLanguageCode.Trim().ToLowerInvariant();
+            if (languageCodeToId.TryGetValue(normalizedPreferredLanguageCode, out var preferredLanguageId))
+            {
+                var preferredTranslation = topicTranslations.FirstOrDefault(x => x.LanguageId == preferredLanguageId);
+                if (preferredTranslation != null)
+                {
+                    return preferredTranslation;
+                }
+            }
+
+            if (languageCodeToId.TryGetValue("en", out var englishLanguageId))
+            {
+                return topicTranslations.FirstOrDefault(x => x.LanguageId == englishLanguageId);
+            }
+
+            return topicTranslations.FirstOrDefault();
         }
 
         private async Task<Assessment?> ResolveLessonQuizAsync(Guid lessonId, Guid topicId, DifficultyLevel assignedDifficulty)

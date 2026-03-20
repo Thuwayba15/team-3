@@ -247,6 +247,72 @@
         "seeResults": "Sien Resultate",
         "quizComplete": "Vasvra Voltooi!",
         "quizScoreSummary": "Jy het {{score}} uit {{total}} vrae korrek beantwoord."
+      },
+      "lessonsPage": {
+        "title": "Lesse",
+        "adaptiveLessonTrack": "aanpasbare lespad",
+        "reviewMode": "Hersieningsmodus",
+        "status": {
+          "completed": "Voltooi",
+          "inProgress": "Aan die gang"
+        },
+        "difficulty": {
+          "supportedPace": "Ondersteunde pas",
+          "standardPace": "Standaard pas",
+          "advancedPace": "Gevorderde pas"
+        },
+        "unit": {
+          "minutesShort": "min"
+        },
+        "section": {
+          "summary": "Opsomming",
+          "lessonContent": "Lesinhoud",
+          "learningObjective": "Leerdoelwit",
+          "examples": "Voorbeelde",
+          "revisionSummary": "Hersieningsopsomming"
+        },
+        "progress": {
+          "topicProgress": "Onderwerpvordering",
+          "topicCompletion": "Onderwerpvoltooiing"
+        },
+        "actions": {
+          "takeQuiz": "Neem Vasvra",
+          "reviewOnly": "Slegs Hersiening",
+          "askAiTutor": "Vra AI Tutor"
+        },
+        "tag": {
+          "review": "Hersien"
+        },
+        "ai": {
+          "needClearerExplanation": "Benodig jy 'n duideliker verduideliking?",
+          "subtitle": "Jou AI tutor kan hierdie les in jou voorkeurtaal verduidelik."
+        },
+        "errors": {
+          "unableToLoadLesson": "Kon nie les laai nie",
+          "unableToLoadLessons": "Kon nie lesse laai nie",
+          "failedToLoadLessons": "Kon nie lesse laai nie.",
+          "failedToLoadLessonDetail": "Kon nie lesbesonderhede laai nie.",
+          "failedToOpenLessonQuiz": "Kon nie die lesvasvra oopmaak nie."
+        },
+        "empty": {
+          "lessonContentComingSoon": "Lesinhoud kom binnekort.",
+          "noAdaptiveLessonsForTopicYet": "Geen aanpasbare lesse is nog vir hierdie onderwerp beskikbaar nie.",
+          "notEnrolled": "Jy is nog nie by enige vakke ingeskryf nie."
+        },
+        "messages": {
+          "noLessonQuizForLessonYet": "Geen lesvasvra is nog vir hierdie les beskikbaar nie."
+        },
+        "serverAction": {
+          "completePreviousTopic": "Voltooi die vorige onderwerp om hierdie een te ontsluit.",
+          "takeDiagnosticAssessment": "Neem die diagnostiese assessering om hierdie onderwerp te ontsluit.",
+          "noLessonForDifficulty": "Geen les is nog beskikbaar vir die toegewese moeilikheidsgraad nie.",
+          "noLessonsForTopicYet": "Geen lesse is nog vir hierdie onderwerp beskikbaar nie.",
+          "takeLessonQuizForTopic": "Neem die lesvasvra om hierdie onderwerp te voltooi.",
+          "lessonQuizNotAvailableForTopic": "'n Lesvasvra is nog nie vir hierdie onderwerp beskikbaar nie.",
+          "continueCurrentLesson": "Gaan voort met jou huidige les.",
+          "completedAvailablePath": "Jy het die beskikbare leerpad vir hierdie vak voltooi.",
+          "startFirstTopic": "Begin met die eerste beskikbare onderwerp."
+        }
       }
     },
     "tutor": {
