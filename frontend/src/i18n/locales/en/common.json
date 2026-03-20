@@ -106,9 +106,34 @@
       "aiTutorTitle": "Student AI Tutor",
       "progressTitle": "Student Progress",
       "dashboardPage": {
-        "welcomeTitle": "Welcome back, Thabo!",
+        "welcomeTitle": "Welcome back, {{name}}!",
         "welcomeSubtitle": "You're making great progress. Ready to continue learning?",
         "askAiTutor": "Ask AI Tutor",
+        "allSubjects": "All Subjects",
+        "areasNeedingAttention": "Areas Needing Attention",
+        "loadErrorTitle": "Unable to load your dashboard",
+        "retry": "Retry",
+        "noDashboardData": "No dashboard data is available yet.",
+        "loadDashboard": "Load Dashboard",
+        "noLessonRecommendation": "No lesson recommendation yet.",
+        "noTopicMasteryData": "No topic mastery data yet.",
+        "noWeakTopics": "No weak topics detected.",
+        "motivationalGuidanceTitle": "Motivational Guidance",
+        "motivationalGuidanceFallback": "Keep showing up. Every lesson builds your confidence.",
+        "motivationalMessages": {
+          "excellent": "Excellent progress! Keep up the momentum.",
+          "good": "Good work! A bit more effort will get you to mastery.",
+          "progress": "You're making progress. Continue practicing to strengthen your skills.",
+          "beginner": "Every expert started as a beginner. Don't give up!"
+        },
+        "attentionActions": {
+          "critical": "Your mastery is currently low. Revisit the core lesson and complete targeted practice questions.",
+          "weak": "You are close to confidence level. Review this topic and attempt a short revision exercise.",
+          "revision": "Do a quick recap and one practice activity to lock in this topic."
+        },
+        "completedLessonsSummary": "You have completed {{count}} lessons so far.",
+        "refreshProgress": "Refresh Progress",
+        "noCompletedLessons": "No completed lessons yet.",
         "recommendedNextLesson": "Recommended Next Lesson",
         "mathsGrade10": "Maths Grade 10",
         "nextLessonSubtitle": "Based on your recent performance in Mathematics",
@@ -146,6 +171,23 @@
           "completePhysicsQuiz": "Complete Physics Quiz",
           "dueTomorrow": "Due tomorrow",
           "dueFriday": "Due Friday"
+        },
+        "revisionAdvice": {
+          "title": "Areas Needing Attention",
+          "geometryTitle": "Geometry",
+          "geometryDesc": "Master foundational concepts in shapes and spatial reasoning.",
+          "algebraDesc": "Strengthen your algebraic manipulation skills with guided exercises.",
+          "trigonometryTitle": "Trigonometry",
+          "trigonometryDesc": "Review sine, cosine, and tangent relationships before your next assessment.",
+          "dataHandlingTitle": "Data Handling",
+          "dataHandlingDesc": "Practice interpreting graphs and calculating statistical measures."
+        },
+        "motivationalGuidance": {
+          "excellentProgress": "Excellent progress! You've mastered 8 out of 12 topics this week.",
+          "keepItUp": "Keep it up! Just a few more topics to reach your 90% goal.",
+          "greatEffort": "Great effort! Practice makes perfect. Review the suggested topics to strengthen your foundation.",
+          "almostThere": "You're almost there! Focus on the weak areas and you'll see quick improvements.",
+          "wellDone": "Well done on your dedication to learning!"
         }
       },
       "progressPage": {
@@ -329,7 +371,16 @@
         "high": "High",
         "medium": "Medium",
         "low": "Low",
-        "saveConfiguration": "Save Configuration"
+        "saveConfiguration": "Save Configuration",
+        "newTemplate": "New Template",
+        "createTemplate": "Create Template",
+        "templateName": "Name",
+        "templatePurpose": "Purpose",
+        "templateText": "Template Text",
+        "temperature": "Temperature",
+        "templateCreated": "Prompt template created successfully.",
+        "noTemplates": "No prompt templates yet. Create one to get started.",
+        "loadError": "Failed to load prompt templates."
       },
       "curriculum": {
         "title": "Curriculum Management",

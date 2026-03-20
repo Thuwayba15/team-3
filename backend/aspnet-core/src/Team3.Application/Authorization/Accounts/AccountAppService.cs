@@ -23,6 +23,7 @@ public class AccountAppService : Team3AppServiceBase, IAccountAppService
     public const string PasswordRegex = "(?=^.{8,}$)(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\\s)[0-9a-zA-Z!@#$%^&*()]*$";
 
     private readonly UserRegistrationManager _userRegistrationManager;
+    private readonly UserManager _userManager;
     private readonly IRepository<Language, global::System.Guid> _languageRepository;
     private readonly IRepository<UserLanguagePreference, long> _userLanguagePreferenceRepository;
 
@@ -31,10 +32,12 @@ public class AccountAppService : Team3AppServiceBase, IAccountAppService
     /// </summary>
     public AccountAppService(
         UserRegistrationManager userRegistrationManager,
+        UserManager userManager,
         IRepository<Language, global::System.Guid> languageRepository,
         IRepository<UserLanguagePreference, long> userLanguagePreferenceRepository)
     {
         _userRegistrationManager = userRegistrationManager;
+        _userManager = userManager;
         _languageRepository = languageRepository;
         _userLanguagePreferenceRepository = userLanguagePreferenceRepository;
     }
@@ -71,6 +74,11 @@ public class AccountAppService : Team3AppServiceBase, IAccountAppService
             input.Password,
             true // Assumed email address is always confirmed. Change this if you want to implement email confirmation.
         );
+
+        if (input.RoleNames != null && input.RoleNames.Length > 0)
+        {
+            CheckErrors(await _userManager.SetRolesAsync(user, input.RoleNames));
+        }
 
         var defaultLanguageCode = await _languageRepository.GetAll()
             .Where(language => language.IsDefault && language.IsActive && !language.IsDeleted)

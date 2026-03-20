@@ -1,7 +1,7 @@
 "use client";
 
 import { BellOutlined, DownOutlined, LogoutOutlined, MenuOutlined, UserOutlined } from "@ant-design/icons";
-import { Avatar, Badge, Button, Dropdown, Layout, Select, Typography, message } from "antd";
+import { Avatar, Badge, Button, Dropdown, Layout, Select, Typography } from "antd";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -28,7 +28,6 @@ export const AppHeader = ({ onOpenNavigation, isMobile }: IAppHeaderProps) => {
     const { isAuthenticated, userId } = useAuthState();
     const { logout } = useAuthActions();
     const { currentLanguage, setLanguage, isLoading } = useI18n();
-    const [messageApi, messageContextHolder] = message.useMessage();
     const [displayName, setDisplayName] = useState(t("header.defaultUser"));
     const [emailAddress, setEmailAddress] = useState("-");
     const [userNameDraft, setUserNameDraft] = useState("");
@@ -67,8 +66,6 @@ export const AppHeader = ({ onOpenNavigation, isMobile }: IAppHeaderProps) => {
 
     return (
         <Layout.Header className={styles.header}>
-            {messageContextHolder}
-
             <div className={styles.brandRow}>
                 {isMobile && (
                     <Button
@@ -96,14 +93,9 @@ export const AppHeader = ({ onOpenNavigation, isMobile }: IAppHeaderProps) => {
                     aria-label={t("header.language")}
                     loading={isLoading}
                     onChange={(languageCode) => {
-                        void (async () => {
-                            try {
-                                await setLanguage(languageCode);
-                                messageApi.success(t("header.languageUpdated"));
-                            } catch {
-                                messageApi.error(t("header.languageUpdateFailed"));
-                            }
-                        })();
+                        void setLanguage(languageCode).catch(() => {
+                            // keep the selector silent on update failure
+                        });
                     }}
                 />
 
