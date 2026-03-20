@@ -1,0 +1,12 @@
+frontend/.claude/settings.local.json
+frontend/.claude/settings.local.json
+backend/aspnet-core/src/Team3.Web.Host/App_Data/Logs/Logs.txt
+backend/aspnet-core/src/Team3.Web.Host/App_Data/Logs/Logs.txt
+/.next
+.next/dev/static/chunks/node_modules_@ant-design_cssinjs_es_182527b6._.js.map
+.next/dev/static/chunks/node_modules_@swc_helpers_cjs_d80fb378._.js.map
+.next
+/node_modules
+/.vscode
+/*log*/
+*.log

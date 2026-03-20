@@ -12,7 +12,7 @@ using Team3.LearningMaterials.Dto;
 
 namespace Team3.LearningMaterials.Subjects
 {
-    [AbpAllowAnonymous]
+    [AbpAuthorize]
     public class StudentSubjectAppService : Team3AppServiceBase, IStudentSubjectAppService
     {
         public IRepository<Subject, Guid> SubjectRepository { get; set; }
@@ -24,7 +24,6 @@ namespace Team3.LearningMaterials.Subjects
         public IRepository<Language, Guid> LanguageRepository { get; set; }
 
         // GET /subjects
-        [AbpAllowAnonymous]
         public async Task<List<SubjectDto>> GetAllSubjectsAsync()
         {
             try
@@ -39,7 +38,6 @@ namespace Team3.LearningMaterials.Subjects
         }
 
         // GET /my-subjects — subjects the logged-in student is enrolled in
-        [AbpAllowAnonymous]
         public async Task<List<SubjectDto>> GetMySubjectsAsync()
         {
             try
@@ -65,7 +63,6 @@ namespace Team3.LearningMaterials.Subjects
         }
 
         // POST /bulk-enroll — enroll student in multiple subjects at once
-        [AbpAllowAnonymous]
         public async Task<BulkEnrollOutput> BulkEnrollAsync(BulkEnrollInput input)
         {
             try
@@ -115,7 +112,6 @@ namespace Team3.LearningMaterials.Subjects
         }
 
         // GET /subject-progress/{subjectId}
-        [AbpAllowAnonymous]
         public async Task<StudentProgressDto> GetSubjectProgressAsync(Guid subjectId)
         {
             try
@@ -156,7 +152,6 @@ namespace Team3.LearningMaterials.Subjects
         }
 
         // GET /topics/{subjectId}
-        [AbpAllowAnonymous]
         public async Task<List<TopicDto>> GetTopicsBySubjectAsync(Guid subjectId)
         {
             try
@@ -188,7 +183,6 @@ namespace Team3.LearningMaterials.Subjects
         }
 
         // GET /lessons/{topicId}
-        [AbpAllowAnonymous]
         public async Task<List<LessonSummaryDto>> GetLessonsByTopicAsync(Guid topicId)
         {
             try
@@ -217,7 +211,6 @@ namespace Team3.LearningMaterials.Subjects
         }
 
         // GET /lesson/{lessonId}
-        [AbpAllowAnonymous]
         public async Task<LessonDetailDto> GetLessonAsync(Guid lessonId)
         {
             try

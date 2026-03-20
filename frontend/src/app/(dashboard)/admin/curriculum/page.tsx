@@ -29,9 +29,10 @@ import {
 } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import type { UploadChangeParam, UploadFile, UploadProps } from "antd/es/upload/interface";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { PageHeader } from "@/components/layout";
+import { subjectService, ISubject } from "@/services/curriculum/subjectService";
 import { useStyles } from "./styles";
 
 const { Text, Title } = Typography;
@@ -39,13 +40,6 @@ const { Dragger } = Upload;
 
 type ReviewStatus = "Pending" | "Approved" | "Changes Requested";
 type DraftSection = "topics" | "lessons" | "assessments";
-
-interface ISubject {
-    id: string;
-    name: string;
-    code: string;
-    description: string;
-}
 
 interface IAiDraftItem {
     id: string;
@@ -64,30 +58,9 @@ interface IAiDraft {
 
 interface ISubjectFormValues {
     name: string;
-    code: string;
+    gradeLevel: string;
     description: string;
 }
-
-const INITIAL_SUBJECTS: ISubject[] = [
-    {
-        id: "subject-1",
-        name: "Mathematics",
-        code: "MATH",
-        description: "Core numeracy and problem-solving curriculum.",
-    },
-    {
-        id: "subject-2",
-        name: "Natural Sciences",
-        code: "SCI",
-        description: "Scientific inquiry, physics, chemistry, and biology foundations.",
-    },
-    {
-        id: "subject-3",
-        name: "English",
-        code: "ENG",
-        description: "Reading, writing, speaking, and comprehension competencies.",
-    },
-];
 
 function createDraftTemplate(subjectName: string): IAiDraft {
     return {
@@ -143,10 +116,6 @@ function createDraftTemplate(subjectName: string): IAiDraft {
     };
 }
 
-function createSubjectId(): string {
-    return `subject-${Date.now()}`;
-}
-
 function getConfidenceClassName(value: number): "confidenceHigh" | "confidenceMedium" | "confidenceLow" {
     if (value >= 90) {
         return "confidenceHigh";
@@ -174,8 +143,9 @@ export default function AdminCurriculumPage() {
     const [messageApi, messageContextHolder] = message.useMessage();
     const [form] = Form.useForm<ISubjectFormValues>();
 
-    const [subjects, setSubjects] = useState<ISubject[]>(INITIAL_SUBJECTS);
-    const [selectedSubjectId, setSelectedSubjectId] = useState<string>(INITIAL_SUBJECTS[0].id);
+    const [subjects, setSubjects] = useState<ISubject[]>([]);
+    const [loadingSubjects, setLoadingSubjects] = useState(true);
+    const [selectedSubjectId, setSelectedSubjectId] = useState<string>("");
 
     const [isSubjectModalOpen, setIsSubjectModalOpen] = useState(false);
     const [editingSubjectId, setEditingSubjectId] = useState<string | null>(null);
@@ -200,6 +170,16 @@ export default function AdminCurriculumPage() {
 
     const flowStep = selectedDraft ? 2 : selectedDocuments.length > 0 ? 1 : 0;
 
+    useEffect(() => {
+        subjectService.getAll()
+            .then((data) => {
+                setSubjects(data);
+                if (data.length > 0) setSelectedSubjectId(data[0].id);
+            })
+            .catch(() => messageApi.error("Failed to load subjects."))
+            .finally(() => setLoadingSubjects(false));
+    }, []);
+
     const openCreateSubjectModal = (): void => {
         setEditingSubjectId(null);
         form.resetFields();
@@ -210,7 +190,7 @@ export default function AdminCurriculumPage() {
         setEditingSubjectId(subject.id);
         form.setFieldsValue({
             name: subject.name,
-            code: subject.code,
+            gradeLevel: subject.gradeLevel,
             description: subject.description,
         });
         setIsSubjectModalOpen(true);
@@ -225,55 +205,59 @@ export default function AdminCurriculumPage() {
     const handleSubmitSubject = async (): Promise<void> => {
         const values = await form.validateFields();
 
-        if (editingSubjectId) {
-            setSubjects((previous) =>
-                previous.map((subject) =>
-                    subject.id === editingSubjectId
-                        ? {
-                            ...subject,
-                            ...values,
-                        }
-                        : subject
-                )
-            );
-            messageApi.success("Subject updated.");
-        } else {
-            const createdSubject: ISubject = {
-                id: createSubjectId(),
-                ...values,
-            };
-            setSubjects((previous) => [createdSubject, ...previous]);
-            setSelectedSubjectId(createdSubject.id);
-            messageApi.success("Subject created.");
+        try {
+            if (editingSubjectId) {
+                const existing = subjects.find((s) => s.id === editingSubjectId)!;
+                const updated = await subjectService.update(editingSubjectId, {
+                    ...values,
+                    isActive: existing.isActive,
+                });
+                setSubjects((previous) =>
+                    previous.map((subject) => (subject.id === editingSubjectId ? updated : subject))
+                );
+                messageApi.success("Subject updated.");
+            } else {
+                const created = await subjectService.create(values);
+                setSubjects((previous) => [created, ...previous]);
+                setSelectedSubjectId(created.id);
+                messageApi.success("Subject created.");
+            }
+            closeSubjectModal();
+        } catch {
+            messageApi.error("Failed to save subject.");
         }
-
-        closeSubjectModal();
     };
 
-    const handleDeleteSubject = (subjectId: string): void => {
-        setSubjects((previous) => {
-            const updated = previous.filter((subject) => subject.id !== subjectId);
-            if (updated.length === 0) {
-                setSelectedSubjectId("");
-            } else if (selectedSubjectId === subjectId) {
-                setSelectedSubjectId(updated[0].id);
-            }
-            return updated;
-        });
+    const handleDeleteSubject = async (subjectId: string): Promise<void> => {
+        try {
+            await subjectService.remove(subjectId);
 
-        setDocumentsBySubject((previous) => {
-            const next = { ...previous };
-            delete next[subjectId];
-            return next;
-        });
+            setSubjects((previous) => {
+                const updated = previous.filter((subject) => subject.id !== subjectId);
+                if (updated.length === 0) {
+                    setSelectedSubjectId("");
+                } else if (selectedSubjectId === subjectId) {
+                    setSelectedSubjectId(updated[0].id);
+                }
+                return updated;
+            });
 
-        setDraftBySubject((previous) => {
-            const next = { ...previous };
-            delete next[subjectId];
-            return next;
-        });
+            setDocumentsBySubject((previous) => {
+                const next = { ...previous };
+                delete next[subjectId];
+                return next;
+            });
 
-        messageApi.success("Subject deleted.");
+            setDraftBySubject((previous) => {
+                const next = { ...previous };
+                delete next[subjectId];
+                return next;
+            });
+
+            messageApi.success("Subject deleted.");
+        } catch {
+            messageApi.error("Failed to delete subject.");
+        }
     };
 
     const handleUploadChange = (info: UploadChangeParam<UploadFile>): void => {
@@ -364,7 +348,7 @@ export default function AdminCurriculumPage() {
             render: (value: string, record: ISubject) => (
                 <div className={styles.subjectNameCell}>
                     <Text className={styles.subjectName}>{value}</Text>
-                    <Text className={styles.subjectCode}>{record.code}</Text>
+                    <Text className={styles.subjectCode}>{record.gradeLevel}</Text>
                 </div>
             ),
         },
@@ -495,6 +479,7 @@ export default function AdminCurriculumPage() {
                             columns={subjectColumns}
                             dataSource={subjects}
                             rowKey="id"
+                            loading={loadingSubjects}
                             pagination={false}
                             scroll={{ x: "max-content" }}
                             onRow={(record) => ({
@@ -647,11 +632,11 @@ export default function AdminCurriculumPage() {
                     </Form.Item>
 
                     <Form.Item<ISubjectFormValues>
-                        label="Code"
-                        name="code"
-                        rules={[{ required: true, message: "Subject code is required." }]}
+                        label="Grade Level"
+                        name="gradeLevel"
+                        rules={[{ required: true, message: "Grade level is required." }]}
                     >
-                        <Input placeholder="e.g. MATH" maxLength={12} />
+                        <Input placeholder="e.g. Grade 10" maxLength={32} />
                     </Form.Item>
 
                     <Form.Item<ISubjectFormValues>

@@ -15,7 +15,7 @@ namespace Team3.Users.Dto
 
         public string Surname { get; set; } = default!;
 
-        public string PreferredLanguage { get; set; } = "English";
+        public string PreferredLanguage { get; set; } = "en";
 
         // Student
         public string? GradeLevel { get; set; }

@@ -4,103 +4,187 @@ import {
     BookOutlined,
     CheckCircleOutlined,
     ClockCircleOutlined,
+    ExclamationCircleOutlined,
+    FireOutlined,
+    ReloadOutlined,
     PlayCircleOutlined,
     ReadOutlined,
-    RiseOutlined,
-    RobotOutlined,
+    ThunderboltOutlined,
     TrophyOutlined,
 } from "@ant-design/icons";
 import {
+    Alert,
     Button,
     Card,
     Col,
-    Progress,
+    Empty,
+    Flex,
+    Pagination,
     Row,
-    Tag,
+    Space,
+    Spin,
     Typography,
 } from "antd";
+import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useStudentDashboard } from "@/providers/student";
 import { useStyles } from "./styles";
+import { getLocalizedAttentionAction, getLocalizedGuidanceMessage } from "./localization";
 
 const { Text, Title } = Typography;
+const HEATMAP_PAGE_SIZE = 12;
+const ATTENTION_PAGE_SIZE = 5;
 
-const STATS = [
-    {
-        icon: TrophyOutlined,
-        value: "78%",
-        label: "Overall Progress Score",
-        badge: "5% this week",
-    },
-    {
-        icon: CheckCircleOutlined,
-        value: "12",
-        label: "Topics Mastered",
-        badge: "2 new",
-    },
-    {
-        icon: BookOutlined,
-        value: "24",
-        label: "Lessons Completed",
-        badge: null,
-    },
-];
+const getHeatmapTileClassName = (
+    severityBucket: "strong" | "moderate" | "weak" | "critical"
+): "heatStrongTile" | "heatModerateTile" | "heatWeakTile" | "heatCriticalTile" => {
+    if (severityBucket === "strong") {
+        return "heatStrongTile";
+    }
 
-const QUIZ_RESULTS = [
-    { name: "Linear Equations",  date: "Today",       score: 85 },
-    { name: "Cell Structure",    date: "Yesterday",   score: 92 },
-    { name: "Chemical Bonding",  date: "3 days ago",  score: 65 },
-];
+    if (severityBucket === "moderate") {
+        return "heatModerateTile";
+    }
 
-const UP_NEXT = [
-    { title: "Review Biology Notes",   due: "Due tomorrow" },
-    { title: "Complete Physics Quiz",  due: "Due Friday"   },
-];
+    if (severityBucket === "weak") {
+        return "heatWeakTile";
+    }
 
-function quizScoreColor(score: number) {
-    if (score >= 80) return "#52c41a";
-    if (score >= 65) return "#00b8a9";
-    return "#fa8c16";
-}
+    return "heatCriticalTile";
+};
 
 export default function StudentDashboardPage() {
     const { styles } = useStyles();
+    const { t, i18n } = useTranslation();
+    const { state, actions } = useStudentDashboard();
+    const [heatmapPage, setHeatmapPage] = useState(1);
+    const [attentionPage, setAttentionPage] = useState(1);
+
+    const dashboardData = state.data;
+    const isEnglishLanguage = i18n.resolvedLanguage?.startsWith("en") ?? false;
+    const welcomeName = dashboardData?.studentName || t("sidebar.student");
+    const guidanceMessage = dashboardData
+        ? (isEnglishLanguage && dashboardData.guidance?.baseMessage
+            ? dashboardData.guidance.baseMessage
+            : getLocalizedGuidanceMessage(dashboardData.overallScore, t))
+        : "";
+
+    const heatmapTotal = dashboardData?.masteryHeatmap.length ?? 0;
+    const heatmapTotalPages = Math.max(1, Math.ceil(heatmapTotal / HEATMAP_PAGE_SIZE));
+    const currentHeatmapPage = Math.min(heatmapPage, heatmapTotalPages);
+    const attentionTotal = dashboardData?.areasNeedingAttention.length ?? 0;
+    const attentionTotalPages = Math.max(1, Math.ceil(attentionTotal / ATTENTION_PAGE_SIZE));
+    const currentAttentionPage = Math.min(attentionPage, attentionTotalPages);
+
+    const pagedHeatmap = useMemo(() => {
+        if (!dashboardData) {
+            return [];
+        }
+
+        const startIndex = (currentHeatmapPage - 1) * HEATMAP_PAGE_SIZE;
+        const endIndex = startIndex + HEATMAP_PAGE_SIZE;
+        return dashboardData.masteryHeatmap.slice(startIndex, endIndex);
+    }, [currentHeatmapPage, dashboardData]);
+
+    const pagedAttention = useMemo(() => {
+        if (!dashboardData) {
+            return [];
+        }
+
+        const startIndex = (currentAttentionPage - 1) * ATTENTION_PAGE_SIZE;
+        const endIndex = startIndex + ATTENTION_PAGE_SIZE;
+        return dashboardData.areasNeedingAttention.slice(startIndex, endIndex);
+    }, [currentAttentionPage, dashboardData]);
+
+    const summaryCards = [
+        {
+            key: "overall",
+            icon: TrophyOutlined,
+            label: t("dashboard.student.dashboardPage.stats.overallProgressScore"),
+            value: `${Math.round(dashboardData?.overallScore ?? 0)}%`,
+        },
+        {
+            key: "mastered",
+            icon: CheckCircleOutlined,
+            label: t("dashboard.student.dashboardPage.stats.topicsMastered"),
+            value: `${dashboardData?.topicsMastered ?? 0}/${dashboardData?.totalTopics ?? 0}`,
+        },
+        {
+            key: "completed",
+            icon: BookOutlined,
+            label: t("dashboard.student.dashboardPage.stats.lessonsCompleted"),
+            value: `${dashboardData?.lessonsCompleted ?? 0}`,
+        },
+        {
+            key: "attention",
+            icon: ExclamationCircleOutlined,
+            label: t("dashboard.student.dashboardPage.areasNeedingAttention"),
+            value: `${dashboardData?.areasNeedingAttentionCount ?? 0}`,
+        },
+    ];
+
+    if (state.isLoading) {
+        return (
+            <div className={styles.loadingState}>
+                <Spin size="large" />
+            </div>
+        );
+    }
+
+    if (state.error) {
+        return (
+            <div className={styles.errorState}>
+                <Alert
+                    message={t("dashboard.student.dashboardPage.loadErrorTitle")}
+                    description={state.error}
+                    type="error"
+                    showIcon
+                    action={(
+                        <Button size="small" icon={<ReloadOutlined />} onClick={actions.fetchDashboard}>
+                            {t("dashboard.student.dashboardPage.retry")}
+                        </Button>
+                    )}
+                />
+            </div>
+        );
+    }
+
+    if (!dashboardData) {
+        return (
+            <div className={styles.emptyState}>
+                <Empty
+                    description={t("dashboard.student.dashboardPage.noDashboardData")}
+                    image={Empty.PRESENTED_IMAGE_SIMPLE}
+                >
+                    <Button type="primary" onClick={actions.fetchDashboard}>
+                        {t("dashboard.student.dashboardPage.loadDashboard")}
+                    </Button>
+                </Empty>
+            </div>
+        );
+    }
 
     return (
         <div>
-            {/* Welcome section */}
             <div className={styles.welcomeSection}>
                 <div>
                     <Title level={2} className={styles.welcomeText}>
-                        Welcome back, Thabo! 👋
+                        {t("dashboard.student.dashboardPage.welcomeTitle", { name: welcomeName })}
                     </Title>
                     <Text type="secondary">
-                        You&apos;re making great progress. Ready to continue learning?
+                        {guidanceMessage || t("dashboard.student.dashboardPage.welcomeSubtitle")}
                     </Text>
                 </div>
-                <Button
-                    type="primary"
-                    icon={<RobotOutlined />}
-                    size="large"
-                    className={styles.askAiBtn}
-                >
-                    Ask AI Tutor
-                </Button>
             </div>
 
             <Row gutter={[16, 16]}>
-                {/* Main content column */}
                 <Col xs={24} lg={16}>
-                    {/* Stat cards */}
                     <Row gutter={[16, 16]} className={styles.statsRow}>
-                        {STATS.map(({ icon: Icon, value, label, badge }) => (
-                            <Col key={label} xs={24} md={8}>
+                        {summaryCards.map(({ key, icon: Icon, value, label }) => (
+                            <Col key={key} xs={24} md={12}>
                                 <Card className={styles.statCard}>
-                                    <div className={styles.statHeader}>
+                                    <div className={styles.statHeaderRow}>
                                         <Icon className={styles.statIcon} />
-                                        {badge && (
-                                            <span className={styles.statBadge}>
-                                                <RiseOutlined /> {badge}
-                                            </span>
-                                        )}
                                     </div>
                                     <div className={styles.statValue}>{value}</div>
                                     <div className={styles.statLabel}>{label}</div>
@@ -109,125 +193,148 @@ export default function StudentDashboardPage() {
                         ))}
                     </Row>
 
-                    {/* Recommended next lesson */}
                     <Card
                         className={styles.nextLessonCard}
                         title={
-                            <div>
-                                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                                    <span>Recommended Next Lesson</span>
-                                    <Tag color="cyan">Maths Grade 10</Tag>
-                                </div>
-                                <div className={styles.nextLessonSubtitle}>
-                                    Based on your recent performance in Mathematics
-                                </div>
-                            </div>
+                            <Space direction="vertical" size={0}>
+                                <span>{t("dashboard.student.dashboardPage.recommendedNextLesson")}</span>
+                                <Text className={styles.nextLessonSubtitle}>
+                                    {dashboardData.recommendedNextLesson?.subjectName || dashboardData.gradeLevel || t("dashboard.student.dashboardPage.allSubjects")}
+                                </Text>
+                            </Space>
                         }
                     >
-                        <div className={styles.nextLessonBody}>
-                            <div className={styles.lessonThumbnail}>
-                                <ReadOutlined />
-                            </div>
-                            <div className={styles.lessonInfo}>
-                                <Text className={styles.lessonTitle}>
-                                    Algebraic Expressions: Factorisation ✓
-                                </Text>
-                                <Text className={styles.lessonDesc}>
-                                    Learn how to factorise quadratic trinomials and difference of two
-                                    squares. This builds on your previous lesson on expanding brackets.
-                                </Text>
-                                <div className={styles.lessonActions}>
-                                    <Button
-                                        type="primary"
-                                        icon={<PlayCircleOutlined />}
-                                        className={styles.startBtn}
-                                    >
-                                        Start Lesson
-                                    </Button>
-                                    <span className={styles.durationText}>
-                                        <ClockCircleOutlined /> 25 mins
-                                    </span>
+                        {dashboardData.recommendedNextLesson ? (
+                            <div className={styles.nextLessonBody}>
+                                <div className={styles.lessonThumbnail}>
+                                    <ReadOutlined />
+                                </div>
+                                <div className={styles.lessonInfo}>
+                                    <Text className={styles.lessonTitle}>{dashboardData.recommendedNextLesson.title}</Text>
+                                    <Text className={styles.lessonDesc}>{dashboardData.recommendedNextLesson.ruleBasisReason}</Text>
+                                    <Flex align="center" gap={12} wrap>
+                                        <Button type="primary" icon={<PlayCircleOutlined />} className={styles.startBtn}>
+                                            {t("dashboard.student.dashboardPage.startLesson")}
+                                        </Button>
+                                        <span className={styles.durationText}>
+                                            <ClockCircleOutlined /> {dashboardData.recommendedNextLesson.estimatedMinutes} mins
+                                        </span>
+                                    </Flex>
                                 </div>
                             </div>
-                        </div>
+                        ) : (
+                            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={t("dashboard.student.dashboardPage.noLessonRecommendation")} />
+                        )}
                     </Card>
 
-                    {/* Mastery heatmap */}
                     <Card
                         className={styles.heatmapCard}
                         title={
-                            <div>
-                                <div>Mastery Heatmap</div>
-                                <div className={styles.heatmapSubtitle}>
-                                    Your performance across subjects
-                                </div>
-                            </div>
+                            <Space direction="vertical" size={0}>
+                                <span>{t("dashboard.student.dashboardPage.masteryHeatmap")}</span>
+                                <Text className={styles.heatmapSubtitle}>
+                                    {t("dashboard.student.dashboardPage.performanceAcrossSubjects")}
+                                </Text>
+                            </Space>
                         }
                     >
-                        <div className={styles.heatmapPlaceholder}>
-                            Heatmap Visualization Placeholder
-                        </div>
-                        <div className={styles.heatmapLegend}>
-                            <span>Needs Work</span>
-                            <div className={styles.legendDots}>
-                                {["#ffd6cc", "#ffd666", "#d4f5a1", "#00b8a9"].map((color) => (
-                                    <div
-                                        key={color}
-                                        style={{
-                                            width: 18,
-                                            height: 18,
-                                            borderRadius: 3,
-                                            background: color,
-                                        }}
-                                    />
-                                ))}
-                            </div>
-                            <span>Mastered</span>
-                        </div>
+                        {dashboardData.masteryHeatmap.length === 0 ? (
+                            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={t("dashboard.student.dashboardPage.noTopicMasteryData")} />
+                        ) : (
+                            <>
+                                <div className={styles.heatmapGrid}>
+                                    {pagedHeatmap.map((item) => (
+                                        <div
+                                            key={item.topicId}
+                                            className={`${styles.heatmapTile} ${styles[getHeatmapTileClassName(item.severityBucket)]}`}
+                                        >
+                                            <span className={styles.heatmapPercent}>{Math.round(item.masteryPercent)}%</span>
+                                            <span className={styles.heatmapTopic}>{item.topicName}</span>
+                                            <span className={styles.heatmapSubject}>{item.subjectName}</span>
+                                        </div>
+                                    ))}
+                                </div>
+
+                                {dashboardData.masteryHeatmap.length > HEATMAP_PAGE_SIZE ? (
+                                    <div className={styles.heatmapPagination}>
+                                        <Pagination
+                                            current={currentHeatmapPage}
+                                            pageSize={HEATMAP_PAGE_SIZE}
+                                            total={dashboardData.masteryHeatmap.length}
+                                            onChange={setHeatmapPage}
+                                            size="small"
+                                            showSizeChanger={false}
+                                        />
+                                    </div>
+                                ) : null}
+                            </>
+                        )}
                     </Card>
                 </Col>
 
-                {/* Right sidebar */}
                 <Col xs={24} lg={8}>
-                    {/* Recent quiz results */}
-                    <Card className={styles.quizCard} title="Recent Quiz Results">
-                        {QUIZ_RESULTS.map(({ name, date, score }) => (
-                            <div key={name} className={styles.quizItem}>
-                                <div className={styles.quizHeader}>
-                                    <span className={styles.quizName}>{name}</span>
-                                    <span
-                                        className={styles.quizScore}
-                                        style={{ color: quizScoreColor(score) }}
-                                    >
-                                        {score}%
-                                    </span>
-                                </div>
-                                <div className={styles.quizDate}>{date}</div>
-                                <Progress
-                                    percent={score}
-                                    showInfo={false}
-                                    strokeColor={quizScoreColor(score)}
-                                    size="small"
-                                    style={{ marginTop: 6 }}
-                                />
+                    <Card className={styles.attentionCard} title={t("dashboard.student.dashboardPage.areasNeedingAttention")}>
+                        {dashboardData.areasNeedingAttention.length === 0 ? (
+                            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={t("dashboard.student.dashboardPage.noWeakTopics")} />
+                        ) : (
+                            <div>
+                                <Space direction="vertical" size={12} className={styles.attentionList}>
+                                    {pagedAttention.map((topic) => (
+                                        <div key={topic.topicId} className={styles.attentionItem}>
+                                            <div className={styles.attentionHeader}>
+                                                <Text className={styles.attentionTitle}>{topic.topicName}</Text>
+                                                <Text className={styles.attentionPercent}>{Math.round(topic.masteryPercent)}%</Text>
+                                            </div>
+                                            <Text className={styles.attentionMeta}>{topic.subjectName || t("dashboard.student.dashboardPage.allSubjects")}</Text>
+                                            <Text className={styles.attentionDesc}>
+                                                {getLocalizedAttentionAction(topic.masteryPercent, topic.ruleBasisAction, t, isEnglishLanguage)}
+                                            </Text>
+                                        </div>
+                                    ))}
+                                </Space>
+
+                                {dashboardData.areasNeedingAttention.length > ATTENTION_PAGE_SIZE ? (
+                                    <div className={styles.attentionPagination}>
+                                        <Pagination
+                                            current={currentAttentionPage}
+                                            pageSize={ATTENTION_PAGE_SIZE}
+                                            total={dashboardData.areasNeedingAttention.length}
+                                            onChange={setAttentionPage}
+                                            size="small"
+                                            showSizeChanger={false}
+                                        />
+                                    </div>
+                                ) : null}
                             </div>
-                        ))}
-                        <Button type="link" className={styles.viewAllLink} style={{ padding: 0, marginTop: 8 }}>
-                            View All Results →
-                        </Button>
+                        )}
                     </Card>
 
-                    {/* Up next */}
-                    <Card className={styles.upNextCard} title="Up Next">
-                        {UP_NEXT.map(({ title, due }) => (
-                            <div key={title} className={styles.upNextItem}>
-                                <CheckCircleOutlined className={styles.upNextIcon} />
-                                <div className={styles.upNextInfo}>
-                                    <span className={styles.upNextTitle}>{title}</span>
-                                    <span className={styles.upNextDue}>{due}</span>
-                                </div>
+                    <Card className={styles.guidanceCard}>
+                        <Space align="start" size={10}>
+                            <ThunderboltOutlined className={styles.guidanceIcon} />
+                            <div>
+                                <Text className={styles.guidanceTitle}>{t("dashboard.student.dashboardPage.motivationalGuidanceTitle")}</Text>
+                                <Text className={styles.guidanceText}>
+                                    {guidanceMessage || t("dashboard.student.dashboardPage.motivationalGuidanceFallback")}
+                                </Text>
                             </div>
-                        ))}
+                        </Space>
+                    </Card>
+
+                    <Card className={styles.completedCard} title={t("dashboard.student.progressPage.completedLessons")}>
+                        {dashboardData.lessonsCompleted > 0 ? (
+                            <Space direction="vertical" className={styles.fullWidth} size={8}>
+                                <div className={styles.completedRow}>
+                                    <FireOutlined className={styles.completedIcon} />
+                                    <Text>{t("dashboard.student.dashboardPage.completedLessonsSummary", { count: dashboardData.lessonsCompleted })}</Text>
+                                </div>
+                                <Button icon={<ReloadOutlined />} onClick={actions.fetchDashboard}>
+                                    {t("dashboard.student.dashboardPage.refreshProgress")}
+                                </Button>
+                            </Space>
+                        ) : (
+                            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={t("dashboard.student.dashboardPage.noCompletedLessons")} />
+                        )}
                     </Card>
                 </Col>
             </Row>

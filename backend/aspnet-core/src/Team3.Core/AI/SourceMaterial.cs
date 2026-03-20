@@ -30,23 +30,22 @@ public class SourceMaterial : CreationAuditedEntity<Guid>
 
     public Guid? SubjectId { get; private set; }
 
-    public Guid? GeneratedLessonId { get; private set; }
-
     public Guid? GeneratedTopicId { get; private set; }
 
+    // One lesson ID per difficulty level
+    public Guid? GeneratedEasyLessonId { get; private set; }
+    public Guid? GeneratedMediumLessonId { get; private set; }
+    public Guid? GeneratedHardLessonId { get; private set; }
+
     public virtual User UploadedBy { get; private set; } = default!;
-
     public virtual Language? Language { get; private set; }
-
     public virtual Subject? Subject { get; private set; }
-
-    public virtual Lesson? GeneratedLesson { get; private set; }
-
     public virtual Topic? GeneratedTopic { get; private set; }
+    public virtual Lesson? GeneratedEasyLesson { get; private set; }
+    public virtual Lesson? GeneratedMediumLesson { get; private set; }
+    public virtual Lesson? GeneratedHardLesson { get; private set; }
 
-    protected SourceMaterial()
-    {
-    }
+    protected SourceMaterial() { }
 
     public SourceMaterial(
         Guid id,
@@ -77,11 +76,17 @@ public class SourceMaterial : CreationAuditedEntity<Guid>
         ProcessingStatus = ProcessingStatus.Processing;
     }
 
-    public void MarkCompleted(Guid? generatedLessonId, Guid? generatedTopicId)
+    public void MarkCompleted(
+        Guid? generatedTopicId,
+        Guid? easyLessonId,
+        Guid? mediumLessonId,
+        Guid? hardLessonId)
     {
         ProcessingStatus = ProcessingStatus.Completed;
-        GeneratedLessonId = generatedLessonId;
         GeneratedTopicId = generatedTopicId;
+        GeneratedEasyLessonId = easyLessonId;
+        GeneratedMediumLessonId = mediumLessonId;
+        GeneratedHardLessonId = hardLessonId;
     }
 
     public void MarkFailed()

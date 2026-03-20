@@ -104,7 +104,167 @@
       "lessonsTitle": "Student Lessons",
       "quizzesTitle": "Student Quizzes",
       "aiTutorTitle": "Student AI Tutor",
-      "progressTitle": "Student Progress"
+      "progressTitle": "Student Progress",
+      "dashboardPage": {
+        "welcomeTitle": "Welcome back, {{name}}!",
+        "welcomeSubtitle": "You're making great progress. Ready to continue learning?",
+        "askAiTutor": "Ask AI Tutor",
+        "allSubjects": "All Subjects",
+        "areasNeedingAttention": "Areas Needing Attention",
+        "loadErrorTitle": "Unable to load your dashboard",
+        "retry": "Retry",
+        "noDashboardData": "No dashboard data is available yet.",
+        "loadDashboard": "Load Dashboard",
+        "noLessonRecommendation": "No lesson recommendation yet.",
+        "noTopicMasteryData": "No topic mastery data yet.",
+        "noWeakTopics": "No weak topics detected.",
+        "motivationalGuidanceTitle": "Motivational Guidance",
+        "motivationalGuidanceFallback": "Keep showing up. Every lesson builds your confidence.",
+        "motivationalMessages": {
+          "excellent": "Excellent progress! Keep up the momentum.",
+          "good": "Good work! A bit more effort will get you to mastery.",
+          "progress": "You're making progress. Continue practicing to strengthen your skills.",
+          "beginner": "Every expert started as a beginner. Don't give up!"
+        },
+        "attentionActions": {
+          "critical": "Your mastery is currently low. Revisit the core lesson and complete targeted practice questions.",
+          "weak": "You are close to confidence level. Review this topic and attempt a short revision exercise.",
+          "revision": "Do a quick recap and one practice activity to lock in this topic."
+        },
+        "completedLessonsSummary": "You have completed {{count}} lessons so far.",
+        "refreshProgress": "Refresh Progress",
+        "noCompletedLessons": "No completed lessons yet.",
+        "recommendedNextLesson": "Recommended Next Lesson",
+        "mathsGrade10": "Maths Grade 10",
+        "nextLessonSubtitle": "Based on your recent performance in Mathematics",
+        "algebraicExpressionsLesson": "Algebraic Expressions: Factorisation",
+        "lessonDescription": "Learn how to factorise quadratic trinomials and difference of two squares. This builds on your previous lesson on expanding brackets.",
+        "startLesson": "Start Lesson",
+        "lessonDuration": "25 mins",
+        "masteryHeatmap": "Mastery Heatmap",
+        "performanceAcrossSubjects": "Your performance across subjects",
+        "heatmapPlaceholder": "Heatmap Visualization Placeholder",
+        "needsWork": "Needs Work",
+        "mastered": "Mastered",
+        "recentQuizResults": "Recent Quiz Results",
+        "viewAllResults": "View All Results",
+        "upNextTitle": "Up Next",
+        "dates": {
+          "today": "Today",
+          "yesterday": "Yesterday",
+          "daysAgo3": "3 days ago"
+        },
+        "stats": {
+          "overallProgressScore": "Overall Progress Score",
+          "topicsMastered": "Topics Mastered",
+          "lessonsCompleted": "Lessons Completed",
+          "badgeThisWeek": "5% this week",
+          "badgeNew": "2 new"
+        },
+        "quizResults": {
+          "linearEquations": "Linear Equations",
+          "cellStructure": "Cell Structure",
+          "chemicalBonding": "Chemical Bonding"
+        },
+        "upNext": {
+          "reviewBiologyNotes": "Review Biology Notes",
+          "completePhysicsQuiz": "Complete Physics Quiz",
+          "dueTomorrow": "Due tomorrow",
+          "dueFriday": "Due Friday"
+        },
+        "revisionAdvice": {
+          "title": "Areas Needing Attention",
+          "geometryTitle": "Geometry",
+          "geometryDesc": "Master foundational concepts in shapes and spatial reasoning.",
+          "algebraDesc": "Strengthen your algebraic manipulation skills with guided exercises.",
+          "trigonometryTitle": "Trigonometry",
+          "trigonometryDesc": "Review sine, cosine, and tangent relationships before your next assessment.",
+          "dataHandlingTitle": "Data Handling",
+          "dataHandlingDesc": "Practice interpreting graphs and calculating statistical measures."
+        },
+        "motivationalGuidance": {
+          "excellentProgress": "Excellent progress! You've mastered 8 out of 12 topics this week.",
+          "keepItUp": "Keep it up! Just a few more topics to reach your 90% goal.",
+          "greatEffort": "Great effort! Practice makes perfect. Review the suggested topics to strengthen your foundation.",
+          "almostThere": "You're almost there! Focus on the weak areas and you'll see quick improvements.",
+          "wellDone": "Well done on your dedication to learning!"
+        }
+      },
+      "progressPage": {
+        "title": "Your Progress",
+        "subtitle": "Track your learning journey and mastery levels",
+        "masteryHeatmap": "Mastery Heatmap",
+        "performanceAcrossTopics": "Your performance across all topics",
+        "performanceOverTime": "Performance Over Time",
+        "performanceGraphPlaceholder": "Performance Graph Visualisation Placeholder",
+        "completedLessons": "Completed Lessons",
+        "quizHistory": "Quiz History",
+        "pass": "Pass",
+        "fail": "Fail",
+        "dates": {
+          "today": "Today",
+          "yesterday": "Yesterday",
+          "daysAgo2": "2 days ago"
+        },
+        "stats": {
+          "overallScore": "Overall Score",
+          "topicsMastered": "Topics Mastered",
+          "quizzesPassed": "Quizzes Passed",
+          "studyStreak": "Study Streak"
+        },
+        "heatmap": {
+          "expandingBrackets": "Expanding Brackets",
+          "factorisation": "Factorisation",
+          "algebraicFractions": "Algebraic Fractions",
+          "exponents": "Exponents",
+          "numberPatterns": "Number Patterns",
+          "equations": "Equations",
+          "geometry": "Geometry",
+          "dataHandling": "Data Handling"
+        },
+        "lessons": {
+          "introductionToExponents": "Introduction to Exponents",
+          "factorisingTrinomials": "Factorising Trinomials",
+          "differenceOfTwoSquares": "Difference of Two Squares"
+        },
+        "quizzes": {
+          "exponentsQuiz1": "Exponents Quiz 1",
+          "exponentsQuiz1Meta": "Today - 11am - 9/10",
+          "factorisationTest": "Factorisation Test",
+          "factorisationTestMeta": "Yesterday - 11am - 8/10",
+          "algebraicFractions": "Algebraic Fractions",
+          "algebraicFractionsMeta": "Last Week - 4/10"
+        },
+        "attention": {
+          "title": "Areas Needing Attention",
+          "geometryTitle": "Geometry: Properties of Triangles",
+          "geometryDesc": "Current mastery: 30%. Recommended action: Review Lesson 4.",
+          "dataHandlingTitle": "Data Handling: Standard Deviation",
+          "dataHandlingDesc": "Current mastery: 20%. Recommended action: Ask AI Tutor for examples."
+        }
+      },
+      "learningPathPage": {
+        "title": "Learning Path",
+        "subtitle": "Your personalized curriculum progression",
+        "overallSubjectProgress": "Overall Subject Progress",
+        "completed": "Completed",
+        "inProgress": "In Progress",
+        "locked": "Locked",
+        "continue": "Continue",
+        "mastered": "Mastered",
+        "review": "Review",
+        "backToLearningPath": "Back to Learning Path",
+        "practiceQuiz": "Practice Quiz",
+        "questionCounter": "Question {{current}} of {{total}}",
+        "multipleChoice": "Multiple Choice",
+        "correctWellDone": "Correct! Well done.",
+        "correctAnswerIs": "Not quite. The correct answer is: {{answer}}",
+        "submitAnswer": "Submit Answer",
+        "nextQuestion": "Next Question",
+        "seeResults": "See Results",
+        "quizComplete": "Quiz Complete!",
+        "quizScoreSummary": "You answered {{score}} out of {{total}} questions correctly."
+      }
     },
     "tutor": {
       "title": "Tutor Dashboard",
@@ -121,36 +281,54 @@
     "admin": {
       "title": "System Administration",
       "subtitle": "Platform overview and system health",
-      "trendThisMonth": "+12% this month",
-      "totalActiveUsers": "Total Active Users",
-      "languageUsage": "Language Usage",
-      "aiApiCallsToday": "AI API Calls (Today)",
-      "systemUptime": "System Uptime",
       "userDistributionByRole": "User Distribution by Role",
-      "pieChartPlaceholder": "Pie Chart Visualization Placeholder",
-      "legendStudents": "Students (80%)",
-      "legendTutors": "Tutors (5%)",
-      "legendParents": "Parents (15%)",
-      "languagePreferenceAnalytics": "Language Preference Analytics",
+      "errorLoadDashboard": "Failed to load dashboard metrics. Please try again.",
+      "recentLogins": "Recent Sign-ins",
+      "noRecentLogins": "No recent sign-ins available",
       "analyticsTitle": "Administrator Analytics",
       "users": {
         "title": "User Management",
         "subtitle": "Manage platform users, roles, and access",
         "errorLoadUsers": "Failed to load users. Please try again.",
+        "errorLoadRoles": "Failed to load roles. Please try again.",
+        "errorCreateUser": "Failed to create the user. Please try again.",
+        "errorUpdateUser": "Failed to update the user. Please try again.",
+        "errorToggleStatus": "Failed to update the user status. Please try again.",
         "searchPlaceholder": "Search users...",
         "allRoles": "All Roles",
         "allStatus": "All Status",
         "active": "Active",
         "inactive": "Inactive",
         "addUser": "Add User",
+        "addUserHint": "Create a new platform user and assign one or more roles.",
+        "editUser": "Edit User",
+        "editUserHint": "Update the user's profile, roles, and active status.",
         "disable": "Disable",
+        "enable": "Enable",
+        "refresh": "Refresh",
+        "created": "User created successfully.",
+        "updated": "User updated successfully.",
+        "activated": "User activated successfully.",
+        "deactivated": "User deactivated successfully.",
+        "keepUserActive": "Keep this user active",
         "columns": {
           "name": "Name",
           "email": "Email",
           "role": "Role",
           "status": "Status",
+          "lastLogin": "Last Login",
           "dateJoined": "Date Joined",
           "actions": "Actions"
+        },
+        "validation": {
+          "firstName": "First name is required.",
+          "surname": "Surname is required.",
+          "userName": "Username is required.",
+          "email": "Email address is required.",
+          "emailFormat": "Enter a valid email address.",
+          "password": "Password is required.",
+          "passwordMin": "Password must be at least 6 characters.",
+          "roles": "Select at least one role."
         }
       },
       "languages": {
@@ -159,7 +337,16 @@
         "translationProgress": "Translation Progress",
         "contentItemsTranslated": "content items translated",
         "translationStatusByContentType": "Translation Status by Content Type",
-        "contentType": "Content Type"
+        "contentType": "Content Type",
+        "languageNameEnglish": "English",
+        "languageNameIsiZulu": "isiZulu",
+        "languageNameSesotho": "Sesotho",
+        "languageNameAfrikaans": "Afrikaans",
+        "contentTypeUiLabels": "UI Labels",
+        "contentTypeLessons": "Lessons",
+        "contentTypeQuizQuestions": "Quiz Questions",
+        "contentTypeNotifications": "Notifications",
+        "contentTypeSystemMessages": "System Messages"
       },
       "aiConfiguration": {
         "title": "AI Configuration",
@@ -184,7 +371,16 @@
         "high": "High",
         "medium": "Medium",
         "low": "Low",
-        "saveConfiguration": "Save Configuration"
+        "saveConfiguration": "Save Configuration",
+        "newTemplate": "New Template",
+        "createTemplate": "Create Template",
+        "templateName": "Name",
+        "templatePurpose": "Purpose",
+        "templateText": "Template Text",
+        "temperature": "Temperature",
+        "templateCreated": "Prompt template created successfully.",
+        "noTemplates": "No prompt templates yet. Create one to get started.",
+        "loadError": "Failed to load prompt templates."
       },
       "curriculum": {
         "title": "Curriculum Management",

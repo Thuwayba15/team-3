@@ -3,6 +3,12 @@
 import { createStyles } from "antd-style";
 
 export const useStyles = createStyles(({ css, token }) => ({
+    card: css`
+        border-radius: ${token.borderRadiusLG}px;
+        border: 1px solid ${token.colorBorderSecondary};
+        overflow: hidden;
+    `,
+
     errorAlert: css`
         margin-bottom: ${token.marginLG}px;
     `,
@@ -39,7 +45,7 @@ export const useStyles = createStyles(({ css, token }) => ({
         width: 100%;
 
         @media (min-width: 480px) {
-            width: 130px;
+            width: 150px;
         }
     `,
 
@@ -78,6 +84,12 @@ export const useStyles = createStyles(({ css, token }) => ({
         .ant-table-row:hover > td {
             background: ${token.colorFillAlter} !important;
         }
+    `,
+
+    paginationRow: css`
+        display: flex;
+        justify-content: flex-end;
+        padding-top: ${token.paddingMD}px;
     `,
 
     roleTag: css`
@@ -137,9 +149,56 @@ export const useStyles = createStyles(({ css, token }) => ({
         }
     `,
 
+    activateLink: css`
+        color: ${token.colorSuccess};
+        padding: 0;
+
+        &:hover {
+            color: ${token.colorSuccessActive} !important;
+        }
+    `,
+
     actions: css`
         display: flex;
+        flex-wrap: wrap;
         gap: ${token.marginMD}px;
         align-items: center;
+    `,
+
+    userNameText: css`
+        color: ${token.colorTextSecondary};
+        font-size: 12px;
+    `,
+
+    statusCell: css`
+        display: flex;
+        align-items: center;
+        gap: ${token.marginXS}px;
+    `,
+
+    modalHint: css`
+        margin-bottom: ${token.marginMD}px;
+        color: ${token.colorTextSecondary};
+    `,
+
+    modalActions: css`
+        display: flex;
+        justify-content: flex-end;
+        gap: ${token.marginSM}px;
+        padding-top: ${token.paddingSM}px;
+    `,
+
+    nameRow: css`
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: ${token.marginSM}px;
+
+        @media (max-width: 575px) {
+            grid-template-columns: 1fr;
+        }
+    `,
+
+    drawerBody: css`
+        padding-bottom: ${token.paddingLG}px;
     `,
 }));
