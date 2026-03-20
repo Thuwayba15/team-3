@@ -18,7 +18,7 @@ interface MeetingRoomProps {
     autoStart?: boolean;
 }
 
-const RTC_CONFIGURATION: RTCConfiguration = {
+const RTC_CONFIGURATION = {
     iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
 };
 
@@ -49,6 +49,12 @@ export function MeetingRoom({ access, leaveHref, autoStart = false }: MeetingRoo
     const hubUrl = useMemo(() => getHubAbsoluteUrl(access.hubUrl), [access.hubUrl]);
     const hasAudioTrack = !!localStreamRef.current?.getAudioTracks().length;
     const hasVideoTrack = !!localStreamRef.current?.getVideoTracks().length;
+
+    useEffect(() => {
+        if (localMediaMode === "full" && localVideoRef.current && localStreamRef.current) {
+            localVideoRef.current.srcObject = localStreamRef.current;
+        }
+    }, [localMediaMode]);
 
     useEffect(() => {
         let isCancelled = false;
