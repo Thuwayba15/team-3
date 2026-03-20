@@ -59,7 +59,8 @@ export const useStyles = createStyles(({ css, token }) => ({
   `,
   title: css`
     font-size: clamp(32px, 5vw, 56px);
-    font-weight: 500;
+    font-weight: 600;
+    font-family: 'Lexend', sans-serif;
     color: ${token.colorTextHeading};
     margin-top: ${token.marginSM}px;
     margin-bottom: 0;
@@ -95,7 +96,6 @@ export const useStyles = createStyles(({ css, token }) => ({
     .ant-input,
     .ant-select-selector {
       background: ${token.colorBgContainer} !important;
-      border: 1px solid ${token.colorBorderSecondary} !important;
       border-radius: ${token.borderRadiusLG}px !important;
       transition: all ${token.motionDurationMid};
     }
@@ -114,7 +114,7 @@ export const useStyles = createStyles(({ css, token }) => ({
 
       &.ant-input-affix-wrapper-focused {
         border-color: ${token.colorPrimary} !important;
-        box-shadow: 0 0 0 2px ${token.colorPrimaryBg} !important;
+        box-shadow: none !important;
 
         .ant-input-prefix {
           color: ${token.colorPrimary};

@@ -8,6 +8,7 @@ import {
     SUBJECT_GET_MY_ENDPOINT,
     TOPIC_GET_BY_SUBJECT_ENDPOINT,
     LESSON_GET_BY_TOPIC_ENDPOINT,
+    LESSON_GET_ENDPOINT,
     UPLOAD_TEXT_MATERIAL_ENDPOINT,
 } from "@/constants/api";
 import {
@@ -15,17 +16,18 @@ import {
     getMySubjectsPending, getMySubjectsSuccess, getMySubjectsError,
     getTopicsBySubjectPending, getTopicsBySubjectSuccess, getTopicsBySubjectError,
     getLessonsByTopicPending, getLessonsByTopicSuccess, getLessonsByTopicError,
+    getLessonPending, getLessonSuccess, getLessonError,
     createLessonPending, createLessonSuccess, createLessonError,
 } from "./actions";
 import type {
-    ISubject, ITopic, ILessonSummary,
+    ISubject, ITopic, ILessonSummary, ILessonDetail,
     IUploadLessonInput, IUploadLessonOutput, ILessonTranslation,
     ISubjectContextActions, ISubjectContextState,
 } from "./context";
 import { INITIAL_STATE, SubjectActionsContext, SubjectStateContext } from "./context";
 import { subjectReducer } from "./reducer";
 
-export type { ISubject, ITopic, ILessonSummary, IUploadLessonInput, IUploadLessonOutput, ILessonTranslation };
+export type { ISubject, ITopic, ILessonSummary, ILessonDetail, IUploadLessonInput, IUploadLessonOutput, ILessonTranslation };
 
 interface IAbpResponse<T> {
     result: T;
@@ -83,6 +85,18 @@ export const SubjectProvider = ({ children }: ISubjectProviderProps) => {
         }
     };
 
+    const getLesson = async (lessonId: string): Promise<void> => {
+        dispatch(getLessonPending());
+        try {
+            const response = await apiClient.get<IAbpResponse<ILessonDetail>>(LESSON_GET_ENDPOINT, {
+                params: { lessonId },
+            });
+            dispatch(getLessonSuccess(response.data.result));
+        } catch (error) {
+            dispatch(getLessonError(resolveErrorMessage(error)));
+        }
+    };
+
     const createLesson = async (input: IUploadLessonInput): Promise<IUploadLessonOutput | undefined> => {
         dispatch(createLessonPending());
         try {
@@ -96,7 +110,7 @@ export const SubjectProvider = ({ children }: ISubjectProviderProps) => {
     };
 
     const actionsValue = useMemo<ISubjectContextActions>(
-        () => ({ getSubjects, getMySubjects, getTopicsBySubject, getLessonsByTopic, createLesson }),
+        () => ({ getSubjects, getMySubjects, getTopicsBySubject, getLessonsByTopic, getLesson, createLesson }),
         []
     );
 

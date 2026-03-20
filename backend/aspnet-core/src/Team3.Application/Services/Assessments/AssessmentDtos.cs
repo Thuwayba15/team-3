@@ -12,6 +12,7 @@ namespace Team3.Services.Assessments
     {
         public Guid LessonId { get; set; }
         public bool IsPublished { get; set; } = false;
+        public DifficultyLevel? DifficultyLevel { get; set; }
     }
 
     public class GenerateDiagnosticQuizInput

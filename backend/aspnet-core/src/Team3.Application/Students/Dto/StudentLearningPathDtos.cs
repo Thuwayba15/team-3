@@ -11,7 +11,11 @@ namespace Team3.Students.Dto
         public DifficultyLevel DifficultyLevel { get; set; }
         public int EstimatedMinutes { get; set; }
         public string Status { get; set; } = default!;
+        public string ActionState { get; set; } = default!;
+        public bool CanComplete { get; set; }
         public Guid? QuizAssessmentId { get; set; }
+        public string QuizStatus { get; set; } = default!;
+        public string? QuizUnavailableReason { get; set; }
     }
 
     public class StudentLearningPathTopicDto
@@ -47,6 +51,7 @@ namespace Team3.Students.Dto
     {
         public Guid LessonId { get; set; }
         public string Status { get; set; } = default!;
+        public string ActionState { get; set; } = default!;
         public string NextRecommendedAction { get; set; } = default!;
         public Guid SubjectId { get; set; }
         public Guid TopicId { get; set; }

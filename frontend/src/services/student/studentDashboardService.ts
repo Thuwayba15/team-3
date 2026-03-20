@@ -16,9 +16,13 @@ interface IStudentDashboardWeakTopicDto {
 }
 
 interface IStudentDashboardRecommendationDto {
+    subjectId: string | null;
+    subjectName: string | null;
     lessonId: string | null;
     lessonTitle: string | null;
     topicName: string | null;
+    estimatedMinutes: number | null;
+    actionState: string | null;
     reason: string | null;
 }
 
@@ -133,18 +137,21 @@ const mapProgressToDashboardData = (result: IStudentDashboardProgressDto): Stude
             severityBucket: getSeverityBucket(topic.masteryScore),
         }));
 
-    const recommendedLessonSubjectName = result.recommendedLesson?.topicName
-        ? (subjectNameByTopicName.get(result.recommendedLesson.topicName) ?? resolvedPrimarySubjectName)
-        : resolvedPrimarySubjectName;
+    const recommendedLessonSubjectName = result.recommendedLesson?.subjectName?.trim().length
+        ? result.recommendedLesson.subjectName
+        : result.recommendedLesson?.topicName
+            ? (subjectNameByTopicName.get(result.recommendedLesson.topicName) ?? resolvedPrimarySubjectName)
+            : resolvedPrimarySubjectName;
 
     const recommendedNextLesson =
         result.recommendedLesson?.lessonId && result.recommendedLesson?.lessonTitle
             ? {
+                subjectId: result.recommendedLesson.subjectId ?? "",
                 lessonId: result.recommendedLesson.lessonId,
                 title: result.recommendedLesson.lessonTitle,
                 topicName: result.recommendedLesson.topicName ?? "Topic",
                 subjectName: recommendedLessonSubjectName,
-                estimatedMinutes: 20,
+                estimatedMinutes: result.recommendedLesson.estimatedMinutes ?? 20,
                 ruleBasisReason: result.recommendedLesson.reason ?? "Recommended based on your current progress.",
             }
             : undefined;

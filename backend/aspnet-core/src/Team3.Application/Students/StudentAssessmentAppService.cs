@@ -69,7 +69,7 @@ namespace Team3.Students
         public async Task<StudentAssessmentDto> GetAssessmentAsync(Guid assessmentId)
         {
             var studentId = AbpSession.GetUserId();
-            var context = await GetAssessmentContextAsync(studentId, assessmentId, true);
+            var context = await GetAssessmentContextAsync(studentId, assessmentId);
             var preferredLanguageCode = await GetPreferredLanguageCodeAsync(studentId);
             var languages = await _languageRepository.GetAllListAsync();
             var languageMap = languages.ToDictionary(x => x.Id);
@@ -147,7 +147,7 @@ namespace Team3.Students
             }
 
             var studentId = AbpSession.GetUserId();
-            var context = await GetAssessmentContextAsync(studentId, input.AssessmentId, true);
+            var context = await GetAssessmentContextAsync(studentId, input.AssessmentId);
 
             if (context.Assessment.AssessmentType != expectedAssessmentType)
             {
@@ -272,15 +272,10 @@ namespace Team3.Students
             };
         }
 
-        private async Task<(Assessment Assessment, Topic Topic, Subject Subject)> GetAssessmentContextAsync(long studentId, Guid assessmentId, bool requirePublished)
+        private async Task<(Assessment Assessment, Topic Topic, Subject Subject)> GetAssessmentContextAsync(long studentId, Guid assessmentId)
         {
             var assessment = await _assessmentRepository.FirstOrDefaultAsync(assessmentId)
                 ?? throw new UserFriendlyException("Assessment not found.");
-
-            if (requirePublished && !assessment.IsPublished)
-            {
-                throw new UserFriendlyException("Assessment is not published.");
-            }
 
             var topic = await _topicRepository.FirstOrDefaultAsync(assessment.TopicId)
                 ?? throw new UserFriendlyException("Topic not found.");
@@ -405,15 +400,15 @@ namespace Team3.Students
         private async Task<string> BuildDiagnosticNextActionAsync(Guid topicId, DifficultyLevel assignedDifficulty)
         {
             var lesson = await _lessonRepository.GetAll()
-                .Where(x => x.TopicId == topicId && x.IsPublished && x.DifficultyLevel == assignedDifficulty)
+                .Where(x => x.TopicId == topicId && x.DifficultyLevel == assignedDifficulty)
                 .OrderBy(x => x.Title)
                 .FirstOrDefaultAsync()
                 ?? await _lessonRepository.GetAll()
-                    .Where(x => x.TopicId == topicId && x.IsPublished)
+                    .Where(x => x.TopicId == topicId)
                     .OrderBy(x => x.Title)
                     .FirstOrDefaultAsync();
 
-            return lesson == null ? "No published lesson is available for this topic yet." : $"Start lesson: {lesson.Title}.";
+            return lesson == null ? "No lesson is available for this topic yet." : $"Start lesson: {lesson.Title}.";
         }
 
         private async Task<string> BuildNextTopicActionAsync(Guid subjectId, Guid currentTopicId)

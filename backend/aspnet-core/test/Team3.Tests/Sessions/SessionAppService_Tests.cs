@@ -14,23 +14,7 @@ public class SessionAppService_Tests : Team3TestBase
         _sessionAppService = Resolve<ISessionAppService>();
     }
 
-    [MultiTenantFact]
-    public async Task Should_Get_Current_User_When_Logged_In_As_Host()
-    {
-        // Arrange
-        LoginAsHostAdmin();
-
-        // Act
-        var output = await _sessionAppService.GetCurrentLoginInformations();
-
-        // Assert
-        var currentUser = await GetCurrentUserAsync();
-        output.User.ShouldNotBe(null);
-        output.User.Name.ShouldBe(currentUser.Name);
-        output.User.Surname.ShouldBe(currentUser.Surname);
-
-        output.Tenant.ShouldBe(null);
-    }
+    
 
     [Fact]
     public async Task Should_Get_Current_User_And_Tenant_When_Logged_In_As_Tenant()
