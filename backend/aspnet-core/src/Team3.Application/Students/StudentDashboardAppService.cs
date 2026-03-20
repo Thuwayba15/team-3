@@ -187,7 +187,7 @@ namespace Team3.Students
                     .OrderBy(x => x.SubjectName)
                     .ThenBy(x => x.TopicName)
                     .ToList(),
-                RecommendedLesson = GenerateRecommendedLesson(topicProgresses, topics, lessons),
+                RecommendedLesson = GenerateRecommendedLesson(enrolledSubjectIds, subjects, topics, lessons, topicProgresses, lessonProgresses),
                 RevisionAdvices = GenerateRevisionAdvices(topicProgresses, topics),
                 MotivationalGuidance = GenerateMotivationalGuidance(subjectProgressRecords)
             };
@@ -278,25 +278,81 @@ namespace Team3.Students
         }
 
         private StudentDashboardRecommendationDto? GenerateRecommendedLesson(
-            List<StudentTopicProgress> topicProgresses,
+            List<Guid> enrolledSubjectIds,
+            List<Subject> subjects,
             List<Topic> topics,
-            List<Lesson> lessons)
+            List<Lesson> lessons,
+            List<StudentTopicProgress> topicProgresses,
+            List<StudentLessonProgress> lessonProgresses)
         {
-            if (!topicProgresses.Any())
+            if (!enrolledSubjectIds.Any() || !topics.Any() || !lessons.Any())
                 return null;
 
-            var nextLesson = _recommendationEngine.SelectNextLessonByTopicProgress(topics, lessons, topicProgresses);
-            if (nextLesson == null)
-                return null;
+            var subjectOrder = subjects
+                .OrderBy(x => x.Name)
+                .Select((subject, index) => new { subject.Id, Index = index })
+                .ToDictionary(x => x.Id, x => x.Index);
+            var latestTopicProgressByTopicId = topicProgresses
+                .GroupBy(x => x.TopicId)
+                .ToDictionary(g => g.Key, g => g.OrderByDescending(x => x.LastModificationTime ?? x.CreationTime).First());
+            var latestLessonProgressByLessonId = lessonProgresses
+                .GroupBy(x => x.LessonId)
+                .ToDictionary(g => g.Key, g => g.OrderByDescending(x => x.LastModificationTime ?? x.CreationTime).First());
 
-            var topic = topics.FirstOrDefault(x => x.Id == nextLesson.TopicId);
-            return new StudentDashboardRecommendationDto
+            foreach (var subjectId in enrolledSubjectIds.OrderBy(id => subjectOrder.TryGetValue(id, out var index) ? index : int.MaxValue))
             {
-                LessonId = nextLesson.Id,
-                LessonTitle = nextLesson.Title,
-                TopicName = topic?.Name,
-                Reason = "Recommended based on your learning progress"
-            };
+                var subject = subjects.FirstOrDefault(x => x.Id == subjectId);
+                var subjectTopics = topics
+                    .Where(x => x.SubjectId == subjectId && x.IsActive)
+                    .OrderBy(x => x.SequenceOrder)
+                    .ToList();
+
+                var firstUnlockedTopic = subjectTopics.FirstOrDefault(topic =>
+                {
+                    var progress = latestTopicProgressByTopicId.TryGetValue(topic.Id, out var latestProgress) ? latestProgress : null;
+                    return progress?.Status != LearningProgressStatus.Completed;
+                });
+
+                if (firstUnlockedTopic == null)
+                {
+                    continue;
+                }
+
+                var assignedDifficulty = latestTopicProgressByTopicId.TryGetValue(firstUnlockedTopic.Id, out var topicProgress)
+                    ? topicProgress.AssignedDifficultyLevel
+                    : DifficultyLevel.Medium;
+
+                var subjectLessons = ResolveTopicLessonsForDifficulty(lessons, firstUnlockedTopic.Id, assignedDifficulty);
+                var nextLesson = subjectLessons.FirstOrDefault(lesson =>
+                {
+                    var progress = latestLessonProgressByLessonId.TryGetValue(lesson.Id, out var latestProgress) ? latestProgress : null;
+                    return progress?.Status != LearningProgressStatus.Completed;
+                }) ?? subjectLessons.FirstOrDefault();
+
+                if (nextLesson == null)
+                {
+                    continue;
+                }
+
+                var progress = latestLessonProgressByLessonId.TryGetValue(nextLesson.Id, out var nextLessonProgress) ? nextLessonProgress : null;
+                var actionState = progress?.Status == LearningProgressStatus.Completed ? "review" : "available";
+
+                return new StudentDashboardRecommendationDto
+                {
+                    SubjectId = subject?.Id,
+                    SubjectName = subject?.Name,
+                    LessonId = nextLesson.Id,
+                    LessonTitle = nextLesson.Title,
+                    TopicName = firstUnlockedTopic.Name,
+                    EstimatedMinutes = nextLesson.EstimatedMinutes,
+                    ActionState = actionState,
+                    Reason = actionState == "review"
+                        ? "Review this completed lesson to strengthen your understanding."
+                        : "Recommended based on your current learning path."
+                };
+            }
+
+            return null;
         }
 
         private List<StudentDashboardRevisionAdviceDto> GenerateRevisionAdvices(
@@ -330,6 +386,35 @@ namespace Team3.Students
                 >= 40 => "You're making progress. Continue practicing to strengthen your skills.",
                 _ => "Every expert started as a beginner. Don't give up!"
             };
+        }
+
+        private static List<Lesson> ResolveTopicLessonsForDifficulty(
+            List<Lesson> lessons,
+            Guid topicId,
+            DifficultyLevel assignedDifficulty)
+        {
+            var selectedLessons = lessons
+                .Where(x => x.TopicId == topicId && x.IsPublished && x.DifficultyLevel == assignedDifficulty)
+                .OrderBy(x => x.Title)
+                .ToList();
+
+            if (selectedLessons.Count == 0)
+            {
+                selectedLessons = lessons
+                    .Where(x => x.TopicId == topicId && x.IsPublished && x.DifficultyLevel == DifficultyLevel.Medium)
+                    .OrderBy(x => x.Title)
+                    .ToList();
+            }
+
+            if (selectedLessons.Count == 0)
+            {
+                selectedLessons = lessons
+                    .Where(x => x.TopicId == topicId && x.IsPublished)
+                    .OrderBy(x => x.Title)
+                    .ToList();
+            }
+
+            return selectedLessons;
         }
 
         private async Task EnsureStudentHasAccessToSubjectAsync(long studentId, Guid subjectId)

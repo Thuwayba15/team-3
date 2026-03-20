@@ -139,6 +139,8 @@ export default function StudentLearningPathPage() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const subjectIdParam = searchParams.get("subjectId");
+    const assessmentIdParam = searchParams.get("assessmentId");
+    const assessmentTypeParam = searchParams.get("assessmentType");
     const [messageApi, contextHolder] = message.useMessage();
     const [subjects, setSubjects] = useState<IStudentSubject[]>([]);
     const [availableSubjects, setAvailableSubjects] = useState<IStudentSubject[]>([]);
@@ -234,6 +236,20 @@ export default function StudentLearningPathPage() {
         void loadSubjectPath(activeSubjectId);
     }, [activeSubjectId]);
 
+    useEffect(() => {
+        if (!assessmentIdParam) {
+            return;
+        }
+
+        const parsedAssessmentType = Number(assessmentTypeParam) as AssessmentType;
+        if (parsedAssessmentType === 1 || parsedAssessmentType === 2) {
+            setActiveAssessment({
+                assessmentId: assessmentIdParam,
+                assessmentType: parsedAssessmentType,
+            });
+        }
+    }, [assessmentIdParam, assessmentTypeParam]);
+
     const handleSelectSubject = (subjectId: string) => {
         setActiveSubjectId(subjectId);
         router.push(`/student/learning-path?subjectId=${subjectId}`);
@@ -249,11 +265,18 @@ export default function StudentLearningPathPage() {
 
     const handleOpenAssessment = (assessmentId: string, assessmentType: AssessmentType) => {
         setActiveAssessment({ assessmentId, assessmentType });
+        if (activeSubjectId) {
+            router.replace(`/student/learning-path?subjectId=${activeSubjectId}&assessmentId=${assessmentId}&assessmentType=${assessmentType}`);
+        }
     };
 
     const handleAssessmentFinished = async () => {
         const currentSubjectId = activeSubjectId;
         setActiveAssessment(null);
+
+        if (currentSubjectId) {
+            router.replace(`/student/learning-path?subjectId=${currentSubjectId}`);
+        }
 
         if (currentSubjectId) {
             await loadSubjectPath(currentSubjectId);
@@ -307,7 +330,12 @@ export default function StudentLearningPathPage() {
                 <QuizView
                     assessmentId={activeAssessment.assessmentId}
                     assessmentType={activeAssessment.assessmentType}
-                    onExit={() => setActiveAssessment(null)}
+                    onExit={() => {
+                        setActiveAssessment(null);
+                        if (activeSubjectId) {
+                            router.replace(`/student/learning-path?subjectId=${activeSubjectId}`);
+                        }
+                    }}
                     onComplete={handleAssessmentFinished}
                 />
             </>

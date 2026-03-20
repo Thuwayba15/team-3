@@ -137,6 +137,7 @@ namespace Team3.Students
                     topicProgress?.Status == LearningProgressStatus.Completed);
 
                 var allLessonsCompleted = topicLessons.Count > 0 && topicLessons.All(x => x.Status == "completed");
+                var anyQuizAvailable = topicLessons.Any(x => x.QuizAssessmentId.HasValue);
                 var recommendedAction = topicStatus == "locked"
                     ? "Complete the previous topic to unlock this one."
                     : assignedDifficulty == null
@@ -144,7 +145,9 @@ namespace Team3.Students
                         : topicLessons.Count == 0
                             ? "No published lesson is available for the assigned difficulty yet."
                             : allLessonsCompleted
-                                ? "Take the lesson quiz to complete this topic."
+                                ? anyQuizAvailable
+                                    ? "Take the lesson quiz to complete this topic."
+                                    : "A lesson quiz is not available for this topic yet."
                                 : "Continue with your current lesson.";
 
                 topicDtos.Add(new StudentLearningPathTopicDto
@@ -206,7 +209,20 @@ namespace Team3.Students
                 await _topicProgressRepository.InsertAsync(topicProgress);
             }
 
-            if (topicProgress.Status != LearningProgressStatus.Completed)
+            if (topicProgress.Status == LearningProgressStatus.Completed)
+            {
+                return new CompleteLessonOutputDto
+                {
+                    LessonId = lesson.Id,
+                    Status = "completed",
+                    ActionState = "review",
+                    NextRecommendedAction = "This lesson has already been completed. You can review it any time.",
+                    SubjectId = subject.Id,
+                    TopicId = topic.Id
+                };
+            }
+
+            if (topicProgress.Status != LearningProgressStatus.Current)
             {
                 topicProgress.MarkCurrent(topicProgress.AssignedDifficultyLevel, topicProgress.MasteryScore, topicProgress.NeedsRevision);
             }
@@ -218,12 +234,22 @@ namespace Team3.Students
                 await _lessonProgressRepository.InsertAsync(lessonProgress);
             }
 
-            lessonProgress.MarkCompleted();
+            if (lessonProgress.Status == LearningProgressStatus.Completed)
+            {
+                return new CompleteLessonOutputDto
+                {
+                    LessonId = lesson.Id,
+                    Status = "completed",
+                    ActionState = "review",
+                    NextRecommendedAction = "This lesson has already been completed. You can review it any time.",
+                    SubjectId = subject.Id,
+                    TopicId = topic.Id
+                };
+            }
 
-            var quizAssessment = await _assessmentRepository.GetAll()
-                .Where(x => x.IsPublished && x.AssessmentType == AssessmentType.Quiz && x.LessonId == lesson.Id && x.DifficultyLevel == topicProgress.AssignedDifficultyLevel)
-                .OrderBy(x => x.Title)
-                .FirstOrDefaultAsync();
+            lessonProgress.MarkCurrent();
+
+            var quizAssessment = await ResolveLessonQuizAsync(lesson.Id, topic.Id, topicProgress.AssignedDifficultyLevel);
 
             await UpdateStudentProgressAsync(studentId, subject.Id);
             await CurrentUnitOfWork.SaveChangesAsync();
@@ -231,8 +257,11 @@ namespace Team3.Students
             return new CompleteLessonOutputDto
             {
                 LessonId = lesson.Id,
-                Status = "completed",
-                NextRecommendedAction = quizAssessment != null ? "Take the lesson quiz to complete this topic." : "Proceed to the next available topic.",
+                Status = "current",
+                ActionState = "available",
+                NextRecommendedAction = quizAssessment != null
+                    ? "Take the lesson quiz to complete this topic."
+                    : "No published lesson quiz is available for this lesson yet.",
                 SubjectId = subject.Id,
                 TopicId = topic.Id
             };
@@ -282,11 +311,13 @@ namespace Team3.Students
                             : "locked";
 
                 var translation = SelectBestLessonTranslation(lessonTranslations.Where(x => x.LessonId == lesson.Id).ToList(), languageMap, preferredLanguageCode);
-                var quizAssessmentId = assessments
-                    .Where(x => x.IsPublished && x.AssessmentType == AssessmentType.Quiz && x.LessonId == lesson.Id && x.DifficultyLevel == assignedDifficulty.Value)
-                    .OrderBy(x => x.Title)
-                    .Select(x => (Guid?)x.Id)
-                    .FirstOrDefault();
+                var quizAssessment = ResolveLessonQuiz(assessments, lesson.Id, topic.Id, assignedDifficulty.Value);
+                var actionState = status switch
+                {
+                    "completed" => "review",
+                    "current" => "available",
+                    _ => "locked"
+                };
 
                 return new StudentLearningPathLessonDto
                 {
@@ -295,7 +326,11 @@ namespace Team3.Students
                     DifficultyLevel = lesson.DifficultyLevel,
                     EstimatedMinutes = lesson.EstimatedMinutes,
                     Status = status,
-                    QuizAssessmentId = quizAssessmentId
+                    ActionState = actionState,
+                    CanComplete = status == "current",
+                    QuizAssessmentId = quizAssessment?.Id,
+                    QuizStatus = quizAssessment != null ? "available" : "unavailable",
+                    QuizUnavailableReason = quizAssessment == null ? "No published lesson quiz is available for this lesson yet." : null
                 };
             }).ToList();
         }
@@ -326,6 +361,27 @@ namespace Team3.Students
             return translations.FirstOrDefault(x => languageMap.TryGetValue(x.LanguageId, out var language) && string.Equals(language.Code, preferredLanguageCode, StringComparison.OrdinalIgnoreCase))
                    ?? translations.FirstOrDefault(x => languageMap.TryGetValue(x.LanguageId, out var language) && string.Equals(language.Code, "en", StringComparison.OrdinalIgnoreCase))
                    ?? translations.FirstOrDefault();
+        }
+
+        private async Task<Assessment?> ResolveLessonQuizAsync(Guid lessonId, Guid topicId, DifficultyLevel assignedDifficulty)
+        {
+            var assessments = await _assessmentRepository.GetAll()
+                .Where(x => x.IsPublished && x.AssessmentType == AssessmentType.Quiz && x.TopicId == topicId && x.LessonId == lessonId)
+                .ToListAsync();
+
+            return ResolveLessonQuiz(assessments, lessonId, topicId, assignedDifficulty);
+        }
+
+        private static Assessment? ResolveLessonQuiz(IEnumerable<Assessment> assessments, Guid lessonId, Guid topicId, DifficultyLevel assignedDifficulty)
+        {
+            var candidates = assessments
+                .Where(x => x.IsPublished && x.AssessmentType == AssessmentType.Quiz && x.TopicId == topicId && x.LessonId == lessonId)
+                .OrderBy(x => x.Title)
+                .ToList();
+
+            return candidates.FirstOrDefault(x => x.DifficultyLevel == assignedDifficulty)
+                   ?? candidates.FirstOrDefault(x => x.DifficultyLevel == DifficultyLevel.Medium)
+                   ?? candidates.FirstOrDefault();
         }
 
         private async Task UpdateStudentProgressAsync(long studentId, Guid subjectId)

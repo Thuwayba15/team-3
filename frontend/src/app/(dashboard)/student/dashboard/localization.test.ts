@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
+import type { TFunction } from "i18next";
 import { getLocalizedAttentionAction, getLocalizedGuidanceMessage } from "./localization";
 
-const t = (key: string): string => key;
+const t = ((key: string): string => key) as TFunction;
 
 describe("dashboard localization helpers", () => {
     it("uses backend advice for English when advice is present", () => {

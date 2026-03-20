@@ -7,6 +7,7 @@ import {
     LockOutlined,
     MessageOutlined,
     PlayCircleOutlined,
+    ReadOutlined,
     RightOutlined,
 } from "@ant-design/icons";
 import { Alert, Button, Card, Empty, Progress, Spin, Tag, Typography, message } from "antd";
@@ -57,7 +58,8 @@ function getDifficultyLabel(level: number) {
 }
 
 function getPreferredTranslation(lesson: ILessonDetail) {
-    return lesson.translations.find((translation) => translation.languageCode.toLowerCase() !== "en")
+    return lesson.selectedTranslation
+        ?? lesson.translations.find((translation) => translation.languageCode.toLowerCase() === lesson.preferredLanguageCode.toLowerCase())
         ?? lesson.translations.find((translation) => translation.languageCode.toLowerCase() === "en")
         ?? lesson.translations[0]
         ?? null;
@@ -122,6 +124,7 @@ function LessonDetail({
     error,
     onBack,
     onComplete,
+    onOpenQuiz,
 }: {
     subjectPath: IStudentLearningPath;
     topic: IStudentLearningPathTopic;
@@ -131,6 +134,7 @@ function LessonDetail({
     error: string | null;
     onBack: () => void;
     onComplete: () => void;
+    onOpenQuiz: (assessmentId: string) => void;
 }) {
     const { styles } = useStyles();
     const [aiOpen, setAiOpen] = useState(false);
@@ -138,6 +142,8 @@ function LessonDetail({
     const sections = lessonDetail ? buildLessonSections(lessonDetail, translation) : [];
     const completedLessons = topic.lessons.filter((item) => item.status === "completed").length;
     const topicCompletion = topic.lessons.length === 0 ? 0 : Math.round((completedLessons / topic.lessons.length) * 100);
+    const isReviewMode = lesson.actionState === "review";
+    const canTakeQuiz = lesson.quizStatus === "available" && Boolean(lesson.quizAssessmentId);
 
     return (
         <div className={styles.detailRoot}>
@@ -152,6 +158,7 @@ function LessonDetail({
                 <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 16 }}>
                     <Tag color="blue">{getDifficultyLabel(lesson.difficultyLevel)}</Tag>
                     <Tag>{`${lesson.estimatedMinutes} min`}</Tag>
+                    {isReviewMode ? <Tag color="success">Review mode</Tag> : null}
                 </div>
 
                 {loading ? (
@@ -174,16 +181,35 @@ function LessonDetail({
                 )}
 
                 <div className={styles.detailFooter}>
-                    <Button
-                        type="primary"
-                        icon={<RightOutlined />}
-                        iconPosition="end"
-                        className={styles.nextBtn}
-                        onClick={onComplete}
-                        disabled={loading || Boolean(error)}
-                    >
-                        Complete Lesson
-                    </Button>
+                    {canTakeQuiz ? (
+                        <Button
+                            type="primary"
+                            icon={<RightOutlined />}
+                            iconPosition="end"
+                            className={styles.nextBtn}
+                            onClick={() => lesson.quizAssessmentId && onOpenQuiz(lesson.quizAssessmentId)}
+                            disabled={loading || Boolean(error)}
+                        >
+                            Take Quiz
+                        </Button>
+                    ) : null}
+                    {lesson.canComplete && !canTakeQuiz ? (
+                        <Button
+                            type="primary"
+                            icon={<RightOutlined />}
+                            iconPosition="end"
+                            className={styles.nextBtn}
+                            onClick={onComplete}
+                            disabled={loading || Boolean(error)}
+                        >
+                            Finish Lesson
+                        </Button>
+                    ) : null}
+                    {isReviewMode ? (
+                        <Button disabled icon={<ReadOutlined />}>
+                            Review Only
+                        </Button>
+                    ) : null}
                 </div>
             </div>
 
@@ -315,6 +341,7 @@ function LessonList({
                                 </div>
                                 <div className={styles.lessonRight}>
                                     {statusTag(lesson.status)}
+                                    {lesson.actionState === "review" ? <Tag color="success">Review</Tag> : null}
                                     {lesson.status !== "locked" ? (
                                         <RightOutlined style={{ fontSize: 12, color: "#00b8a9" }} />
                                     ) : null}
@@ -490,18 +517,30 @@ export default function StudentLessonsPage() {
         }
 
         try {
-            await studentLearningPathService.completeLesson({ lessonId: activeLessonId });
+            const result = await studentLearningPathService.completeLesson({ lessonId: activeLessonId });
             const refreshedPath = await syncPath(activeSubjectId);
-            const nextCurrent = getCurrentLesson(refreshedPath);
+            const refreshedTopic = refreshedPath.topics.find((topic) => topic.topicId === result.topicId);
+            const refreshedLesson = refreshedTopic?.lessons.find((lesson) => lesson.lessonId === activeLessonId);
 
+            if (result.actionState === "review") {
+                messageApi.info(result.nextRecommendedAction);
+                return;
+            }
+
+            if (refreshedLesson?.quizAssessmentId) {
+                messageApi.success(result.nextRecommendedAction);
+                router.push(`/student/learning-path?subjectId=${activeSubjectId}&assessmentId=${refreshedLesson.quizAssessmentId}&assessmentType=2`);
+                return;
+            }
+
+            const nextCurrent = getCurrentLesson(refreshedPath);
             if (nextCurrent) {
-                messageApi.success("Lesson completed. Moving to your next lesson.");
+                messageApi.info(result.nextRecommendedAction);
                 router.push(`/student/lessons?subjectId=${activeSubjectId}&lessonId=${nextCurrent.lesson.lessonId}`);
                 return;
             }
 
-            messageApi.success("Lesson completed. Continue in your learning path for the next recommended step.");
-            router.push(`/student/learning-path?subjectId=${activeSubjectId}`);
+            messageApi.info(result.nextRecommendedAction);
         } catch (completeError) {
             messageApi.error(completeError instanceof Error ? completeError.message : "Failed to complete the lesson.");
         }
@@ -544,6 +583,7 @@ export default function StudentLessonsPage() {
                         error={lessonError}
                         onBack={handleBackToList}
                         onComplete={() => void handleCompleteLesson()}
+                        onOpenQuiz={(assessmentId) => router.push(`/student/learning-path?subjectId=${activeSubjectId}&assessmentId=${assessmentId}&assessmentType=2`)}
                     />
                 </>
             ) : (
