@@ -13,7 +13,7 @@ import { LessonTranslationsPanel } from "./LessonTranslationsPanel";
 import { SubjectFormModal } from "./SubjectFormModal";
 import { SubjectsPanel } from "./SubjectsPanel";
 import { TopicsPanel } from "./TopicsPanel";
-import type { DraftSection, IAiDraft, IAiDraftItem, ISubjectFormValues, ReviewStatus } from "./types";
+import type { IAiDraft, IAiDraftItem, ISubjectFormValues, DraftSection, ReviewStatus } from "./types";
 
 function CurriculumPageContent() {
     const { t } = useTranslation();
@@ -84,19 +84,17 @@ function CurriculumPageContent() {
         }
     };
 
-    const handleUpdateDraftItem = (section: DraftSection, itemId: string, reviewStatus: ReviewStatus): void => {
-        if (!selectedSubject) return;
-        setDraftBySubject((prev) => {
-            const draft = prev[selectedSubject.id];
-            if (!draft) return prev;
-            return {
-                ...prev,
-                [selectedSubject.id]: {
-                    ...draft,
-                    [section]: draft[section].map((item) => item.id === itemId ? { ...item, reviewStatus } : item),
-                },
-            };
-        });
+    const handleUpdateItemStatus = (section: DraftSection, itemId: string, status: ReviewStatus): void => {
+        if (!selectedSubject || !selectedDraft) return;
+        setDraftBySubject((prev) => ({
+            ...prev,
+            [selectedSubject.id]: {
+                ...selectedDraft,
+                [section]: selectedDraft[section].map((item) =>
+                    item.id === itemId ? { ...item, reviewStatus: status } : item
+                ),
+            },
+        }));
     };
 
     const handleApproveAll = (): void => {
@@ -120,8 +118,8 @@ function CurriculumPageContent() {
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                 <PageHeader title={t("dashboard.admin.curriculum.title")} subtitle={t("dashboard.admin.curriculum.subtitle")} />
                 <Button type="primary" icon={<BookOutlined />} onClick={() => setIsLessonModalOpen(true)} style={{ marginTop: 8 }}>
-                    Create Lesson
-                </Button>
+                    Create Lessons
+                </Button>   
             </div>
 
             <Row gutter={[16, 16]}>
@@ -142,7 +140,7 @@ function CurriculumPageContent() {
 
             <LessonTranslationsPanel createdLesson={createdLesson} />
 
-            <AiDraftReview selectedDraft={selectedDraft} onApproveAll={handleApproveAll} onUpdateItemStatus={handleUpdateDraftItem} />
+            <AiDraftReview selectedDraft={selectedDraft} onApproveAll={handleApproveAll} onUpdateItemStatus={handleUpdateItemStatus} />
 
             <SubjectFormModal open={isSubjectModalOpen} editingSubjectId={editingSubjectId} form={form} onCancel={closeSubjectModal} onOk={handleSubmitSubject} />
 
