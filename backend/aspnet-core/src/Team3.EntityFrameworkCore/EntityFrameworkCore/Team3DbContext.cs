@@ -47,6 +47,9 @@ public class Team3DbContext : AbpZeroDbContext<Tenant, Role, User, Team3DbContex
     public DbSet<StudentAssessmentAttempt> StudentAssessmentAttempts { get; set; }
     public DbSet<StudentAssessmentAnswer> StudentAssessmentAnswers { get; set; }
 
+    public DbSet<SubjectTranslation> SubjectTranslations { get; set; }
+    public DbSet<TopicTranslation> TopicTranslations { get; set; }
+
     // Per-user platform language preference
 
     public Team3DbContext(DbContextOptions<Team3DbContext> options)
@@ -412,6 +415,44 @@ public class Team3DbContext : AbpZeroDbContext<Tenant, Role, User, Team3DbContex
                 .WithMany()
                 .HasForeignKey(x => x.QuestionId)
                 .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<SubjectTranslation>(entity =>
+        {
+            entity.ToTable("SubjectTranslations");
+            entity.HasIndex(x => new { x.SubjectId, x.LanguageId }).IsUnique();
+            entity.Property(x => x.Name).IsRequired().HasMaxLength(100);
+            entity.Property(x => x.Description).HasMaxLength(500);
+            entity.Property(x => x.IsAutoTranslated).HasDefaultValue(false);
+
+            entity.HasOne(x => x.Subject)
+                .WithMany(x => x.Translations)
+                .HasForeignKey(x => x.SubjectId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(x => x.Language)
+                .WithMany()
+                .HasForeignKey(x => x.LanguageId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<TopicTranslation>(entity =>
+        {
+            entity.ToTable("TopicTranslations");
+            entity.HasIndex(x => new { x.TopicId, x.LanguageId }).IsUnique();
+            entity.Property(x => x.Name).IsRequired().HasMaxLength(150);
+            entity.Property(x => x.Description).HasMaxLength(1000);
+            entity.Property(x => x.IsAutoTranslated).HasDefaultValue(false);
+
+            entity.HasOne(x => x.Topic)
+                .WithMany(x => x.Translations)
+                .HasForeignKey(x => x.TopicId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(x => x.Language)
+                .WithMany()
+                .HasForeignKey(x => x.LanguageId)
+                .OnDelete(DeleteBehavior.Restrict);
         });
     }
 }
