@@ -10,7 +10,8 @@ import {
     ReadOutlined,
     RightOutlined,
 } from "@ant-design/icons";
-import { Alert, Button, Card, Empty, Progress, Skeleton, Tag, Typography, message } from "antd";
+import { Alert, Button, Card, Empty, Progress, Tag, Skeleton,Typography, message } from "antd";
+import ReactMarkdown from "react-markdown";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import AiTutorDrawer from "@/components/AiTutorDrawer";
@@ -36,7 +37,7 @@ import {
     type IStudentSubject,
 } from "@/services/student/studentSubjectService";
 
-const { Title, Text, Paragraph } = Typography;
+const { Title, Text } = Typography;
 
 type LessonStatus = "completed" | "current" | "locked";
 
@@ -178,11 +179,9 @@ function LessonDetail({
                     sections.map((section) => (
                         <div key={section.heading}>
                             <div className={styles.sectionTitle}>{section.heading}</div>
-                            {section.body.split(/\n{2,}/).map((paragraph) => (
-                                <Paragraph key={`${section.heading}-${paragraph.slice(0, 24)}`} className={styles.sectionText}>
-                                    {paragraph}
-                                </Paragraph>
-                            ))}
+                            <div className={styles.sectionText}>
+                                <ReactMarkdown>{section.body}</ReactMarkdown>
+                            </div>
                         </div>
                     ))
                 )}
@@ -255,7 +254,12 @@ function LessonDetail({
                     </Button>
                 </Card>
 
-                <AiTutorDrawer open={aiOpen} onClose={() => setAiOpen(false)} lessonTitle={lessonDetail?.title ?? lesson.title} />
+                <AiTutorDrawer
+                    open={aiOpen}
+                    onClose={() => setAiOpen(false)}
+                    lessonTitle={lessonDetail?.title ?? lesson.title}
+                    lessonContent={sections.map((s) => `## ${s.heading}\n\n${s.body}`).join("\n\n")}
+                />
             </div>
         </div>
     );
