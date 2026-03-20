@@ -16,7 +16,7 @@ export const NAVIGATION_BY_ROLE: RoleNavigationMap = {
         { key: "student-dashboard", label: "nav.dashboard", path: "/student/dashboard", icon: DashboardOutlined },
         { key: "student-learning-path", label: "nav.learningPath", path: "/student/learning-path", icon: CompassOutlined },
         { key: "student-lessons", label: "nav.lessons", path: "/student/lessons", icon: BookOutlined },
-        { key: "student-progress", label: "nav.progress", path: "/student/progress", icon: BarChartOutlined },
+        // { key: "student-progress", label: "nav.progress", path: "/student/progress", icon: BarChartOutlined },
     ],
     tutor: [
         { key: "tutor-dashboard", label: "nav.dashboard", path: "/tutor/dashboard", icon: DashboardOutlined },

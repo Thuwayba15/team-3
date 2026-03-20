@@ -3,6 +3,28 @@
 import { createStyles } from "antd-style";
 
 export const useStyles = createStyles(({ css, token }) => ({
+    loadingState: css`
+        min-height: 320px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    `,
+
+    errorState: css`
+        margin-top: ${token.marginLG}px;
+    `,
+
+    emptyState: css`
+        min-height: 320px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    `,
+
+    fullWidth: css`
+        width: 100%;
+    `,
+
     welcomeSection: css`
         display: flex;
         align-items: flex-start;
@@ -42,22 +64,15 @@ export const useStyles = createStyles(({ css, token }) => ({
         }
     `,
 
-    statHeader: css`
+    statHeaderRow: css`
         display: flex;
         align-items: center;
-        justify-content: space-between;
         margin-bottom: ${token.marginSM}px;
     `,
 
     statIcon: css`
         font-size: 22px;
         color: #00b8a9;
-    `,
-
-    statBadge: css`
-        font-size: 12px;
-        color: #52c41a;
-        font-weight: 500;
     `,
 
     statValue: css`
@@ -90,7 +105,6 @@ export const useStyles = createStyles(({ css, token }) => ({
     nextLessonSubtitle: css`
         font-size: 13px;
         color: ${token.colorTextSecondary};
-        margin-top: -4px;
     `,
 
     nextLessonBody: css`
@@ -167,128 +181,183 @@ export const useStyles = createStyles(({ css, token }) => ({
     heatmapSubtitle: css`
         font-size: 13px;
         color: ${token.colorTextSecondary};
-        margin-top: -4px;
     `,
 
-    heatmapPlaceholder: css`
-        height: 140px;
-        background: ${token.colorFillQuaternary};
-        border-radius: ${token.borderRadius}px;
+    heatmapGrid: css`
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+
+        @media (max-width: 1024px) {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        @media (max-width: 768px) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        @media (max-width: 480px) {
+            grid-template-columns: repeat(1, 1fr);
+        }
+    `,
+
+    heatmapPagination: css`
+        margin-top: ${token.marginMD}px;
         display: flex;
-        align-items: center;
-        justify-content: center;
-        color: ${token.colorTextTertiary};
-        font-size: 13px;
-        margin-bottom: ${token.marginMD}px;
+        justify-content: flex-end;
     `,
 
-    heatmapLegend: css`
+    heatmapTile: css`
+        border-radius: ${token.borderRadius}px;
+        padding: 20px 12px 14px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-end;
+        min-height: 120px;
+        gap: 6px;
+    `,
+
+    heatmapTopic: css`
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.92);
+        text-align: center;
+    `,
+
+    heatmapPercent: css`
+        font-size: 24px;
+        font-weight: 700;
+        color: #ffffff;
+    `,
+
+    heatmapSubject: css`
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.84);
+        text-align: center;
+    `,
+
+    heatStrongTile: css`
+        background: #00b8a9;
+    `,
+
+    heatModerateTile: css`
+        background: #7cb305;
+    `,
+
+    heatWeakTile: css`
+        background: #faad14;
+    `,
+
+    heatCriticalTile: css`
+        background: #ff7875;
+    `,
+
+    attentionCard: css`
+        border-radius: ${token.borderRadiusLG}px;
+        border: 1px solid #ffe58f;
+        background: #fffbe6;
+        margin-bottom: ${token.marginLG}px;
+
+        .ant-card-head {
+            background: transparent;
+            border-bottom: 1px solid #ffe58f;
+        }
+
+        .ant-card-head-title {
+            font-weight: 600;
+            color: #ad6800;
+        }
+    `,
+
+    attentionList: css`
+        width: 100%;
+    `,
+
+    attentionPagination: css`
+        margin-top: ${token.marginMD}px;
+        display: flex;
+        justify-content: flex-end;
+    `,
+
+    attentionItem: css`
+        padding: ${token.paddingSM}px;
+        border-radius: ${token.borderRadius}px;
+        border: 1px solid #ffe58f;
+        background: #fff7e6;
+    `,
+
+    attentionHeader: css`
         display: flex;
         align-items: center;
         justify-content: space-between;
+        gap: ${token.marginSM}px;
+    `,
+
+    attentionTitle: css`
+        font-size: 14px;
+        font-weight: 600;
+        color: #ad6800;
+    `,
+
+    attentionPercent: css`
+        font-size: 13px;
+        font-weight: 600;
+        color: #ad6800;
+    `,
+
+    attentionMeta: css`
+        display: block;
+        color: #ad6800;
         font-size: 12px;
-        color: ${token.colorTextSecondary};
+        margin-top: 4px;
     `,
 
-    legendDots: css`
-        display: flex;
-        align-items: center;
-        gap: 4px;
+    attentionDesc: css`
+        display: block;
+        color: #875800;
+        font-size: 13px;
+        margin-top: 6px;
     `,
 
-    quizCard: css`
+    guidanceCard: css`
         border-radius: ${token.borderRadiusLG}px;
         border: 1px solid ${token.colorBorderSecondary};
         margin-bottom: ${token.marginLG}px;
-
-        .ant-card-head-title {
-            font-weight: 600;
-        }
+        background: linear-gradient(135deg, #f0fffb 0%, #e6f7ff 100%);
     `,
 
-    quizItem: css`
-        padding: ${token.paddingSM}px 0;
-        border-bottom: 1px solid ${token.colorFillSecondary};
-
-        &:last-child {
-            border-bottom: none;
-        }
+    guidanceIcon: css`
+        color: #00b8a9;
+        font-size: 18px;
+        margin-top: 2px;
     `,
 
-    quizHeader: css`
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 6px;
-    `,
-
-    quizName: css`
+    guidanceTitle: css`
+        display: block;
         font-size: 14px;
-        font-weight: 500;
-        color: ${token.colorText};
+        font-weight: 600;
+        margin-bottom: 4px;
     `,
 
-    quizScore: css`
-        font-size: 14px;
-        font-weight: 700;
-    `,
-
-    quizDate: css`
-        font-size: 12px;
+    guidanceText: css`
+        display: block;
+        font-size: 13px;
         color: ${token.colorTextSecondary};
     `,
 
-    viewAllLink: css`
-        color: #00b8a9;
-        padding: 0;
-        font-size: 13px;
-
-        &:hover {
-            color: #00a89a !important;
-        }
-    `,
-
-    upNextCard: css`
+    completedCard: css`
         border-radius: ${token.borderRadiusLG}px;
         border: 1px solid ${token.colorBorderSecondary};
-
-        .ant-card-head-title {
-            font-weight: 600;
-        }
     `,
 
-    upNextItem: css`
+    completedRow: css`
         display: flex;
         align-items: center;
         gap: ${token.marginSM}px;
-        padding: ${token.paddingSM}px 0;
-        border-bottom: 1px solid ${token.colorFillSecondary};
-
-        &:last-child {
-            border-bottom: none;
-        }
     `,
 
-    upNextIcon: css`
-        font-size: 16px;
+    completedIcon: css`
         color: #00b8a9;
-        flex-shrink: 0;
-    `,
-
-    upNextInfo: css`
-        display: flex;
-        flex-direction: column;
-        gap: 2px;
-    `,
-
-    upNextTitle: css`
-        font-size: 14px;
-        font-weight: 500;
-        color: ${token.colorText};
-    `,
-
-    upNextDue: css`
-        font-size: 12px;
-        color: ${token.colorTextSecondary};
+        font-size: 16px;
     `,
 }));
