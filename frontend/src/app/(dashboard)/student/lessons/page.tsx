@@ -40,13 +40,13 @@ const { Title, Text, Paragraph } = Typography;
 
 type LessonStatus = "completed" | "current" | "locked";
 
-function statusTag(status: LessonStatus) {
+function statusTag(status: LessonStatus, styles: ReturnType<typeof useStyles>["styles"]) {
     if (status === "completed") {
-        return <Tag color="success">Completed</Tag>;
+        return <Tag className={styles.completedTag}>Completed</Tag>;
     }
 
     if (status === "current") {
-        return <Tag color="processing">In Progress</Tag>;
+        return <Tag className={styles.currentTag}>In Progress</Tag>;
     }
 
     return null;
@@ -165,7 +165,7 @@ function LessonDetail({
                 <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 16 }}>
                     <Tag color="blue">{getDifficultyLabel(lesson.difficultyLevel)}</Tag>
                     <Tag>{`${lesson.estimatedMinutes} min`}</Tag>
-                    {isReviewMode ? <Tag color="success">Review mode</Tag> : null}
+                    {isReviewMode ? <Tag className={styles.reviewTag}>Review mode</Tag> : null}
                 </div>
 
                 {loading ? (
@@ -341,8 +341,8 @@ function LessonList({
                                     </div>
                                 </div>
                                 <div className={styles.lessonRight}>
-                                    {statusTag(lesson.status)}
-                                    {lesson.actionState === "review" ? <Tag color="success">Review</Tag> : null}
+                                    {statusTag(lesson.status, styles)}
+                                    {lesson.actionState === "review" ? <Tag className={styles.reviewTag}>Review</Tag> : null}
                                     {lesson.status !== "locked" ? (
                                         <RightOutlined style={{ fontSize: 12, color: UI_COLORS.PRIMARY }} />
                                     ) : null}
