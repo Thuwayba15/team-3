@@ -128,6 +128,7 @@ function LessonDetail({
     error,
     onBack,
     onOpenQuiz,
+    onSelectLesson,
 }: {
     subjectPath: IStudentLearningPath;
     topic: IStudentLearningPathTopic;
@@ -137,6 +138,7 @@ function LessonDetail({
     error: string | null;
     onBack: () => void;
     onOpenQuiz: () => void;
+    onSelectLesson: (lessonId: string) => void;
 }) {
     const { styles } = useStyles();
     const [aiOpen, setAiOpen] = useState(false);
@@ -213,7 +215,13 @@ function LessonDetail({
 
                     <div className={styles.topicList}>
                         {topic.lessons.map((item) => (
-                            <div key={item.lessonId} className={styles.topicItem}>
+                            <button
+                                key={item.lessonId}
+                                className={styles.topicItem}
+                                onClick={() => item.status !== "locked" && onSelectLesson(item.lessonId)}
+                                style={{ background: "none", border: "none", cursor: item.status === "locked" ? "default" : "pointer", textAlign: "left", width: "100%" }}
+                                type="button"
+                            >
                                 {item.status === "completed" && (
                                     <div className={styles.topicDotCompleted}>
                                         <CheckOutlined />
@@ -228,7 +236,7 @@ function LessonDetail({
                                 <span className={item.status === "current" ? styles.topicNameCurrent : styles.topicNameOther}>
                                     {item.title}
                                 </span>
-                            </div>
+                            </button>
                         ))}
                     </div>
                 </Card>
@@ -557,6 +565,7 @@ export default function StudentLessonsPage() {
                         loading={lessonLoading}
                         error={lessonError}
                         onBack={handleBackToList}
+                        onSelectLesson={handleSelectLesson}
                         onOpenQuiz={() => {
                             void (async () => {
                                 try {
