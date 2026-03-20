@@ -22,11 +22,11 @@ import {
     Pagination,
     Row,
     Space,
-    Spin,
     Typography,
 } from "antd";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { DashboardPageSkeleton } from "@/components/layout";
 import { useStudentDashboard } from "@/providers/student";
 import { useStyles } from "./styles";
 import { getLocalizedAttentionAction, getLocalizedGuidanceMessage } from "./localization";
@@ -126,7 +126,7 @@ export default function StudentDashboardPage() {
     if (state.isLoading) {
         return (
             <div className={styles.loadingState}>
-                <Spin size="large" />
+                <DashboardPageSkeleton cardCount={4} />
             </div>
         );
     }

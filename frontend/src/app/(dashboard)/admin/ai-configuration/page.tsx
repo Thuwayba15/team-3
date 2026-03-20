@@ -11,10 +11,10 @@ import {
     Modal,
     Popconfirm,
     Row,
+    Skeleton,
     Select,
     Slider,
     Space,
-    Spin,
     Switch,
     Typography,
     message,
@@ -106,10 +106,19 @@ function AiConfigurationContent() {
             />
 
             <Card className={styles.sectionCard} title={templateCardTitle}>
-                <Spin spinning={isLoading}>
-                    {!isLoading && (!templates || templates.length === 0) ? (
-                        <Empty description={t("dashboard.admin.aiConfiguration.noTemplates")} />
-                    ) : (
+                {isLoading ? (
+                    <Row gutter={[16, 16]}>
+                        {Array.from({ length: 3 }).map((_, index) => (
+                            <Col key={index} xs={24} lg={8}>
+                                <Card className={styles.templateCard}>
+                                    <Skeleton active paragraph={{ rows: 6 }} title={{ width: "60%" }} />
+                                </Card>
+                            </Col>
+                        ))}
+                    </Row>
+                ) : !templates || templates.length === 0 ? (
+                    <Empty description={t("dashboard.admin.aiConfiguration.noTemplates")} />
+                ) : (
                         <Row gutter={[16, 16]}>
                             {templates?.map((template) => (
                                 <Col key={template.id} xs={24} lg={8}>
@@ -145,8 +154,7 @@ function AiConfigurationContent() {
                                 </Col>
                             ))}
                         </Row>
-                    )}
-                </Spin>
+                )}
             </Card>
 
             <Row gutter={[16, 16]} className={styles.settingsRow}>

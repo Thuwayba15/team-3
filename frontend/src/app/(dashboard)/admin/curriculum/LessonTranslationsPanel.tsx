@@ -61,7 +61,7 @@ export function LessonTranslationsPanel({ createdLesson }: ILessonTranslationsPa
             <span>
                 {translation.languageName}
                 {translation.isAutoTranslated && (
-                    <Badge count="Auto" style={{ marginLeft: 6, backgroundColor: "#0f766e", fontSize: 10 }} />
+                    <Badge count="Auto" style={{ marginLeft: 6, backgroundColor: "#1e40af", fontSize: 10 }} />
                 )}
             </span>
         ),
