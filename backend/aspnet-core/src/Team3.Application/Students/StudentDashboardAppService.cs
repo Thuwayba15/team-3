@@ -116,12 +116,18 @@ namespace Team3.Students
                     .Where(x => assessmentIds.Contains(x.Id))
                     .ToListAsync();
             var subjectProgressRecords = await _studentProgressRepository.GetAll().Where(x => x.StudentId == studentId && enrolledSubjectIds.Contains(x.SubjectId)).ToListAsync();
+            var overallScore = topics.Count == 0
+                ? 0m
+                : Math.Round(
+                    topics.Average(topic => topicProgresses.FirstOrDefault(progress => progress.TopicId == topic.Id)?.MasteryScore ?? 0m),
+                    2,
+                    MidpointRounding.AwayFromZero);
 
             var result = new StudentDashboardProgressDto
             {
                 SubjectId = subjectId,
                 SubjectName = subjectId.HasValue ? (await _subjectRepository.FirstOrDefaultAsync(subjectId.Value))?.Name : null,
-                OverallScore = subjectProgressRecords.Any() ? Math.Round(subjectProgressRecords.Average(x => x.MasteryScore), 2, MidpointRounding.AwayFromZero) : 0m,
+                OverallScore = overallScore,
                 TopicsMastered = topicProgresses.Count(x => x.Status == LearningProgressStatus.Completed),
                 LessonsCompleted = lessonProgresses.Count(x => x.Status == LearningProgressStatus.Completed),
                 QuizzesPassed = attempts.Count(x => x.Passed),

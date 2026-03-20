@@ -8,6 +8,13 @@ export const useStyles = createStyles(({ css, token }) => ({
     position: relative;
     overflow: hidden;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+    @media (max-width: 768px) {
+      min-height: 100vh;
+      height: auto;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
   `,
   swooshContainer: css`
     position: absolute;
@@ -47,6 +54,17 @@ export const useStyles = createStyles(({ css, token }) => ({
         color: ${token.colorPrimary};
       }
     }
+
+    @media (max-width: 768px) {
+      top: 24px;
+      gap: 24px;
+      padding: 14px 28px;
+      border-radius: 36px;
+
+      a {
+        font-size: 15px;
+      }
+    }
   `,
   brandSection: css`
     position: absolute;
@@ -57,11 +75,23 @@ export const useStyles = createStyles(({ css, token }) => ({
     flex-direction: column;
     align-items: center; 
     text-align: center;
+
+    @media (max-width: 768px) {
+      top: 108px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(88vw, 360px);
+      z-index: 12;
+    }
   `,
 
   mainLogo: css`
     width: 150px;
     display: block;
+
+    @media (max-width: 768px) {
+      width: 108px;
+    }
   `,
 
   title: css`
@@ -76,6 +106,11 @@ export const useStyles = createStyles(({ css, token }) => ({
     color: #999;
     letter-spacing: 2px;
     margin: 5px 0 0 0; /* Added a small top margin for spacing */
+
+    @media (max-width: 768px) {
+      font-size: 18px;
+      letter-spacing: 1px;
+    }
   `,
   actionSection: css`
     position: absolute;
@@ -84,15 +119,35 @@ export const useStyles = createStyles(({ css, token }) => ({
     max-width: 480px;
     text-align: right;
     z-index: 5;
+
+    @media (max-width: 768px) {
+      right: auto;
+      left: 50%;
+      top: 320px;
+      bottom: auto;
+      transform: translateX(-50%);
+      width: min(84vw, 320px);
+      max-width: none;
+      text-align: center;
+      z-index: 6;
+    }
   `,
   robotImg: css`
     width: 420px;
+
+    @media (max-width: 768px) {
+      width: min(72vw, 260px);
+    }
   `,
   placeholderText: css`
     font-size: 20px;
     color: #8c8c8c;
     line-height: 1.6;
     margin-bottom: 30px;
+
+    @media (max-width: 768px) {
+      display: none;
+    }
   `,
   dashboardBtn: css`
     border-radius: 12px;
@@ -114,6 +169,16 @@ export const useStyles = createStyles(({ css, token }) => ({
     justify-content: center;
     z-index: 10;
     padding-bottom: 60px;
+
+    @media (max-width: 768px) {
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(92vw, 360px);
+      height: 340px;
+      bottom: -20px;
+      padding-bottom: 16px;
+      z-index: 4;
+    }
   `,
   glassCard: css`
     position: absolute;
@@ -126,6 +191,12 @@ export const useStyles = createStyles(({ css, token }) => ({
     transform-origin: bottom center;
     display: flex;
     flex-direction: column;
+
+    @media (max-width: 768px) {
+      width: min(82vw, 300px);
+      padding: 18px;
+      border-radius: 20px;
+    }
   `,
   cardHeader: css`
     display: flex;
