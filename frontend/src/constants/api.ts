@@ -156,3 +156,54 @@ export const ASSESSMENT_GENERATION_GET_LESSON_ASSESSMENTS_ENDPOINT = "/api/servi
 /** Returns student dashboard and progress aggregates. */
 export const STUDENT_DASHBOARD_GET_MY_DASHBOARD_ENDPOINT = "/api/services/app/student-dashboard/get-my-dashboard";
 export const STUDENT_DASHBOARD_GET_PROGRESS_ENDPOINT = "/api/services/app/StudentDashboard/GetProgress";
+
+/** Returns available tutors for the authenticated student. */
+export const STUDENT_TUTOR_GET_AVAILABLE_TUTORS_ENDPOINT = "/api/services/app/StudentTutor/GetAvailableTutors";
+
+/** Creates a tutor request for the authenticated student. */
+export const STUDENT_TUTOR_REQUEST_TUTOR_ENDPOINT = "/api/services/app/StudentTutor/RequestTutor";
+
+/** Returns tutor requests created by the authenticated student. */
+export const STUDENT_TUTOR_GET_MY_REQUESTS_ENDPOINT = "/api/services/app/StudentTutor/GetMyTutorRequests";
+
+/** Returns active tutor links for the authenticated student. */
+export const STUDENT_TUTOR_GET_MY_TUTORS_ENDPOINT = "/api/services/app/StudentTutor/GetMyTutors";
+
+/** Creates a meeting request for a linked tutor. */
+export const STUDENT_TUTOR_REQUEST_MEETING_ENDPOINT = "/api/services/app/StudentTutor/RequestMeeting";
+
+/** Returns meeting requests created by the authenticated student. */
+export const STUDENT_TUTOR_GET_MY_MEETINGS_ENDPOINT = "/api/services/app/StudentTutor/GetMyMeetingRequests";
+
+/** Returns meeting access details for the authenticated student. */
+export const STUDENT_TUTOR_GET_MEETING_ACCESS_ENDPOINT = "/api/services/app/StudentTutor/GetMeetingAccess";
+
+/** Returns tutor setup completion for the authenticated tutor. */
+export const TUTOR_PORTAL_GET_SETUP_STATUS_ENDPOINT = "/api/services/app/TutorPortal/GetSetupStatus";
+
+/** Returns subject options for tutor setup. */
+export const TUTOR_PORTAL_GET_AVAILABLE_SUBJECTS_ENDPOINT = "/api/services/app/TutorPortal/GetAvailableSubjects";
+
+/** Completes tutor setup for the authenticated tutor. */
+export const TUTOR_PORTAL_COMPLETE_SETUP_ENDPOINT = "/api/services/app/TutorPortal/CompleteSetup";
+
+/** Returns tutor dashboard data. */
+export const TUTOR_PORTAL_GET_DASHBOARD_ENDPOINT = "/api/services/app/TutorPortal/GetDashboard";
+
+/** Returns tutor-facing student tutoring requests. */
+export const TUTOR_PORTAL_GET_STUDENT_REQUESTS_ENDPOINT = "/api/services/app/TutorPortal/GetStudentRequests";
+
+/** Accepts or declines a tutor request. */
+export const TUTOR_PORTAL_RESPOND_STUDENT_REQUEST_ENDPOINT = "/api/services/app/TutorPortal/RespondToStudentRequest";
+
+/** Returns tutor-facing meeting requests and accepted meetings. */
+export const TUTOR_PORTAL_GET_MEETINGS_ENDPOINT = "/api/services/app/TutorPortal/GetMeetings";
+
+/** Accepts or declines a meeting request. */
+export const TUTOR_PORTAL_RESPOND_MEETING_REQUEST_ENDPOINT = "/api/services/app/TutorPortal/RespondToMeetingRequest";
+
+/** Starts an accepted tutor meeting. */
+export const TUTOR_PORTAL_START_MEETING_ENDPOINT = "/api/services/app/TutorPortal/StartMeeting";
+
+/** Returns meeting access details for the authenticated tutor. */
+export const TUTOR_PORTAL_GET_MEETING_ACCESS_ENDPOINT = "/api/services/app/TutorPortal/GetMeetingAccess";
