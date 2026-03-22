@@ -9,6 +9,7 @@ import { PageHeader } from "@/components/layout";
 import { tutorService, type LinkedTutor, type MeetingRequest } from "@/services/tutoring/tutorService";
 
 const { Paragraph, Text } = Typography;
+const LATE_START_GRACE_PERIOD_MS = 30 * 60 * 1000;
 
 function formatDateTimeLocalMinimum(date: Date): string {
     const year = date.getFullYear();
@@ -18,6 +19,11 @@ function formatDateTimeLocalMinimum(date: Date): string {
     const minutes = String(date.getMinutes()).padStart(2, "0");
 
     return `${year}-${month}-${day}T${hours}:${minutes}`;
+}
+
+function isMeetingJoinWindowExpired(scheduledStartUtc: string): boolean {
+    const scheduledStartTime = new Date(scheduledStartUtc).getTime();
+    return Date.now() - scheduledStartTime > LATE_START_GRACE_PERIOD_MS;
 }
 
 export default function StudentTutorsPage() {
@@ -127,37 +133,44 @@ export default function StudentTutorsPage() {
                 ) : (
                     <List
                         dataSource={meetings}
-                        renderItem={(meeting) => (
-                            <List.Item
-                                actions={[
-                                    meeting.canJoin ? (
-                                        <Button
-                                            key="join"
-                                            icon={<VideoCameraOutlined />}
-                                            onClick={() => router.push(`/student/tutors/meetings/${meeting.meetingRequestId}`)}
-                                        >
-                                            {t("tutoring.student.tutors.actions.joinMeeting")}
-                                        </Button>
-                                    ) : null,
-                                ].filter(Boolean)}
-                            >
-                                <List.Item.Meta
-                                    title={`${meeting.tutorName} • ${meeting.subjectName}`}
-                                    description={(
-                                        <Space direction="vertical" size={4}>
-                                            <Text type="secondary">{new Date(meeting.scheduledStartUtc).toLocaleString()}</Text>
-                                            <Space wrap>
-                                                <Tag>{meeting.status}</Tag>
-                                                <Tag>{t("tutoring.student.tutors.duration", { minutes: meeting.durationMinutes })}</Tag>
+                        renderItem={(meeting) => {
+                            const isJoinWindowExpired = isMeetingJoinWindowExpired(meeting.scheduledStartUtc);
+                            const canJoinMeeting = meeting.canJoin && !isJoinWindowExpired;
+
+                            return (
+                                <List.Item
+                                    actions={[
+                                        meeting.canJoin ? (
+                                            <Button
+                                                key="join"
+                                                icon={<VideoCameraOutlined />}
+                                                disabled={!canJoinMeeting}
+                                                onClick={() => router.push(`/student/tutors/meetings/${meeting.meetingRequestId}`)}
+                                            >
+                                                {t("tutoring.student.tutors.actions.joinMeeting")}
+                                            </Button>
+                                        ) : null,
+                                    ].filter(Boolean)}
+                                >
+                                    <List.Item.Meta
+                                        title={`${meeting.tutorName} • ${meeting.subjectName}`}
+                                        description={(
+                                            <Space direction="vertical" size={4}>
+                                                <Text type="secondary">{new Date(meeting.scheduledStartUtc).toLocaleString()}</Text>
+                                                <Space wrap>
+                                                    <Tag>{meeting.status}</Tag>
+                                                    <Tag>{t("tutoring.student.tutors.duration", { minutes: meeting.durationMinutes })}</Tag>
+                                                    {isJoinWindowExpired && meeting.canJoin ? <Tag>Join window expired</Tag> : null}
+                                                </Space>
+                                                <Paragraph type="secondary" style={{ marginBottom: 0 }}>
+                                                    {meeting.studentMessage || t("tutoring.student.tutors.noMeetingMessage")}
+                                                </Paragraph>
                                             </Space>
-                                            <Paragraph type="secondary" style={{ marginBottom: 0 }}>
-                                                {meeting.studentMessage || t("tutoring.student.tutors.noMeetingMessage")}
-                                            </Paragraph>
-                                        </Space>
-                                    )}
-                                />
-                            </List.Item>
-                        )}
+                                        )}
+                                    />
+                                </List.Item>
+                            );
+                        }}
                     />
                 )}
             </Card>
