@@ -17,6 +17,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using Team3.Web.Host.Hubs;
 
 namespace Team3.Web.Host.Startup
 {
@@ -100,6 +101,7 @@ namespace Team3.Web.Host.Startup
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapHub<AbpCommonHub>("/signalr");
+                endpoints.MapHub<MeetingHub>("/signalr/meetings");
                 endpoints.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute("defaultWithArea", "{area}/{controller=Home}/{action=Index}/{id?}");
             });

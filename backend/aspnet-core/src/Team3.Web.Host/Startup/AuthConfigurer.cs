@@ -63,14 +63,22 @@ namespace Team3.Web.Host.Startup
                 return Task.CompletedTask;
             }
 
-            // SignalR clients send the token as an encrypted query-string value.
+            // Prefer the encrypted SignalR query token when it is present,
+            // but fall back to the same auth cookie used by the rest of the app.
             if (context.HttpContext.Request.Path.Value.StartsWith("/signalr"))
             {
                 var qsAuthToken = context.HttpContext.Request.Query["enc_auth_token"].FirstOrDefault();
                 if (qsAuthToken != null)
                 {
                     context.Token = SimpleStringCipher.Instance.Decrypt(qsAuthToken);
+                    return Task.CompletedTask;
                 }
+
+                if (context.HttpContext.Request.Cookies.TryGetValue("access_token", out var signalRCookieToken))
+                {
+                    context.Token = signalRCookieToken;
+                }
+
                 return Task.CompletedTask;
             }
 
