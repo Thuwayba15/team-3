@@ -10,6 +10,16 @@ import { tutorService, type LinkedTutor, type MeetingRequest } from "@/services/
 
 const { Paragraph, Text } = Typography;
 
+function formatDateTimeLocalMinimum(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+}
+
 export default function StudentTutorsPage() {
     const { t } = useTranslation();
     const router = useRouter();
@@ -21,6 +31,7 @@ export default function StudentTutorsPage() {
     const [selectedTutor, setSelectedTutor] = useState<LinkedTutor | null>(null);
     const [submitting, setSubmitting] = useState(false);
     const [form] = Form.useForm();
+    const [minimumStartDateTime, setMinimumStartDateTime] = useState(() => formatDateTimeLocalMinimum(new Date()));
 
     const loadData = async () => {
         setLoading(true);
@@ -46,6 +57,7 @@ export default function StudentTutorsPage() {
     const openMeetingModal = (tutor: LinkedTutor) => {
         setSelectedTutor(tutor);
         form.resetFields();
+        setMinimumStartDateTime(formatDateTimeLocalMinimum(new Date()));
         setIsModalOpen(true);
     };
 
@@ -163,9 +175,23 @@ export default function StudentTutorsPage() {
                     <Form.Item
                         name="scheduledStartUtc"
                         label={t("tutoring.student.tutors.form.start")}
-                        rules={[{ required: true, message: t("tutoring.validation.required") }]}
+                        rules={[
+                            { required: true, message: t("tutoring.validation.required") },
+                            {
+                                validator: async (_, value) => {
+                                    if (!value) {
+                                        return;
+                                    }
+
+                                    const selectedDate = new Date(value);
+                                    if (Number.isNaN(selectedDate.getTime()) || selectedDate.getTime() < Date.now()) {
+                                        throw new Error("Please choose a current or future meeting time.");
+                                    }
+                                },
+                            },
+                        ]}
                     >
-                        <Input type="datetime-local" />
+                        <Input type="datetime-local" min={minimumStartDateTime} />
                     </Form.Item>
                     <Form.Item
                         name="durationMinutes"
