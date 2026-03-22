@@ -81,6 +81,7 @@ public class TutorPortalAppService : Team3AppServiceBase, ITutorPortalAppService
         var tutorUserId = await EnsureTutorAsync();
         var languageCode = await _languageResolver.GetUserPreferredLanguageCodeAsync(tutorUserId);
         var subjects = await _subjectRepository.GetAll()
+            .AsNoTracking()
             .Where(x => x.IsActive)
             .OrderBy(x => x.Name)
             .ToListAsync();
@@ -129,6 +130,7 @@ public class TutorPortalAppService : Team3AppServiceBase, ITutorPortalAppService
     {
         var tutorUserId = await EnsureTutorAsync();
         var links = await _linkRepository.GetAll()
+            .AsNoTracking()
             .Where(x => x.TutorUserId == tutorUserId && x.IsActive)
             .ToListAsync();
 
@@ -136,17 +138,21 @@ public class TutorPortalAppService : Team3AppServiceBase, ITutorPortalAppService
         var subjectIds = links.Select(x => x.SubjectId).Distinct().ToList();
         var languageCode = await _languageResolver.GetUserPreferredLanguageCodeAsync(tutorUserId);
         var subjectNameMap = await BuildSubjectNameMapAsync(subjectIds, languageCode);
-        var students = await _userRepository.GetAll().Where(x => studentIds.Contains(x.Id)).ToListAsync();
+        var students = await _userRepository.GetAll().AsNoTracking().Where(x => studentIds.Contains(x.Id)).ToListAsync();
+        var studentNameById = students.ToDictionary(x => x.Id, BuildDisplayName);
         var progressRecords = await _studentProgressRepository.GetAll()
+            .AsNoTracking()
             .Where(x => studentIds.Contains(x.StudentId) && subjectIds.Contains(x.SubjectId))
             .ToListAsync();
 
         var pendingTutorRequests = await _requestRepository.GetAll()
+            .AsNoTracking()
             .Where(x => x.TutorUserId == tutorUserId && x.Status == TutorRequestStatus.Pending)
             .OrderByDescending(x => x.CreationTime)
             .ToListAsync();
 
         var meetingRequests = await _meetingRequestRepository.GetAll()
+            .AsNoTracking()
             .Where(x => x.TutorUserId == tutorUserId)
             .OrderBy(x => x.ScheduledStartUtc)
             .ToListAsync();
@@ -160,15 +166,11 @@ public class TutorPortalAppService : Team3AppServiceBase, ITutorPortalAppService
             AverageStudentMasteryScore = progressRecords.Count == 0 ? 0m : Math.Round(progressRecords.Average(x => x.MasteryScore), 0),
         };
 
-        foreach (var request in pendingTutorRequests.Take(5))
-        {
-            dashboard.PendingTutorRequests.Add(await MapTutorRequestAsync(request, tutorUserId));
-        }
+        dashboard.PendingTutorRequests.AddRange(await MapTutorRequestsAsync(pendingTutorRequests.Take(5).ToList(), tutorUserId));
 
-        foreach (var request in meetingRequests.Where(x => x.Status == MeetingRequestStatus.Accepted).Take(5))
-        {
-            dashboard.UpcomingMeetings.Add(await MapMeetingRequestAsync(request, tutorUserId));
-        }
+        dashboard.UpcomingMeetings.AddRange(await MapMeetingRequestsAsync(
+            meetingRequests.Where(x => x.Status == MeetingRequestStatus.Accepted).Take(5).ToList(),
+            tutorUserId));
 
         dashboard.StudentsNeedingAttention = progressRecords
             .Where(x => x.NeedsIntervention || x.MasteryScore < 60m)
@@ -176,11 +178,10 @@ public class TutorPortalAppService : Team3AppServiceBase, ITutorPortalAppService
             .Take(5)
             .Select(record =>
             {
-                var student = students.FirstOrDefault(x => x.Id == record.StudentId);
                 return new TutorStudentStatDto
                 {
                     StudentUserId = record.StudentId,
-                    StudentName = student == null ? "Student" : BuildDisplayName(student),
+                    StudentName = studentNameById.GetValueOrDefault(record.StudentId, "Student"),
                     SubjectId = record.SubjectId,
                     SubjectName = subjectNameMap.GetValueOrDefault(record.SubjectId, "Subject"),
                     MasteryScore = record.MasteryScore,
@@ -196,17 +197,11 @@ public class TutorPortalAppService : Team3AppServiceBase, ITutorPortalAppService
     {
         var tutorUserId = await EnsureTutorAsync();
         var requests = await _requestRepository.GetAll()
+            .AsNoTracking()
             .Where(x => x.TutorUserId == tutorUserId)
             .OrderByDescending(x => x.CreationTime)
             .ToListAsync();
-
-        var output = new List<TutorRequestDto>();
-        foreach (var request in requests)
-        {
-            output.Add(await MapTutorRequestAsync(request, tutorUserId));
-        }
-
-        return output;
+        return await MapTutorRequestsAsync(requests, tutorUserId);
     }
 
     public async Task<TutorRequestDto> RespondToStudentRequestAsync(RespondToTutorRequestInput input)
@@ -251,17 +246,11 @@ public class TutorPortalAppService : Team3AppServiceBase, ITutorPortalAppService
     {
         var tutorUserId = await EnsureTutorAsync();
         var requests = await _meetingRequestRepository.GetAll()
+            .AsNoTracking()
             .Where(x => x.TutorUserId == tutorUserId)
             .OrderByDescending(x => x.ScheduledStartUtc)
             .ToListAsync();
-
-        var output = new List<MeetingRequestDto>();
-        foreach (var request in requests)
-        {
-            output.Add(await MapMeetingRequestAsync(request, tutorUserId));
-        }
-
-        return output;
+        return await MapMeetingRequestsAsync(requests, tutorUserId);
     }
 
     public async Task<MeetingRequestDto> RespondToMeetingRequestAsync(RespondToMeetingRequestInput input)
@@ -352,17 +341,38 @@ public class TutorPortalAppService : Team3AppServiceBase, ITutorPortalAppService
 
     private async Task<TutorRequestDto> MapTutorRequestAsync(StudentTutorRequest request, long viewerUserId)
     {
-        var student = await _userRepository.GetAsync(request.StudentUserId);
-        var tutor = await _userRepository.GetAsync(request.TutorUserId);
-        var subjectNameMap = await BuildSubjectNameMapAsync([request.SubjectId], await _languageResolver.GetUserPreferredLanguageCodeAsync(viewerUserId));
+        return (await MapTutorRequestsAsync([request], viewerUserId)).Single();
+    }
 
-        return new TutorRequestDto
+    private async Task<MeetingRequestDto> MapMeetingRequestAsync(TutorMeetingRequest request, long viewerUserId)
+    {
+        return (await MapMeetingRequestsAsync([request], viewerUserId)).Single();
+    }
+
+    private async Task<List<TutorRequestDto>> MapTutorRequestsAsync(IReadOnlyCollection<StudentTutorRequest> requests, long viewerUserId)
+    {
+        if (requests.Count == 0)
+        {
+            return [];
+        }
+
+        var userIds = requests.SelectMany(x => new[] { x.StudentUserId, x.TutorUserId }).Distinct().ToList();
+        var users = await _userRepository.GetAll()
+            .AsNoTracking()
+            .Where(x => userIds.Contains(x.Id))
+            .ToListAsync();
+        var userNameById = users.ToDictionary(x => x.Id, BuildDisplayName);
+        var subjectNameMap = await BuildSubjectNameMapAsync(
+            requests.Select(x => x.SubjectId),
+            await _languageResolver.GetUserPreferredLanguageCodeAsync(viewerUserId));
+
+        return requests.Select(request => new TutorRequestDto
         {
             RequestId = request.Id,
             StudentUserId = request.StudentUserId,
             TutorUserId = request.TutorUserId,
-            StudentName = BuildDisplayName(student),
-            TutorName = BuildDisplayName(tutor),
+            StudentName = userNameById.GetValueOrDefault(request.StudentUserId, "Student"),
+            TutorName = userNameById.GetValueOrDefault(request.TutorUserId, "Tutor"),
             SubjectId = request.SubjectId,
             SubjectName = subjectNameMap.GetValueOrDefault(request.SubjectId, "Subject"),
             Status = request.Status.ToString(),
@@ -370,34 +380,55 @@ public class TutorPortalAppService : Team3AppServiceBase, ITutorPortalAppService
             ResponseMessage = request.ResponseMessage,
             CreatedAt = request.CreationTime,
             RespondedAtUtc = request.RespondedAtUtc,
-        };
+        }).ToList();
     }
 
-    private async Task<MeetingRequestDto> MapMeetingRequestAsync(TutorMeetingRequest request, long viewerUserId)
+    private async Task<List<MeetingRequestDto>> MapMeetingRequestsAsync(IReadOnlyCollection<TutorMeetingRequest> requests, long viewerUserId)
     {
-        var student = await _userRepository.GetAsync(request.StudentUserId);
-        var tutor = await _userRepository.GetAsync(request.TutorUserId);
-        var session = await _meetingSessionRepository.FirstOrDefaultAsync(x => x.MeetingRequestId == request.Id);
-        var subjectNameMap = await BuildSubjectNameMapAsync([request.SubjectId], await _languageResolver.GetUserPreferredLanguageCodeAsync(viewerUserId));
-
-        return new MeetingRequestDto
+        if (requests.Count == 0)
         {
-            MeetingRequestId = request.Id,
-            LinkId = request.StudentTutorLinkId,
-            StudentUserId = request.StudentUserId,
-            TutorUserId = request.TutorUserId,
-            StudentName = BuildDisplayName(student),
-            TutorName = BuildDisplayName(tutor),
-            SubjectId = request.SubjectId,
-            SubjectName = subjectNameMap.GetValueOrDefault(request.SubjectId, "Subject"),
-            ScheduledStartUtc = request.ScheduledStartUtc,
-            DurationMinutes = request.DurationMinutes,
-            Status = request.Status.ToString(),
-            StudentMessage = request.StudentMessage,
-            TutorResponseMessage = request.TutorResponseMessage,
-            MeetingSessionId = session?.Id,
-            CanJoin = request.Status == MeetingRequestStatus.Accepted && session != null,
-        };
+            return [];
+        }
+
+        var userIds = requests.SelectMany(x => new[] { x.StudentUserId, x.TutorUserId }).Distinct().ToList();
+        var meetingRequestIds = requests.Select(x => x.Id).ToList();
+        var users = await _userRepository.GetAll()
+            .AsNoTracking()
+            .Where(x => userIds.Contains(x.Id))
+            .ToListAsync();
+        var sessions = await _meetingSessionRepository.GetAll()
+            .AsNoTracking()
+            .Where(x => meetingRequestIds.Contains(x.MeetingRequestId))
+            .ToListAsync();
+        var sessionIdByMeetingRequestId = sessions.ToDictionary(x => x.MeetingRequestId, x => x.Id);
+        var userNameById = users.ToDictionary(x => x.Id, BuildDisplayName);
+        var subjectNameMap = await BuildSubjectNameMapAsync(
+            requests.Select(x => x.SubjectId),
+            await _languageResolver.GetUserPreferredLanguageCodeAsync(viewerUserId));
+
+        return requests.Select(request =>
+        {
+            var hasSession = sessionIdByMeetingRequestId.TryGetValue(request.Id, out var sessionId);
+
+            return new MeetingRequestDto
+            {
+                MeetingRequestId = request.Id,
+                LinkId = request.StudentTutorLinkId,
+                StudentUserId = request.StudentUserId,
+                TutorUserId = request.TutorUserId,
+                StudentName = userNameById.GetValueOrDefault(request.StudentUserId, "Student"),
+                TutorName = userNameById.GetValueOrDefault(request.TutorUserId, "Tutor"),
+                SubjectId = request.SubjectId,
+                SubjectName = subjectNameMap.GetValueOrDefault(request.SubjectId, "Subject"),
+                ScheduledStartUtc = request.ScheduledStartUtc,
+                DurationMinutes = request.DurationMinutes,
+                Status = request.Status.ToString(),
+                StudentMessage = request.StudentMessage,
+                TutorResponseMessage = request.TutorResponseMessage,
+                MeetingSessionId = hasSession ? sessionId : null,
+                CanJoin = request.Status == MeetingRequestStatus.Accepted && hasSession,
+            };
+        }).ToList();
     }
 
     private async Task<MeetingAccessDto> BuildMeetingAccessAsync(
@@ -423,15 +454,31 @@ public class TutorPortalAppService : Team3AppServiceBase, ITutorPortalAppService
     private async Task<Dictionary<Guid, string>> BuildSubjectNameMapAsync(IEnumerable<Guid> subjectIds, string languageCode)
     {
         var ids = subjectIds.Distinct().ToList();
-        var subjects = await _subjectRepository.GetAll().Where(x => ids.Contains(x.Id)).ToListAsync();
-        var translations = await _subjectTranslationRepository.GetAll().Where(x => ids.Contains(x.SubjectId)).ToListAsync();
-        var languages = await _languageRepository.GetAll().ToListAsync();
+        var subjects = await _subjectRepository.GetAll()
+            .AsNoTracking()
+            .Where(x => ids.Contains(x.Id))
+            .ToListAsync();
+        var translations = await _subjectTranslationRepository.GetAll()
+            .AsNoTracking()
+            .Where(x => ids.Contains(x.SubjectId))
+            .ToListAsync();
+        var languages = await _languageRepository.GetAll()
+            .AsNoTracking()
+            .ToListAsync();
+
         var languageCodeToId = languages.ToDictionary(x => x.Code.ToLowerInvariant(), x => x.Id);
+        var translationsBySubjectId = translations
+            .GroupBy(x => x.SubjectId)
+            .ToDictionary(group => group.Key, group => group.ToList());
 
         var result = new Dictionary<Guid, string>();
         foreach (var subject in subjects)
         {
-            result[subject.Id] = ResolveSubjectName(subject, translations, languageCodeToId, languageCode);
+            result[subject.Id] = ResolveSubjectName(
+                subject,
+                translationsBySubjectId.GetValueOrDefault(subject.Id) ?? [],
+                languageCodeToId,
+                languageCode);
         }
 
         return result;
@@ -439,7 +486,7 @@ public class TutorPortalAppService : Team3AppServiceBase, ITutorPortalAppService
 
     private static string ResolveSubjectName(
         Subject subject,
-        List<SubjectTranslation> translations,
+        IReadOnlyCollection<SubjectTranslation> translations,
         Dictionary<string, Guid> languageCodeToId,
         string languageCode)
     {

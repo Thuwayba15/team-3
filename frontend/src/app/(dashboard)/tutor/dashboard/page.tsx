@@ -40,7 +40,7 @@ export default function TutorDashboardPage() {
         };
 
         void load();
-    }, [t]);
+    }, []);
 
     return (
         <Space direction="vertical" size={16} style={{ width: "100%" }}>
