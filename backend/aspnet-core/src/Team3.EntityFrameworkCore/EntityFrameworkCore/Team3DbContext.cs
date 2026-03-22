@@ -12,6 +12,7 @@ using Team3.Domain.Assessment;
 using Team3.Enums;
 using Team3.Localization;
 using Team3.MultiTenancy;
+using Team3.Tutoring;
 using Team3.Users;
 
 namespace Team3.EntityFrameworkCore;
@@ -48,6 +49,11 @@ public class Team3DbContext : AbpZeroDbContext<Tenant, Role, User, Team3DbContex
     public DbSet<QuestionTranslation> QuestionTranslations { get; set; }
     public DbSet<StudentAssessmentAttempt> StudentAssessmentAttempts { get; set; }
     public DbSet<StudentAssessmentAnswer> StudentAssessmentAnswers { get; set; }
+    public DbSet<TutorSubjectAssignment> TutorSubjectAssignments { get; set; }
+    public DbSet<StudentTutorRequest> StudentTutorRequests { get; set; }
+    public DbSet<StudentTutorLink> StudentTutorLinks { get; set; }
+    public DbSet<TutorMeetingRequest> TutorMeetingRequests { get; set; }
+    public DbSet<TutorMeetingSession> TutorMeetingSessions { get; set; }
 
 
     // Per-user platform language preference
@@ -456,6 +462,125 @@ public class Team3DbContext : AbpZeroDbContext<Tenant, Role, User, Team3DbContex
             entity.HasOne(x => x.Question)
                 .WithMany()
                 .HasForeignKey(x => x.QuestionId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<TutorSubjectAssignment>(entity =>
+        {
+            entity.ToTable("TutorSubjectAssignments");
+            entity.HasIndex(x => x.TutorUserId).IsUnique();
+            entity.HasIndex(x => new { x.TutorUserId, x.SubjectId }).IsUnique();
+            entity.Property(x => x.Bio).HasMaxLength(1000);
+            entity.Property(x => x.Specialization).HasMaxLength(256);
+
+            entity.HasOne<User>()
+                .WithMany()
+                .HasForeignKey(x => x.TutorUserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne<Subject>()
+                .WithMany()
+                .HasForeignKey(x => x.SubjectId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<StudentTutorRequest>(entity =>
+        {
+            entity.ToTable("StudentTutorRequests");
+            entity.HasIndex(x => new { x.StudentUserId, x.TutorUserId, x.SubjectId, x.Status });
+            entity.Property(x => x.StudentMessage).HasMaxLength(1000);
+            entity.Property(x => x.ResponseMessage).HasMaxLength(1000);
+
+            entity.HasOne<User>()
+                .WithMany()
+                .HasForeignKey(x => x.StudentUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne<User>()
+                .WithMany()
+                .HasForeignKey(x => x.TutorUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne<Subject>()
+                .WithMany()
+                .HasForeignKey(x => x.SubjectId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<StudentTutorLink>(entity =>
+        {
+            entity.ToTable("StudentTutorLinks");
+            entity.HasIndex(x => new { x.StudentUserId, x.SubjectId, x.IsActive });
+            entity.HasIndex(x => new { x.StudentUserId, x.TutorUserId, x.SubjectId, x.IsActive });
+            entity.Property(x => x.IsActive).HasDefaultValue(true);
+
+            entity.HasOne<User>()
+                .WithMany()
+                .HasForeignKey(x => x.StudentUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne<User>()
+                .WithMany()
+                .HasForeignKey(x => x.TutorUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne<Subject>()
+                .WithMany()
+                .HasForeignKey(x => x.SubjectId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<TutorMeetingRequest>(entity =>
+        {
+            entity.ToTable("TutorMeetingRequests");
+            entity.HasIndex(x => new { x.StudentTutorLinkId, x.Status });
+            entity.Property(x => x.StudentMessage).HasMaxLength(1000);
+            entity.Property(x => x.TutorResponseMessage).HasMaxLength(1000);
+
+            entity.HasOne<StudentTutorLink>()
+                .WithMany()
+                .HasForeignKey(x => x.StudentTutorLinkId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne<User>()
+                .WithMany()
+                .HasForeignKey(x => x.StudentUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne<User>()
+                .WithMany()
+                .HasForeignKey(x => x.TutorUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne<Subject>()
+                .WithMany()
+                .HasForeignKey(x => x.SubjectId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<TutorMeetingSession>(entity =>
+        {
+            entity.ToTable("TutorMeetingSessions");
+            entity.HasIndex(x => x.MeetingRequestId).IsUnique();
+
+            entity.HasOne<TutorMeetingRequest>()
+                .WithMany()
+                .HasForeignKey(x => x.MeetingRequestId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne<User>()
+                .WithMany()
+                .HasForeignKey(x => x.StudentUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne<User>()
+                .WithMany()
+                .HasForeignKey(x => x.TutorUserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            entity.HasOne<Subject>()
+                .WithMany()
+                .HasForeignKey(x => x.SubjectId)
                 .OnDelete(DeleteBehavior.Cascade);
         });
 

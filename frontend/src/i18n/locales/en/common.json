@@ -10,10 +10,13 @@
     "interventions": "Interventions",
     "learningModules": "Learning Modules",
     "analytics": "Analytics",
+    "availableTutors": "Available Tutors",
     "alerts": "Alerts",
     "childProgress": "Child Progress",
     "curriculum": "Curriculum",
+    "tutors": "Tutors",
     "users": "Users",
+    "meetings": "Meetings",
     "settings": "Settings",
     "languages": "Languages",
     "aiConfiguration": "AI Configuration",
@@ -457,5 +460,150 @@
   "empty": {
     "noData": "No data available",
     "noResults": "No results found"
+  },
+  "tutoring": {
+    "validation": {
+      "required": "This field is required."
+    },
+    "errors": {
+      "loadAvailableTutors": "Failed to load available tutors.",
+      "requestTutor": "Failed to request tutor.",
+      "loadTutors": "Failed to load tutors.",
+      "loadTutorSetup": "Failed to load tutor setup.",
+      "loadTutorDashboard": "Failed to load tutor dashboard.",
+      "loadTutorMeetings": "Failed to load tutor meetings.",
+      "respondTutorRequest": "Failed to respond to tutor request.",
+      "respondMeetingRequest": "Failed to respond to meeting request.",
+      "startMeeting": "Failed to start meeting."
+    },
+    "student": {
+      "availableTutors": {
+        "title": "Available Tutors",
+        "subtitle": "Discover tutors aligned to the subjects you are learning.",
+        "empty": "No tutors are available for your current subjects yet.",
+        "noBio": "This tutor has not added a bio yet.",
+        "helper": "Request tutoring to connect with this tutor.",
+        "actions": {
+          "requestTutor": "Request Tutor",
+          "pending": "Request Pending",
+          "linked": "Linked"
+        },
+        "messages": {
+          "requestSent": "Tutor request sent successfully."
+        }
+      },
+      "tutors": {
+        "title": "Tutors",
+        "subtitle": "Manage your linked tutors and schedule meetings.",
+        "linkedTitle": "Linked Tutors",
+        "meetingsTitle": "Meeting Requests",
+        "empty": "You do not have any linked tutors yet.",
+        "noMeetings": "No meeting requests yet.",
+        "requestMeetingTitle": "Request Meeting",
+        "noMeetingMessage": "No meeting message was provided.",
+        "duration": "{{minutes}} mins",
+        "actions": {
+          "requestMeeting": "Request Meeting",
+          "joinMeeting": "Join Meeting"
+        },
+        "form": {
+          "start": "Start date and time",
+          "duration": "Duration (minutes)",
+          "message": "Message"
+        },
+        "messages": {
+          "meetingRequested": "Meeting request sent successfully."
+        }
+      }
+    },
+    "tutor": {
+      "setup": {
+        "title": "Tutor Setup",
+        "subtitle": "Choose the subject you tutor and complete your public tutor profile.",
+        "form": {
+          "subject": "Subject",
+          "specialization": "Specialization",
+          "bio": "Bio"
+        },
+        "actions": {
+          "save": "Save Setup"
+        },
+        "messages": {
+          "saved": "Tutor setup saved successfully."
+        }
+      },
+      "dashboard": {
+        "title": "Tutor Dashboard",
+        "subtitle": "View linked student progress, requests, and upcoming meetings.",
+        "setupPrompt": "Complete your tutor setup before students can find and request you.",
+        "pendingRequestsTitle": "Pending Tutor Requests",
+        "attentionTitle": "Students Needing Attention",
+        "emptyPendingRequests": "No pending tutor requests.",
+        "emptyAttention": "No students currently need attention.",
+        "noStudentMessage": "No message was provided.",
+        "needsIntervention": "Needs intervention",
+        "masteryLabel": "Mastery {{score}}%",
+        "actions": {
+          "completeSetup": "Complete Setup"
+        },
+        "stats": {
+          "students": "Linked Students",
+          "pendingTutorRequests": "Pending Tutor Requests",
+          "pendingMeetingRequests": "Pending Meeting Requests",
+          "averageMastery": "Average Mastery"
+        }
+      },
+      "meetings": {
+        "title": "Meetings",
+        "subtitle": "Manage tutoring requests and 1-to-1 student meetings.",
+        "setupPrompt": "Complete your tutor setup before handling meetings.",
+        "tutorRequestsTitle": "Tutoring Requests",
+        "meetingRequestsTitle": "Meeting Requests",
+        "emptyTutorRequests": "No tutoring requests yet.",
+        "emptyMeetings": "No meetings yet.",
+        "noMeetingMessage": "No meeting message was provided.",
+        "actions": {
+          "accept": "Accept",
+          "decline": "Decline",
+          "startMeeting": "Start Meeting"
+        },
+        "messages": {
+          "requestAccepted": "Tutoring request accepted.",
+          "requestDeclined": "Tutoring request declined.",
+          "meetingAccepted": "Meeting request accepted.",
+          "meetingDeclined": "Meeting request declined."
+        }
+      }
+    }
+  },
+  "meeting": {
+    "labels": {
+      "you": "You",
+      "withParticipant": "Meeting with {{name}}"
+    },
+    "actions": {
+      "mute": "Mute",
+      "unmute": "Unmute",
+      "hideVideo": "Hide Video",
+      "showVideo": "Show Video",
+      "audioUnavailable": "Audio Unavailable",
+      "videoUnavailable": "Video Unavailable",
+      "leave": "Leave"
+    },
+    "messages": {
+      "connecting": "Connecting to the meeting...",
+      "waitingForParticipant": "Waiting for the other participant to join.",
+      "meetingNotReady": "This meeting is not ready to join yet.",
+      "liveMeeting": "Live meeting in progress.",
+      "joinedAudioOnly": "Camera unavailable. You joined with audio only.",
+      "joinedWithoutMedia": "Camera and microphone unavailable. You still joined the meeting.",
+      "cameraUnavailable": "Camera unavailable. You are in the meeting with audio only.",
+      "noCameraOrMicrophone": "Camera and microphone are unavailable. You are connected without local media.",
+      "leftMeeting": "You left the meeting."
+    },
+    "errors": {
+      "failedToLoad": "Failed to load meeting details.",
+      "failedToJoin": "Failed to join the meeting."
+    }
   }
 }
