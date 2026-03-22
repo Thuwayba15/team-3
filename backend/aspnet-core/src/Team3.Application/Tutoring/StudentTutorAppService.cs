@@ -2,6 +2,7 @@ using Abp.Authorization;
 using Abp.Domain.Repositories;
 using Abp.UI;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,8 @@ namespace Team3.Tutoring;
 [AbpAuthorize]
 public class StudentTutorAppService : Team3AppServiceBase, IStudentTutorAppService
 {
+    private static readonly TimeSpan StudentTutorCacheDuration = TimeSpan.FromSeconds(30);
+
     private readonly IRepository<User, long> _userRepository;
     private readonly IRepository<Subject, Guid> _subjectRepository;
     private readonly IRepository<SubjectTranslation, Guid> _subjectTranslationRepository;
@@ -28,6 +31,7 @@ public class StudentTutorAppService : Team3AppServiceBase, IStudentTutorAppServi
     private readonly IRepository<TutorMeetingRequest, Guid> _meetingRequestRepository;
     private readonly IRepository<TutorMeetingSession, Guid> _meetingSessionRepository;
     private readonly ILanguageResolver _languageResolver;
+    private readonly IMemoryCache _memoryCache;
 
     public StudentTutorAppService(
         IRepository<User, long> userRepository,
@@ -40,7 +44,8 @@ public class StudentTutorAppService : Team3AppServiceBase, IStudentTutorAppServi
         IRepository<StudentTutorLink, Guid> linkRepository,
         IRepository<TutorMeetingRequest, Guid> meetingRequestRepository,
         IRepository<TutorMeetingSession, Guid> meetingSessionRepository,
-        ILanguageResolver languageResolver)
+        ILanguageResolver languageResolver,
+        IMemoryCache memoryCache)
     {
         _userRepository = userRepository;
         _subjectRepository = subjectRepository;
@@ -53,11 +58,20 @@ public class StudentTutorAppService : Team3AppServiceBase, IStudentTutorAppServi
         _meetingRequestRepository = meetingRequestRepository;
         _meetingSessionRepository = meetingSessionRepository;
         _languageResolver = languageResolver;
+        _memoryCache = memoryCache;
     }
 
     public async Task<List<AvailableTutorDto>> GetAvailableTutorsAsync(Guid? subjectId = null)
     {
         var studentId = await EnsureStudentAsync();
+        var languageCode = NormalizeLanguageCode(await _languageResolver.GetUserPreferredLanguageCodeAsync(studentId));
+        var cacheKey = $"student-tutor:available:{studentId}:{subjectId?.ToString() ?? "all"}:{languageCode}";
+
+        if (_memoryCache.TryGetValue(cacheKey, out List<AvailableTutorDto>? cachedTutors) && cachedTutors != null)
+        {
+            return cachedTutors;
+        }
+
         var enrolledSubjectIds = await _enrollmentRepository.GetAll()
             .AsNoTracking()
             .Where(x => x.StudentId == studentId && x.IsActive)
@@ -100,14 +114,13 @@ public class StudentTutorAppService : Team3AppServiceBase, IStudentTutorAppServi
             .Where(x => x.StudentUserId == studentId && x.Status == TutorRequestStatus.Pending)
             .ToListAsync();
 
-        var languageCode = await _languageResolver.GetUserPreferredLanguageCodeAsync(studentId);
         var subjectNameMap = await BuildSubjectNameMapAsync(subjectIds, languageCode);
 
         var tutorNameById = tutors.ToDictionary(x => x.Id, BuildDisplayName);
         var activeLinkKeys = activeLinks.Select(x => $"{x.TutorUserId}:{x.SubjectId}").ToHashSet();
         var pendingRequestKeys = pendingRequests.Select(x => $"{x.TutorUserId}:{x.SubjectId}").ToHashSet();
 
-        return assignments
+        var result = assignments
             .Where(assignment => tutorNameById.ContainsKey(assignment.TutorUserId))
             .Select(assignment =>
             {
@@ -127,6 +140,9 @@ public class StudentTutorAppService : Team3AppServiceBase, IStudentTutorAppServi
             })
             .OrderBy(x => x.TutorName)
             .ToList();
+
+        _memoryCache.Set(cacheKey, result, StudentTutorCacheDuration);
+        return result;
     }
 
     public async Task<TutorRequestDto> RequestTutorAsync(RequestTutorInput input)
@@ -162,6 +178,7 @@ public class StudentTutorAppService : Team3AppServiceBase, IStudentTutorAppServi
         var request = new StudentTutorRequest(Guid.NewGuid(), studentId, assignment.TutorUserId, assignment.SubjectId, input.Message);
         await _requestRepository.InsertAsync(request);
         await CurrentUnitOfWork.SaveChangesAsync();
+        await InvalidateAvailableTutorsCacheAsync(studentId, input.SubjectId);
 
         return await MapTutorRequestAsync(request, studentId);
     }
@@ -169,17 +186,35 @@ public class StudentTutorAppService : Team3AppServiceBase, IStudentTutorAppServi
     public async Task<List<TutorRequestDto>> GetMyTutorRequestsAsync()
     {
         var studentId = await EnsureStudentAsync();
+        var languageCode = NormalizeLanguageCode(await _languageResolver.GetUserPreferredLanguageCodeAsync(studentId));
+        var cacheKey = $"student-tutor:requests:{studentId}:{languageCode}";
+
+        if (_memoryCache.TryGetValue(cacheKey, out List<TutorRequestDto>? cachedRequests) && cachedRequests != null)
+        {
+            return cachedRequests;
+        }
+
         var requests = await _requestRepository.GetAll()
             .AsNoTracking()
             .Where(x => x.StudentUserId == studentId)
             .OrderByDescending(x => x.CreationTime)
             .ToListAsync();
-        return await MapTutorRequestsAsync(requests, studentId);
+        var result = await MapTutorRequestsAsync(requests, studentId, languageCode);
+        _memoryCache.Set(cacheKey, result, StudentTutorCacheDuration);
+        return result;
     }
 
     public async Task<List<LinkedTutorDto>> GetMyTutorsAsync()
     {
         var studentId = await EnsureStudentAsync();
+        var languageCode = NormalizeLanguageCode(await _languageResolver.GetUserPreferredLanguageCodeAsync(studentId));
+        var cacheKey = $"student-tutor:linked:{studentId}:{languageCode}";
+
+        if (_memoryCache.TryGetValue(cacheKey, out List<LinkedTutorDto>? cachedTutors) && cachedTutors != null)
+        {
+            return cachedTutors;
+        }
+
         var links = await _linkRepository.GetAll()
             .AsNoTracking()
             .Where(x => x.StudentUserId == studentId && x.IsActive)
@@ -194,13 +229,15 @@ public class StudentTutorAppService : Team3AppServiceBase, IStudentTutorAppServi
         var tutorIds = links.Select(x => x.TutorUserId).Distinct().ToList();
         var subjectIds = links.Select(x => x.SubjectId).Distinct().ToList();
         var tutors = await _userRepository.GetAll().AsNoTracking().Where(x => tutorIds.Contains(x.Id)).ToListAsync();
-        var assignments = await _assignmentRepository.GetAll().AsNoTracking().Where(x => tutorIds.Contains(x.TutorUserId)).ToListAsync();
-        var languageCode = await _languageResolver.GetUserPreferredLanguageCodeAsync(studentId);
+        var assignments = await _assignmentRepository.GetAll()
+            .AsNoTracking()
+            .Where(x => tutorIds.Contains(x.TutorUserId) && subjectIds.Contains(x.SubjectId))
+            .ToListAsync();
         var subjectNameMap = await BuildSubjectNameMapAsync(subjectIds, languageCode);
         var tutorNameById = tutors.ToDictionary(x => x.Id, BuildDisplayName);
         var assignmentByTutorAndSubject = assignments.ToDictionary(x => $"{x.TutorUserId}:{x.SubjectId}");
 
-        return links.Select(link =>
+        var result = links.Select(link =>
         {
             assignmentByTutorAndSubject.TryGetValue($"{link.TutorUserId}:{link.SubjectId}", out var assignment);
 
@@ -216,6 +253,9 @@ public class StudentTutorAppService : Team3AppServiceBase, IStudentTutorAppServi
                 LinkedAtUtc = link.LinkedAtUtc,
             };
         }).ToList();
+
+        _memoryCache.Set(cacheKey, result, StudentTutorCacheDuration);
+        return result;
     }
 
     public async Task<MeetingRequestDto> RequestMeetingAsync(RequestMeetingInput input)
@@ -248,12 +288,22 @@ public class StudentTutorAppService : Team3AppServiceBase, IStudentTutorAppServi
     public async Task<List<MeetingRequestDto>> GetMyMeetingRequestsAsync()
     {
         var studentId = await EnsureStudentAsync();
+        var languageCode = NormalizeLanguageCode(await _languageResolver.GetUserPreferredLanguageCodeAsync(studentId));
+        var cacheKey = $"student-tutor:meetings:{studentId}:{languageCode}";
+
+        if (_memoryCache.TryGetValue(cacheKey, out List<MeetingRequestDto>? cachedMeetings) && cachedMeetings != null)
+        {
+            return cachedMeetings;
+        }
+
         var requests = await _meetingRequestRepository.GetAll()
             .AsNoTracking()
             .Where(x => x.StudentUserId == studentId)
             .OrderByDescending(x => x.ScheduledStartUtc)
             .ToListAsync();
-        return await MapMeetingRequestsAsync(requests, studentId);
+        var result = await MapMeetingRequestsAsync(requests, studentId, languageCode);
+        _memoryCache.Set(cacheKey, result, StudentTutorCacheDuration);
+        return result;
     }
 
     public async Task<MeetingAccessDto> GetMeetingAccessAsync(Guid meetingRequestId)
@@ -271,7 +321,8 @@ public class StudentTutorAppService : Team3AppServiceBase, IStudentTutorAppServi
             ?? throw new UserFriendlyException("Meeting session is not available yet.");
 
         var tutor = await _userRepository.GetAsync(request.TutorUserId);
-        var subjectNameMap = await BuildSubjectNameMapAsync([request.SubjectId], await _languageResolver.GetUserPreferredLanguageCodeAsync(studentId));
+        var languageCode = NormalizeLanguageCode(await _languageResolver.GetUserPreferredLanguageCodeAsync(studentId));
+        var subjectNameMap = await BuildSubjectNameMapAsync([request.SubjectId], languageCode);
 
         return new MeetingAccessDto
         {
@@ -309,15 +360,17 @@ public class StudentTutorAppService : Team3AppServiceBase, IStudentTutorAppServi
 
     private async Task<TutorRequestDto> MapTutorRequestAsync(StudentTutorRequest request, long viewerUserId)
     {
-        return (await MapTutorRequestsAsync([request], viewerUserId)).Single();
+        var languageCode = NormalizeLanguageCode(await _languageResolver.GetUserPreferredLanguageCodeAsync(viewerUserId));
+        return (await MapTutorRequestsAsync([request], viewerUserId, languageCode)).Single();
     }
 
     private async Task<MeetingRequestDto> MapMeetingRequestAsync(TutorMeetingRequest request, long viewerUserId)
     {
-        return (await MapMeetingRequestsAsync([request], viewerUserId)).Single();
+        var languageCode = NormalizeLanguageCode(await _languageResolver.GetUserPreferredLanguageCodeAsync(viewerUserId));
+        return (await MapMeetingRequestsAsync([request], viewerUserId, languageCode)).Single();
     }
 
-    private async Task<List<TutorRequestDto>> MapTutorRequestsAsync(IReadOnlyCollection<StudentTutorRequest> requests, long viewerUserId)
+    private async Task<List<TutorRequestDto>> MapTutorRequestsAsync(IReadOnlyCollection<StudentTutorRequest> requests, long viewerUserId, string languageCode)
     {
         if (requests.Count == 0)
         {
@@ -330,9 +383,7 @@ public class StudentTutorAppService : Team3AppServiceBase, IStudentTutorAppServi
             .Where(x => userIds.Contains(x.Id))
             .ToListAsync();
         var userNameById = users.ToDictionary(x => x.Id, BuildDisplayName);
-        var subjectNameMap = await BuildSubjectNameMapAsync(
-            requests.Select(x => x.SubjectId),
-            await _languageResolver.GetUserPreferredLanguageCodeAsync(viewerUserId));
+        var subjectNameMap = await BuildSubjectNameMapAsync(requests.Select(x => x.SubjectId), languageCode);
 
         return requests.Select(request => new TutorRequestDto
         {
@@ -351,7 +402,7 @@ public class StudentTutorAppService : Team3AppServiceBase, IStudentTutorAppServi
         }).ToList();
     }
 
-    private async Task<List<MeetingRequestDto>> MapMeetingRequestsAsync(IReadOnlyCollection<TutorMeetingRequest> requests, long viewerUserId)
+    private async Task<List<MeetingRequestDto>> MapMeetingRequestsAsync(IReadOnlyCollection<TutorMeetingRequest> requests, long viewerUserId, string languageCode)
     {
         if (requests.Count == 0)
         {
@@ -370,9 +421,7 @@ public class StudentTutorAppService : Team3AppServiceBase, IStudentTutorAppServi
             .ToListAsync();
         var sessionIdByMeetingRequestId = sessions.ToDictionary(x => x.MeetingRequestId, x => x.Id);
         var userNameById = users.ToDictionary(x => x.Id, BuildDisplayName);
-        var subjectNameMap = await BuildSubjectNameMapAsync(
-            requests.Select(x => x.SubjectId),
-            await _languageResolver.GetUserPreferredLanguageCodeAsync(viewerUserId));
+        var subjectNameMap = await BuildSubjectNameMapAsync(requests.Select(x => x.SubjectId), languageCode);
 
         return requests.Select(request =>
         {
@@ -402,19 +451,49 @@ public class StudentTutorAppService : Team3AppServiceBase, IStudentTutorAppServi
     private async Task<Dictionary<Guid, string>> BuildSubjectNameMapAsync(IEnumerable<Guid> subjectIds, string languageCode)
     {
         var ids = subjectIds.Distinct().ToList();
+        if (ids.Count == 0)
+        {
+            return [];
+        }
+
+        var normalizedLanguageCode = NormalizeLanguageCode(languageCode);
+        var preferredLanguage = await _languageRepository.GetAll()
+            .AsNoTracking()
+            .Where(x => x.IsActive && x.Code == normalizedLanguageCode)
+            .Select(x => new { x.Id, Code = x.Code.ToLower() })
+            .FirstOrDefaultAsync();
+        var defaultLanguage = await _languageRepository.GetAll()
+            .AsNoTracking()
+            .Where(x => x.IsActive && (x.IsDefault || x.Code == "en"))
+            .OrderByDescending(x => x.IsDefault)
+            .ThenBy(x => x.Code == "en" ? 0 : 1)
+            .Select(x => new { x.Id, Code = x.Code.ToLower() })
+            .FirstOrDefaultAsync();
+        var languageIds = new[] { preferredLanguage?.Id, defaultLanguage?.Id }
+            .Where(x => x.HasValue)
+            .Select(x => x!.Value)
+            .Distinct()
+            .ToList();
         var subjects = await _subjectRepository.GetAll()
             .AsNoTracking()
             .Where(x => ids.Contains(x.Id))
             .ToListAsync();
         var translations = await _subjectTranslationRepository.GetAll()
             .AsNoTracking()
-            .Where(x => ids.Contains(x.SubjectId))
-            .ToListAsync();
-        var languages = await _languageRepository.GetAll()
-            .AsNoTracking()
+            .Where(x => ids.Contains(x.SubjectId) && languageIds.Contains(x.LanguageId))
             .ToListAsync();
 
-        var languageCodeToId = languages.ToDictionary(x => x.Code.ToLowerInvariant(), x => x.Id);
+        var languageCodeToId = new Dictionary<string, Guid>();
+        if (preferredLanguage != null)
+        {
+            languageCodeToId[preferredLanguage.Code] = preferredLanguage.Id;
+        }
+
+        if (defaultLanguage != null && !languageCodeToId.ContainsKey(defaultLanguage.Code))
+        {
+            languageCodeToId[defaultLanguage.Code] = defaultLanguage.Id;
+        }
+
         var translationsBySubjectId = translations
             .GroupBy(x => x.SubjectId)
             .ToDictionary(group => group.Key, group => group.ToList());
@@ -426,7 +505,7 @@ public class StudentTutorAppService : Team3AppServiceBase, IStudentTutorAppServi
                 subject,
                 translationsBySubjectId.GetValueOrDefault(subject.Id) ?? [],
                 languageCodeToId,
-                languageCode);
+                normalizedLanguageCode);
         }
 
         return result;
@@ -463,5 +542,22 @@ public class StudentTutorAppService : Team3AppServiceBase, IStudentTutorAppServi
     {
         var fullName = $"{user.Name} {user.Surname}".Trim();
         return string.IsNullOrWhiteSpace(fullName) ? user.UserName : fullName;
+    }
+
+    private static string NormalizeLanguageCode(string languageCode)
+    {
+        return string.IsNullOrWhiteSpace(languageCode)
+            ? "en"
+            : languageCode.Trim().ToLowerInvariant();
+    }
+
+    private async Task InvalidateAvailableTutorsCacheAsync(long studentId, Guid subjectId)
+    {
+        var languageCode = NormalizeLanguageCode(await _languageResolver.GetUserPreferredLanguageCodeAsync(studentId));
+        _memoryCache.Remove($"student-tutor:available:{studentId}:{subjectId}:{languageCode}");
+        _memoryCache.Remove($"student-tutor:available:{studentId}:all:{languageCode}");
+        _memoryCache.Remove($"student-tutor:requests:{studentId}:{languageCode}");
+        _memoryCache.Remove($"student-tutor:linked:{studentId}:{languageCode}");
+        _memoryCache.Remove($"student-tutor:meetings:{studentId}:{languageCode}");
     }
 }

@@ -2,6 +2,7 @@ using Abp.Authorization;
 using Abp.Domain.Repositories;
 using Abp.UI;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,8 @@ namespace Team3.LearningMaterials.Subjects
     [AbpAuthorize]
     public class StudentSubjectAppService : Team3AppServiceBase, IStudentSubjectAppService
     {
+        private static readonly TimeSpan SubjectCacheDuration = TimeSpan.FromMinutes(2);
+
         public IRepository<Subject, Guid> SubjectRepository { get; set; }
         public IRepository<Topic, Guid> TopicRepository { get; set; }
         public IRepository<Lesson, Guid> LessonRepository { get; set; }
@@ -29,10 +32,12 @@ namespace Team3.LearningMaterials.Subjects
         public IRepository<TopicTranslation, Guid> TopicTranslationRepository { get; set; }
 
         private readonly ILanguageResolver _languageResolver;
+        private readonly IMemoryCache _memoryCache;
 
-        public StudentSubjectAppService(ILanguageResolver languageResolver)
+        public StudentSubjectAppService(ILanguageResolver languageResolver, IMemoryCache memoryCache)
         {
             _languageResolver = languageResolver;
+            _memoryCache = memoryCache;
         }
 
         public async Task<List<SubjectDto>> GetAllSubjectsAsync()
@@ -41,25 +46,36 @@ namespace Team3.LearningMaterials.Subjects
             {
                 var userId = AbpSession.UserId ?? 0;
                 var languageCode = await _languageResolver.GetUserPreferredLanguageCodeAsync(userId);
+                var normalizedLanguageCode = NormalizeLanguageCode(languageCode);
+                var cacheKey = $"student-subjects:all:{normalizedLanguageCode}";
+
+                if (_memoryCache.TryGetValue(cacheKey, out List<SubjectDto>? cachedSubjects) && cachedSubjects != null)
+                {
+                    return cachedSubjects;
+                }
+
+                var languages = await GetRelevantLanguagesAsync(normalizedLanguageCode);
+                var languageIds = languages.Select(x => x.Id).ToList();
 
                 var subjects = await SubjectRepository.GetAll()
                     .AsNoTracking()
                     .Where(x => x.IsActive)
                     .OrderBy(x => x.Name)
                     .ToListAsync();
+                var subjectIds = subjects.Select(x => x.Id).ToList();
                 var translations = await SubjectTranslationRepository.GetAll()
                     .AsNoTracking()
-                    .ToListAsync();
-                var languages = await LanguageRepository.GetAll()
-                    .AsNoTracking()
-                    .Where(x => x.IsActive)
+                    .Where(x => subjectIds.Contains(x.SubjectId) && languageIds.Contains(x.LanguageId))
                     .ToListAsync();
 
-                return MapSubjects(
+                var result = MapSubjects(
                     subjects,
-                    languageCode,
+                    normalizedLanguageCode,
                     translations,
                     languages);
+
+                _memoryCache.Set(cacheKey, result, SubjectCacheDuration);
+                return result;
             }
             catch (Exception ex)
             {
@@ -75,6 +91,14 @@ namespace Team3.LearningMaterials.Subjects
                     ?? throw new UserFriendlyException("You must be logged in.");
 
                 var languageCode = await _languageResolver.GetUserPreferredLanguageCodeAsync(studentId);
+                var normalizedLanguageCode = NormalizeLanguageCode(languageCode);
+                var cacheKey = $"student-subjects:mine:{studentId}:{normalizedLanguageCode}";
+
+                if (_memoryCache.TryGetValue(cacheKey, out List<SubjectDto>? cachedSubjects) && cachedSubjects != null)
+                {
+                    return cachedSubjects;
+                }
+
                 var subjectIds = await EnrollmentRepository.GetAll()
                     .AsNoTracking()
                     .Where(x => x.StudentId == studentId && x.IsActive)
@@ -87,6 +111,8 @@ namespace Team3.LearningMaterials.Subjects
                     return [];
                 }
 
+                var languages = await GetRelevantLanguagesAsync(normalizedLanguageCode);
+                var languageIds = languages.Select(x => x.Id).ToList();
                 var subjects = await SubjectRepository.GetAll()
                     .AsNoTracking()
                     .Where(x => subjectIds.Contains(x.Id) && x.IsActive)
@@ -94,18 +120,17 @@ namespace Team3.LearningMaterials.Subjects
                     .ToListAsync();
                 var translations = await SubjectTranslationRepository.GetAll()
                     .AsNoTracking()
-                    .Where(x => subjectIds.Contains(x.SubjectId))
-                    .ToListAsync();
-                var languages = await LanguageRepository.GetAll()
-                    .AsNoTracking()
-                    .Where(x => x.IsActive)
+                    .Where(x => subjectIds.Contains(x.SubjectId) && languageIds.Contains(x.LanguageId))
                     .ToListAsync();
 
-                return MapSubjects(
+                var result = MapSubjects(
                     subjects,
-                    languageCode,
+                    normalizedLanguageCode,
                     translations,
                     languages);
+
+                _memoryCache.Set(cacheKey, result, SubjectCacheDuration);
+                return result;
             }
             catch (UserFriendlyException)
             {
@@ -171,6 +196,8 @@ namespace Team3.LearningMaterials.Subjects
                 }
 
                 await CurrentUnitOfWork.SaveChangesAsync();
+                var languageCode = NormalizeLanguageCode(await _languageResolver.GetUserPreferredLanguageCodeAsync(studentId));
+                _memoryCache.Remove($"student-subjects:mine:{studentId}:{languageCode}");
                 return output;
             }
             catch (UserFriendlyException)
@@ -242,6 +269,16 @@ namespace Team3.LearningMaterials.Subjects
 
                 var userId = AbpSession.UserId ?? 0;
                 var languageCode = await _languageResolver.GetUserPreferredLanguageCodeAsync(userId);
+                var normalizedLanguageCode = NormalizeLanguageCode(languageCode);
+                var cacheKey = $"student-subjects:topics:{subjectId}:{normalizedLanguageCode}";
+
+                if (_memoryCache.TryGetValue(cacheKey, out List<TopicDto>? cachedTopics) && cachedTopics != null)
+                {
+                    return cachedTopics;
+                }
+
+                var languages = await GetRelevantLanguagesAsync(normalizedLanguageCode);
+                var languageIds = languages.Select(x => x.Id).ToList();
 
                 var topics = await TopicRepository.GetAll()
                     .AsNoTracking()
@@ -250,18 +287,17 @@ namespace Team3.LearningMaterials.Subjects
                     .ToListAsync();
                 var translations = await TopicTranslationRepository.GetAll()
                     .AsNoTracking()
-                    .Where(x => x.Topic.SubjectId == subjectId)
-                    .ToListAsync();
-                var languages = await LanguageRepository.GetAll()
-                    .AsNoTracking()
-                    .Where(x => x.IsActive)
+                    .Where(x => x.Topic.SubjectId == subjectId && languageIds.Contains(x.LanguageId))
                     .ToListAsync();
 
-                return MapTopics(
+                var result = MapTopics(
                     topics,
-                    languageCode,
+                    normalizedLanguageCode,
                     translations,
                     languages);
+
+                _memoryCache.Set(cacheKey, result, SubjectCacheDuration);
+                return result;
             }
             catch (UserFriendlyException)
             {
@@ -401,6 +437,21 @@ namespace Team3.LearningMaterials.Subjects
 
             var defaultLanguage = await LanguageRepository.FirstOrDefaultAsync(x => x.IsDefault && x.IsActive);
             return defaultLanguage?.Code?.Trim().ToLowerInvariant() ?? "en";
+        }
+
+        private async Task<List<Language>> GetRelevantLanguagesAsync(string preferredLanguageCode)
+        {
+            return await LanguageRepository.GetAll()
+                .AsNoTracking()
+                .Where(x => x.IsActive && (x.Code == preferredLanguageCode || x.Code == "en" || x.IsDefault))
+                .ToListAsync();
+        }
+
+        private static string NormalizeLanguageCode(string languageCode)
+        {
+            return string.IsNullOrWhiteSpace(languageCode)
+                ? "en"
+                : languageCode.Trim().ToLowerInvariant();
         }
 
         private static List<SubjectDto> MapSubjects(

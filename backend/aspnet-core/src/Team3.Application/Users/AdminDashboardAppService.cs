@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Abp.Authorization;
 using Abp.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Team3.Authorization;
 using Team3.Authorization.Roles;
 using Team3.Authorization.Users;
@@ -16,24 +17,33 @@ namespace Team3.Users;
 [AbpAuthorize(PermissionNames.Pages_Users)]
 public class AdminDashboardAppService : Team3AppServiceBase, IAdminDashboardAppService
 {
+    private const string SummaryCacheKey = "admin-dashboard-summary";
     private static readonly string[] ROLE_PRIORITY = [UserRoleNames.Admin, UserRoleNames.Tutor, UserRoleNames.Parent, UserRoleNames.Student];
 
     private readonly IRepository<User, long> _userRepository;
     private readonly IRepository<Role> _roleRepository;
     private readonly IRepository<Language, Guid> _languageRepository;
+    private readonly IMemoryCache _memoryCache;
 
     public AdminDashboardAppService(
         IRepository<User, long> userRepository,
         IRepository<Role> roleRepository,
-        IRepository<Language, Guid> languageRepository)
+        IRepository<Language, Guid> languageRepository,
+        IMemoryCache memoryCache)
     {
         _userRepository = userRepository;
         _roleRepository = roleRepository;
         _languageRepository = languageRepository;
+        _memoryCache = memoryCache;
     }
 
     public async Task<AdminDashboardSummaryDto> GetSummaryAsync()
     {
+        if (_memoryCache.TryGetValue(SummaryCacheKey, out AdminDashboardSummaryDto? cachedSummary) && cachedSummary != null)
+        {
+            return cachedSummary;
+        }
+
         var totalUsers = await _userRepository.GetAll()
             .AsNoTracking()
             .CountAsync();
@@ -94,7 +104,7 @@ public class AdminDashboardAppService : Team3AppServiceBase, IAdminDashboardAppS
             distributionCounts["Unassigned"] = distributionCounts.GetValueOrDefault("Unassigned") + unassignedUsers;
         }
 
-        return new AdminDashboardSummaryDto
+        var summary = new AdminDashboardSummaryDto
         {
             TotalUsers = totalUsers,
             ActiveUsers = activeUsers,
@@ -109,6 +119,16 @@ public class AdminDashboardAppService : Team3AppServiceBase, IAdminDashboardAppS
                 })
                 .ToList(),
         };
+
+        _memoryCache.Set(
+            SummaryCacheKey,
+            summary,
+            new MemoryCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(30),
+            });
+
+        return summary;
     }
 
     private static string ResolvePrimaryRole(IEnumerable<string> roleNames)

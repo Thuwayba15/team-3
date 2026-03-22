@@ -16,6 +16,7 @@ using Team3.Roles.Dto;
 using Team3.Users.Dto;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,12 +28,15 @@ namespace Team3.Users;
 [AbpAuthorize(PermissionNames.Pages_Users)]
 public class UserAppService : AsyncCrudAppService<User, UserDto, long, PagedUserResultRequestDto, CreateUserDto, UserDto>, IUserAppService
 {
+    private static readonly TimeSpan UserListCacheDuration = TimeSpan.FromSeconds(30);
+
     private readonly UserManager _userManager;
     private readonly RoleManager _roleManager;
     private readonly IRepository<Role> _roleRepository;
     private readonly IPasswordHasher<User> _passwordHasher;
     private readonly IAbpSession _abpSession;
     private readonly LogInManager _logInManager;
+    private readonly IMemoryCache _memoryCache;
 
     public UserAppService(
         IRepository<User, long> repository,
@@ -41,7 +45,8 @@ public class UserAppService : AsyncCrudAppService<User, UserDto, long, PagedUser
         IRepository<Role> roleRepository,
         IPasswordHasher<User> passwordHasher,
         IAbpSession abpSession,
-        LogInManager logInManager)
+        LogInManager logInManager,
+        IMemoryCache memoryCache)
         : base(repository)
     {
         _userManager = userManager;
@@ -50,6 +55,7 @@ public class UserAppService : AsyncCrudAppService<User, UserDto, long, PagedUser
         _passwordHasher = passwordHasher;
         _abpSession = abpSession;
         _logInManager = logInManager;
+        _memoryCache = memoryCache;
     }
 
     public override async Task<UserDto> CreateAsync(CreateUserDto input)
@@ -130,6 +136,11 @@ public class UserAppService : AsyncCrudAppService<User, UserDto, long, PagedUser
     public override async Task<PagedResultDto<UserDto>> GetAllAsync(PagedUserResultRequestDto input)
     {
         CheckGetAllPermission();
+        var cacheKey = BuildUsersCacheKey(input);
+        if (_memoryCache.TryGetValue(cacheKey, out PagedResultDto<UserDto>? cachedUsers) && cachedUsers != null)
+        {
+            return cachedUsers;
+        }
 
         var filteredQuery = CreateFilteredQuery(input)
             .AsNoTracking();
@@ -139,7 +150,9 @@ public class UserAppService : AsyncCrudAppService<User, UserDto, long, PagedUser
             ApplySorting(filteredQuery, input).PageBy(input));
 
         var userDtos = await MapUsersToDtosAsync(users);
-        return new PagedResultDto<UserDto>(totalCount, userDtos);
+        var result = new PagedResultDto<UserDto>(totalCount, userDtos);
+        _memoryCache.Set(cacheKey, result, UserListCacheDuration);
+        return result;
     }
 
     public override async Task<UserDto> GetAsync(EntityDto<long> input)
@@ -186,7 +199,7 @@ public class UserAppService : AsyncCrudAppService<User, UserDto, long, PagedUser
                 .Where(role => role.NormalizedName == normalizedRoleName || role.Name == input.RoleName)
                 .Select(role => role.Id);
 
-        return Repository.GetAllIncluding(x => x.Roles)
+        return Repository.GetAll()
             .WhereIf(!input.Keyword.IsNullOrWhiteSpace(), x => x.UserName.Contains(input.Keyword) || x.Name.Contains(input.Keyword) || x.EmailAddress.Contains(input.Keyword))
             .WhereIf(input.IsActive.HasValue, x => x.IsActive == input.IsActive)
             .WhereIf(filteredRoleIds != null, x => x.Roles.Any(userRole => filteredRoleIds.Contains(userRole.RoleId)));
@@ -288,13 +301,33 @@ public class UserAppService : AsyncCrudAppService<User, UserDto, long, PagedUser
                 .Where(role => roleIds.Contains(role.Id))
                 .ToDictionaryAsync(role => role.Id, role => role.NormalizedName);
 
-        return BuildUserDto(user, roleNamesById);
+        var roleNames = user.Roles
+            .Select(role => roleNamesById.GetValueOrDefault(role.RoleId))
+            .Where(roleName => !roleName.IsNullOrWhiteSpace())
+            .Distinct()
+            .ToArray();
+
+        return BuildUserDto(user, roleNames);
     }
 
     private async Task<List<UserDto>> MapUsersToDtosAsync(IReadOnlyCollection<User> users)
     {
-        var roleIds = users
-            .SelectMany(user => user.Roles)
+        if (users.Count == 0)
+        {
+            return [];
+        }
+
+        var userIds = users.Select(user => user.Id).ToArray();
+        var userRoles = await Repository.GetAll()
+            .AsNoTracking()
+            .Where(user => userIds.Contains(user.Id))
+            .SelectMany(user => user.Roles.Select(role => new
+            {
+                user.Id,
+                role.RoleId,
+            }))
+            .ToListAsync();
+        var roleIds = userRoles
             .Select(role => role.RoleId)
             .Distinct()
             .ToArray();
@@ -305,22 +338,32 @@ public class UserAppService : AsyncCrudAppService<User, UserDto, long, PagedUser
                 .AsNoTracking()
                 .Where(role => roleIds.Contains(role.Id))
                 .ToDictionaryAsync(role => role.Id, role => role.NormalizedName);
+        var roleNamesByUserId = userRoles
+            .GroupBy(userRole => userRole.Id)
+            .ToDictionary(
+                group => group.Key,
+                group => group
+                    .Select(userRole => roleNamesById.GetValueOrDefault(userRole.RoleId))
+                    .Where(roleName => !roleName.IsNullOrWhiteSpace())
+                    .Distinct()
+                    .ToArray());
 
         return users
-            .Select(user => BuildUserDto(user, roleNamesById))
+            .Select(user => BuildUserDto(user, roleNamesByUserId.GetValueOrDefault(user.Id)))
             .ToList();
     }
 
-    private UserDto BuildUserDto(User user, IReadOnlyDictionary<int, string>? roleNamesById)
+    private UserDto BuildUserDto(User user, IReadOnlyCollection<string>? roleNames)
     {
         var userDto = base.MapToEntityDto(user);
-        userDto.RoleNames = user.Roles
-            .Select(role => roleNamesById?.GetValueOrDefault(role.RoleId))
-            .Where(roleName => !roleName.IsNullOrWhiteSpace())
-            .Distinct()
-            .ToArray();
+        userDto.RoleNames = roleNames?.ToArray() ?? [];
 
         return userDto;
+    }
+
+    private static string BuildUsersCacheKey(PagedUserResultRequestDto input)
+    {
+        return $"users:get-all:{input.Keyword ?? string.Empty}:{input.IsActive?.ToString() ?? string.Empty}:{input.RoleName ?? string.Empty}:{input.Sorting}:{input.SkipCount}:{input.MaxResultCount}";
     }
 }
 

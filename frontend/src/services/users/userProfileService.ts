@@ -6,7 +6,7 @@ import {
 } from "@/constants/api";
 import { apiClient } from "@/lib/api/client";
 import axios from "axios";
-import { getCachedResource, invalidateCachedResource } from "@/lib/api/requestCache";
+import { clearCachedResources, getCachedResource, invalidateCachedResource } from "@/lib/api/requestCache";
 
 interface IAbpResponseEnvelope<T> {
     result: T;
@@ -67,13 +67,13 @@ async function updateMyPlatformLanguage(preferredLanguage: string): Promise<IUpd
     };
 
     try {
-            const response = await apiClient.put<IAbpResponseEnvelope<IUpdatePlatformLanguageResponse>>(
-                USER_PROFILE_UPDATE_PLATFORM_LANGUAGE_ENDPOINT,
-                payload
-            );
-            invalidatePlatformLanguageCache();
-            return response.data.result;
-        } catch (error) {
+        const response = await apiClient.put<IAbpResponseEnvelope<IUpdatePlatformLanguageResponse>>(
+            USER_PROFILE_UPDATE_PLATFORM_LANGUAGE_ENDPOINT,
+            payload
+        );
+        invalidatePlatformLanguageCache();
+        return response.data.result;
+    } catch (error) {
         // fallback for environments where dynamic API maps Update* methods to POST
         if (axios.isAxiosError(error) && error.response?.status === 405) {
             const response = await apiClient.post<IAbpResponseEnvelope<IUpdatePlatformLanguageResponse>>(
@@ -89,7 +89,17 @@ async function updateMyPlatformLanguage(preferredLanguage: string): Promise<IUpd
 }
 
 function invalidatePlatformLanguageCache(): void {
+    clearCachedResources();
     invalidateCachedResource("user-profile:platform-language");
+    invalidateCachedResource("student-dashboard:");
+    invalidateCachedResource("student-learning-path:");
+    invalidateCachedResource("student-subjects:");
+    invalidateCachedResource("student-assessment:");
+    invalidateCachedResource("student-assessment-generation:");
+    invalidateCachedResource("student-tutor:");
+    invalidateCachedResource("tutor-portal:");
+    invalidateCachedResource("admin-dashboard:");
+    invalidateCachedResource("users:list:");
 }
 
 export const userProfileService = {

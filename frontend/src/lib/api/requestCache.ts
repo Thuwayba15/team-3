@@ -5,6 +5,7 @@ interface ICacheEntry<TValue> {
 
 const responseCache = new Map<string, ICacheEntry<unknown>>();
 const inFlightRequests = new Map<string, Promise<unknown>>();
+let cacheGeneration = 0;
 
 /**
  * Reuses in-flight requests and short-lived responses to avoid duplicate page-load fetches.
@@ -14,6 +15,7 @@ export async function getCachedResource<TValue>(
     loader: () => Promise<TValue>,
     ttlMs: number = 30000
 ): Promise<TValue> {
+    const activeGeneration = cacheGeneration;
     const now = Date.now();
     const cachedEntry = responseCache.get(key);
 
@@ -28,7 +30,7 @@ export async function getCachedResource<TValue>(
 
     const request = loader()
         .then((value) => {
-            if (ttlMs > 0) {
+            if (ttlMs > 0 && activeGeneration === cacheGeneration) {
                 responseCache.set(key, {
                     expiresAt: Date.now() + ttlMs,
                     value,
@@ -54,4 +56,13 @@ export function invalidateCachedResource(prefix: string): void {
             responseCache.delete(key);
         }
     }
+}
+
+/**
+ * Clears all cached responses and prevents older in-flight requests from repopulating stale data.
+ */
+export function clearCachedResources(): void {
+    cacheGeneration += 1;
+    responseCache.clear();
+    inFlightRequests.clear();
 }

@@ -3,6 +3,7 @@ using Abp.Domain.Repositories;
 using Abp.Runtime.Session;
 using Abp.UI;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,8 @@ namespace Team3.Students
     [AbpAuthorize]
     public class StudentLearningPathAppService : Team3AppServiceBase, IStudentLearningPathAppService
     {
+        private static readonly TimeSpan SubjectPathCacheDuration = TimeSpan.FromSeconds(30);
+
         private readonly IRepository<Subject, Guid> _subjectRepository;
         private readonly IRepository<Topic, Guid> _topicRepository;
         private readonly IRepository<Lesson, Guid> _lessonRepository;
@@ -33,6 +36,7 @@ namespace Team3.Students
         private readonly IRepository<UserLanguagePreference, long> _userLanguagePreferenceRepository;
         private readonly IRepository<SubjectTranslation, Guid> _subjectTranslationRepository;
         private readonly IRepository<TopicTranslation, Guid> _topicTranslationRepository;
+        private readonly IMemoryCache _memoryCache;
 
         public StudentLearningPathAppService(
             IRepository<Subject, Guid> subjectRepository,
@@ -48,7 +52,8 @@ namespace Team3.Students
             IRepository<Language, Guid> languageRepository,
             IRepository<UserLanguagePreference, long> userLanguagePreferenceRepository,
             IRepository<SubjectTranslation, Guid> subjectTranslationRepository,
-            IRepository<TopicTranslation, Guid> topicTranslationRepository)
+            IRepository<TopicTranslation, Guid> topicTranslationRepository,
+            IMemoryCache memoryCache)
         {
             _subjectRepository = subjectRepository;
             _topicRepository = topicRepository;
@@ -64,22 +69,26 @@ namespace Team3.Students
             _userLanguagePreferenceRepository = userLanguagePreferenceRepository;
             _subjectTranslationRepository = subjectTranslationRepository;
             _topicTranslationRepository = topicTranslationRepository;
+            _memoryCache = memoryCache;
         }
 
         public async Task<StudentLearningPathDto> GetSubjectPathAsync(Guid subjectId)
         {
             var studentId = AbpSession.GetUserId();
+            var preferredLanguageCode = await GetPreferredLanguageCodeAsync(studentId);
+            var cacheKey = BuildSubjectPathCacheKey(studentId, subjectId, preferredLanguageCode);
+            if (_memoryCache.TryGetValue(cacheKey, out StudentLearningPathDto? cachedPath) && cachedPath != null)
+            {
+                return cachedPath;
+            }
+
             var subject = await _subjectRepository.GetAll()
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == subjectId)
                 ?? throw new UserFriendlyException("Subject not found.");
             await EnsureStudentHasAccessToSubjectAsync(studentId, subjectId);
 
-            var languages = await _languageRepository.GetAll()
-                .AsNoTracking()
-                .Where(x => x.IsActive && !x.IsDeleted)
-                .ToListAsync();
-            var preferredLanguageCode = await GetPreferredLanguageCodeAsync(studentId, languages);
+            var languages = await GetRelevantLanguagesAsync(preferredLanguageCode);
             var languageMap = languages.ToDictionary(x => x.Id);
             var languageCodeToId = languages
                 .Where(x => !string.IsNullOrWhiteSpace(x.Code))
@@ -107,11 +116,11 @@ namespace Team3.Students
 
             var subjectTranslations = await _subjectTranslationRepository.GetAll()
                 .AsNoTracking()
-                .Where(x => x.SubjectId == subjectId)
+                .Where(x => x.SubjectId == subjectId && languageMap.Keys.Contains(x.LanguageId))
                 .ToListAsync();
             var topicTranslations = await _topicTranslationRepository.GetAll()
                 .AsNoTracking()
-                .Where(x => topicIds.Contains(x.TopicId))
+                .Where(x => topicIds.Contains(x.TopicId) && languageMap.Keys.Contains(x.LanguageId))
                 .ToListAsync();
             var translatedSubjectName = ResolveTranslatedSubjectName(subject, subjectTranslations, languageCodeToId, preferredLanguageCode);
 
@@ -135,7 +144,7 @@ namespace Team3.Students
             var lessonIds = lessons.Select(x => x.Id).ToList();
             var lessonTranslations = await _lessonTranslationRepository.GetAll()
                 .AsNoTracking()
-                .Where(x => lessonIds.Contains(x.LessonId))
+                .Where(x => lessonIds.Contains(x.LessonId) && languageMap.Keys.Contains(x.LanguageId))
                 .ToListAsync();
             var lessonTranslationsByLessonId = lessonTranslations
                 .GroupBy(x => x.LessonId)
@@ -238,7 +247,7 @@ namespace Team3.Students
                     ? "You have completed the available learning path for this subject."
                     : "Start with the first available topic.");
 
-            return new StudentLearningPathDto
+            var result = new StudentLearningPathDto
             {
                 SubjectId = subject.Id,
                 SubjectName = translatedSubjectName,
@@ -247,6 +256,9 @@ namespace Team3.Students
                 RecommendedAction = rootAction,
                 Topics = topicDtos
             };
+
+            _memoryCache.Set(cacheKey, result, SubjectPathCacheDuration);
+            return result;
         }
 
         public async Task<CompleteLessonOutputDto> CompleteLessonAsync(CompleteLessonInputDto input)
@@ -317,6 +329,8 @@ namespace Team3.Students
 
             await UpdateStudentProgressAsync(studentId, subject.Id);
             await CurrentUnitOfWork.SaveChangesAsync();
+            var preferredLanguageCode = await GetPreferredLanguageCodeAsync(studentId);
+            _memoryCache.Remove(BuildSubjectPathCacheKey(studentId, subject.Id, preferredLanguageCode));
 
             return new CompleteLessonOutputDto
             {
@@ -401,23 +415,43 @@ namespace Team3.Students
 
         private async Task EnsureStudentHasAccessToSubjectAsync(long studentId, Guid subjectId)
         {
-            var enrollment = await _enrollmentRepository.FirstOrDefaultAsync(x => x.StudentId == studentId && x.SubjectId == subjectId && x.IsActive);
+            var enrollment = await _enrollmentRepository.GetAll()
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.StudentId == studentId && x.SubjectId == subjectId && x.IsActive);
             if (enrollment == null)
             {
                 throw new UserFriendlyException("You are not enrolled in this subject.");
             }
         }
 
-        private async Task<string> GetPreferredLanguageCodeAsync(long userId, IReadOnlyCollection<Language> activeLanguages)
+        private async Task<string> GetPreferredLanguageCodeAsync(long userId)
         {
-            var preference = await _userLanguagePreferenceRepository.FirstOrDefaultAsync(x => x.UserId == userId);
-            if (preference != null && !string.IsNullOrWhiteSpace(preference.LanguageCode))
+            var preference = await _userLanguagePreferenceRepository.GetAll()
+                .AsNoTracking()
+                .Where(x => x.UserId == userId)
+                .Select(x => x.LanguageCode)
+                .FirstOrDefaultAsync();
+
+            if (!string.IsNullOrWhiteSpace(preference))
             {
-                return preference.LanguageCode.Trim().ToLowerInvariant();
+                return preference.Trim().ToLowerInvariant();
             }
 
-            var defaultLanguage = activeLanguages.FirstOrDefault(x => x.IsDefault);
-            return defaultLanguage?.Code?.Trim().ToLowerInvariant() ?? "en";
+            var defaultLanguage = await _languageRepository.GetAll()
+                .AsNoTracking()
+                .Where(x => x.IsActive && !x.IsDeleted && x.IsDefault)
+                .Select(x => x.Code)
+                .FirstOrDefaultAsync();
+
+            return defaultLanguage?.Trim().ToLowerInvariant() ?? "en";
+        }
+
+        private async Task<List<Language>> GetRelevantLanguagesAsync(string preferredLanguageCode)
+        {
+            return await _languageRepository.GetAll()
+                .AsNoTracking()
+                .Where(x => x.IsActive && !x.IsDeleted && (x.Code == preferredLanguageCode || x.Code == "en" || x.IsDefault))
+                .ToListAsync();
         }
 
         private static LessonTranslation? SelectBestLessonTranslation(IReadOnlyCollection<LessonTranslation> translations, IReadOnlyDictionary<Guid, Language> languageMap, string preferredLanguageCode)
@@ -466,7 +500,7 @@ namespace Team3.Students
             IReadOnlyDictionary<string, Guid> languageCodeToId,
             string preferredLanguageCode)
         {
-            var translation = SelectBestTopicTranslation(topicTranslations.Where(x => x.TopicId == topic.Id).ToList(), languageCodeToId, preferredLanguageCode);
+            var translation = SelectBestTopicTranslation(topicTranslations, languageCodeToId, preferredLanguageCode);
             return translation?.Name ?? topic.Name;
         }
 
@@ -555,6 +589,11 @@ namespace Team3.Students
             }
 
             studentProgress.UpdateProgress(masteryScore, progressStatus, lastAssessmentScore, attemptCount, needsIntervention, completedLessonCount, revisionNeeded);
+        }
+
+        private static string BuildSubjectPathCacheKey(long studentId, Guid subjectId, string preferredLanguageCode)
+        {
+            return $"student-learning-path:{studentId}:{subjectId}:{preferredLanguageCode}";
         }
     }
 }

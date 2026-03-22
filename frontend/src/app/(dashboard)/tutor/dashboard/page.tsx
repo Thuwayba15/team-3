@@ -9,6 +9,28 @@ import { tutorService, type TutorDashboardData, type TutorSetupStatus } from "@/
 
 const { Paragraph, Text } = Typography;
 
+function getLocalizedTutorStatus(status: string, t: (key: string) => string): string {
+    const normalizedStatus = status.trim().toLowerCase();
+
+    if (normalizedStatus === "pending") {
+        return t("tutoring.status.pending");
+    }
+
+    if (normalizedStatus === "accepted") {
+        return t("tutoring.status.accepted");
+    }
+
+    if (normalizedStatus === "declined") {
+        return t("tutoring.status.declined");
+    }
+
+    if (normalizedStatus === "completed") {
+        return t("tutoring.status.completed");
+    }
+
+    return status;
+}
+
 export default function TutorDashboardPage() {
     const { t } = useTranslation();
     const router = useRouter();
@@ -83,7 +105,7 @@ export default function TutorDashboardPage() {
                                                 title={`${request.studentName} • ${request.subjectName}`}
                                                 description={request.message || t("tutoring.tutor.dashboard.noStudentMessage")}
                                             />
-                                            <Tag>{request.status}</Tag>
+                                            <Tag>{getLocalizedTutorStatus(request.status, t)}</Tag>
                                         </List.Item>
                                     )}
                                 />
