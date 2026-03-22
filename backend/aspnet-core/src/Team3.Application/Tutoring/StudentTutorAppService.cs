@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Team3.Academic;
+using Team3.Application.Caching;
 using Team3.Application.Localization;
 using Team3.Authorization.Users;
 using Team3.Configuration;
@@ -141,7 +142,7 @@ public class StudentTutorAppService : Team3AppServiceBase, IStudentTutorAppServi
             .OrderBy(x => x.TutorName)
             .ToList();
 
-        _memoryCache.Set(cacheKey, result, StudentTutorCacheDuration);
+        _memoryCache.Set(cacheKey, result, MemoryCacheEntryOptionsFactory.Create(StudentTutorCacheDuration));
         return result;
     }
 
@@ -200,7 +201,7 @@ public class StudentTutorAppService : Team3AppServiceBase, IStudentTutorAppServi
             .OrderByDescending(x => x.CreationTime)
             .ToListAsync();
         var result = await MapTutorRequestsAsync(requests, studentId, languageCode);
-        _memoryCache.Set(cacheKey, result, StudentTutorCacheDuration);
+        _memoryCache.Set(cacheKey, result, MemoryCacheEntryOptionsFactory.Create(StudentTutorCacheDuration));
         return result;
     }
 
@@ -254,7 +255,7 @@ public class StudentTutorAppService : Team3AppServiceBase, IStudentTutorAppServi
             };
         }).ToList();
 
-        _memoryCache.Set(cacheKey, result, StudentTutorCacheDuration);
+        _memoryCache.Set(cacheKey, result, MemoryCacheEntryOptionsFactory.Create(StudentTutorCacheDuration));
         return result;
     }
 
@@ -302,7 +303,7 @@ public class StudentTutorAppService : Team3AppServiceBase, IStudentTutorAppServi
             .OrderByDescending(x => x.ScheduledStartUtc)
             .ToListAsync();
         var result = await MapMeetingRequestsAsync(requests, studentId, languageCode);
-        _memoryCache.Set(cacheKey, result, StudentTutorCacheDuration);
+        _memoryCache.Set(cacheKey, result, MemoryCacheEntryOptionsFactory.Create(StudentTutorCacheDuration));
         return result;
     }
 

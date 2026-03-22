@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Team3.Academic;
+using Team3.Application.Caching;
 using Team3.Application.Localization;
 using Team3.Authorization.Users;
 using Team3.Configuration;
@@ -261,7 +262,7 @@ public class TutorPortalAppService : Team3AppServiceBase, ITutorPortalAppService
             })
             .ToList();
 
-        _memoryCache.Set(cacheKey, dashboard, TutorPortalCacheDuration);
+        _memoryCache.Set(cacheKey, dashboard, MemoryCacheEntryOptionsFactory.Create(TutorPortalCacheDuration));
         return dashboard;
     }
 
@@ -282,7 +283,7 @@ public class TutorPortalAppService : Team3AppServiceBase, ITutorPortalAppService
             .OrderByDescending(x => x.CreationTime)
             .ToListAsync();
         var result = await MapTutorRequestsAsync(requests, tutorUserId);
-        _memoryCache.Set(cacheKey, result, TutorPortalCacheDuration);
+        _memoryCache.Set(cacheKey, result, MemoryCacheEntryOptionsFactory.Create(TutorPortalCacheDuration));
         return result;
     }
 
@@ -342,7 +343,7 @@ public class TutorPortalAppService : Team3AppServiceBase, ITutorPortalAppService
             .OrderByDescending(x => x.ScheduledStartUtc)
             .ToListAsync();
         var result = await MapMeetingRequestsAsync(requests, tutorUserId);
-        _memoryCache.Set(cacheKey, result, TutorPortalCacheDuration);
+        _memoryCache.Set(cacheKey, result, MemoryCacheEntryOptionsFactory.Create(TutorPortalCacheDuration));
         return result;
     }
 

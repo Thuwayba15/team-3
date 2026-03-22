@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Team3.Academic;
+using Team3.Application.Caching;
 using Team3.Configuration;
 using Team3.Domain.Assessment;
 using Team3.Enums;
@@ -257,7 +258,7 @@ namespace Team3.Students
                 Topics = topicDtos
             };
 
-            _memoryCache.Set(cacheKey, result, SubjectPathCacheDuration);
+            _memoryCache.Set(cacheKey, result, MemoryCacheEntryOptionsFactory.Create(SubjectPathCacheDuration));
             return result;
         }
 

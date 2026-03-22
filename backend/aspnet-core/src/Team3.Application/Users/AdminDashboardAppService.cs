@@ -9,6 +9,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Team3.Authorization;
 using Team3.Authorization.Roles;
 using Team3.Authorization.Users;
+using Team3.Application.Caching;
 using Team3.Configuration;
 using Team3.Users.Dto;
 
@@ -120,13 +121,7 @@ public class AdminDashboardAppService : Team3AppServiceBase, IAdminDashboardAppS
                 .ToList(),
         };
 
-        _memoryCache.Set(
-            SummaryCacheKey,
-            summary,
-            new MemoryCacheEntryOptions
-            {
-                AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(30),
-            });
+        _memoryCache.Set(SummaryCacheKey, summary, MemoryCacheEntryOptionsFactory.Create(TimeSpan.FromSeconds(30)));
 
         return summary;
     }

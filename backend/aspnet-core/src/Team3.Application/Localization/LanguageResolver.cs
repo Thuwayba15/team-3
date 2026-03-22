@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Team3.Academic;
+using Team3.Application.Caching;
 using Team3.Configuration;
 using Team3.Localization;
 
@@ -63,7 +64,7 @@ public class LanguageResolver : ILanguageResolver
         }
 
         var resolvedLanguageCode = await ResolveUserPreferredLanguageCodeAsync(userId);
-        _memoryCache.Set(cacheKey, resolvedLanguageCode, PreferredLanguageCacheDuration);
+        _memoryCache.Set(cacheKey, resolvedLanguageCode, MemoryCacheEntryOptionsFactory.Create(PreferredLanguageCacheDuration));
         return resolvedLanguageCode;
     }
 
@@ -85,7 +86,7 @@ public class LanguageResolver : ILanguageResolver
         }
 
         var resolvedLanguage = await ResolveLanguageAsync(languageCode);
-        _memoryCache.Set(cacheKey, resolvedLanguage, LanguageLookupCacheDuration);
+        _memoryCache.Set(cacheKey, resolvedLanguage, MemoryCacheEntryOptionsFactory.Create(LanguageLookupCacheDuration));
         return resolvedLanguage;
     }
 

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Team3.Academic;
+using Team3.Application.Caching;
 using Team3.Configuration;
 using Team3.Domain.Assessment;
 using Team3.Enums;
@@ -114,7 +115,7 @@ namespace Team3.Students
                     RevisionAdvices = new List<StudentDashboardRevisionAdviceDto>(),
                     MotivationalGuidance = GenerateMotivationalGuidance([])
                 };
-                _memoryCache.Set(cacheKey, emptyResult, DashboardCacheDuration);
+                _memoryCache.Set(cacheKey, emptyResult, MemoryCacheEntryOptionsFactory.Create(DashboardCacheDuration));
                 return emptyResult;
             }
 
@@ -266,7 +267,7 @@ namespace Team3.Students
                 MotivationalGuidance = GenerateMotivationalGuidance(subjectProgressRecords)
             };
 
-            _memoryCache.Set(cacheKey, result, DashboardCacheDuration);
+            _memoryCache.Set(cacheKey, result, MemoryCacheEntryOptionsFactory.Create(DashboardCacheDuration));
             return result;
         }
 

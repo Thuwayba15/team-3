@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
+using Team3.Application.Caching;
 
 namespace Team3.Users;
 
@@ -151,7 +152,7 @@ public class UserAppService : AsyncCrudAppService<User, UserDto, long, PagedUser
 
         var userDtos = await MapUsersToDtosAsync(users);
         var result = new PagedResultDto<UserDto>(totalCount, userDtos);
-        _memoryCache.Set(cacheKey, result, UserListCacheDuration);
+        _memoryCache.Set(cacheKey, result, MemoryCacheEntryOptionsFactory.Create(UserListCacheDuration));
         return result;
     }
 

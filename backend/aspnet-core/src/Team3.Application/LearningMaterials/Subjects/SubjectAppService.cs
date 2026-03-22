@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Team3.Academic;
+using Team3.Application.Caching;
 using Team3.Application.Localization;
 using Team3.Configuration;
 using Team3.LearningMaterials.Dto;
@@ -74,7 +75,7 @@ namespace Team3.LearningMaterials.Subjects
                     translations,
                     languages);
 
-                _memoryCache.Set(cacheKey, result, SubjectCacheDuration);
+                _memoryCache.Set(cacheKey, result, MemoryCacheEntryOptionsFactory.Create(SubjectCacheDuration));
                 return result;
             }
             catch (Exception ex)
@@ -129,7 +130,7 @@ namespace Team3.LearningMaterials.Subjects
                     translations,
                     languages);
 
-                _memoryCache.Set(cacheKey, result, SubjectCacheDuration);
+                _memoryCache.Set(cacheKey, result, MemoryCacheEntryOptionsFactory.Create(SubjectCacheDuration));
                 return result;
             }
             catch (UserFriendlyException)
@@ -296,7 +297,7 @@ namespace Team3.LearningMaterials.Subjects
                     translations,
                     languages);
 
-                _memoryCache.Set(cacheKey, result, SubjectCacheDuration);
+                _memoryCache.Set(cacheKey, result, MemoryCacheEntryOptionsFactory.Create(SubjectCacheDuration));
                 return result;
             }
             catch (UserFriendlyException)
