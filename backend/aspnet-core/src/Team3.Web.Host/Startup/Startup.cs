@@ -1,4 +1,4 @@
-﻿using Abp.AspNetCore;
+using Abp.AspNetCore;
 using Abp.AspNetCore.Mvc.Antiforgery;
 using Abp.AspNetCore.SignalR.Hubs;
 using Abp.Castle.Logging.Log4Net;
@@ -87,11 +87,11 @@ namespace Team3.Web.Host.Startup
         {
             app.UseAbp(options => { options.UseAbpRequestLocalization = false; }); // Initializes ABP framework.
 
-            app.UseCors(_defaultCorsPolicyName); // Enable CORS!
-
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseCors(_defaultCorsPolicyName); // Enable CORS! 
 
             app.UseAuthentication();
             app.UseAuthorization();
