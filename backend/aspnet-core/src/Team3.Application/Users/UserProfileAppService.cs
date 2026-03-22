@@ -172,6 +172,7 @@ namespace Team3.Users
         public async Task<ListResultDto<PlatformLanguageOptionDto>> GetActiveLanguagesAsync()
         {
             var languages = await _languageRepository.GetAll()
+                .AsNoTracking()
                 .Where(language => language.IsActive && !language.IsDeleted)
                 .OrderByDescending(language => language.IsDefault)
                 .ThenBy(language => language.SortOrder)
@@ -601,6 +602,7 @@ namespace Team3.Users
         private async Task<string> GetPreferredLanguageOrDefaultAsync(long userId)
         {
             var activeLanguages = await _languageRepository.GetAll()
+                .AsNoTracking()
                 .Where(language => language.IsActive && !language.IsDeleted)
                 .Select(language => new
                 {

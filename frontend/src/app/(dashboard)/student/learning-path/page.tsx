@@ -231,10 +231,7 @@ export default function StudentLearningPathPage() {
         setError(null);
 
         try {
-            const [enrolledSubjects, subjectCatalog] = await Promise.all([
-                studentSubjectService.getMySubjects(),
-                loadSubjectCatalog(),
-            ]);
+            const enrolledSubjects = await studentSubjectService.getMySubjects();
 
             setSubjects(enrolledSubjects);
 
@@ -251,6 +248,7 @@ export default function StudentLearningPathPage() {
             }
 
             if (enrolledSubjects.length === 0) {
+                const subjectCatalog = await loadSubjectCatalog();
                 setSubjectPath(null);
                 if (subjectCatalog.length > 0) {
                     setIsEnrollmentOpen(false);
@@ -266,6 +264,14 @@ export default function StudentLearningPathPage() {
     useEffect(() => {
         void loadEnrolledSubjects();
     }, [currentLanguage, loadEnrolledSubjects]);
+
+    useEffect(() => {
+        if (!isEnrollmentOpen || availableSubjects.length > 0) {
+            return;
+        }
+
+        void loadSubjectCatalog();
+    }, [availableSubjects.length, isEnrollmentOpen]);
 
     const loadSubjectPath = async (subjectId: string) => {
         setLoadingPath(true);

@@ -119,8 +119,35 @@ public class UserAppService : AsyncCrudAppService<User, UserDto, long, PagedUser
 
     public async Task<ListResultDto<RoleDto>> GetRoles()
     {
-        var roles = await _roleRepository.GetAllListAsync();
+        var roles = await _roleRepository.GetAll()
+            .AsNoTracking()
+            .OrderBy(role => role.DisplayName)
+            .ToListAsync();
+
         return new ListResultDto<RoleDto>(ObjectMapper.Map<List<RoleDto>>(roles));
+    }
+
+    public override async Task<PagedResultDto<UserDto>> GetAllAsync(PagedUserResultRequestDto input)
+    {
+        CheckGetAllPermission();
+
+        var filteredQuery = CreateFilteredQuery(input)
+            .AsNoTracking();
+
+        var totalCount = await AsyncQueryableExecuter.CountAsync(filteredQuery);
+        var users = await AsyncQueryableExecuter.ToListAsync(
+            ApplySorting(filteredQuery, input).PageBy(input));
+
+        var userDtos = await MapUsersToDtosAsync(users);
+        return new PagedResultDto<UserDto>(totalCount, userDtos);
+    }
+
+    public override async Task<UserDto> GetAsync(EntityDto<long> input)
+    {
+        CheckGetPermission();
+
+        var user = await GetEntityByIdAsync(input.Id);
+        return await MapUserToDtoAsync(user);
     }
 
     public async Task ChangeLanguage(ChangeUserLanguageDto input)
@@ -147,14 +174,7 @@ public class UserAppService : AsyncCrudAppService<User, UserDto, long, PagedUser
 
     protected override UserDto MapToEntityDto(User user)
     {
-        var roleIds = user.Roles.Select(x => x.RoleId).ToArray();
-
-        var roles = _roleManager.Roles.Where(r => roleIds.Contains(r.Id)).Select(r => r.NormalizedName);
-
-        var userDto = base.MapToEntityDto(user);
-        userDto.RoleNames = roles.ToArray();
-
-        return userDto;
+        return BuildUserDto(user, null);
     }
 
     protected override IQueryable<User> CreateFilteredQuery(PagedUserResultRequestDto input)
@@ -252,6 +272,55 @@ public class UserAppService : AsyncCrudAppService<User, UserDto, long, PagedUser
         }
 
         return true;
+    }
+
+    private async Task<UserDto> MapUserToDtoAsync(User user)
+    {
+        var roleIds = user.Roles
+            .Select(role => role.RoleId)
+            .Distinct()
+            .ToArray();
+
+        var roleNamesById = roleIds.Length == 0
+            ? new Dictionary<int, string>()
+            : await _roleManager.Roles
+                .AsNoTracking()
+                .Where(role => roleIds.Contains(role.Id))
+                .ToDictionaryAsync(role => role.Id, role => role.NormalizedName);
+
+        return BuildUserDto(user, roleNamesById);
+    }
+
+    private async Task<List<UserDto>> MapUsersToDtosAsync(IReadOnlyCollection<User> users)
+    {
+        var roleIds = users
+            .SelectMany(user => user.Roles)
+            .Select(role => role.RoleId)
+            .Distinct()
+            .ToArray();
+
+        var roleNamesById = roleIds.Length == 0
+            ? new Dictionary<int, string>()
+            : await _roleManager.Roles
+                .AsNoTracking()
+                .Where(role => roleIds.Contains(role.Id))
+                .ToDictionaryAsync(role => role.Id, role => role.NormalizedName);
+
+        return users
+            .Select(user => BuildUserDto(user, roleNamesById))
+            .ToList();
+    }
+
+    private UserDto BuildUserDto(User user, IReadOnlyDictionary<int, string>? roleNamesById)
+    {
+        var userDto = base.MapToEntityDto(user);
+        userDto.RoleNames = user.Roles
+            .Select(role => roleNamesById?.GetValueOrDefault(role.RoleId))
+            .Where(roleName => !roleName.IsNullOrWhiteSpace())
+            .Distinct()
+            .ToArray();
+
+        return userDto;
     }
 }
 

@@ -1,6 +1,7 @@
 using Abp.Application.Services.Dto;
 using Abp.Authorization;
 using Abp.Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -21,9 +22,8 @@ public class LanguageLookupAppService : Team3AppServiceBase, ILanguageLookupAppS
 
     public async Task<ListResultDto<PlatformLanguageOptionDto>> GetSupportedLanguagesAsync()
     {
-        var languages = await _languageRepository.GetAllListAsync();
-
-        var items = languages
+        var items = await _languageRepository.GetAll()
+            .AsNoTracking()
             .Where(language => !language.IsDeleted)
             .OrderBy(language => language.SortOrder)
             .ThenBy(language => language.Name)
@@ -33,7 +33,7 @@ public class LanguageLookupAppService : Team3AppServiceBase, ILanguageLookupAppS
                 Name = string.IsNullOrWhiteSpace(language.NativeName) ? language.Name : language.NativeName,
                 IsDefault = language.IsDefault,
             })
-            .ToList();
+            .ToListAsync();
 
         return new ListResultDto<PlatformLanguageOptionDto>(items);
     }
