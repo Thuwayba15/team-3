@@ -69,64 +69,109 @@ namespace Team3.Students
         public async Task<StudentLearningPathDto> GetSubjectPathAsync(Guid subjectId)
         {
             var studentId = AbpSession.GetUserId();
-            var subject = await _subjectRepository.FirstOrDefaultAsync(subjectId)
+            var subject = await _subjectRepository.GetAll()
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Id == subjectId)
                 ?? throw new UserFriendlyException("Subject not found.");
             await EnsureStudentHasAccessToSubjectAsync(studentId, subjectId);
 
-            var preferredLanguageCode = await GetPreferredLanguageCodeAsync(studentId);
-            var languages = await _languageRepository.GetAllListAsync();
+            var languages = await _languageRepository.GetAll()
+                .AsNoTracking()
+                .Where(x => x.IsActive && !x.IsDeleted)
+                .ToListAsync();
+            var preferredLanguageCode = await GetPreferredLanguageCodeAsync(studentId, languages);
             var languageMap = languages.ToDictionary(x => x.Id);
             var languageCodeToId = languages
                 .Where(x => !string.IsNullOrWhiteSpace(x.Code))
                 .GroupBy(x => x.Code.Trim().ToLowerInvariant())
                 .ToDictionary(group => group.Key, group => group.First().Id);
             var topics = await _topicRepository.GetAll()
+                .AsNoTracking()
                 .Where(x => x.SubjectId == subjectId && x.IsActive)
                 .OrderBy(x => x.SequenceOrder)
                 .ToListAsync();
 
             var topicIds = topics.Select(x => x.Id).ToList();
+            if (topicIds.Count == 0)
+            {
+                return new StudentLearningPathDto
+                {
+                    SubjectId = subject.Id,
+                    SubjectName = subject.Name,
+                    GradeLevel = subject.GradeLevel,
+                    OverallProgressPercent = 0m,
+                    RecommendedAction = "Start with the first available topic.",
+                    Topics = [],
+                };
+            }
+
             var subjectTranslations = await _subjectTranslationRepository.GetAll()
+                .AsNoTracking()
                 .Where(x => x.SubjectId == subjectId)
                 .ToListAsync();
             var topicTranslations = await _topicTranslationRepository.GetAll()
+                .AsNoTracking()
                 .Where(x => topicIds.Contains(x.TopicId))
                 .ToListAsync();
             var translatedSubjectName = ResolveTranslatedSubjectName(subject, subjectTranslations, languageCodeToId, preferredLanguageCode);
 
             var topicProgresses = await _topicProgressRepository.GetAll()
+                .AsNoTracking()
                 .Where(x => x.StudentId == studentId && topicIds.Contains(x.TopicId))
                 .ToListAsync();
+            var topicProgressByTopicId = topicProgresses
+                .GroupBy(x => x.TopicId)
+                .ToDictionary(group => group.Key, group => group.OrderByDescending(x => x.LastModificationTime ?? x.CreationTime).First());
 
             var lessons = await _lessonRepository.GetAll()
+                .AsNoTracking()
                 .Where(x => topicIds.Contains(x.TopicId))
                 .OrderBy(x => x.Title)
                 .ToListAsync();
+            var lessonsByTopicId = lessons
+                .GroupBy(x => x.TopicId)
+                .ToDictionary(group => group.Key, group => group.OrderBy(x => x.Title).ToList());
 
             var lessonIds = lessons.Select(x => x.Id).ToList();
             var lessonTranslations = await _lessonTranslationRepository.GetAll()
+                .AsNoTracking()
                 .Where(x => lessonIds.Contains(x.LessonId))
                 .ToListAsync();
+            var lessonTranslationsByLessonId = lessonTranslations
+                .GroupBy(x => x.LessonId)
+                .ToDictionary(group => group.Key, group => (IReadOnlyCollection<LessonTranslation>)group.ToList());
 
             var lessonProgresses = await _lessonProgressRepository.GetAll()
+                .AsNoTracking()
                 .Where(x => x.StudentId == studentId && lessonIds.Contains(x.LessonId))
                 .ToListAsync();
+            var lessonProgressByLessonId = lessonProgresses
+                .GroupBy(x => x.LessonId)
+                .ToDictionary(group => group.Key, group => group.OrderByDescending(x => x.LastModificationTime ?? x.CreationTime).First());
 
             var assessments = await _assessmentRepository.GetAll()
+                .AsNoTracking()
                 .Where(x => topicIds.Contains(x.TopicId))
                 .ToListAsync();
+            var assessmentsByTopicId = assessments
+                .GroupBy(x => x.TopicId)
+                .ToDictionary(group => group.Key, group => (IReadOnlyCollection<Assessment>)group.ToList());
+            var topicTranslationsByTopicId = topicTranslations
+                .GroupBy(x => x.TopicId)
+                .ToDictionary(group => group.Key, group => (IReadOnlyCollection<TopicTranslation>)group.ToList());
 
             var firstUnlockedTopicId = topics
-                .FirstOrDefault(topic => topicProgresses.FirstOrDefault(progress => progress.TopicId == topic.Id)?.Status != LearningProgressStatus.Completed)
+                .FirstOrDefault(topic => !topicProgressByTopicId.TryGetValue(topic.Id, out var progress) || progress.Status != LearningProgressStatus.Completed)
                 ?.Id;
 
             var topicDtos = new List<StudentLearningPathTopicDto>();
 
             foreach (var topic in topics)
             {
-                var topicProgress = topicProgresses.FirstOrDefault(x => x.TopicId == topic.Id);
-                var diagnosticAssessment = assessments
-                    .Where(x => x.TopicId == topic.Id && x.AssessmentType == AssessmentType.Diagnostic)
+                topicProgressByTopicId.TryGetValue(topic.Id, out var topicProgress);
+                var topicAssessments = assessmentsByTopicId.GetValueOrDefault(topic.Id, []);
+                var diagnosticAssessment = topicAssessments
+                    .Where(x => x.AssessmentType == AssessmentType.Diagnostic)
                     .OrderBy(x => x.Title)
                     .FirstOrDefault();
 
@@ -146,10 +191,10 @@ namespace Team3.Students
                     topic,
                     topicStatus,
                     assignedDifficulty,
-                    lessons,
-                    lessonTranslations,
-                    lessonProgresses,
-                    assessments,
+                    lessonsByTopicId.GetValueOrDefault(topic.Id, []),
+                    lessonTranslationsByLessonId,
+                    lessonProgressByLessonId,
+                    topicAssessments,
                     languageMap,
                     preferredLanguageCode,
                     topicProgress?.Status == LearningProgressStatus.Completed);
@@ -171,7 +216,7 @@ namespace Team3.Students
                 topicDtos.Add(new StudentLearningPathTopicDto
                 {
                     TopicId = topic.Id,
-                    Name = ResolveTranslatedTopicName(topic, topicTranslations, languageCodeToId, preferredLanguageCode),
+                    Name = ResolveTranslatedTopicName(topic, topicTranslationsByTopicId.GetValueOrDefault(topic.Id, []), languageCodeToId, preferredLanguageCode),
                     Description = topic.Description,
                     Status = topicStatus,
                     AssignedDifficultyLevel = assignedDifficulty,
@@ -291,8 +336,8 @@ namespace Team3.Students
             string topicStatus,
             DifficultyLevel? assignedDifficulty,
             IReadOnlyCollection<Lesson> lessons,
-            IReadOnlyCollection<LessonTranslation> lessonTranslations,
-            IReadOnlyCollection<StudentLessonProgress> lessonProgresses,
+            IReadOnlyDictionary<Guid, IReadOnlyCollection<LessonTranslation>> lessonTranslationsByLessonId,
+            IReadOnlyDictionary<Guid, StudentLessonProgress> lessonProgressByLessonId,
             IReadOnlyCollection<Assessment> assessments,
             IReadOnlyDictionary<Guid, Language> languageMap,
             string preferredLanguageCode,
@@ -303,24 +348,24 @@ namespace Team3.Students
                 return new List<StudentLearningPathLessonDto>();
             }
 
-            var selectedLessons = lessons.Where(x => x.TopicId == topic.Id && x.DifficultyLevel == assignedDifficulty.Value).OrderBy(x => x.Title).ToList();
+            var selectedLessons = lessons.Where(x => x.DifficultyLevel == assignedDifficulty.Value).OrderBy(x => x.Title).ToList();
             if (selectedLessons.Count == 0)
             {
-                selectedLessons = lessons.Where(x => x.TopicId == topic.Id && x.DifficultyLevel == DifficultyLevel.Medium).OrderBy(x => x.Title).ToList();
+                selectedLessons = lessons.Where(x => x.DifficultyLevel == DifficultyLevel.Medium).OrderBy(x => x.Title).ToList();
             }
 
             if (selectedLessons.Count == 0)
             {
-                selectedLessons = lessons.Where(x => x.TopicId == topic.Id).OrderBy(x => x.Title).ToList();
+                selectedLessons = lessons.OrderBy(x => x.Title).ToList();
             }
 
             var firstIncompleteLessonId = selectedLessons
-                .FirstOrDefault(lesson => lessonProgresses.FirstOrDefault(progress => progress.LessonId == lesson.Id)?.Status != LearningProgressStatus.Completed)
+                .FirstOrDefault(lesson => !lessonProgressByLessonId.TryGetValue(lesson.Id, out var progress) || progress.Status != LearningProgressStatus.Completed)
                 ?.Id;
 
             return selectedLessons.Select(lesson =>
             {
-                var progress = lessonProgresses.FirstOrDefault(x => x.LessonId == lesson.Id);
+                lessonProgressByLessonId.TryGetValue(lesson.Id, out var progress);
                 var status = topicStatus == "locked"
                     ? "locked"
                     : topicCompleted || progress?.Status == LearningProgressStatus.Completed
@@ -329,7 +374,7 @@ namespace Team3.Students
                             ? "current"
                             : "locked";
 
-                var translation = SelectBestLessonTranslation(lessonTranslations.Where(x => x.LessonId == lesson.Id).ToList(), languageMap, preferredLanguageCode);
+                var translation = SelectBestLessonTranslation(lessonTranslationsByLessonId.GetValueOrDefault(lesson.Id, []), languageMap, preferredLanguageCode);
                 var quizAssessment = ResolveLessonQuiz(assessments, lesson.Id, topic.Id, assignedDifficulty.Value);
                 var actionState = status switch
                 {
@@ -363,7 +408,7 @@ namespace Team3.Students
             }
         }
 
-        private async Task<string> GetPreferredLanguageCodeAsync(long userId)
+        private async Task<string> GetPreferredLanguageCodeAsync(long userId, IReadOnlyCollection<Language> activeLanguages)
         {
             var preference = await _userLanguagePreferenceRepository.FirstOrDefaultAsync(x => x.UserId == userId);
             if (preference != null && !string.IsNullOrWhiteSpace(preference.LanguageCode))
@@ -371,7 +416,7 @@ namespace Team3.Students
                 return preference.LanguageCode.Trim().ToLowerInvariant();
             }
 
-            var defaultLanguage = await _languageRepository.FirstOrDefaultAsync(x => x.IsDefault && x.IsActive);
+            var defaultLanguage = activeLanguages.FirstOrDefault(x => x.IsDefault);
             return defaultLanguage?.Code?.Trim().ToLowerInvariant() ?? "en";
         }
 

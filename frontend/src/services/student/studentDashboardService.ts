@@ -5,6 +5,7 @@
  */
 
 import { apiClient } from "@/lib/api/client";
+import { getCachedResource } from "@/lib/api/requestCache";
 import { STUDENT_DASHBOARD_GET_MY_DASHBOARD_ENDPOINT } from "@/constants/api";
 import type { StudentDashboardData } from "@/providers/student/context";
 
@@ -187,28 +188,29 @@ class StudentDashboardService {
      * @throws Error if the request fails or returns an error from the backend
      */
     async getMyDashboard(subjectId?: string): Promise<StudentDashboardData> {
-        try {
-            const response = await apiClient.get<IAbpResponseEnvelope<IStudentDashboardProgressDto>>(
-                STUDENT_DASHBOARD_GET_MY_DASHBOARD_ENDPOINT,
-                {
-                    params: subjectId ? { subjectId } : {},
-                }
-            );
-
-            if (!response.data.success) {
-                throw new Error(
-                    response.data.error?.message || "Failed to load dashboard"
+        return getCachedResource(`student-dashboard:${subjectId ?? "all"}`, async () => {
+            try {
+                const response = await apiClient.get<IAbpResponseEnvelope<IStudentDashboardProgressDto>>(
+                    STUDENT_DASHBOARD_GET_MY_DASHBOARD_ENDPOINT,
+                    {
+                        params: subjectId ? { subjectId } : {},
+                    }
                 );
-            }
 
-            return mapProgressToDashboardData(response.data.result);
-        } catch (error) {
-            // Re-throw with a user-friendly message
-            if (error instanceof Error) {
-                throw error;
+                if (!response.data.success) {
+                    throw new Error(
+                        response.data.error?.message || "Failed to load dashboard"
+                    );
+                }
+
+                return mapProgressToDashboardData(response.data.result);
+            } catch (error) {
+                if (error instanceof Error) {
+                    throw error;
+                }
+                throw new Error("An unexpected error occurred while loading the dashboard");
             }
-            throw new Error("An unexpected error occurred while loading the dashboard");
-        }
+        }, 30000);
     }
 }
 

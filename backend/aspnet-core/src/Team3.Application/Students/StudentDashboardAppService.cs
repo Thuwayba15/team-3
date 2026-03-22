@@ -86,47 +86,75 @@ namespace Team3.Students
                     TopicMasteries = new List<StudentDashboardTopicMasteryDto>(),
                     RecommendedLesson = null,
                     RevisionAdvices = new List<StudentDashboardRevisionAdviceDto>(),
-                    MotivationalGuidance = GenerateMotivationalGuidance(new List<StudentProgress>())
+                    MotivationalGuidance = GenerateMotivationalGuidance([])
                 };
-
-                await TryEnhanceWordingWithAiAsync(emptyResult);
                 return emptyResult;
             }
 
-            var topics = await _topicRepository.GetAll().Where(x => enrolledSubjectIds.Contains(x.SubjectId) && x.IsActive).ToListAsync();
-            var topicIds = topics.Select(x => x.Id).ToList();
-            var lessons = await _lessonRepository.GetAll().Where(x => topicIds.Contains(x.TopicId)).ToListAsync();
-            var lessonIds = lessons.Select(x => x.Id).ToList();
-            var subjects = await _subjectRepository.GetAll().Where(x => enrolledSubjectIds.Contains(x.Id)).ToListAsync();
-            var subjectNameById = subjects.ToDictionary(x => x.Id, x => x.Name);
-
-            var topicProgresses = await _topicProgressRepository.GetAll().Where(x => x.StudentId == studentId && topicIds.Contains(x.TopicId)).ToListAsync();
-            var lessonProgresses = await _lessonProgressRepository.GetAll()
-                .Where(x => x.StudentId == studentId && lessonIds.Contains(x.LessonId))
-                .OrderByDescending(x => x.CompletedAt)
+            var topics = await _topicRepository.GetAll()
+                .AsNoTracking()
+                .Where(x => enrolledSubjectIds.Contains(x.SubjectId) && x.IsActive)
                 .ToListAsync();
+            var topicIds = topics.Select(x => x.Id).ToList();
+            var lessons = topicIds.Count == 0
+                ? []
+                : await _lessonRepository.GetAll()
+                    .AsNoTracking()
+                    .Where(x => topicIds.Contains(x.TopicId))
+                    .ToListAsync();
+            var lessonIds = lessons.Select(x => x.Id).ToList();
+            var subjects = await _subjectRepository.GetAll()
+                .AsNoTracking()
+                .Where(x => enrolledSubjectIds.Contains(x.Id))
+                .ToListAsync();
+            var subjectNameById = subjects.ToDictionary(x => x.Id, x => x.Name);
+            var topicById = topics.ToDictionary(x => x.Id);
+            var lessonById = lessons.ToDictionary(x => x.Id);
+
+            var topicProgresses = topicIds.Count == 0
+                ? []
+                : await _topicProgressRepository.GetAll()
+                    .AsNoTracking()
+                    .Where(x => x.StudentId == studentId && topicIds.Contains(x.TopicId))
+                    .ToListAsync();
+            var lessonProgresses = lessonIds.Count == 0
+                ? []
+                : await _lessonProgressRepository.GetAll()
+                    .AsNoTracking()
+                    .Where(x => x.StudentId == studentId && lessonIds.Contains(x.LessonId))
+                    .OrderByDescending(x => x.CompletedAt)
+                    .ToListAsync();
             var attempts = await _attemptRepository.GetAll()
+                .AsNoTracking()
                 .Where(x => x.StudentId == studentId && enrolledSubjectIds.Contains(x.SubjectId) && x.AssessmentType == AssessmentType.Quiz)
                 .OrderByDescending(x => x.SubmittedAt)
                 .ToListAsync();
             var assessmentIds = attempts.Select(a => a.AssessmentId).Distinct().ToList();
             var assessments = assessmentIds.Count == 0
-                ? new List<Assessment>()
+                ? []
                 : await _assessmentRepository.GetAll()
+                    .AsNoTracking()
                     .Where(x => assessmentIds.Contains(x.Id))
                     .ToListAsync();
-            var subjectProgressRecords = await _studentProgressRepository.GetAll().Where(x => x.StudentId == studentId && enrolledSubjectIds.Contains(x.SubjectId)).ToListAsync();
+            var assessmentById = assessments.ToDictionary(x => x.Id);
+            var topicProgressByTopicId = topicProgresses
+                .GroupBy(x => x.TopicId)
+                .ToDictionary(group => group.Key, group => group.OrderByDescending(x => x.LastModificationTime ?? x.CreationTime).First());
+            var subjectProgressRecords = await _studentProgressRepository.GetAll()
+                .AsNoTracking()
+                .Where(x => x.StudentId == studentId && enrolledSubjectIds.Contains(x.SubjectId))
+                .ToListAsync();
             var overallScore = topics.Count == 0
                 ? 0m
                 : Math.Round(
-                    topics.Average(topic => topicProgresses.FirstOrDefault(progress => progress.TopicId == topic.Id)?.MasteryScore ?? 0m),
+                    topics.Average(topic => topicProgressByTopicId.TryGetValue(topic.Id, out var progress) ? progress.MasteryScore : 0m),
                     2,
                     MidpointRounding.AwayFromZero);
 
             var result = new StudentDashboardProgressDto
             {
                 SubjectId = subjectId,
-                SubjectName = subjectId.HasValue ? (await _subjectRepository.FirstOrDefaultAsync(subjectId.Value))?.Name : null,
+                SubjectName = subjectId.HasValue && subjectNameById.TryGetValue(subjectId.Value, out var selectedSubjectName) ? selectedSubjectName : null,
                 OverallScore = overallScore,
                 TopicsMastered = topicProgresses.Count(x => x.Status == LearningProgressStatus.Completed),
                 LessonsCompleted = lessonProgresses.Count(x => x.Status == LearningProgressStatus.Completed),
@@ -134,13 +162,11 @@ namespace Team3.Students
                 NeedsIntervention = subjectProgressRecords.Any(x => x.NeedsIntervention),
                 RecentQuizzes = attempts.Take(5).Select(attempt =>
                 {
-                    var assessment = assessments.FirstOrDefault(x => x.Id == attempt.AssessmentId);
-                    var topic = topics.FirstOrDefault(x => x.Id == attempt.TopicId);
                     return new StudentDashboardRecentQuizDto
                     {
                         AttemptId = attempt.Id,
-                        Title = assessment?.Title ?? "Quiz",
-                        TopicName = topic?.Name ?? "Topic",
+                        Title = assessmentById.TryGetValue(attempt.AssessmentId, out var assessment) ? assessment.Title : "Quiz",
+                        TopicName = topicById.TryGetValue(attempt.TopicId, out var topic) ? topic.Name : "Topic",
                         Percentage = attempt.Percentage,
                         Passed = attempt.Passed,
                         SubmittedAt = attempt.SubmittedAt
@@ -151,13 +177,11 @@ namespace Team3.Students
                     .Take(5)
                     .Select(progress =>
                     {
-                        var lesson = lessons.FirstOrDefault(x => x.Id == progress.LessonId);
-                        var topic = topics.FirstOrDefault(x => x.Id == progress.TopicId);
                         return new StudentDashboardCompletedLessonDto
                         {
                             LessonId = progress.LessonId,
-                            Title = lesson?.Title ?? "Lesson",
-                            TopicName = topic?.Name ?? "Topic",
+                            Title = lessonById.TryGetValue(progress.LessonId, out var lesson) ? lesson.Title : "Lesson",
+                            TopicName = topicById.TryGetValue(progress.TopicId, out var topic) ? topic.Name : "Topic",
                             CompletedAt = progress.CompletedAt
                         };
                     }).ToList(),
@@ -167,11 +191,10 @@ namespace Team3.Students
                     .Take(5)
                     .Select(progress =>
                     {
-                        var topic = topics.FirstOrDefault(x => x.Id == progress.TopicId);
                         return new StudentDashboardWeakTopicDto
                         {
                             TopicId = progress.TopicId,
-                            TopicName = topic?.Name ?? "Topic",
+                            TopicName = topicById.TryGetValue(progress.TopicId, out var topic) ? topic.Name : "Topic",
                             MasteryScore = progress.MasteryScore,
                             NeedsRevision = progress.NeedsRevision
                         };
@@ -198,89 +221,7 @@ namespace Team3.Students
                 MotivationalGuidance = GenerateMotivationalGuidance(subjectProgressRecords)
             };
 
-            await TryEnhanceWordingWithAiAsync(result);
             return result;
-        }
-
-        private async Task TryEnhanceWordingWithAiAsync(StudentDashboardProgressDto dashboard)
-        {
-            try
-            {
-                if (!string.IsNullOrWhiteSpace(dashboard.MotivationalGuidance))
-                {
-                    dashboard.MotivationalGuidance = await EnhanceMotivationalMessageAsync(
-                        dashboard.MotivationalGuidance,
-                        dashboard.OverallScore);
-                }
-
-                if (!dashboard.RevisionAdvices.Any())
-                {
-                    return;
-                }
-
-                foreach (var advice in dashboard.RevisionAdvices)
-                {
-                    if (string.IsNullOrWhiteSpace(advice.Advice))
-                    {
-                        continue;
-                    }
-
-                    advice.Advice = await EnhanceRevisionAdviceAsync(
-                        advice.TopicName ?? "this topic",
-                        advice.MasteryScore,
-                        advice.Advice);
-                }
-            }
-            catch
-            {
-                // Keep deterministic wording if AI enhancement fails.
-            }
-        }
-
-        private async Task<string> EnhanceMotivationalMessageAsync(string baseMessage, decimal overallScore)
-        {
-            try
-            {
-                var textTranslationService = new GeminiPlaceholderTranslationService(SettingManager);
-                var prompt = $"""
-                Rewrite the following student motivation message in one short, encouraging sentence.
-                Keep the same meaning and avoid markdown.
-                Context: overall score is {overallScore:0.##}%.
-                Message: {baseMessage}
-                """;
-
-                var enhanced = await textTranslationService.SendPromptAsync(prompt);
-                return string.IsNullOrWhiteSpace(enhanced) ? baseMessage : enhanced.Trim();
-            }
-            catch
-            {
-                return baseMessage;
-            }
-        }
-
-        private async Task<string> EnhanceRevisionAdviceAsync(string topicName, decimal masteryScore, string baseAdvice)
-        {
-            try
-            {
-                var textTranslationService = new GeminiPlaceholderTranslationService(SettingManager);
-                var prompt = $"""
-                Rewrite the following revision advice for a student.
-                Requirements:
-                - one concise sentence
-                - practical and encouraging
-                - mention the topic naturally
-                - no markdown
-                Context: topic={topicName}, mastery={masteryScore:0.##}%.
-                Advice: {baseAdvice}
-                """;
-
-                var enhanced = await textTranslationService.SendPromptAsync(prompt);
-                return string.IsNullOrWhiteSpace(enhanced) ? baseAdvice : enhanced.Trim();
-            }
-            catch
-            {
-                return baseAdvice;
-            }
         }
 
         private StudentDashboardRecommendationDto? GenerateRecommendedLesson(

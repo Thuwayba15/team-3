@@ -71,18 +71,25 @@ namespace Team3.Students
             var studentId = AbpSession.GetUserId();
             var context = await GetAssessmentContextAsync(studentId, assessmentId);
             var preferredLanguageCode = await GetPreferredLanguageCodeAsync(studentId);
-            var languages = await _languageRepository.GetAllListAsync();
+            var languages = await _languageRepository.GetAll()
+                .AsNoTracking()
+                .ToListAsync();
             var languageMap = languages.ToDictionary(x => x.Id);
 
             var questions = await _questionRepository.GetAll()
+                .AsNoTracking()
                 .Where(x => x.AssessmentId == context.Assessment.Id && x.IsActive)
                 .OrderBy(x => x.SequenceOrder)
                 .ToListAsync();
 
             var questionIds = questions.Select(x => x.Id).ToList();
             var translations = await _questionTranslationRepository.GetAll()
+                .AsNoTracking()
                 .Where(x => questionIds.Contains(x.QuestionId))
                 .ToListAsync();
+            var translationsByQuestionId = translations
+                .GroupBy(x => x.QuestionId)
+                .ToDictionary(group => group.Key, group => (IReadOnlyCollection<QuestionTranslation>)group.ToList());
 
             return new StudentAssessmentDto
             {
@@ -100,7 +107,7 @@ namespace Team3.Students
                 Questions = questions.Select(question =>
                 {
                     var translation = SelectBestTranslation(
-                        translations.Where(x => x.QuestionId == question.Id).ToList(),
+                        translationsByQuestionId.GetValueOrDefault(question.Id) ?? [],
                         languageMap,
                         preferredLanguageCode);
 
@@ -155,17 +162,24 @@ namespace Team3.Students
             }
 
             var preferredLanguageCode = await GetPreferredLanguageCodeAsync(studentId);
-            var languages = await _languageRepository.GetAllListAsync();
+            var languages = await _languageRepository.GetAll()
+                .AsNoTracking()
+                .ToListAsync();
             var languageMap = languages.ToDictionary(x => x.Id);
             var questions = await _questionRepository.GetAll()
+                .AsNoTracking()
                 .Where(x => x.AssessmentId == context.Assessment.Id && x.IsActive)
                 .OrderBy(x => x.SequenceOrder)
                 .ToListAsync();
 
             var questionIds = questions.Select(x => x.Id).ToList();
             var translations = await _questionTranslationRepository.GetAll()
+                .AsNoTracking()
                 .Where(x => questionIds.Contains(x.QuestionId))
                 .ToListAsync();
+            var translationsByQuestionId = translations
+                .GroupBy(x => x.QuestionId)
+                .ToDictionary(group => group.Key, group => (IReadOnlyCollection<QuestionTranslation>)group.ToList());
 
             var answersByQuestionId = input.Answers.ToDictionary(x => x.QuestionId, x => x);
             var totalMarks = questions.Sum(x => x.Marks);
@@ -180,7 +194,7 @@ namespace Team3.Students
                 score += marksAwarded;
 
                 var translation = SelectBestTranslation(
-                    translations.Where(x => x.QuestionId == question.Id).ToList(),
+                    translationsByQuestionId.GetValueOrDefault(question.Id) ?? [],
                     languageMap,
                     preferredLanguageCode);
 
@@ -304,7 +318,9 @@ namespace Team3.Students
                 return preference.LanguageCode.Trim().ToLowerInvariant();
             }
 
-            var defaultLanguage = await _languageRepository.FirstOrDefaultAsync(x => x.IsDefault && x.IsActive);
+            var defaultLanguage = await _languageRepository.GetAll()
+                .AsNoTracking()
+                .FirstOrDefaultAsync(x => x.IsDefault && x.IsActive);
             return defaultLanguage?.Code?.Trim().ToLowerInvariant() ?? "en";
         }
 
