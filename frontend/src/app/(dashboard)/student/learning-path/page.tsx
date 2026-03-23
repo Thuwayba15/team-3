@@ -335,7 +335,7 @@ export default function StudentLearningPathPage() {
         }
     };
 
-    const handleOpenLessonQuiz = async (lesson: IStudentLearningPathLesson, topic: IStudentLearningPathTopic) => {
+    const handleOpenLessonQuiz = async (lesson: IStudentLearningPathLesson) => {
         try {
             const assessmentId = lesson.quizAssessmentId;
             if (!assessmentId) {
@@ -632,8 +632,8 @@ export default function StudentLearningPathPage() {
                                                                             topic={topic}
                                                                             styles={styles}
                                                                             onOpenLesson={handleOpenLesson}
-                                                                            onOpenQuiz={(selectedLesson, selectedTopic) => {
-                                                                                void handleOpenLessonQuiz(selectedLesson, selectedTopic);
+                                                                            onOpenQuiz={(selectedLesson) => {
+                                                                                void handleOpenLessonQuiz(selectedLesson);
                                                                             }}
                                                                         />
                                                                     ))}
