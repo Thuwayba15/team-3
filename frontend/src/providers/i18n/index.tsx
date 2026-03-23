@@ -145,10 +145,12 @@ export const I18nProvider = ({ children }: II18nProviderProps) => {
         pendingLanguageCodeRef.current = normalizedLanguageCode;
 
         dispatch(setLoading(true));
+        dispatch(setLanguage(normalizedLanguageCode));
+        document.documentElement.lang = normalizedLanguageCode;
+        setCachedLanguage(normalizedLanguageCode);
 
         const updatePromise = (async () => {
             await i18n.changeLanguage(normalizedLanguageCode);
-            setCachedLanguage(normalizedLanguageCode);
 
             if (isAuthenticated && userId !== null) {
                 try {
@@ -163,6 +165,8 @@ export const I18nProvider = ({ children }: II18nProviderProps) => {
                         return;
                     }
 
+                    dispatch(setLanguage(previousLanguageCode));
+                    document.documentElement.lang = previousLanguageCode;
                     await i18n.changeLanguage(previousLanguageCode);
                     setCachedLanguage(previousLanguageCode);
                     throw error;

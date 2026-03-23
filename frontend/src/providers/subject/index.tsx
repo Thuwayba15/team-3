@@ -42,7 +42,7 @@ interface ISubjectProviderProps {
 
 export const SubjectProvider = ({ children }: ISubjectProviderProps) => {
     const [state, dispatch] = useReducer(subjectReducer, INITIAL_STATE);
-    const { currentLanguage } = useI18nState();
+    const { currentLanguage, isLoading: isLanguageUpdating } = useI18nState();
     const languageKey = currentLanguage ?? "default";
 
     const getSubjects = async (): Promise<void> => {
@@ -134,6 +134,10 @@ export const SubjectProvider = ({ children }: ISubjectProviderProps) => {
 
     // refresh subject/topic/lesson data when language preference changes
     useEffect(() => {
+        if (isLanguageUpdating) {
+            return;
+        }
+
         if (state.mySubjects && state.mySubjects.length > 0) {
             void getMySubjects();
         }
@@ -159,7 +163,7 @@ export const SubjectProvider = ({ children }: ISubjectProviderProps) => {
         if (state.selectedLesson?.id) {
             void getLesson(state.selectedLesson.id);
         }
-    }, [currentLanguage]);
+    }, [currentLanguage, isLanguageUpdating]);
 
     return (
         <SubjectStateContext.Provider value={state}>

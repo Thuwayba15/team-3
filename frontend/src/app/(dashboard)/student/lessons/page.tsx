@@ -385,7 +385,7 @@ export default function StudentLessonsPage() {
     const { t } = useTranslation();
     const router = useRouter();
     const searchParams = useSearchParams();
-    const { currentLanguage } = useI18nState();
+    const { currentLanguage, isLoading: isLanguageUpdating } = useI18nState();
     const subjectIdParam = searchParams.get("subjectId");
     const lessonIdParam = searchParams.get("lessonId");
     const [messageApi, contextHolder] = message.useMessage();
@@ -453,12 +453,14 @@ export default function StudentLessonsPage() {
             }
         };
 
-        void loadSubjectContext();
+        if (!isLanguageUpdating) {
+            void loadSubjectContext();
+        }
 
         return () => {
             cancelled = true;
         };
-    }, [currentLanguage, router, subjectIdParam]);
+    }, [currentLanguage, isLanguageUpdating, router, subjectIdParam]);
 
     useEffect(() => {
         if (!subjectPath) {
@@ -516,12 +518,14 @@ export default function StudentLessonsPage() {
             }
         };
 
-        void loadLesson();
+        if (!isLanguageUpdating) {
+            void loadLesson();
+        }
 
         return () => {
             cancelled = true;
         };
-    }, [activeLessonId, currentLanguage]);
+    }, [activeLessonId, currentLanguage, isLanguageUpdating]);
 
     const resolveLessonQuizAssessmentId = async (
         lessonId: string,

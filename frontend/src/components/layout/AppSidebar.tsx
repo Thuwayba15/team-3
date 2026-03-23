@@ -34,7 +34,8 @@ export const AppSidebar = ({ role, isMobile = false, onNavigate }: IAppSidebarPr
     const { isAuthenticated, userId } = useAuthState();
     const { logout } = useAuthActions();
     const { currentLanguage, setLanguage, isLoading } = useI18n();
-    const [displayName, setDisplayName] = useState("User");
+    const defaultUserLabel = t("header.defaultUser");
+    const [displayName, setDisplayName] = useState(defaultUserLabel);
     const [emailAddress, setEmailAddress] = useState("-");
     const [userNameDraft, setUserNameDraft] = useState("");
     const languageOptions = useMemo(() => getPlatformLanguageSelectOptions(), []);
@@ -57,11 +58,11 @@ export const AppSidebar = ({ role, isMobile = false, onNavigate }: IAppSidebarPr
                 setUserNameDraft(sessionUser.userName || "");
             })
             .catch(() => {
-                setDisplayName("User");
+                setDisplayName(defaultUserLabel);
                 setEmailAddress("-");
                 setUserNameDraft("");
             });
-    }, [isAuthenticated, userId]);
+    }, [defaultUserLabel, isAuthenticated, userId]);
 
     const profileInitial = useMemo(() => displayName.charAt(0).toUpperCase() || "U", [displayName]);
 
