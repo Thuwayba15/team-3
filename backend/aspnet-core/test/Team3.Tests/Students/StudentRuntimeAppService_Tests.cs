@@ -76,6 +76,61 @@ public class StudentRuntimeAppService_Tests : Team3TestBase
         path.Topics[0].AssignedDifficultyLevel.ShouldBe(DifficultyLevel.Medium);
         path.Topics[0].Lessons.Count.ShouldBe(1);
         path.Topics[0].Lessons[0].Status.ShouldBe("current");
+        path.Topics[0].Lessons[0].QuizAssessmentId.ShouldBe(setup.AssessmentId);
+    }
+
+    [Fact]
+    public async Task SubmitLessonQuiz_Should_Advance_Difficulty_When_Performance_Is_Strong()
+    {
+        var setup = await SeedAssessmentGraphAsync("QuizProgressUp");
+
+        await UsingDbContextAsync(async context =>
+        {
+            await context.StudentTopicProgresses.AddAsync(new StudentTopicProgress(Guid.NewGuid(), AbpSession.UserId!.Value, setup.TopicId, DifficultyLevel.Medium));
+            await context.SaveChangesAsync();
+        });
+
+        var result = await _studentAssessmentAppService.SubmitLessonQuizAsync(new SubmitStudentAssessmentInputDto
+        {
+            AssessmentId = setup.AssessmentId,
+            Answers =
+            [
+                new StudentAssessmentAnswerInputDto
+                {
+                    QuestionId = setup.QuestionId,
+                    SelectedOption = "A"
+                }
+            ]
+        });
+
+        result.AssignedDifficultyLevel.ShouldBe(DifficultyLevel.Hard);
+    }
+
+    [Fact]
+    public async Task SubmitLessonQuiz_Should_Lower_Difficulty_When_Performance_Is_Weak()
+    {
+        var setup = await SeedAssessmentGraphAsync("QuizProgressDown");
+
+        await UsingDbContextAsync(async context =>
+        {
+            await context.StudentTopicProgresses.AddAsync(new StudentTopicProgress(Guid.NewGuid(), AbpSession.UserId!.Value, setup.TopicId, DifficultyLevel.Hard));
+            await context.SaveChangesAsync();
+        });
+
+        var result = await _studentAssessmentAppService.SubmitLessonQuizAsync(new SubmitStudentAssessmentInputDto
+        {
+            AssessmentId = setup.AssessmentId,
+            Answers =
+            [
+                new StudentAssessmentAnswerInputDto
+                {
+                    QuestionId = setup.QuestionId,
+                    SelectedOption = "B"
+                }
+            ]
+        });
+
+        result.AssignedDifficultyLevel.ShouldBe(DifficultyLevel.Medium);
     }
 
     private async Task<(Guid SubjectId, Guid TopicId, Guid LessonId, Guid AssessmentId, Guid QuestionId)> SeedAssessmentGraphAsync(string suffix)

@@ -103,4 +103,28 @@ describe("userService", () => {
         expect(apiClientMock.post).toHaveBeenNthCalledWith(1, "/api/services/app/User/Activate", { id: 3 });
         expect(apiClientMock.post).toHaveBeenNthCalledWith(2, "/api/services/app/User/DeActivate", { id: 4 });
     });
+
+    it("filters getRoles down to Admin, Student, and Tutor", async () => {
+        apiClientMock.get.mockResolvedValueOnce({
+            data: {
+                result: {
+                    items: [
+                        { id: 1, name: "Admin", displayName: "Admin", normalizedName: "ADMIN" },
+                        { id: 2, name: "Student", displayName: "Student", normalizedName: "STUDENT" },
+                        { id: 3, name: "Tutor", displayName: "Tutor", normalizedName: "TUTOR" },
+                        { id: 4, name: "Parent", displayName: "Parent", normalizedName: "PARENT" },
+                    ],
+                },
+            },
+        });
+
+        const result = await userService.getRoles();
+
+        expect(apiClientMock.get).toHaveBeenCalledWith("/api/services/app/User/GetRoles");
+        expect(result).toEqual([
+            { id: 1, name: "Admin", displayName: "Admin", normalizedName: "ADMIN" },
+            { id: 2, name: "Student", displayName: "Student", normalizedName: "STUDENT" },
+            { id: 3, name: "Tutor", displayName: "Tutor", normalizedName: "TUTOR" },
+        ]);
+    });
 });

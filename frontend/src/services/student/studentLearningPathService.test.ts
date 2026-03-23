@@ -28,7 +28,32 @@ describe("student learning services", () => {
                     gradeLevel: "Grade 10",
                     overallProgressPercent: 55,
                     recommendedAction: "Continue with your current lesson.",
-                    topics: [],
+                    topics: [
+                        {
+                            topicId: "topic-1",
+                            name: "Exponents",
+                            status: "current",
+                            assignedDifficultyLevel: 2,
+                            masteryScore: 55,
+                            needsRevision: false,
+                            diagnosticAssessmentId: null,
+                            recommendedAction: "Continue with your current lesson.",
+                            lessons: [
+                                {
+                                    lessonId: "lesson-1",
+                                    title: "Exponent Basics",
+                                    difficultyLevel: 2,
+                                    estimatedMinutes: 20,
+                                    status: "current",
+                                    actionState: "available",
+                                    canComplete: true,
+                                    quizAssessmentId: "quiz-1",
+                                    quizStatus: "available",
+                                    quizUnavailableReason: null,
+                                },
+                            ],
+                        },
+                    ],
                 },
             },
         });
@@ -39,6 +64,7 @@ describe("student learning services", () => {
             params: { subjectId: "subject-1" },
         });
         expect(result.subjectName).toBe("Mathematics");
+        expect(result.topics[0]?.lessons[0]?.quizAssessmentId).toBe("quiz-1");
     });
 
     it("maps student-safe assessments and lesson lookups", async () => {
