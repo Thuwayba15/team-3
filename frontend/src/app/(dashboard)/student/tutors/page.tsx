@@ -9,6 +9,22 @@ import { PageHeader } from "@/components/layout";
 import { tutorService, type LinkedTutor, type MeetingRequest } from "@/services/tutoring/tutorService";
 
 const { Paragraph, Text } = Typography;
+const LATE_START_GRACE_PERIOD_MS = 30 * 60 * 1000;
+
+function formatDateTimeLocalMinimum(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+}
+
+function isMeetingJoinWindowExpired(scheduledStartUtc: string): boolean {
+    const scheduledStartTime = new Date(scheduledStartUtc).getTime();
+    return Date.now() - scheduledStartTime > LATE_START_GRACE_PERIOD_MS;
+}
 
 export default function StudentTutorsPage() {
     const { t } = useTranslation();
@@ -21,6 +37,7 @@ export default function StudentTutorsPage() {
     const [selectedTutor, setSelectedTutor] = useState<LinkedTutor | null>(null);
     const [submitting, setSubmitting] = useState(false);
     const [form] = Form.useForm();
+    const [minimumStartDateTime, setMinimumStartDateTime] = useState(() => formatDateTimeLocalMinimum(new Date()));
 
     const loadData = async () => {
         setLoading(true);
@@ -46,6 +63,7 @@ export default function StudentTutorsPage() {
     const openMeetingModal = (tutor: LinkedTutor) => {
         setSelectedTutor(tutor);
         form.resetFields();
+        setMinimumStartDateTime(formatDateTimeLocalMinimum(new Date()));
         setIsModalOpen(true);
     };
 
@@ -115,37 +133,44 @@ export default function StudentTutorsPage() {
                 ) : (
                     <List
                         dataSource={meetings}
-                        renderItem={(meeting) => (
-                            <List.Item
-                                actions={[
-                                    meeting.canJoin ? (
-                                        <Button
-                                            key="join"
-                                            icon={<VideoCameraOutlined />}
-                                            onClick={() => router.push(`/student/tutors/meetings/${meeting.meetingRequestId}`)}
-                                        >
-                                            {t("tutoring.student.tutors.actions.joinMeeting")}
-                                        </Button>
-                                    ) : null,
-                                ].filter(Boolean)}
-                            >
-                                <List.Item.Meta
-                                    title={`${meeting.tutorName} • ${meeting.subjectName}`}
-                                    description={(
-                                        <Space direction="vertical" size={4}>
-                                            <Text type="secondary">{new Date(meeting.scheduledStartUtc).toLocaleString()}</Text>
-                                            <Space wrap>
-                                                <Tag>{meeting.status}</Tag>
-                                                <Tag>{t("tutoring.student.tutors.duration", { minutes: meeting.durationMinutes })}</Tag>
+                        renderItem={(meeting) => {
+                            const isJoinWindowExpired = isMeetingJoinWindowExpired(meeting.scheduledStartUtc);
+                            const canJoinMeeting = meeting.canJoin && !isJoinWindowExpired;
+
+                            return (
+                                <List.Item
+                                    actions={[
+                                        meeting.canJoin ? (
+                                            <Button
+                                                key="join"
+                                                icon={<VideoCameraOutlined />}
+                                                disabled={!canJoinMeeting}
+                                                onClick={() => router.push(`/student/tutors/meetings/${meeting.meetingRequestId}`)}
+                                            >
+                                                {t("tutoring.student.tutors.actions.joinMeeting")}
+                                            </Button>
+                                        ) : null,
+                                    ].filter(Boolean)}
+                                >
+                                    <List.Item.Meta
+                                        title={`${meeting.tutorName} • ${meeting.subjectName}`}
+                                        description={(
+                                            <Space direction="vertical" size={4}>
+                                                <Text type="secondary">{new Date(meeting.scheduledStartUtc).toLocaleString()}</Text>
+                                                <Space wrap>
+                                                    <Tag>{meeting.status}</Tag>
+                                                    <Tag>{t("tutoring.student.tutors.duration", { minutes: meeting.durationMinutes })}</Tag>
+                                                    {isJoinWindowExpired && meeting.canJoin ? <Tag>Join window expired</Tag> : null}
+                                                </Space>
+                                                <Paragraph type="secondary" style={{ marginBottom: 0 }}>
+                                                    {meeting.studentMessage || t("tutoring.student.tutors.noMeetingMessage")}
+                                                </Paragraph>
                                             </Space>
-                                            <Paragraph type="secondary" style={{ marginBottom: 0 }}>
-                                                {meeting.studentMessage || t("tutoring.student.tutors.noMeetingMessage")}
-                                            </Paragraph>
-                                        </Space>
-                                    )}
-                                />
-                            </List.Item>
-                        )}
+                                        )}
+                                    />
+                                </List.Item>
+                            );
+                        }}
                     />
                 )}
             </Card>
@@ -163,9 +188,23 @@ export default function StudentTutorsPage() {
                     <Form.Item
                         name="scheduledStartUtc"
                         label={t("tutoring.student.tutors.form.start")}
-                        rules={[{ required: true, message: t("tutoring.validation.required") }]}
+                        rules={[
+                            { required: true, message: t("tutoring.validation.required") },
+                            {
+                                validator: async (_, value) => {
+                                    if (!value) {
+                                        return;
+                                    }
+
+                                    const selectedDate = new Date(value);
+                                    if (Number.isNaN(selectedDate.getTime()) || selectedDate.getTime() < Date.now()) {
+                                        throw new Error("Please choose a current or future meeting time.");
+                                    }
+                                },
+                            },
+                        ]}
                     >
-                        <Input type="datetime-local" />
+                        <Input type="datetime-local" min={minimumStartDateTime} />
                     </Form.Item>
                     <Form.Item
                         name="durationMinutes"

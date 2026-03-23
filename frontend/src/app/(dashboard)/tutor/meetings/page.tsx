@@ -9,6 +9,17 @@ import { PageHeader } from "@/components/layout";
 import { tutorService, type MeetingRequest, type TutorRequest, type TutorSetupStatus } from "@/services/tutoring/tutorService";
 
 const { Paragraph, Text } = Typography;
+const LATE_START_GRACE_PERIOD_MS = 30 * 60 * 1000;
+
+function getMeetingStartWindowState(scheduledStartUtc: string) {
+    const scheduledStartTime = new Date(scheduledStartUtc).getTime();
+    const overdueByMs = Date.now() - scheduledStartTime;
+
+    return {
+        isWithinLateWindow: overdueByMs > 0 && overdueByMs <= LATE_START_GRACE_PERIOD_MS,
+        isExpiredForStart: overdueByMs > LATE_START_GRACE_PERIOD_MS,
+    };
+}
 
 function getLocalizedTutorStatus(status: string, t: (key: string) => string): string {
     const normalizedStatus = status.trim().toLowerCase();
@@ -150,38 +161,54 @@ export default function TutorMeetingsPage() {
                         ) : (
                             <List
                                 dataSource={meetings}
-                                renderItem={(meeting) => (
-                                    <List.Item
-                                        actions={meeting.status === "Pending"
-                                            ? [
-                                                <Button key="accept" type="primary" icon={<CheckOutlined />} onClick={() => void handleMeetingRequest(meeting.meetingRequestId, true)}>
-                                                    {t("tutoring.tutor.meetings.actions.accept")}
-                                                </Button>,
-                                                <Button key="decline" danger icon={<CloseOutlined />} onClick={() => void handleMeetingRequest(meeting.meetingRequestId, false)}>
-                                                    {t("tutoring.tutor.meetings.actions.decline")}
-                                                </Button>,
-                                            ]
-                                            : meeting.status === "Accepted"
+                                renderItem={(meeting) => {
+                                    const { isWithinLateWindow, isExpiredForStart } = getMeetingStartWindowState(meeting.scheduledStartUtc);
+
+                                    return (
+                                        <List.Item
+                                            actions={meeting.status === "Pending"
                                                 ? [
-                                                    <Button key="start" type="primary" icon={<VideoCameraOutlined />} onClick={() => void handleStartMeeting(meeting.meetingRequestId)}>
-                                                        {t("tutoring.tutor.meetings.actions.startMeeting")}
+                                                    <Button key="accept" type="primary" icon={<CheckOutlined />} onClick={() => void handleMeetingRequest(meeting.meetingRequestId, true)}>
+                                                        {t("tutoring.tutor.meetings.actions.accept")}
+                                                    </Button>,
+                                                    <Button key="decline" danger icon={<CloseOutlined />} onClick={() => void handleMeetingRequest(meeting.meetingRequestId, false)}>
+                                                        {t("tutoring.tutor.meetings.actions.decline")}
                                                     </Button>,
                                                 ]
-                                                : [<Tag key="status">{getLocalizedTutorStatus(meeting.status, t)}</Tag>]}
-                                    >
-                                        <List.Item.Meta
-                                            title={`${meeting.studentName} • ${meeting.subjectName}`}
-                                            description={(
-                                                <Space direction="vertical" size={4}>
-                                                    <Text type="secondary">{new Date(meeting.scheduledStartUtc).toLocaleString()}</Text>
-                                                    <Paragraph type="secondary" style={{ marginBottom: 0 }}>
-                                                        {meeting.studentMessage || t("tutoring.tutor.meetings.noMeetingMessage")}
-                                                    </Paragraph>
-                                                </Space>
-                                            )}
-                                        />
-                                    </List.Item>
-                                )}
+                                                : meeting.status === "Accepted"
+                                                    ? [
+                                                        <Button
+                                                            key="start"
+                                                            type="primary"
+                                                            icon={<VideoCameraOutlined />}
+                                                            disabled={isExpiredForStart}
+                                                            onClick={() => void handleStartMeeting(meeting.meetingRequestId)}
+                                                        >
+                                                            {t("tutoring.tutor.meetings.actions.startMeeting")}
+                                                        </Button>,
+                                                    ]
+                                                    : [<Tag key="status">{meeting.status}</Tag>]}
+                                        >
+                                            <List.Item.Meta
+                                                title={`${meeting.studentName} • ${meeting.subjectName}`}
+                                                description={(
+                                                    <Space direction="vertical" size={4}>
+                                                        <Text type="secondary">{new Date(meeting.scheduledStartUtc).toLocaleString()}</Text>
+                                                        {meeting.status === "Accepted" ? (
+                                                            <Space wrap size={[8, 8]}>
+                                                                {isWithinLateWindow ? <Tag color="gold">Late start window available</Tag> : null}
+                                                                {isExpiredForStart ? <Tag>Start window expired</Tag> : null}
+                                                            </Space>
+                                                        ) : null}
+                                                        <Paragraph type="secondary" style={{ marginBottom: 0 }}>
+                                                            {meeting.studentMessage || t("tutoring.tutor.meetings.noMeetingMessage")}
+                                                        </Paragraph>
+                                                    </Space>
+                                                )}
+                                            />
+                                        </List.Item>
+                                    );
+                                }}
                             />
                         )}
                     </Card>
