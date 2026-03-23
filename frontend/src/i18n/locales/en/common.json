@@ -138,11 +138,13 @@
         "refreshProgress": "Refresh Progress",
         "noCompletedLessons": "No completed lessons yet.",
         "recommendedNextLesson": "Recommended Next Lesson",
+        "reviewLesson": "Review Lesson",
         "mathsGrade10": "Maths Grade 10",
         "nextLessonSubtitle": "Based on your recent performance in Mathematics",
         "algebraicExpressionsLesson": "Algebraic Expressions: Factorisation",
         "lessonDescription": "Learn how to factorise quadratic trinomials and difference of two squares. This builds on your previous lesson on expanding brackets.",
         "startLesson": "Start Lesson",
+        "durationMinutes": "{{count}} mins",
         "lessonDuration": "25 mins",
         "masteryHeatmap": "Mastery Heatmap",
         "performanceAcrossSubjects": "Your performance across subjects",
@@ -464,6 +466,12 @@
   "tutoring": {
     "validation": {
       "required": "This field is required."
+    },
+    "status": {
+      "pending": "Pending",
+      "accepted": "Accepted",
+      "declined": "Declined",
+      "completed": "Completed"
     },
     "errors": {
       "loadAvailableTutors": "Failed to load available tutors.",

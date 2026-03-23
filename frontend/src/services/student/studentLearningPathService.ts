@@ -3,6 +3,7 @@ import {
     STUDENT_LEARNING_PATH_GET_SUBJECT_PATH_ENDPOINT,
 } from "@/constants/api";
 import { apiClient } from "@/lib/api/client";
+import { getCachedResource, invalidateCachedResource } from "@/lib/api/requestCache";
 import type { DifficultyLevel } from "@/services/student/studentSubjectService";
 
 interface IAbpResponseEnvelope<T> {
@@ -61,14 +62,18 @@ export interface ICompleteLessonOutput {
 }
 
 async function getSubjectPath(subjectId: string): Promise<IStudentLearningPath> {
-    const response = await apiClient.get<IAbpResponseEnvelope<IStudentLearningPath>>(STUDENT_LEARNING_PATH_GET_SUBJECT_PATH_ENDPOINT, {
-        params: { subjectId },
-    });
-    return response.data.result;
+    return getCachedResource(`student-learning-path:${subjectId}`, async () => {
+        const response = await apiClient.get<IAbpResponseEnvelope<IStudentLearningPath>>(STUDENT_LEARNING_PATH_GET_SUBJECT_PATH_ENDPOINT, {
+            params: { subjectId },
+        });
+        return response.data.result;
+    }, 30000);
 }
 
 async function completeLesson(input: ICompleteLessonInput): Promise<ICompleteLessonOutput> {
     const response = await apiClient.post<IAbpResponseEnvelope<ICompleteLessonOutput>>(STUDENT_LEARNING_PATH_COMPLETE_LESSON_ENDPOINT, input);
+    invalidateCachedResource("student-learning-path:");
+    invalidateCachedResource("student-dashboard:");
     return response.data.result;
 }
 

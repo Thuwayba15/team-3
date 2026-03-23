@@ -28,7 +28,7 @@ export default function StudentMeetingRoomPage() {
         };
 
         void loadAccess();
-    }, [params.meetingRequestId, t]);
+    }, [params.meetingRequestId]);
 
     if (loading) {
         return <Spin />;

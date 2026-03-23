@@ -10,10 +10,13 @@
     "interventions": "Ukungenelela",
     "learningModules": "Amamojula Okufunda",
     "analytics": "Ukuhlaziya",
+    "availableTutors": "Abafundisi Abatholakalayo",
     "alerts": "Izexwayiso",
     "childProgress": "Inqubekelaphambili Yengane",
     "curriculum": "Uhlelo Lokufunda",
+    "tutors": "Abafundisi",
     "users": "Abasebenzisi",
+    "meetings": "Imihlangano",
     "settings": "Izilungiselelo",
     "languages": "Izilimi",
     "aiConfiguration": "Ukuhlelwa kwe-AI",
@@ -135,11 +138,13 @@
         "refreshProgress": "Vuselela Inqubekelaphambili",
         "noCompletedLessons": "Azikho izifundo eziqediwe okwamanje.",
         "recommendedNextLesson": "Isifundo Esinconyiwe Esilandelayo",
+        "reviewLesson": "Buyekeza Isifundo",
         "mathsGrade10": "Izibalo Ibanga le-10",
         "nextLessonSubtitle": "Kususelwa emiphumeleni yakho yakamuva kwezibalo",
         "algebraicExpressionsLesson": "Izinkulumo Ze-Algebra: Ukuhlukanisa",
         "lessonDescription": "Funda indlela yokuhlukanisa ama-trinomial we-quadratic kanye nomehluko wezikwele ezimbili. Lokhu kwakhela phezu kwesifundo sakho sangaphambilini sokwandisa izibiyeli.",
         "startLesson": "Qala Isifundo",
+        "durationMinutes": "imizuzu engu-{{count}}",
         "lessonDuration": "imizuzu engu-25",
         "masteryHeatmap": "Imephu Yokwazi",
         "performanceAcrossSubjects": "Umsebenzi wakho kuzo zonke izifundo",
@@ -425,6 +430,127 @@
       "curriculum": {
         "title": "Ukuphathwa Kohlelo Lokufunda",
         "subtitle": "Dala izifundo, layisha amadokhumenti, bese ubuyekeza okudalwe i-AI"
+      }
+    }
+  },
+  "tutoring": {
+    "status": {
+      "pending": "Kulindile",
+      "accepted": "Kwamukelwe",
+      "declined": "Kunqatshiwe",
+      "completed": "Kuqediwe"
+    },
+    "errors": {
+      "loadAvailableTutors": "Kuhlulekile ukulayisha abafundisi abatholakalayo.",
+      "requestTutor": "Kuhlulekile ukucela umfundisi.",
+      "loadTutors": "Kuhlulekile ukulayisha abafundisi.",
+      "loadTutorSetup": "Kuhlulekile ukulayisha ukusetha komfundisi.",
+      "loadTutorDashboard": "Kuhlulekile ukulayisha ideshibhodi yomfundisi.",
+      "loadTutorMeetings": "Kuhlulekile ukulayisha imihlangano yomfundisi.",
+      "respondTutorRequest": "Kuhlulekile ukuphendula isicelo somfundisi.",
+      "respondMeetingRequest": "Kuhlulekile ukuphendula isicelo somhlangano.",
+      "startMeeting": "Kuhlulekile ukuqala umhlangano."
+    },
+    "validation": {
+      "required": "Le nkambu iyadingeka."
+    },
+    "student": {
+      "availableTutors": {
+        "title": "Abafundisi Abatholakalayo",
+        "subtitle": "Thola abafundisi abahambisana nezifundo ozifundayo.",
+        "empty": "Akukho bafundisi abatholakalayo ezifundweni zakho okwamanje.",
+        "noBio": "Lo mfundisi akakafaki i-bio okwamanje.",
+        "helper": "Cela ukufundiswa ukuze uxhumane nalo mfundisi.",
+        "actions": {
+          "requestTutor": "Cela Umfundisi",
+          "pending": "Isicelo Silindile",
+          "linked": "Kuxhunyiwe"
+        },
+        "messages": {
+          "requestSent": "Isicelo somfundisi sithunyelwe ngempumelelo."
+        }
+      },
+      "tutors": {
+        "title": "Abafundisi",
+        "subtitle": "Phatha abafundisi bakho abaxhunyiwe bese uhlela imihlangano.",
+        "linkedTitle": "Abafundisi Abaxhunyiwe",
+        "meetingsTitle": "Izicelo Zomhlangano",
+        "empty": "Awukabi nabafundisi abaxhunyiwe okwamanje.",
+        "noMeetings": "Azikho izicelo zomhlangano okwamanje.",
+        "requestMeetingTitle": "Cela Umhlangano",
+        "noMeetingMessage": "Awukho umlayezo womhlangano onikeziwe.",
+        "duration": "imizuzu engu-{{minutes}}",
+        "actions": {
+          "requestMeeting": "Cela Umhlangano",
+          "joinMeeting": "Joyina Umhlangano"
+        },
+        "form": {
+          "start": "Usuku nesikhathi sokuqala",
+          "duration": "Ubude besikhathi (imizuzu)",
+          "message": "Umlayezo"
+        },
+        "messages": {
+          "meetingRequested": "Isicelo somhlangano sithunyelwe ngempumelelo."
+        }
+      }
+    },
+    "tutor": {
+      "setup": {
+        "title": "Ukusetha Komfundisi",
+        "subtitle": "Khetha isifundo osifundisayo bese uqedela iphrofayela yakho yomphakathi yomfundisi.",
+        "form": {
+          "subject": "Isifundo",
+          "specialization": "Ubuchwepheshe",
+          "bio": "I-bio"
+        },
+        "actions": {
+          "save": "Londoloza Ukusetha"
+        },
+        "messages": {
+          "saved": "Ukusetha komfundisi kulondolozwe ngempumelelo."
+        }
+      },
+      "dashboard": {
+        "title": "Ideshibhodi Yomfundisi",
+        "subtitle": "Buka inqubekelaphambili yabafundi abaxhunyiwe, izicelo, nemihlangano ezayo.",
+        "setupPrompt": "Qedela ukusetha kwakho komfundisi ngaphambi kokuthi abafundi bakuthole futhi bakucele.",
+        "pendingRequestsTitle": "Izicelo Zomfundisi Ezilindile",
+        "attentionTitle": "Abafundi Abadinga Ukunakwa",
+        "emptyPendingRequests": "Azikho izicelo zomfundisi ezilindile.",
+        "emptyAttention": "Akukho bafundi abadinga ukunakwa okwamanje.",
+        "noStudentMessage": "Awukho umlayezo onikeziwe.",
+        "needsIntervention": "Kudinga ukungenelela",
+        "masteryLabel": "Ukuqonda {{score}}%",
+        "actions": {
+          "completeSetup": "Qedela Ukusetha"
+        },
+        "stats": {
+          "students": "Abafundi Abaxhunyiwe",
+          "pendingTutorRequests": "Izicelo Zomfundisi Ezilindile",
+          "pendingMeetingRequests": "Izicelo Zomhlangano Ezilindile",
+          "averageMastery": "Isilinganiso Sokuqonda"
+        }
+      },
+      "meetings": {
+        "title": "Imihlangano",
+        "subtitle": "Phatha izicelo zokufundisa nemihlangano yomfundi nomfundisi.",
+        "setupPrompt": "Qedela ukusetha kwakho komfundisi ngaphambi kokuphatha imihlangano.",
+        "tutorRequestsTitle": "Izicelo Zokufundisa",
+        "meetingRequestsTitle": "Izicelo Zomhlangano",
+        "emptyTutorRequests": "Azikho izicelo zokufundisa okwamanje.",
+        "emptyMeetings": "Ayikho imihlangano okwamanje.",
+        "noMeetingMessage": "Awukho umlayezo womhlangano onikeziwe.",
+        "actions": {
+          "accept": "Yamukela",
+          "decline": "Yenqaba",
+          "startMeeting": "Qala Umhlangano"
+        },
+        "messages": {
+          "requestAccepted": "Isicelo sokufundisa samukelwe.",
+          "requestDeclined": "Isicelo sokufundisa senqatshiwe.",
+          "meetingAccepted": "Isicelo somhlangano samukelwe.",
+          "meetingDeclined": "Isicelo somhlangano senqatshiwe."
+        }
       }
     }
   },

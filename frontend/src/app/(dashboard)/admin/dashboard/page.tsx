@@ -29,7 +29,7 @@ export default function AdminDashboardPage() {
             .then((nextSummary) => setSummary(nextSummary))
             .catch(() => setError(t("dashboard.admin.errorLoadDashboard")))
             .finally(() => setLoading(false));
-    }, [t]);
+    }, []);
 
     return (
         <div>

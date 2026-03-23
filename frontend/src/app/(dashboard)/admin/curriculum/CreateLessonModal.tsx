@@ -3,6 +3,8 @@
 import { Form, Input, InputNumber, Modal, Select, Switch } from "antd";
 import { useEffect, useState } from "react";
 import { apiClient } from "@/lib/api/client";
+import { getCachedResource } from "@/lib/api/requestCache";
+import { useI18nState } from "@/providers/i18n";
 import { TOPIC_GET_BY_SUBJECT_ENDPOINT } from "@/constants/api";
 import type { ISubject, ITopic, IUploadLessonInput } from "@/providers/subject";
 
@@ -51,6 +53,8 @@ export function CreateLessonModal({ open, subjects, initialSubjectId, isCreating
     const [form] = Form.useForm<ICreateLessonFormValues>();
     const [modalTopics, setModalTopics] = useState<ITopic[]>([]);
     const [isLoadingTopics, setIsLoadingTopics] = useState(false);
+    const { currentLanguage } = useI18nState();
+    const languageKey = currentLanguage ?? "default";
 
     useEffect(() => {
         if (open) {
@@ -65,8 +69,11 @@ export function CreateLessonModal({ open, subjects, initialSubjectId, isCreating
     const fetchTopics = async (subjectId: string): Promise<void> => {
         setIsLoadingTopics(true);
         try {
-            const response = await apiClient.get<IAbpResponse<ITopic[]>>(TOPIC_GET_BY_SUBJECT_ENDPOINT, { params: { subjectId } });
-            setModalTopics(response.data.result);
+            const topics = await getCachedResource(`subjects:topics:${languageKey}:${subjectId}`, async () => {
+                const response = await apiClient.get<IAbpResponse<ITopic[]>>(TOPIC_GET_BY_SUBJECT_ENDPOINT, { params: { subjectId } });
+                return response.data.result;
+            }, 300000);
+            setModalTopics(topics);
         } catch {
             setModalTopics([]);
         } finally {

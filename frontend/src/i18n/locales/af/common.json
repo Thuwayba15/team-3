@@ -10,10 +10,13 @@
     "interventions": "Intervensies",
     "learningModules": "Leermodules",
     "analytics": "Analise",
+    "availableTutors": "Beskikbare Tutors",
     "alerts": "Waarskuwings",
     "childProgress": "Kind Vordering",
     "curriculum": "Kurrikulum",
+    "tutors": "Tutors",
     "users": "Gebruikers",
+    "meetings": "Vergaderings",
     "settings": "Instellings",
     "languages": "Tale",
     "aiConfiguration": "AI-konfigurasie",
@@ -135,11 +138,13 @@
         "refreshProgress": "Herlaai Vordering",
         "noCompletedLessons": "Nog geen voltooide lesse nie.",
         "recommendedNextLesson": "Aanbevole Volgende Les",
+        "reviewLesson": "Hersien Les",
         "mathsGrade10": "Wiskunde Graad 10",
         "nextLessonSubtitle": "Gebaseer op jou onlangse prestasie in Wiskunde",
         "algebraicExpressionsLesson": "Algebraiese Uitdrukkings: Faktorisering",
         "lessonDescription": "Leer hoe om kwadratiese trinomiale en die verskil van twee kwadrate te faktoriseer. Dit bou voort op jou vorige les oor die uitwerk van hakies.",
         "startLesson": "Begin Les",
+        "durationMinutes": "{{count}} min",
         "lessonDuration": "25 min",
         "masteryHeatmap": "Meesterskap Hittekaart",
         "performanceAcrossSubjects": "Jou prestasie oor vakke heen",
@@ -425,6 +430,127 @@
       "curriculum": {
         "title": "Kurrikulumbestuur",
         "subtitle": "Skep vakke, laai dokumente op, en hersien AI-gegenereerde konsepte"
+      }
+    }
+  },
+  "tutoring": {
+    "status": {
+      "pending": "Hangende",
+      "accepted": "Aanvaar",
+      "declined": "Afgewys",
+      "completed": "Voltooi"
+    },
+    "errors": {
+      "loadAvailableTutors": "Kon nie beskikbare tutors laai nie.",
+      "requestTutor": "Kon nie tutor aanvra nie.",
+      "loadTutors": "Kon nie tutors laai nie.",
+      "loadTutorSetup": "Kon nie tutor-opstelling laai nie.",
+      "loadTutorDashboard": "Kon nie tutor-dashboard laai nie.",
+      "loadTutorMeetings": "Kon nie tutor-vergaderings laai nie.",
+      "respondTutorRequest": "Kon nie op tutorversoek reageer nie.",
+      "respondMeetingRequest": "Kon nie op vergaderingversoek reageer nie.",
+      "startMeeting": "Kon nie vergadering begin nie."
+    },
+    "validation": {
+      "required": "Hierdie veld is verpligtend."
+    },
+    "student": {
+      "availableTutors": {
+        "title": "Beskikbare Tutors",
+        "subtitle": "Ontdek tutors wat by die vakke pas wat jy leer.",
+        "empty": "Geen tutors is nog vir jou huidige vakke beskikbaar nie.",
+        "noBio": "Hierdie tutor het nog nie 'n bio bygevoeg nie.",
+        "helper": "Vra vir tutorkundige hulp om met hierdie tutor te skakel.",
+        "actions": {
+          "requestTutor": "Vra Tutor Aan",
+          "pending": "Versoek Hangende",
+          "linked": "Gekoppel"
+        },
+        "messages": {
+          "requestSent": "Tutorversoek suksesvol gestuur."
+        }
+      },
+      "tutors": {
+        "title": "Tutors",
+        "subtitle": "Bestuur jou gekoppelde tutors en skeduleer vergaderings.",
+        "linkedTitle": "Gekoppelde Tutors",
+        "meetingsTitle": "Vergaderingversoeke",
+        "empty": "Jy het nog geen gekoppelde tutors nie.",
+        "noMeetings": "Nog geen vergaderingversoeke nie.",
+        "requestMeetingTitle": "Vra Vergadering Aan",
+        "noMeetingMessage": "Geen vergaderingboodskap is verskaf nie.",
+        "duration": "{{minutes}} min",
+        "actions": {
+          "requestMeeting": "Vra Vergadering Aan",
+          "joinMeeting": "Sluit Aan By Vergadering"
+        },
+        "form": {
+          "start": "Begindatum en tyd",
+          "duration": "Duur (minute)",
+          "message": "Boodskap"
+        },
+        "messages": {
+          "meetingRequested": "Vergaderingversoek suksesvol gestuur."
+        }
+      }
+    },
+    "tutor": {
+      "setup": {
+        "title": "Tutor-opstelling",
+        "subtitle": "Kies die vak wat jy aanbied en voltooi jou publieke tutorprofiel.",
+        "form": {
+          "subject": "Vak",
+          "specialization": "Spesialisering",
+          "bio": "Bio"
+        },
+        "actions": {
+          "save": "Stoor Opstelling"
+        },
+        "messages": {
+          "saved": "Tutor-opstelling suksesvol gestoor."
+        }
+      },
+      "dashboard": {
+        "title": "Tutor Dashboard",
+        "subtitle": "Sien gekoppelde studentevordering, versoeke en komende vergaderings.",
+        "setupPrompt": "Voltooi jou tutor-opstelling voordat studente jou kan vind en aanvra.",
+        "pendingRequestsTitle": "Hangende Tutorversoeke",
+        "attentionTitle": "Studente Wat Aandag Benodig",
+        "emptyPendingRequests": "Geen hangende tutorversoeke nie.",
+        "emptyAttention": "Geen studente benodig tans aandag nie.",
+        "noStudentMessage": "Geen boodskap is verskaf nie.",
+        "needsIntervention": "Benodig ingryping",
+        "masteryLabel": "Bemeestering {{score}}%",
+        "actions": {
+          "completeSetup": "Voltooi Opstelling"
+        },
+        "stats": {
+          "students": "Gekoppelde Studente",
+          "pendingTutorRequests": "Hangende Tutorversoeke",
+          "pendingMeetingRequests": "Hangende Vergaderingversoeke",
+          "averageMastery": "Gemiddelde Bemeestering"
+        }
+      },
+      "meetings": {
+        "title": "Vergaderings",
+        "subtitle": "Bestuur tutorversoeke en een-tot-een studentvergaderings.",
+        "setupPrompt": "Voltooi jou tutor-opstelling voordat jy vergaderings hanteer.",
+        "tutorRequestsTitle": "Tutorversoeke",
+        "meetingRequestsTitle": "Vergaderingversoeke",
+        "emptyTutorRequests": "Nog geen tutorversoeke nie.",
+        "emptyMeetings": "Nog geen vergaderings nie.",
+        "noMeetingMessage": "Geen vergaderingboodskap is verskaf nie.",
+        "actions": {
+          "accept": "Aanvaar",
+          "decline": "Wys Af",
+          "startMeeting": "Begin Vergadering"
+        },
+        "messages": {
+          "requestAccepted": "Tutorversoek aanvaar.",
+          "requestDeclined": "Tutorversoek afgekeur.",
+          "meetingAccepted": "Vergaderingversoek aanvaar.",
+          "meetingDeclined": "Vergaderingversoek afgekeur."
+        }
       }
     }
   },

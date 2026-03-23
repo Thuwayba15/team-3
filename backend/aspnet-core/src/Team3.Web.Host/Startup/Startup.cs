@@ -48,6 +48,7 @@ namespace Team3.Web.Host.Startup
             AuthConfigurer.Configure(services, _appConfiguration);
 
             services.AddSignalR();
+            services.AddMemoryCache();
 
             // Configure CORS for angular2 UI
             services.AddCors(

@@ -4,6 +4,7 @@ import {
     STUDENT_ASSESSMENT_SUBMIT_LESSON_QUIZ_ENDPOINT,
 } from "@/constants/api";
 import { apiClient } from "@/lib/api/client";
+import { getCachedResource, invalidateCachedResource } from "@/lib/api/requestCache";
 import type { DifficultyLevel } from "@/services/student/studentSubjectService";
 
 interface IAbpResponseEnvelope<T> {
@@ -79,19 +80,27 @@ export interface ISubmitStudentAssessmentOutput {
 }
 
 async function getAssessment(assessmentId: string): Promise<IStudentAssessment> {
-    const response = await apiClient.get<IAbpResponseEnvelope<IStudentAssessment>>(STUDENT_ASSESSMENT_GET_ENDPOINT, {
-        params: { assessmentId },
-    });
-    return response.data.result;
+    return getCachedResource(`student-assessment:${assessmentId}`, async () => {
+        const response = await apiClient.get<IAbpResponseEnvelope<IStudentAssessment>>(STUDENT_ASSESSMENT_GET_ENDPOINT, {
+            params: { assessmentId },
+        });
+        return response.data.result;
+    }, 30000);
 }
 
 async function submitDiagnostic(input: ISubmitStudentAssessmentInput): Promise<ISubmitStudentAssessmentOutput> {
     const response = await apiClient.post<IAbpResponseEnvelope<ISubmitStudentAssessmentOutput>>(STUDENT_ASSESSMENT_SUBMIT_DIAGNOSTIC_ENDPOINT, input);
+    invalidateCachedResource(`student-assessment:${input.assessmentId}`);
+    invalidateCachedResource("student-learning-path:");
+    invalidateCachedResource("student-dashboard:");
     return response.data.result;
 }
 
 async function submitLessonQuiz(input: ISubmitStudentAssessmentInput): Promise<ISubmitStudentAssessmentOutput> {
     const response = await apiClient.post<IAbpResponseEnvelope<ISubmitStudentAssessmentOutput>>(STUDENT_ASSESSMENT_SUBMIT_LESSON_QUIZ_ENDPOINT, input);
+    invalidateCachedResource(`student-assessment:${input.assessmentId}`);
+    invalidateCachedResource("student-learning-path:");
+    invalidateCachedResource("student-dashboard:");
     return response.data.result;
 }
 

@@ -6,6 +6,7 @@ import {
 } from "@/constants/api";
 import { apiClient } from "@/lib/api/client";
 import axios from "axios";
+import { clearCachedResources, getCachedResource, invalidateCachedResource } from "@/lib/api/requestCache";
 
 interface IAbpResponseEnvelope<T> {
     result: T;
@@ -37,20 +38,26 @@ interface IUpdatePlatformLanguageResponse {
 
 /** Fetches active platform languages available for selection in the UI. */
 async function getActiveLanguages(): Promise<IPlatformLanguageOption[]> {
-    const response = await apiClient.get<IAbpListResultEnvelope<IPlatformLanguageOption>>(USER_PROFILE_GET_ACTIVE_LANGUAGES_ENDPOINT);
-    return response.data.result.items;
+    return getCachedResource("user-profile:active-languages", async () => {
+        const response = await apiClient.get<IAbpListResultEnvelope<IPlatformLanguageOption>>(USER_PROFILE_GET_ACTIVE_LANGUAGES_ENDPOINT);
+        return response.data.result.items;
+    }, 300000);
 }
 
 /** Fetches all supported platform languages from the Languages table. */
 async function getSupportedLanguages(): Promise<IPlatformLanguageOption[]> {
-    const response = await apiClient.get<IAbpListResultEnvelope<IPlatformLanguageOption>>(USER_PROFILE_GET_SUPPORTED_LANGUAGES_ENDPOINT);
-    return response.data.result.items;
+    return getCachedResource("user-profile:supported-languages", async () => {
+        const response = await apiClient.get<IAbpListResultEnvelope<IPlatformLanguageOption>>(USER_PROFILE_GET_SUPPORTED_LANGUAGES_ENDPOINT);
+        return response.data.result.items;
+    }, 300000);
 }
 
 /** Fetches the authenticated user's preferred platform language. */
 async function getMyProfile(): Promise<IMyProfileResponse> {
-    const response = await apiClient.get<IAbpResponseEnvelope<IMyProfileResponse>>(USER_PROFILE_GET_MY_PLATFORM_LANGUAGE_ENDPOINT);
-    return response.data.result;
+    return getCachedResource("user-profile:platform-language", async () => {
+        const response = await apiClient.get<IAbpResponseEnvelope<IMyProfileResponse>>(USER_PROFILE_GET_MY_PLATFORM_LANGUAGE_ENDPOINT);
+        return response.data.result;
+    }, 30000);
 }
 
 /** Persists the authenticated user's preferred platform language. */
@@ -64,7 +71,7 @@ async function updateMyPlatformLanguage(preferredLanguage: string): Promise<IUpd
             USER_PROFILE_UPDATE_PLATFORM_LANGUAGE_ENDPOINT,
             payload
         );
-
+        invalidatePlatformLanguageCache();
         return response.data.result;
     } catch (error) {
         // fallback for environments where dynamic API maps Update* methods to POST
@@ -73,12 +80,26 @@ async function updateMyPlatformLanguage(preferredLanguage: string): Promise<IUpd
                 USER_PROFILE_UPDATE_PLATFORM_LANGUAGE_ENDPOINT,
                 payload
             );
-
+            invalidatePlatformLanguageCache();
             return response.data.result;
         }
 
         throw error;
     }
+}
+
+function invalidatePlatformLanguageCache(): void {
+    clearCachedResources();
+    invalidateCachedResource("user-profile:platform-language");
+    invalidateCachedResource("student-dashboard:");
+    invalidateCachedResource("student-learning-path:");
+    invalidateCachedResource("student-subjects:");
+    invalidateCachedResource("student-assessment:");
+    invalidateCachedResource("student-assessment-generation:");
+    invalidateCachedResource("student-tutor:");
+    invalidateCachedResource("tutor-portal:");
+    invalidateCachedResource("admin-dashboard:");
+    invalidateCachedResource("users:list:");
 }
 
 export const userProfileService = {

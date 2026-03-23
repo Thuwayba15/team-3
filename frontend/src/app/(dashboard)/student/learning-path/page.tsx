@@ -141,7 +141,7 @@ function LessonRow({
 export default function StudentLearningPathPage() {
     const { styles } = useStyles();
     const { t } = useTranslation();
-    const { currentLanguage } = useI18nState();
+    const { currentLanguage, isLoading: isLanguageUpdating } = useI18nState();
     const router = useRouter();
     const searchParams = useSearchParams();
     const subjectIdParam = searchParams.get("subjectId");
@@ -231,10 +231,7 @@ export default function StudentLearningPathPage() {
         setError(null);
 
         try {
-            const [enrolledSubjects, subjectCatalog] = await Promise.all([
-                studentSubjectService.getMySubjects(),
-                loadSubjectCatalog(),
-            ]);
+            const enrolledSubjects = await studentSubjectService.getMySubjects();
 
             setSubjects(enrolledSubjects);
 
@@ -251,6 +248,7 @@ export default function StudentLearningPathPage() {
             }
 
             if (enrolledSubjects.length === 0) {
+                const subjectCatalog = await loadSubjectCatalog();
                 setSubjectPath(null);
                 if (subjectCatalog.length > 0) {
                     setIsEnrollmentOpen(false);
@@ -264,8 +262,20 @@ export default function StudentLearningPathPage() {
     }, [subjectIdParam, syncSubjectRoute]);
 
     useEffect(() => {
+        if (isLanguageUpdating) {
+            return;
+        }
+
         void loadEnrolledSubjects();
-    }, [currentLanguage, loadEnrolledSubjects]);
+    }, [currentLanguage, isLanguageUpdating, loadEnrolledSubjects]);
+
+    useEffect(() => {
+        if (!isEnrollmentOpen || availableSubjects.length > 0) {
+            return;
+        }
+
+        void loadSubjectCatalog();
+    }, [availableSubjects.length, isEnrollmentOpen]);
 
     const loadSubjectPath = async (subjectId: string) => {
         setLoadingPath(true);
@@ -283,13 +293,17 @@ export default function StudentLearningPathPage() {
     };
 
     useEffect(() => {
+        if (isLanguageUpdating) {
+            return;
+        }
+
         if (!activeSubjectId) {
             setSubjectPath(null);
             return;
         }
 
         void loadSubjectPath(activeSubjectId);
-    }, [activeSubjectId, currentLanguage]);
+    }, [activeSubjectId, currentLanguage, isLanguageUpdating]);
 
     useEffect(() => {
         if (!assessmentIdParam) {

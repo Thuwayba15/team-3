@@ -44,6 +44,8 @@ export const I18nProvider = ({ children }: II18nProviderProps) => {
     const { isAuthenticated, isLoading: isAuthLoading, userId } = useAuthState();
     const syncedLanguageUserIdRef = useRef<number | null>(null);
     const activeUpdateRequestIdRef = useRef<number>(0);
+    const pendingLanguageCodeRef = useRef<string | null>(null);
+    const inFlightUpdatePromiseRef = useRef<Promise<void> | null>(null);
 
     useEffect(() => {
         const cachedLanguage = localStorage.getItem(PLATFORM_LANGUAGE_STORAGE_KEY);
@@ -134,14 +136,21 @@ export const I18nProvider = ({ children }: II18nProviderProps) => {
             return;
         }
 
+        if (pendingLanguageCodeRef.current === normalizedLanguageCode && inFlightUpdatePromiseRef.current) {
+            return inFlightUpdatePromiseRef.current;
+        }
+
         const requestId = activeUpdateRequestIdRef.current + 1;
         activeUpdateRequestIdRef.current = requestId;
+        pendingLanguageCodeRef.current = normalizedLanguageCode;
 
         dispatch(setLoading(true));
+        dispatch(setLanguage(normalizedLanguageCode));
+        document.documentElement.lang = normalizedLanguageCode;
+        setCachedLanguage(normalizedLanguageCode);
 
-        try {
+        const updatePromise = (async () => {
             await i18n.changeLanguage(normalizedLanguageCode);
-            setCachedLanguage(normalizedLanguageCode);
 
             if (isAuthenticated && userId !== null) {
                 try {
@@ -156,14 +165,27 @@ export const I18nProvider = ({ children }: II18nProviderProps) => {
                         return;
                     }
 
+                    dispatch(setLanguage(previousLanguageCode));
+                    document.documentElement.lang = previousLanguageCode;
                     await i18n.changeLanguage(previousLanguageCode);
                     setCachedLanguage(previousLanguageCode);
                     throw error;
                 }
             }
+        })();
+
+        inFlightUpdatePromiseRef.current = updatePromise;
+
+        try {
+            await updatePromise;
         } finally {
             if (requestId === activeUpdateRequestIdRef.current) {
                 dispatch(setLoading(false));
+            }
+
+            if (inFlightUpdatePromiseRef.current === updatePromise) {
+                inFlightUpdatePromiseRef.current = null;
+                pendingLanguageCodeRef.current = null;
             }
         }
     }, [i18n, isAuthenticated, userId]);

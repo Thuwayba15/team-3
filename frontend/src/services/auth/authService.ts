@@ -1,6 +1,7 @@
 "use client";
 
 import { apiClient } from "@/lib/api/client";
+import { getCachedResource, invalidateCachedResource } from "@/lib/api/requestCache";
 import { 
     LOGOUT_ENDPOINT, 
     ME_ENDPOINT, 
@@ -50,6 +51,8 @@ async function login(request: ILoginRequest): Promise<ILoginResponse> {
     if (typeof payload.userId !== "number") {
         throw new Error("Unexpected authentication response payload.");
     }
+    invalidateCachedResource("auth:");
+    invalidateCachedResource("session:");
     return payload;
 }
 
@@ -57,20 +60,26 @@ async function login(request: ILoginRequest): Promise<ILoginResponse> {
  */
 async function register(request: IRegisterRequest): Promise<void> {
     await apiClient.post(REGISTER_ENDPOINT, request);
+    invalidateCachedResource("auth:");
+    invalidateCachedResource("session:");
 }
 
 /** Instructs the backend to clear the HttpOnly auth cookie. */
 async function logout(): Promise<void> {
     await apiClient.post(LOGOUT_ENDPOINT);
+    invalidateCachedResource("auth:");
+    invalidateCachedResource("session:");
 }
 
 /**
  * Validates the current auth cookie and returns the userId.
  */
 async function getMe(): Promise<IMeResponse> {
-    const response = await apiClient.get<IMeResponse | IAbpResponseEnvelope<IMeResponse>>(ME_ENDPOINT);
-    const payload = "result" in response.data ? response.data.result : response.data;
-    return payload;
+    return getCachedResource("auth:me", async () => {
+        const response = await apiClient.get<IMeResponse | IAbpResponseEnvelope<IMeResponse>>(ME_ENDPOINT);
+        const payload = "result" in response.data ? response.data.result : response.data;
+        return payload;
+    }, 30000);
 }
 
 export const authService = {

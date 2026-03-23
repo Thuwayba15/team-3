@@ -385,7 +385,7 @@ export default function StudentLessonsPage() {
     const { t } = useTranslation();
     const router = useRouter();
     const searchParams = useSearchParams();
-    const { currentLanguage } = useI18nState();
+    const { currentLanguage, isLoading: isLanguageUpdating } = useI18nState();
     const subjectIdParam = searchParams.get("subjectId");
     const lessonIdParam = searchParams.get("lessonId");
     const [messageApi, contextHolder] = message.useMessage();
@@ -407,7 +407,7 @@ export default function StudentLessonsPage() {
     useEffect(() => {
         let cancelled = false;
 
-        const loadInitial = async () => {
+        const loadSubjectContext = async () => {
             setLoading(true);
             setError(null);
 
@@ -439,20 +439,8 @@ export default function StudentLessonsPage() {
 
                 setSubjectPath(path);
 
-                const validLessonIds = new Set(path.topics.flatMap((topic) => topic.lessons.map((lesson) => lesson.lessonId)));
-                const nextLessonId =
-                    (lessonIdParam && validLessonIds.has(lessonIdParam) ? lessonIdParam : null)
-                    ?? getCurrentLesson(path)?.lesson.lessonId
-                    ?? null;
-
-                setActiveLessonId(nextLessonId);
-
-                if (nextSubjectId !== subjectIdParam || nextLessonId !== lessonIdParam) {
-                    if (nextLessonId) {
-                        router.replace(`/student/lessons?subjectId=${nextSubjectId}&lessonId=${nextLessonId}`);
-                    } else {
-                        router.replace(`/student/lessons?subjectId=${nextSubjectId}`);
-                    }
+                if (nextSubjectId !== subjectIdParam) {
+                    router.replace(`/student/lessons?subjectId=${nextSubjectId}`);
                 }
             } catch (loadError) {
                 if (!cancelled) {
@@ -465,12 +453,41 @@ export default function StudentLessonsPage() {
             }
         };
 
-        void loadInitial();
+        if (!isLanguageUpdating) {
+            void loadSubjectContext();
+        }
 
         return () => {
             cancelled = true;
         };
-    }, [currentLanguage, lessonIdParam, router, subjectIdParam]);
+    }, [currentLanguage, isLanguageUpdating, router, subjectIdParam]);
+
+    useEffect(() => {
+        if (!subjectPath) {
+            return;
+        }
+
+        const validLessonIds = new Set(
+            subjectPath.topics.flatMap((topic) => topic.lessons.map((lesson) => lesson.lessonId))
+        );
+        const nextLessonId =
+            (lessonIdParam && validLessonIds.has(lessonIdParam) ? lessonIdParam : null)
+            ?? getCurrentLesson(subjectPath)?.lesson.lessonId
+            ?? null;
+
+        setActiveLessonId(nextLessonId);
+
+        if (!activeSubjectId || nextLessonId === lessonIdParam) {
+            return;
+        }
+
+        if (nextLessonId) {
+            router.replace(`/student/lessons?subjectId=${activeSubjectId}&lessonId=${nextLessonId}`);
+            return;
+        }
+
+        router.replace(`/student/lessons?subjectId=${activeSubjectId}`);
+    }, [activeSubjectId, lessonIdParam, router, subjectPath]);
 
     useEffect(() => {
         let cancelled = false;
@@ -501,12 +518,14 @@ export default function StudentLessonsPage() {
             }
         };
 
-        void loadLesson();
+        if (!isLanguageUpdating) {
+            void loadLesson();
+        }
 
         return () => {
             cancelled = true;
         };
-    }, [activeLessonId, currentLanguage]);
+    }, [activeLessonId, currentLanguage, isLanguageUpdating]);
 
     const resolveLessonQuizAssessmentId = async (
         lessonId: string,

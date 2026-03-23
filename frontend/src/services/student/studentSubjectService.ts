@@ -5,6 +5,7 @@ import {
     STUDENT_SUBJECT_GET_MY_SUBJECTS_ENDPOINT,
 } from "@/constants/api";
 import { apiClient } from "@/lib/api/client";
+import { getCachedResource, invalidateCachedResource } from "@/lib/api/requestCache";
 
 interface IAbpResponseEnvelope<T> {
     result: T;
@@ -58,25 +59,34 @@ export interface IBulkEnrollOutput {
 }
 
 async function getMySubjects(): Promise<IStudentSubject[]> {
-    const response = await apiClient.get<IAbpResponseEnvelope<IStudentSubject[]>>(STUDENT_SUBJECT_GET_MY_SUBJECTS_ENDPOINT);
-    return response.data.result;
+    return getCachedResource("student-subjects:mine", async () => {
+        const response = await apiClient.get<IAbpResponseEnvelope<IStudentSubject[]>>(STUDENT_SUBJECT_GET_MY_SUBJECTS_ENDPOINT);
+        return response.data.result;
+    }, 30000);
 }
 
 async function getAllSubjects(): Promise<IStudentSubject[]> {
-    const response = await apiClient.get<IAbpResponseEnvelope<IStudentSubject[]>>(STUDENT_SUBJECT_GET_ALL_SUBJECTS_ENDPOINT);
-    return response.data.result;
+    return getCachedResource("student-subjects:all", async () => {
+        const response = await apiClient.get<IAbpResponseEnvelope<IStudentSubject[]>>(STUDENT_SUBJECT_GET_ALL_SUBJECTS_ENDPOINT);
+        return response.data.result;
+    }, 30000);
 }
 
 async function bulkEnroll(input: IBulkEnrollInput): Promise<IBulkEnrollOutput> {
     const response = await apiClient.post<IAbpResponseEnvelope<IBulkEnrollOutput>>(STUDENT_SUBJECT_BULK_ENROLL_ENDPOINT, input);
+    invalidateCachedResource("student-subjects:");
+    invalidateCachedResource("student-learning-path:");
+    invalidateCachedResource("student-dashboard:");
     return response.data.result;
 }
 
 async function getLesson(lessonId: string): Promise<ILessonDetail> {
-    const response = await apiClient.get<IAbpResponseEnvelope<ILessonDetail>>(STUDENT_SUBJECT_GET_LESSON_ENDPOINT, {
-        params: { lessonId },
-    });
-    return response.data.result;
+    return getCachedResource(`student-subjects:lesson:${lessonId}`, async () => {
+        const response = await apiClient.get<IAbpResponseEnvelope<ILessonDetail>>(STUDENT_SUBJECT_GET_LESSON_ENDPOINT, {
+            params: { lessonId },
+        });
+        return response.data.result;
+    }, 30000);
 }
 
 export const studentSubjectService = {

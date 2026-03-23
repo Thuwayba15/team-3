@@ -5,6 +5,7 @@ import {
     AI_PROMPT_TEMPLATES_GET_ALL_ENDPOINT,
     AI_PROMPT_TEMPLATES_UPDATE_ENDPOINT,
 } from "@/constants/api";
+import { getCachedResource, invalidateCachedResource } from "@/lib/api/requestCache";
 
 export interface IAIPromptTemplate {
     id: string;
@@ -35,10 +36,12 @@ interface IAbpResponseEnvelope<T> {
 
 /** Fetches all AI prompt templates. */
 async function getAll(): Promise<IAIPromptTemplate[]> {
-    const response = await apiClient.get<IAbpResponseEnvelope<IAIPromptTemplate[]>>(
-        AI_PROMPT_TEMPLATES_GET_ALL_ENDPOINT
-    );
-    return response.data.result;
+    return getCachedResource("ai-prompt-templates:list", async () => {
+        const response = await apiClient.get<IAbpResponseEnvelope<IAIPromptTemplate[]>>(
+            AI_PROMPT_TEMPLATES_GET_ALL_ENDPOINT
+        );
+        return response.data.result;
+    }, 300000);
 }
 
 /** Creates a new AI prompt template. */
@@ -47,6 +50,7 @@ async function create(input: ICreateAIPromptTemplateRequest): Promise<IAIPromptT
         AI_PROMPT_TEMPLATES_CREATE_ENDPOINT,
         input
     );
+    invalidateCachedResource("ai-prompt-templates:");
     return response.data.result;
 }
 
@@ -57,12 +61,14 @@ async function update(id: string, input: IUpdateAIPromptTemplateRequest): Promis
         input,
         { params: { id } }
     );
+    invalidateCachedResource("ai-prompt-templates:");
     return response.data.result;
 }
 
 /** Deletes an AI prompt template by id. */
 async function remove(id: string): Promise<void> {
     await apiClient.delete(AI_PROMPT_TEMPLATES_DELETE_ENDPOINT, { params: { id } });
+    invalidateCachedResource("ai-prompt-templates:");
 }
 
 export const aiPromptTemplateService = {
