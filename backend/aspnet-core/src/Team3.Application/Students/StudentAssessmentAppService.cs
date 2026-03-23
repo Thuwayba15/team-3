@@ -366,12 +366,20 @@ namespace Team3.Students
         private async Task<DifficultyLevel> ResolveAssignedDifficultyAsync(long studentId, Assessment assessment, Topic topic, decimal percentage)
         {
             var existingTopicProgress = await _topicProgressRepository.FirstOrDefaultAsync(x => x.StudentId == studentId && x.TopicId == topic.Id);
-            if (existingTopicProgress != null)
+            var currentDifficulty = existingTopicProgress?.AssignedDifficultyLevel ?? assessment.DifficultyLevel;
+            var targetDifficulty = CalculateAssignedDifficulty(percentage);
+
+            if (targetDifficulty == currentDifficulty)
             {
-                return percentage < 40m ? DifficultyLevel.Easy : existingTopicProgress.AssignedDifficultyLevel;
+                return currentDifficulty;
             }
 
-            return assessment.DifficultyLevel;
+            if (targetDifficulty < currentDifficulty)
+            {
+                return currentDifficulty - 1;
+            }
+
+            return currentDifficulty + 1;
         }
 
         private async Task UpsertTopicProgressAsync(long studentId, Guid topicId, DifficultyLevel assignedDifficulty, decimal masteryScore, bool needsRevision, bool completed)
