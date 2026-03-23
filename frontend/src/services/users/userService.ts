@@ -10,6 +10,7 @@ import {
 } from "@/constants/api";
 import { apiClient } from "@/lib/api/client";
 import { getCachedResource, invalidateCachedResource } from "@/lib/api/requestCache";
+import { filterAdminManageableRoles } from "./roleOptions";
 
 export interface IUser {
     id: number;
@@ -167,7 +168,7 @@ async function deactivate(id: number): Promise<void> {
 async function getRoles(): Promise<IRoleOption[]> {
     return getCachedResource("users:roles", async () => {
         const response = await apiClient.get<IAbpResponseEnvelope<IListResult<IRoleOption>>>(USERS_GET_ROLES_ENDPOINT);
-        return response.data.result.items;
+        return filterAdminManageableRoles(response.data.result.items);
     }, 300000);
 }
 

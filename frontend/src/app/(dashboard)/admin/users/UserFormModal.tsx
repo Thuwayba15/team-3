@@ -9,6 +9,7 @@ import type {
     IUpdateUserInput,
     IUser,
 } from "@/services/users/userService";
+import { toAdminRoleSelectOptions } from "@/services/users/roleOptions";
 import { useStyles } from "./styles";
 
 const { Text } = Typography;
@@ -179,10 +180,7 @@ export function UserFormModal({
                     <Select
                         mode="multiple"
                         optionFilterProp="label"
-                        options={roles.map((role) => ({
-                            label: role.displayName || role.name,
-                            value: role.name,
-                        }))}
+                        options={toAdminRoleSelectOptions(roles)}
                     />
                 </Form.Item>
 

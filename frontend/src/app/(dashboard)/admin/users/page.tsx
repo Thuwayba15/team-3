@@ -14,6 +14,7 @@ import {
     type IUpdateUserInput,
     type IUser,
 } from "@/services/users/userService";
+import { normalizeRoleName, toAdminRoleFilterOptions } from "@/services/users/roleOptions";
 import { UserFormModal } from "./UserFormModal";
 import { useStyles } from "./styles";
 
@@ -34,10 +35,6 @@ const ROLE_CLASS_BY_NAME: Record<string, RoleTagClass> = {
 };
 
 const PAGE_SIZE = 10;
-
-function normalizeRoleName(roleName: string): string {
-    return roleName.trim().toUpperCase();
-}
 
 function formatRoleLabel(roleName: string): string {
     const normalized = normalizeRoleName(roleName);
@@ -130,13 +127,10 @@ export default function AdminUsersPage() {
             .finally(() => setLoading(false));
     }, [currentPage, roleFilter, search, statusFilter]);
 
-    const roleOptions = useMemo(() => ([
-        { label: t("dashboard.admin.users.allRoles"), value: "" },
-        ...roles.map((role) => ({
-            label: role.displayName || role.name,
-            value: role.normalizedName || normalizeRoleName(role.name),
-        })),
-    ]), [roles, t]);
+    const roleOptions = useMemo(
+        () => toAdminRoleFilterOptions(roles, t("dashboard.admin.users.allRoles")),
+        [roles, t]
+    );
 
     const statusOptions = [
         { label: t("dashboard.admin.users.allStatus"), value: "" },
