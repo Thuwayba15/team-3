@@ -16,23 +16,28 @@ using Team3.Roles.Dto;
 using Team3.Users.Dto;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
+using Team3.Application.Caching;
 
 namespace Team3.Users;
 
 [AbpAuthorize(PermissionNames.Pages_Users)]
 public class UserAppService : AsyncCrudAppService<User, UserDto, long, PagedUserResultRequestDto, CreateUserDto, UserDto>, IUserAppService
 {
+    private static readonly TimeSpan UserListCacheDuration = TimeSpan.FromSeconds(30);
+
     private readonly UserManager _userManager;
     private readonly RoleManager _roleManager;
     private readonly IRepository<Role> _roleRepository;
     private readonly IPasswordHasher<User> _passwordHasher;
     private readonly IAbpSession _abpSession;
     private readonly LogInManager _logInManager;
+    private readonly IMemoryCache _memoryCache;
 
     public UserAppService(
         IRepository<User, long> repository,
@@ -41,7 +46,8 @@ public class UserAppService : AsyncCrudAppService<User, UserDto, long, PagedUser
         IRepository<Role> roleRepository,
         IPasswordHasher<User> passwordHasher,
         IAbpSession abpSession,
-        LogInManager logInManager)
+        LogInManager logInManager,
+        IMemoryCache memoryCache)
         : base(repository)
     {
         _userManager = userManager;
@@ -50,6 +56,7 @@ public class UserAppService : AsyncCrudAppService<User, UserDto, long, PagedUser
         _passwordHasher = passwordHasher;
         _abpSession = abpSession;
         _logInManager = logInManager;
+        _memoryCache = memoryCache;
     }
 
     public override async Task<UserDto> CreateAsync(CreateUserDto input)
@@ -119,8 +126,42 @@ public class UserAppService : AsyncCrudAppService<User, UserDto, long, PagedUser
 
     public async Task<ListResultDto<RoleDto>> GetRoles()
     {
-        var roles = await _roleRepository.GetAllListAsync();
+        var roles = await _roleRepository.GetAll()
+            .AsNoTracking()
+            .OrderBy(role => role.DisplayName)
+            .ToListAsync();
+
         return new ListResultDto<RoleDto>(ObjectMapper.Map<List<RoleDto>>(roles));
+    }
+
+    public override async Task<PagedResultDto<UserDto>> GetAllAsync(PagedUserResultRequestDto input)
+    {
+        CheckGetAllPermission();
+        var cacheKey = BuildUsersCacheKey(input);
+        if (_memoryCache.TryGetValue(cacheKey, out PagedResultDto<UserDto>? cachedUsers) && cachedUsers != null)
+        {
+            return cachedUsers;
+        }
+
+        var filteredQuery = CreateFilteredQuery(input)
+            .AsNoTracking();
+
+        var totalCount = await AsyncQueryableExecuter.CountAsync(filteredQuery);
+        var users = await AsyncQueryableExecuter.ToListAsync(
+            ApplySorting(filteredQuery, input).PageBy(input));
+
+        var userDtos = await MapUsersToDtosAsync(users);
+        var result = new PagedResultDto<UserDto>(totalCount, userDtos);
+        _memoryCache.Set(cacheKey, result, MemoryCacheEntryOptionsFactory.Create(UserListCacheDuration));
+        return result;
+    }
+
+    public override async Task<UserDto> GetAsync(EntityDto<long> input)
+    {
+        CheckGetPermission();
+
+        var user = await GetEntityByIdAsync(input.Id);
+        return await MapUserToDtoAsync(user);
     }
 
     public async Task ChangeLanguage(ChangeUserLanguageDto input)
@@ -147,14 +188,7 @@ public class UserAppService : AsyncCrudAppService<User, UserDto, long, PagedUser
 
     protected override UserDto MapToEntityDto(User user)
     {
-        var roleIds = user.Roles.Select(x => x.RoleId).ToArray();
-
-        var roles = _roleManager.Roles.Where(r => roleIds.Contains(r.Id)).Select(r => r.NormalizedName);
-
-        var userDto = base.MapToEntityDto(user);
-        userDto.RoleNames = roles.ToArray();
-
-        return userDto;
+        return BuildUserDto(user, null);
     }
 
     protected override IQueryable<User> CreateFilteredQuery(PagedUserResultRequestDto input)
@@ -166,7 +200,7 @@ public class UserAppService : AsyncCrudAppService<User, UserDto, long, PagedUser
                 .Where(role => role.NormalizedName == normalizedRoleName || role.Name == input.RoleName)
                 .Select(role => role.Id);
 
-        return Repository.GetAllIncluding(x => x.Roles)
+        return Repository.GetAll()
             .WhereIf(!input.Keyword.IsNullOrWhiteSpace(), x => x.UserName.Contains(input.Keyword) || x.Name.Contains(input.Keyword) || x.EmailAddress.Contains(input.Keyword))
             .WhereIf(input.IsActive.HasValue, x => x.IsActive == input.IsActive)
             .WhereIf(filteredRoleIds != null, x => x.Roles.Any(userRole => filteredRoleIds.Contains(userRole.RoleId)));
@@ -252,6 +286,85 @@ public class UserAppService : AsyncCrudAppService<User, UserDto, long, PagedUser
         }
 
         return true;
+    }
+
+    private async Task<UserDto> MapUserToDtoAsync(User user)
+    {
+        var roleIds = user.Roles
+            .Select(role => role.RoleId)
+            .Distinct()
+            .ToArray();
+
+        var roleNamesById = roleIds.Length == 0
+            ? new Dictionary<int, string>()
+            : await _roleManager.Roles
+                .AsNoTracking()
+                .Where(role => roleIds.Contains(role.Id))
+                .ToDictionaryAsync(role => role.Id, role => role.NormalizedName);
+
+        var roleNames = user.Roles
+            .Select(role => roleNamesById.GetValueOrDefault(role.RoleId))
+            .Where(roleName => !roleName.IsNullOrWhiteSpace())
+            .Distinct()
+            .ToArray();
+
+        return BuildUserDto(user, roleNames);
+    }
+
+    private async Task<List<UserDto>> MapUsersToDtosAsync(IReadOnlyCollection<User> users)
+    {
+        if (users.Count == 0)
+        {
+            return [];
+        }
+
+        var userIds = users.Select(user => user.Id).ToArray();
+        var userRoles = await Repository.GetAll()
+            .AsNoTracking()
+            .Where(user => userIds.Contains(user.Id))
+            .SelectMany(user => user.Roles.Select(role => new
+            {
+                user.Id,
+                role.RoleId,
+            }))
+            .ToListAsync();
+        var roleIds = userRoles
+            .Select(role => role.RoleId)
+            .Distinct()
+            .ToArray();
+
+        var roleNamesById = roleIds.Length == 0
+            ? new Dictionary<int, string>()
+            : await _roleManager.Roles
+                .AsNoTracking()
+                .Where(role => roleIds.Contains(role.Id))
+                .ToDictionaryAsync(role => role.Id, role => role.NormalizedName);
+        var roleNamesByUserId = userRoles
+            .GroupBy(userRole => userRole.Id)
+            .ToDictionary(
+                group => group.Key,
+                group => group
+                    .Select(userRole => roleNamesById.GetValueOrDefault(userRole.RoleId))
+                    .Where(roleName => !roleName.IsNullOrWhiteSpace())
+                    .Distinct()
+                    .ToArray());
+
+        return users
+            .Select(user => BuildUserDto(user, roleNamesByUserId.GetValueOrDefault(user.Id)))
+            .ToList();
+    }
+
+    private UserDto BuildUserDto(User user, IReadOnlyCollection<string>? roleNames)
+    {
+        var userDto = base.MapToEntityDto(user);
+        userDto.RoleNames = roleNames?.ToArray() ?? [];
+
+        return userDto;
+    }
+
+    private static string BuildUsersCacheKey(PagedUserResultRequestDto input)
+    {
+        return $"users:get-all:{input.Keyword ?? string.Empty}:{input.IsActive?.ToString() ?? string.Empty}:{input.RoleName ?? string.Empty}:{input.Sorting}:{input.SkipCount}:{input.MaxResultCount}";
     }
 }
 

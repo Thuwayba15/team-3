@@ -1,5 +1,6 @@
 import { ASSESSMENT_GENERATION_GET_LESSON_ASSESSMENTS_ENDPOINT } from "@/constants/api";
 import { apiClient } from "@/lib/api/client";
+import { getCachedResource, invalidateCachedResource } from "@/lib/api/requestCache";
 import type { DifficultyLevel } from "@/services/student/studentSubjectService";
 
 interface IAbpResponseEnvelope<T> {
@@ -22,14 +23,16 @@ interface IGeneratedAssessmentOutput {
 }
 
 async function getLessonAssessments(lessonId: string): Promise<IGeneratedAssessmentSummary[]> {
-    const response = await apiClient.get<IAbpResponseEnvelope<IGeneratedAssessmentOutput>>(
-        ASSESSMENT_GENERATION_GET_LESSON_ASSESSMENTS_ENDPOINT,
-        {
-            params: { lessonId },
-        }
-    );
+    return getCachedResource(`student-assessment-generation:lesson:${lessonId}`, async () => {
+        const response = await apiClient.get<IAbpResponseEnvelope<IGeneratedAssessmentOutput>>(
+            ASSESSMENT_GENERATION_GET_LESSON_ASSESSMENTS_ENDPOINT,
+            {
+                params: { lessonId },
+            }
+        );
 
-    return response.data.result.assessments ?? [];
+        return response.data.result.assessments ?? [];
+    }, 30000);
 }
 
 export function selectLessonAssessmentByDifficulty(
@@ -49,3 +52,12 @@ export function selectLessonAssessmentByDifficulty(
 export const studentAssessmentGenerationService = {
     getLessonAssessments,
 };
+
+export function invalidateLessonAssessmentCache(lessonId?: string): void {
+    if (lessonId) {
+        invalidateCachedResource(`student-assessment-generation:lesson:${lessonId}`);
+        return;
+    }
+
+    invalidateCachedResource("student-assessment-generation:");
+}

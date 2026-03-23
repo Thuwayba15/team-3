@@ -19,6 +19,9 @@ export const ME_ENDPOINT = "/api/TokenAuth/Me";
 /** Returns a paginated list of all platform users. */
 export const USERS_GET_ALL_ENDPOINT = "/api/services/app/User/GetAll";
 
+/** Returns admin dashboard summary metrics aggregated on the backend. */
+export const ADMIN_DASHBOARD_SUMMARY_ENDPOINT = "/api/services/app/AdminDashboard/GetSummary";
+
 /** Returns a single user by id from the User AppService. */
 export const USERS_GET_ENDPOINT = "/api/services/app/User/Get";
 

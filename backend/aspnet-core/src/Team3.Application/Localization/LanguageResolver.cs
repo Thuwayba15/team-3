@@ -1,8 +1,11 @@
 using Abp.Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Team3.Academic;
+using Team3.Application.Caching;
 using Team3.Configuration;
 using Team3.Localization;
 
@@ -22,6 +25,11 @@ public interface ILanguageResolver
     Task<string> GetUserPreferredLanguageCodeAsync(long userId);
 
     /// <summary>
+    /// Clears the cached preferred language for a user after it changes.
+    /// </summary>
+    void InvalidateUserPreferredLanguage(long userId);
+
+    /// <summary>
     /// Gets the Language entity for a given language code.
     /// Returns the default language if code not found.
     /// </summary>
@@ -30,57 +38,115 @@ public interface ILanguageResolver
 
 public class LanguageResolver : ILanguageResolver
 {
+    private static readonly TimeSpan PreferredLanguageCacheDuration = TimeSpan.FromMinutes(5);
+    private static readonly TimeSpan LanguageLookupCacheDuration = TimeSpan.FromMinutes(10);
+
     private readonly IRepository<Language, Guid> _languageRepository;
     private readonly IRepository<UserLanguagePreference, long> _userLanguagePreferenceRepository;
+    private readonly IMemoryCache _memoryCache;
 
     public LanguageResolver(
         IRepository<Language, Guid> languageRepository,
-        IRepository<UserLanguagePreference, long> userLanguagePreferenceRepository)
+        IRepository<UserLanguagePreference, long> userLanguagePreferenceRepository,
+        IMemoryCache memoryCache)
     {
         _languageRepository = languageRepository;
         _userLanguagePreferenceRepository = userLanguagePreferenceRepository;
+        _memoryCache = memoryCache;
     }
 
     public async Task<string> GetUserPreferredLanguageCodeAsync(long userId)
     {
+        var cacheKey = BuildPreferredLanguageCacheKey(userId);
+        if (_memoryCache.TryGetValue(cacheKey, out string? cachedLanguageCode) && !string.IsNullOrWhiteSpace(cachedLanguageCode))
+        {
+            return cachedLanguageCode;
+        }
+
+        var resolvedLanguageCode = await ResolveUserPreferredLanguageCodeAsync(userId);
+        _memoryCache.Set(cacheKey, resolvedLanguageCode, MemoryCacheEntryOptionsFactory.Create(PreferredLanguageCacheDuration));
+        return resolvedLanguageCode;
+    }
+
+    public void InvalidateUserPreferredLanguage(long userId)
+    {
+        _memoryCache.Remove(BuildPreferredLanguageCacheKey(userId));
+    }
+
+    public async Task<Language> GetOrDefaultLanguageAsync(string languageCode)
+    {
+        var normalizedLanguageCode = string.IsNullOrWhiteSpace(languageCode)
+            ? "default"
+            : languageCode.Trim().ToLowerInvariant();
+        var cacheKey = $"language-resolver:language:{normalizedLanguageCode}";
+
+        if (_memoryCache.TryGetValue(cacheKey, out Language? cachedLanguage) && cachedLanguage != null)
+        {
+            return cachedLanguage;
+        }
+
+        var resolvedLanguage = await ResolveLanguageAsync(languageCode);
+        _memoryCache.Set(cacheKey, resolvedLanguage, MemoryCacheEntryOptionsFactory.Create(LanguageLookupCacheDuration));
+        return resolvedLanguage;
+    }
+
+    private async Task<string> ResolveUserPreferredLanguageCodeAsync(long userId)
+    {
         try
         {
-            var userPref = await _userLanguagePreferenceRepository.FirstOrDefaultAsync(up => up.UserId == userId);
-            
-            if (!string.IsNullOrWhiteSpace(userPref?.LanguageCode))
+            var userPreferenceCode = await _userLanguagePreferenceRepository.GetAll()
+                .Where(up => up.UserId == userId)
+                .Select(up => up.LanguageCode)
+                .FirstOrDefaultAsync();
+
+            if (!string.IsNullOrWhiteSpace(userPreferenceCode))
             {
-                var lang = await _languageRepository.FirstOrDefaultAsync(
-                    l => l.Code == userPref.LanguageCode && l.IsActive);
-                
-                if (lang != null)
+                var normalizedUserPreferenceCode = userPreferenceCode.Trim().ToLowerInvariant();
+                var activeLanguageCode = await _languageRepository.GetAll()
+                    .Where(language => language.Code == normalizedUserPreferenceCode && language.IsActive)
+                    .Select(language => language.Code)
+                    .FirstOrDefaultAsync();
+
+                if (!string.IsNullOrWhiteSpace(activeLanguageCode))
                 {
-                    return lang.Code;
+                    return activeLanguageCode;
                 }
             }
         }
         catch
         {
-            // Fall through to default
+            // fall through to default language
         }
 
-        // Fallback to default language or 'en'
-        var defaultLang = await _languageRepository.FirstOrDefaultAsync(l => l.IsDefault && l.IsActive);
-        return defaultLang?.Code ?? "en";
+        var defaultLanguageCode = await _languageRepository.GetAll()
+            .Where(language => language.IsDefault && language.IsActive)
+            .Select(language => language.Code)
+            .FirstOrDefaultAsync();
+
+        return string.IsNullOrWhiteSpace(defaultLanguageCode) ? "en" : defaultLanguageCode;
     }
 
-    public async Task<Language> GetOrDefaultLanguageAsync(string languageCode)
+    private async Task<Language> ResolveLanguageAsync(string languageCode)
     {
-        if (string.IsNullOrWhiteSpace(languageCode))
+        if (!string.IsNullOrWhiteSpace(languageCode))
         {
-            return await _languageRepository.FirstOrDefaultAsync(l => l.IsDefault && l.IsActive)
-                ?? new Language(Guid.Empty, "en", "English", null);
+            var normalizedLanguageCode = languageCode.Trim().ToLowerInvariant();
+            var matchingLanguage = await _languageRepository.FirstOrDefaultAsync(
+                language => language.Code == normalizedLanguageCode && language.IsActive);
+
+            if (matchingLanguage != null)
+            {
+                return matchingLanguage;
+            }
         }
 
-        var lang = await _languageRepository.FirstOrDefaultAsync(
-            l => l.Code == languageCode.ToLowerInvariant() && l.IsActive);
-
-        return lang ?? await _languageRepository.FirstOrDefaultAsync(l => l.IsDefault && l.IsActive)
+        return await _languageRepository.FirstOrDefaultAsync(language => language.IsDefault && language.IsActive)
             ?? new Language(Guid.Empty, "en", "English", null);
+    }
+
+    private static string BuildPreferredLanguageCacheKey(long userId)
+    {
+        return $"language-resolver:user:{userId}";
     }
 }
 

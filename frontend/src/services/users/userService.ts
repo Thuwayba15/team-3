@@ -9,6 +9,7 @@ import {
     USERS_UPDATE_ENDPOINT,
 } from "@/constants/api";
 import { apiClient } from "@/lib/api/client";
+import { getCachedResource, invalidateCachedResource } from "@/lib/api/requestCache";
 
 export interface IUser {
     id: number;
@@ -73,6 +74,17 @@ interface IListResult<T> {
     items: T[];
 }
 
+function buildUsersCacheKey(query: IUsersQuery): string {
+    return `users:list:${JSON.stringify({
+        keyword: query.keyword ?? null,
+        isActive: query.isActive ?? null,
+        roleName: query.roleName ?? null,
+        sorting: query.sorting ?? null,
+        skipCount: query.skipCount ?? 0,
+        maxResultCount: query.maxResultCount ?? 0,
+    })}`;
+}
+
 function toQueryParams(query: IUsersQuery) {
     return {
         Keyword: query.keyword,
@@ -100,45 +112,63 @@ async function putWithPostFallback<TResponse>(endpoint: string, payload: unknown
 
 /** Fetches platform users with ABP paging and filtering. */
 async function getAll(query: IUsersQuery = {}): Promise<IPagedResult<IUser>> {
-    const response = await apiClient.get<IAbpResponseEnvelope<IPagedResult<IUser>>>(USERS_GET_ALL_ENDPOINT, {
-        params: toQueryParams(query),
-    });
-    return response.data.result;
+    return getCachedResource(buildUsersCacheKey(query), async () => {
+        const response = await apiClient.get<IAbpResponseEnvelope<IPagedResult<IUser>>>(USERS_GET_ALL_ENDPOINT, {
+            params: toQueryParams(query),
+        });
+        return response.data.result;
+    }, 30000);
 }
 
 /** Fetches a single platform user by id from the ABP User AppService. */
 async function getById(id: number): Promise<IUser> {
-    const response = await apiClient.get<IAbpResponseEnvelope<IUser>>(USERS_GET_ENDPOINT, {
-        params: { Id: id },
-    });
-    return response.data.result;
+    return getCachedResource(`users:detail:${id}`, async () => {
+        const response = await apiClient.get<IAbpResponseEnvelope<IUser>>(USERS_GET_ENDPOINT, {
+            params: { Id: id },
+        });
+        return response.data.result;
+    }, 30000);
 }
 
 /** Creates a new platform user and returns the latest payload. */
 async function create(input: ICreateUserInput): Promise<IUser> {
     const response = await apiClient.post<IAbpResponseEnvelope<IUser>>(USERS_CREATE_ENDPOINT, input);
+    invalidateCachedResource("users:list:");
+    invalidateCachedResource("admin-dashboard:");
     return response.data.result;
 }
 
 /** Updates a user from the ABP User AppService and returns the latest user payload. */
 async function update(user: IUpdateUserInput): Promise<IUser> {
-    return putWithPostFallback<IUser>(USERS_UPDATE_ENDPOINT, user);
+    const result = await putWithPostFallback<IUser>(USERS_UPDATE_ENDPOINT, user);
+    invalidateCachedResource("users:list:");
+    invalidateCachedResource(`users:detail:${user.id}`);
+    invalidateCachedResource("admin-dashboard:");
+    return result;
 }
 
 /** Activates a platform user. */
 async function activate(id: number): Promise<void> {
     await apiClient.post(USERS_ACTIVATE_ENDPOINT, { id });
+    invalidateCachedResource("users:list:");
+    invalidateCachedResource(`users:detail:${id}`);
+    invalidateCachedResource("admin-dashboard:");
 }
 
 /** Deactivates a platform user. */
 async function deactivate(id: number): Promise<void> {
     await apiClient.post(USERS_DEACTIVATE_ENDPOINT, { id });
+    invalidateCachedResource("users:list:");
+    invalidateCachedResource(`users:detail:${id}`);
+    invalidateCachedResource("admin-dashboard:");
 }
 
 /** Returns available user roles for admin forms. */
 async function getRoles(): Promise<IRoleOption[]> {
-    const response = await apiClient.get<IAbpResponseEnvelope<IListResult<IRoleOption>>>(USERS_GET_ROLES_ENDPOINT);
-    return response.data.result.items;
+    return getCachedResource("users:roles", async () => {
+        const response = await apiClient.get<IAbpResponseEnvelope<IListResult<IRoleOption>>>(USERS_GET_ROLES_ENDPOINT);
+        return response.data.result.items;
+    }, 300000);
 }
 
 export const userService = {

@@ -10,10 +10,13 @@
     "interventions": "Dikeno",
     "learningModules": "Dimojule tsa Thuto",
     "analytics": "Tlhahlobo",
+    "availableTutors": "Baruti ba Fumanehang",
     "alerts": "Ditemoso",
     "childProgress": "Tsoelo-pele ya Ngoana",
     "curriculum": "Kharikhulamo",
+    "tutors": "Baruti",
     "users": "Basebedisi",
+    "meetings": "Dikopano",
     "settings": "Dipeakanyo",
     "languages": "Dipuo",
     "aiConfiguration": "Tlhophiso ya AI",
@@ -135,11 +138,13 @@
         "refreshProgress": "Ntlafatsa Tsoelo-pele",
         "noCompletedLessons": "Ha ho dithuto tse qetilweng hajoale.",
         "recommendedNextLesson": "Thuto e Kgothaletswang e Latelang",
+        "reviewLesson": "Hlahloba Thuto",
         "mathsGrade10": "Dipalo Kereiti ya 10",
         "nextLessonSubtitle": "Ho ipapisitse le tshebetso ya hao ya moraorao ya dipalo",
         "algebraicExpressionsLesson": "Dipolelo tsa Algebra: Factorisation",
         "lessonDescription": "Ithute ho factorisa quadratic trinomials le phapang ya disekwere tse pedi. Sena se aha hodima thuto ya hao e fetileng ya ho atolosa mabrakete.",
         "startLesson": "Qala Thuto",
+        "durationMinutes": "metsotso e {{count}}",
         "lessonDuration": "metsotso e 25",
         "masteryHeatmap": "Heatmap ya Bokgoni",
         "performanceAcrossSubjects": "Tshebetso ya hao dithutong tsohle",
@@ -425,6 +430,127 @@
       "curriculum": {
         "title": "Taolo ya Kharikhulamo",
         "subtitle": "Theha dithuto, kenya ditokomane, mme o hlahlobe meralo e entsweng ke AI"
+      }
+    }
+  },
+  "tutoring": {
+    "status": {
+      "pending": "E emetse",
+      "accepted": "E amohetswe",
+      "declined": "E hanetswe",
+      "completed": "E phethilwe"
+    },
+    "errors": {
+      "loadAvailableTutors": "Ho hlolehile ho kenya baruti ba fumanehang.",
+      "requestTutor": "Ho hlolehile ho kopa moruti.",
+      "loadTutors": "Ho hlolehile ho kenya baruti.",
+      "loadTutorSetup": "Ho hlolehile ho kenya peakanyo ya moruti.",
+      "loadTutorDashboard": "Ho hlolehile ho kenya dashboard ya moruti.",
+      "loadTutorMeetings": "Ho hlolehile ho kenya dikopano tsa moruti.",
+      "respondTutorRequest": "Ho hlolehile ho araba kopo ya moruti.",
+      "respondMeetingRequest": "Ho hlolehile ho araba kopo ya kopano.",
+      "startMeeting": "Ho hlolehile ho qala kopano."
+    },
+    "validation": {
+      "required": "Lebala lena lea hlokahala."
+    },
+    "student": {
+      "availableTutors": {
+        "title": "Baruti ba Fumanehang",
+        "subtitle": "Fumana baruti ba tsamaisanang le dithuto tseo o ithutang tsona.",
+        "empty": "Ha ho baruti ba fumanehang bakeng sa dithuto tsa hao hajoale.",
+        "noBio": "Moruti enwa ha a eso kenye bio hajoale.",
+        "helper": "Kopa boruti hore o hokahane le moruti enwa.",
+        "actions": {
+          "requestTutor": "Kopa Moruti",
+          "pending": "Kopo e Emetse",
+          "linked": "E Hoketswe"
+        },
+        "messages": {
+          "requestSent": "Kopo ya moruti e rometswe ka katleho."
+        }
+      },
+      "tutors": {
+        "title": "Baruti",
+        "subtitle": "Laola baruti ba hao ba hoketsweng mme o hlophise dikopano.",
+        "linkedTitle": "Baruti ba Hoketsweng",
+        "meetingsTitle": "Dikopo tsa Kopano",
+        "empty": "Ha o na baruti ba hoketsweng hajoale.",
+        "noMeetings": "Ha ho dikopo tsa kopano hajoale.",
+        "requestMeetingTitle": "Kopa Kopano",
+        "noMeetingMessage": "Ha ho molaetsa wa kopano o fanoeng.",
+        "duration": "metsotso e {{minutes}}",
+        "actions": {
+          "requestMeeting": "Kopa Kopano",
+          "joinMeeting": "Kena Kopanong"
+        },
+        "form": {
+          "start": "Letsatsi le nako ya ho qala",
+          "duration": "Nako (metsotso)",
+          "message": "Molaetsa"
+        },
+        "messages": {
+          "meetingRequested": "Kopo ya kopano e rometswe ka katleho."
+        }
+      }
+    },
+    "tutor": {
+      "setup": {
+        "title": "Peakanyo ya Moruti",
+        "subtitle": "Kgetha sehlooho seo o se rutang mme o qete profaele ya hao ya setjhaba sa moruti.",
+        "form": {
+          "subject": "Sehlooho",
+          "specialization": "Boitseanape",
+          "bio": "Bio"
+        },
+        "actions": {
+          "save": "Boloka Peakanyo"
+        },
+        "messages": {
+          "saved": "Peakanyo ya moruti e bolokilwe ka katleho."
+        }
+      },
+      "dashboard": {
+        "title": "Dashboard ya Moruti",
+        "subtitle": "Bona tsoelo-pele ya baithuti ba hoketsweng, dikopo le dikopano tse tlang.",
+        "setupPrompt": "Qeta peakanyo ya hao ya moruti pele baithuti ba ka o fumana le ho o kopa.",
+        "pendingRequestsTitle": "Dikopo tsa Moruti Tse Emetseng",
+        "attentionTitle": "Baithuti ba Hlokang Tlhokomelo",
+        "emptyPendingRequests": "Ha ho dikopo tsa moruti tse emetseng.",
+        "emptyAttention": "Ha ho baithuti ba hlokang tlhokomelo hona jwale.",
+        "noStudentMessage": "Ha ho molaetsa o fanoeng.",
+        "needsIntervention": "E hloka thuso",
+        "masteryLabel": "Bokgoni {{score}}%",
+        "actions": {
+          "completeSetup": "Qeta Peakanyo"
+        },
+        "stats": {
+          "students": "Baithuti ba Hoketsweng",
+          "pendingTutorRequests": "Dikopo tsa Moruti Tse Emetseng",
+          "pendingMeetingRequests": "Dikopo tsa Kopano Tse Emetseng",
+          "averageMastery": "Karolelano ya Bokgoni"
+        }
+      },
+      "meetings": {
+        "title": "Dikopano",
+        "subtitle": "Laola dikopo tsa boruti le dikopano tsa moithuti ka mong.",
+        "setupPrompt": "Qeta peakanyo ya hao ya moruti pele o sebetsana le dikopano.",
+        "tutorRequestsTitle": "Dikopo tsa Boruti",
+        "meetingRequestsTitle": "Dikopo tsa Kopano",
+        "emptyTutorRequests": "Ha ho dikopo tsa boruti hajoale.",
+        "emptyMeetings": "Ha ho dikopano hajoale.",
+        "noMeetingMessage": "Ha ho molaetsa wa kopano o fanoeng.",
+        "actions": {
+          "accept": "Amohela",
+          "decline": "Hana",
+          "startMeeting": "Qala Kopano"
+        },
+        "messages": {
+          "requestAccepted": "Kopo ya boruti e amohetswe.",
+          "requestDeclined": "Kopo ya boruti e hanetswe.",
+          "meetingAccepted": "Kopo ya kopano e amohetswe.",
+          "meetingDeclined": "Kopo ya kopano e hanetswe."
+        }
       }
     }
   },

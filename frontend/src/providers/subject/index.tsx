@@ -1,9 +1,10 @@
 "use client";
 
 import axios from "axios";
-import { ReactNode, useContext, useEffect, useMemo, useReducer } from "react";
+import { ReactNode, useContext, useEffect, useReducer } from "react";
 import { useI18nState } from "@/providers/i18n";
 import { apiClient } from "@/lib/api/client";
+import { getCachedResource, invalidateCachedResource } from "@/lib/api/requestCache";
 import {
     SUBJECT_GET_ALL_ENDPOINT,
     SUBJECT_GET_MY_ENDPOINT,
@@ -41,13 +42,17 @@ interface ISubjectProviderProps {
 
 export const SubjectProvider = ({ children }: ISubjectProviderProps) => {
     const [state, dispatch] = useReducer(subjectReducer, INITIAL_STATE);
-    const { currentLanguage } = useI18nState();
+    const { currentLanguage, isLoading: isLanguageUpdating } = useI18nState();
+    const languageKey = currentLanguage ?? "default";
 
     const getSubjects = async (): Promise<void> => {
         dispatch(getSubjectsPending());
         try {
-            const response = await apiClient.get<IAbpResponse<ISubject[]>>(SUBJECT_GET_ALL_ENDPOINT);
-            dispatch(getSubjectsSuccess(response.data.result));
+            const subjects = await getCachedResource(`subjects:all:${languageKey}`, async () => {
+                const response = await apiClient.get<IAbpResponse<ISubject[]>>(SUBJECT_GET_ALL_ENDPOINT);
+                return response.data.result;
+            }, 300000);
+            dispatch(getSubjectsSuccess(subjects));
         } catch (error) {
             dispatch(getSubjectsError(resolveErrorMessage(error)));
         }
@@ -56,8 +61,11 @@ export const SubjectProvider = ({ children }: ISubjectProviderProps) => {
     const getMySubjects = async (): Promise<void> => {
         dispatch(getMySubjectsPending());
         try {
-            const response = await apiClient.get<IAbpResponse<ISubject[]>>(SUBJECT_GET_MY_ENDPOINT);
-            dispatch(getMySubjectsSuccess(response.data.result));
+            const subjects = await getCachedResource(`subjects:mine:${languageKey}`, async () => {
+                const response = await apiClient.get<IAbpResponse<ISubject[]>>(SUBJECT_GET_MY_ENDPOINT);
+                return response.data.result;
+            }, 300000);
+            dispatch(getMySubjectsSuccess(subjects));
         } catch (error) {
             dispatch(getMySubjectsError(resolveErrorMessage(error)));
         }
@@ -66,10 +74,13 @@ export const SubjectProvider = ({ children }: ISubjectProviderProps) => {
     const getTopicsBySubject = async (subjectId: string): Promise<void> => {
         dispatch(getTopicsBySubjectPending());
         try {
-            const response = await apiClient.get<IAbpResponse<ITopic[]>>(TOPIC_GET_BY_SUBJECT_ENDPOINT, {
-                params: { subjectId },
-            });
-            dispatch(getTopicsBySubjectSuccess(response.data.result));
+            const topics = await getCachedResource(`subjects:topics:${languageKey}:${subjectId}`, async () => {
+                const response = await apiClient.get<IAbpResponse<ITopic[]>>(TOPIC_GET_BY_SUBJECT_ENDPOINT, {
+                    params: { subjectId },
+                });
+                return response.data.result;
+            }, 300000);
+            dispatch(getTopicsBySubjectSuccess(topics));
         } catch (error) {
             dispatch(getTopicsBySubjectError(resolveErrorMessage(error)));
         }
@@ -78,10 +89,13 @@ export const SubjectProvider = ({ children }: ISubjectProviderProps) => {
     const getLessonsByTopic = async (topicId: string): Promise<void> => {
         dispatch(getLessonsByTopicPending());
         try {
-            const response = await apiClient.get<IAbpResponse<ILessonSummary[]>>(LESSON_GET_BY_TOPIC_ENDPOINT, {
-                params: { topicId },
-            });
-            dispatch(getLessonsByTopicSuccess(response.data.result));
+            const lessons = await getCachedResource(`subjects:lessons:${languageKey}:${topicId}`, async () => {
+                const response = await apiClient.get<IAbpResponse<ILessonSummary[]>>(LESSON_GET_BY_TOPIC_ENDPOINT, {
+                    params: { topicId },
+                });
+                return response.data.result;
+            }, 300000);
+            dispatch(getLessonsByTopicSuccess(lessons));
         } catch (error) {
             dispatch(getLessonsByTopicError(resolveErrorMessage(error)));
         }
@@ -90,10 +104,13 @@ export const SubjectProvider = ({ children }: ISubjectProviderProps) => {
     const getLesson = async (lessonId: string): Promise<void> => {
         dispatch(getLessonPending());
         try {
-            const response = await apiClient.get<IAbpResponse<ILessonDetail>>(LESSON_GET_ENDPOINT, {
-                params: { lessonId },
-            });
-            dispatch(getLessonSuccess(response.data.result));
+            const lesson = await getCachedResource(`subjects:lesson:${languageKey}:${lessonId}`, async () => {
+                const response = await apiClient.get<IAbpResponse<ILessonDetail>>(LESSON_GET_ENDPOINT, {
+                    params: { lessonId },
+                });
+                return response.data.result;
+            }, 300000);
+            dispatch(getLessonSuccess(lesson));
         } catch (error) {
             dispatch(getLessonError(resolveErrorMessage(error)));
         }
@@ -103,6 +120,8 @@ export const SubjectProvider = ({ children }: ISubjectProviderProps) => {
         dispatch(createLessonPending());
         try {
             const response = await apiClient.post<IAbpResponse<IUploadLessonOutput>>(UPLOAD_TEXT_MATERIAL_ENDPOINT, input);
+            invalidateCachedResource(`subjects:lessons:${languageKey}:${input.topicId}`);
+            invalidateCachedResource(`subjects:lesson:${languageKey}:`);
             dispatch(createLessonSuccess(response.data.result));
             return response.data.result;
         } catch (error) {
@@ -111,13 +130,14 @@ export const SubjectProvider = ({ children }: ISubjectProviderProps) => {
         }
     };
 
-    const actionsValue = useMemo<ISubjectContextActions>(
-        () => ({ getSubjects, getMySubjects, getTopicsBySubject, getLessonsByTopic, getLesson, createLesson }),
-        []
-    );
+    const actionsValue: ISubjectContextActions = { getSubjects, getMySubjects, getTopicsBySubject, getLessonsByTopic, getLesson, createLesson };
 
     // refresh subject/topic/lesson data when language preference changes
     useEffect(() => {
+        if (isLanguageUpdating) {
+            return;
+        }
+
         if (state.mySubjects && state.mySubjects.length > 0) {
             void getMySubjects();
         }
@@ -143,7 +163,7 @@ export const SubjectProvider = ({ children }: ISubjectProviderProps) => {
         if (state.selectedLesson?.id) {
             void getLesson(state.selectedLesson.id);
         }
-    }, [currentLanguage]);
+    }, [currentLanguage, isLanguageUpdating]);
 
     return (
         <SubjectStateContext.Provider value={state}>

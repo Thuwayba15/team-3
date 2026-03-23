@@ -1,5 +1,6 @@
 import axios from "axios";
 import { apiClient } from "@/lib/api/client";
+import { getCachedResource, invalidateCachedResource } from "@/lib/api/requestCache";
 import {
     STUDENT_TUTOR_GET_AVAILABLE_TUTORS_ENDPOINT,
     STUDENT_TUTOR_REQUEST_TUTOR_ENDPOINT,
@@ -23,6 +24,11 @@ import {
 interface IAbpResponseEnvelope<T> {
     result: T;
 }
+
+const STUDENT_TUTOR_CACHE_PREFIX = "student-tutor:";
+const TUTOR_PORTAL_CACHE_PREFIX = "tutor-portal:";
+const MEETING_ACCESS_CACHE_TTL_MS = 5000;
+const DEFAULT_CACHE_TTL_MS = 30000;
 
 export interface TutorSetupStatus {
     isComplete: boolean;
@@ -139,14 +145,16 @@ function extractErrorMessage(error: unknown): string {
 }
 
 async function getAvailableTutors(subjectId?: string): Promise<AvailableTutor[]> {
-    try {
-        const response = await apiClient.get<IAbpResponseEnvelope<AvailableTutor[]>>(STUDENT_TUTOR_GET_AVAILABLE_TUTORS_ENDPOINT, {
-            params: subjectId ? { subjectId } : {},
-        });
-        return response.data.result;
-    } catch (error) {
-        throw new Error(extractErrorMessage(error));
-    }
+    return getCachedResource(`${STUDENT_TUTOR_CACHE_PREFIX}available:${subjectId ?? "all"}`, async () => {
+        try {
+            const response = await apiClient.get<IAbpResponseEnvelope<AvailableTutor[]>>(STUDENT_TUTOR_GET_AVAILABLE_TUTORS_ENDPOINT, {
+                params: subjectId ? { subjectId } : {},
+            });
+            return response.data.result;
+        } catch (error) {
+            throw new Error(extractErrorMessage(error));
+        }
+    }, DEFAULT_CACHE_TTL_MS);
 }
 
 async function requestTutor(tutorUserId: number, subjectId: string, message?: string): Promise<TutorRequest> {
@@ -156,6 +164,8 @@ async function requestTutor(tutorUserId: number, subjectId: string, message?: st
             subjectId,
             message,
         });
+        invalidateCachedResource(STUDENT_TUTOR_CACHE_PREFIX);
+        invalidateCachedResource(TUTOR_PORTAL_CACHE_PREFIX);
         return response.data.result;
     } catch (error) {
         throw new Error(extractErrorMessage(error));
@@ -163,21 +173,25 @@ async function requestTutor(tutorUserId: number, subjectId: string, message?: st
 }
 
 async function getMyTutorRequests(): Promise<TutorRequest[]> {
-    try {
-        const response = await apiClient.get<IAbpResponseEnvelope<TutorRequest[]>>(STUDENT_TUTOR_GET_MY_REQUESTS_ENDPOINT);
-        return response.data.result;
-    } catch (error) {
-        throw new Error(extractErrorMessage(error));
-    }
+    return getCachedResource(`${STUDENT_TUTOR_CACHE_PREFIX}requests`, async () => {
+        try {
+            const response = await apiClient.get<IAbpResponseEnvelope<TutorRequest[]>>(STUDENT_TUTOR_GET_MY_REQUESTS_ENDPOINT);
+            return response.data.result;
+        } catch (error) {
+            throw new Error(extractErrorMessage(error));
+        }
+    }, DEFAULT_CACHE_TTL_MS);
 }
 
 async function getMyTutors(): Promise<LinkedTutor[]> {
-    try {
-        const response = await apiClient.get<IAbpResponseEnvelope<LinkedTutor[]>>(STUDENT_TUTOR_GET_MY_TUTORS_ENDPOINT);
-        return response.data.result;
-    } catch (error) {
-        throw new Error(extractErrorMessage(error));
-    }
+    return getCachedResource(`${STUDENT_TUTOR_CACHE_PREFIX}linked`, async () => {
+        try {
+            const response = await apiClient.get<IAbpResponseEnvelope<LinkedTutor[]>>(STUDENT_TUTOR_GET_MY_TUTORS_ENDPOINT);
+            return response.data.result;
+        } catch (error) {
+            throw new Error(extractErrorMessage(error));
+        }
+    }, DEFAULT_CACHE_TTL_MS);
 }
 
 async function requestMeeting(linkId: string, scheduledStartUtc: string, durationMinutes: number, message?: string): Promise<MeetingRequest> {
@@ -188,6 +202,8 @@ async function requestMeeting(linkId: string, scheduledStartUtc: string, duratio
             durationMinutes,
             message,
         });
+        invalidateCachedResource(STUDENT_TUTOR_CACHE_PREFIX);
+        invalidateCachedResource(TUTOR_PORTAL_CACHE_PREFIX);
         return response.data.result;
     } catch (error) {
         throw new Error(extractErrorMessage(error));
@@ -195,41 +211,49 @@ async function requestMeeting(linkId: string, scheduledStartUtc: string, duratio
 }
 
 async function getMyMeetingRequests(): Promise<MeetingRequest[]> {
-    try {
-        const response = await apiClient.get<IAbpResponseEnvelope<MeetingRequest[]>>(STUDENT_TUTOR_GET_MY_MEETINGS_ENDPOINT);
-        return response.data.result;
-    } catch (error) {
-        throw new Error(extractErrorMessage(error));
-    }
+    return getCachedResource(`${STUDENT_TUTOR_CACHE_PREFIX}meetings`, async () => {
+        try {
+            const response = await apiClient.get<IAbpResponseEnvelope<MeetingRequest[]>>(STUDENT_TUTOR_GET_MY_MEETINGS_ENDPOINT);
+            return response.data.result;
+        } catch (error) {
+            throw new Error(extractErrorMessage(error));
+        }
+    }, DEFAULT_CACHE_TTL_MS);
 }
 
 async function getStudentMeetingAccess(meetingRequestId: string): Promise<MeetingAccess> {
-    try {
-        const response = await apiClient.get<IAbpResponseEnvelope<MeetingAccess>>(STUDENT_TUTOR_GET_MEETING_ACCESS_ENDPOINT, {
-            params: { meetingRequestId },
-        });
-        return response.data.result;
-    } catch (error) {
-        throw new Error(extractErrorMessage(error));
-    }
+    return getCachedResource(`${STUDENT_TUTOR_CACHE_PREFIX}meeting-access:${meetingRequestId}`, async () => {
+        try {
+            const response = await apiClient.get<IAbpResponseEnvelope<MeetingAccess>>(STUDENT_TUTOR_GET_MEETING_ACCESS_ENDPOINT, {
+                params: { meetingRequestId },
+            });
+            return response.data.result;
+        } catch (error) {
+            throw new Error(extractErrorMessage(error));
+        }
+    }, MEETING_ACCESS_CACHE_TTL_MS);
 }
 
 async function getTutorSetupStatus(): Promise<TutorSetupStatus> {
-    try {
-        const response = await apiClient.get<IAbpResponseEnvelope<TutorSetupStatus>>(TUTOR_PORTAL_GET_SETUP_STATUS_ENDPOINT);
-        return response.data.result;
-    } catch (error) {
-        throw new Error(extractErrorMessage(error));
-    }
+    return getCachedResource(`${TUTOR_PORTAL_CACHE_PREFIX}setup`, async () => {
+        try {
+            const response = await apiClient.get<IAbpResponseEnvelope<TutorSetupStatus>>(TUTOR_PORTAL_GET_SETUP_STATUS_ENDPOINT);
+            return response.data.result;
+        } catch (error) {
+            throw new Error(extractErrorMessage(error));
+        }
+    }, DEFAULT_CACHE_TTL_MS);
 }
 
 async function getTutorAvailableSubjects(): Promise<TutorSubjectOption[]> {
-    try {
-        const response = await apiClient.get<IAbpResponseEnvelope<TutorSubjectOption[]>>(TUTOR_PORTAL_GET_AVAILABLE_SUBJECTS_ENDPOINT);
-        return response.data.result;
-    } catch (error) {
-        throw new Error(extractErrorMessage(error));
-    }
+    return getCachedResource(`${TUTOR_PORTAL_CACHE_PREFIX}available-subjects`, async () => {
+        try {
+            const response = await apiClient.get<IAbpResponseEnvelope<TutorSubjectOption[]>>(TUTOR_PORTAL_GET_AVAILABLE_SUBJECTS_ENDPOINT);
+            return response.data.result;
+        } catch (error) {
+            throw new Error(extractErrorMessage(error));
+        }
+    }, DEFAULT_CACHE_TTL_MS);
 }
 
 async function completeTutorSetup(subjectId: string, bio?: string, specialization?: string): Promise<TutorSetupStatus> {
@@ -239,6 +263,8 @@ async function completeTutorSetup(subjectId: string, bio?: string, specializatio
             bio,
             specialization,
         });
+        invalidateCachedResource(TUTOR_PORTAL_CACHE_PREFIX);
+        invalidateCachedResource(STUDENT_TUTOR_CACHE_PREFIX);
         return response.data.result;
     } catch (error) {
         throw new Error(extractErrorMessage(error));
@@ -246,21 +272,25 @@ async function completeTutorSetup(subjectId: string, bio?: string, specializatio
 }
 
 async function getTutorDashboard(): Promise<TutorDashboardData> {
-    try {
-        const response = await apiClient.get<IAbpResponseEnvelope<TutorDashboardData>>(TUTOR_PORTAL_GET_DASHBOARD_ENDPOINT);
-        return response.data.result;
-    } catch (error) {
-        throw new Error(extractErrorMessage(error));
-    }
+    return getCachedResource(`${TUTOR_PORTAL_CACHE_PREFIX}dashboard`, async () => {
+        try {
+            const response = await apiClient.get<IAbpResponseEnvelope<TutorDashboardData>>(TUTOR_PORTAL_GET_DASHBOARD_ENDPOINT);
+            return response.data.result;
+        } catch (error) {
+            throw new Error(extractErrorMessage(error));
+        }
+    }, DEFAULT_CACHE_TTL_MS);
 }
 
 async function getTutorStudentRequests(): Promise<TutorRequest[]> {
-    try {
-        const response = await apiClient.get<IAbpResponseEnvelope<TutorRequest[]>>(TUTOR_PORTAL_GET_STUDENT_REQUESTS_ENDPOINT);
-        return response.data.result;
-    } catch (error) {
-        throw new Error(extractErrorMessage(error));
-    }
+    return getCachedResource(`${TUTOR_PORTAL_CACHE_PREFIX}student-requests`, async () => {
+        try {
+            const response = await apiClient.get<IAbpResponseEnvelope<TutorRequest[]>>(TUTOR_PORTAL_GET_STUDENT_REQUESTS_ENDPOINT);
+            return response.data.result;
+        } catch (error) {
+            throw new Error(extractErrorMessage(error));
+        }
+    }, DEFAULT_CACHE_TTL_MS);
 }
 
 async function respondToTutorRequest(requestId: string, accept: boolean, responseMessage?: string): Promise<TutorRequest> {
@@ -270,6 +300,8 @@ async function respondToTutorRequest(requestId: string, accept: boolean, respons
             accept,
             responseMessage,
         });
+        invalidateCachedResource(TUTOR_PORTAL_CACHE_PREFIX);
+        invalidateCachedResource(STUDENT_TUTOR_CACHE_PREFIX);
         return response.data.result;
     } catch (error) {
         throw new Error(extractErrorMessage(error));
@@ -277,12 +309,14 @@ async function respondToTutorRequest(requestId: string, accept: boolean, respons
 }
 
 async function getTutorMeetings(): Promise<MeetingRequest[]> {
-    try {
-        const response = await apiClient.get<IAbpResponseEnvelope<MeetingRequest[]>>(TUTOR_PORTAL_GET_MEETINGS_ENDPOINT);
-        return response.data.result;
-    } catch (error) {
-        throw new Error(extractErrorMessage(error));
-    }
+    return getCachedResource(`${TUTOR_PORTAL_CACHE_PREFIX}meetings`, async () => {
+        try {
+            const response = await apiClient.get<IAbpResponseEnvelope<MeetingRequest[]>>(TUTOR_PORTAL_GET_MEETINGS_ENDPOINT);
+            return response.data.result;
+        } catch (error) {
+            throw new Error(extractErrorMessage(error));
+        }
+    }, DEFAULT_CACHE_TTL_MS);
 }
 
 async function respondToMeetingRequest(meetingRequestId: string, accept: boolean, responseMessage?: string): Promise<MeetingRequest> {
@@ -292,6 +326,8 @@ async function respondToMeetingRequest(meetingRequestId: string, accept: boolean
             accept,
             responseMessage,
         });
+        invalidateCachedResource(TUTOR_PORTAL_CACHE_PREFIX);
+        invalidateCachedResource(STUDENT_TUTOR_CACHE_PREFIX);
         return response.data.result;
     } catch (error) {
         throw new Error(extractErrorMessage(error));
@@ -303,6 +339,8 @@ async function startTutorMeeting(meetingRequestId: string): Promise<MeetingAcces
         const response = await apiClient.post<IAbpResponseEnvelope<MeetingAccess>>(TUTOR_PORTAL_START_MEETING_ENDPOINT, null, {
             params: { meetingRequestId },
         });
+        invalidateCachedResource(TUTOR_PORTAL_CACHE_PREFIX);
+        invalidateCachedResource(STUDENT_TUTOR_CACHE_PREFIX);
         return response.data.result;
     } catch (error) {
         throw new Error(extractErrorMessage(error));
@@ -310,14 +348,16 @@ async function startTutorMeeting(meetingRequestId: string): Promise<MeetingAcces
 }
 
 async function getTutorMeetingAccess(meetingRequestId: string): Promise<MeetingAccess> {
-    try {
-        const response = await apiClient.get<IAbpResponseEnvelope<MeetingAccess>>(TUTOR_PORTAL_GET_MEETING_ACCESS_ENDPOINT, {
-            params: { meetingRequestId },
-        });
-        return response.data.result;
-    } catch (error) {
-        throw new Error(extractErrorMessage(error));
-    }
+    return getCachedResource(`${TUTOR_PORTAL_CACHE_PREFIX}meeting-access:${meetingRequestId}`, async () => {
+        try {
+            const response = await apiClient.get<IAbpResponseEnvelope<MeetingAccess>>(TUTOR_PORTAL_GET_MEETING_ACCESS_ENDPOINT, {
+                params: { meetingRequestId },
+            });
+            return response.data.result;
+        } catch (error) {
+            throw new Error(extractErrorMessage(error));
+        }
+    }, MEETING_ACCESS_CACHE_TTL_MS);
 }
 
 export const tutorService = {

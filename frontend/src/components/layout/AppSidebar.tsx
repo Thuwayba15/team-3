@@ -4,6 +4,7 @@ import { Avatar, Button, Layout, Menu, Select, Typography, Dropdown } from "antd
 import { UserOutlined, LogoutOutlined, MenuOutlined } from "@ant-design/icons";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import { useTranslation } from "react-i18next";
 import { getPlatformLanguageSelectOptions } from "@/i18n/platformLanguages";
 import { useAuthActions, useAuthState } from "@/providers/auth";
@@ -33,7 +34,8 @@ export const AppSidebar = ({ role, isMobile = false, onNavigate }: IAppSidebarPr
     const { isAuthenticated, userId } = useAuthState();
     const { logout } = useAuthActions();
     const { currentLanguage, setLanguage, isLoading } = useI18n();
-    const [displayName, setDisplayName] = useState(t("header.defaultUser"));
+    const defaultUserLabel = t("header.defaultUser");
+    const [displayName, setDisplayName] = useState(defaultUserLabel);
     const [emailAddress, setEmailAddress] = useState("-");
     const [userNameDraft, setUserNameDraft] = useState("");
     const languageOptions = useMemo(() => getPlatformLanguageSelectOptions(), []);
@@ -56,11 +58,11 @@ export const AppSidebar = ({ role, isMobile = false, onNavigate }: IAppSidebarPr
                 setUserNameDraft(sessionUser.userName || "");
             })
             .catch(() => {
-                setDisplayName(t("header.defaultUser"));
+                setDisplayName(defaultUserLabel);
                 setEmailAddress("-");
                 setUserNameDraft("");
             });
-    }, [isAuthenticated, t, userId]);
+    }, [defaultUserLabel, isAuthenticated, userId]);
 
     const profileInitial = useMemo(() => displayName.charAt(0).toUpperCase() || "U", [displayName]);
 
@@ -73,6 +75,12 @@ export const AppSidebar = ({ role, isMobile = false, onNavigate }: IAppSidebarPr
     const activeItem =
         items.find((item) => pathname === item.path) ||
         items.find((item) => pathname.startsWith(item.path));
+
+    useEffect(() => {
+        items.forEach((item) => {
+            router.prefetch(item.path);
+        });
+    }, [items, router]);
 
     const sidebarContent = (
         <>
@@ -113,13 +121,16 @@ export const AppSidebar = ({ role, isMobile = false, onNavigate }: IAppSidebarPr
                     return {
                         key: item.key,
                         icon: <Icon />,
-                        label: t(item.label),
+                        label: (
+                            <Link href={item.path} prefetch onClick={() => onNavigate?.()}>
+                                {t(item.label)}
+                            </Link>
+                        ),
                     };
                 })}
                 onClick={({ key }) => {
                     const target = items.find((item) => item.key === key);
                     if (target) {
-                        router.push(target.path);
                         onNavigate?.();
                     }
                 }}

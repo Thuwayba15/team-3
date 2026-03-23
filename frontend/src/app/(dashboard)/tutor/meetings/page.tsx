@@ -21,6 +21,28 @@ function getMeetingStartWindowState(scheduledStartUtc: string) {
     };
 }
 
+function getLocalizedTutorStatus(status: string, t: (key: string) => string): string {
+    const normalizedStatus = status.trim().toLowerCase();
+
+    if (normalizedStatus === "pending") {
+        return t("tutoring.status.pending");
+    }
+
+    if (normalizedStatus === "accepted") {
+        return t("tutoring.status.accepted");
+    }
+
+    if (normalizedStatus === "declined") {
+        return t("tutoring.status.declined");
+    }
+
+    if (normalizedStatus === "completed") {
+        return t("tutoring.status.completed");
+    }
+
+    return status;
+}
+
 export default function TutorMeetingsPage() {
     const { t } = useTranslation();
     const router = useRouter();
@@ -121,7 +143,7 @@ export default function TutorMeetingsPage() {
                                                     {t("tutoring.tutor.meetings.actions.decline")}
                                                 </Button>,
                                             ]
-                                            : [<Tag key="status">{request.status}</Tag>]}
+                                            : [<Tag key="status">{getLocalizedTutorStatus(request.status, t)}</Tag>]}
                                     >
                                         <List.Item.Meta
                                             title={`${request.studentName} • ${request.subjectName}`}

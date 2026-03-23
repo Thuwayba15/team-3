@@ -1,5 +1,6 @@
-import { userProfileService } from "@/services/users/userProfileService";
-import { userService, type IUser } from "@/services/users/userService";
+import { ADMIN_DASHBOARD_SUMMARY_ENDPOINT } from "@/constants/api";
+import { apiClient } from "@/lib/api/client";
+import { getCachedResource } from "@/lib/api/requestCache";
 
 export interface IAdminMetric {
     key: string;
@@ -19,74 +20,52 @@ export interface IAdminDashboardSummary {
     roleDistribution: IRoleDistributionItem[];
 }
 
-const ROLE_PRIORITY = ["Admin", "Tutor", "Parent", "Student"];
+interface IAbpResponseEnvelope<T> {
+    result: T;
+}
+
+interface IAdminDashboardSummaryResponse {
+    totalUsers: number;
+    activeUsers: number;
+    supportedLanguages: number;
+    roleDistribution: IRoleDistributionItem[];
+}
 
 function formatCount(value: number): string {
     return new Intl.NumberFormat("en-US").format(value);
 }
 
-function toPrimaryRole(user: IUser): string {
-    return ROLE_PRIORITY.find((role) => user.roleNames.includes(role)) ?? user.roleNames[0] ?? "Unassigned";
-}
-
-function toRoleDistribution(users: IUser[]): IRoleDistributionItem[] {
-    if (users.length === 0) {
-        return [];
-    }
-
-    const counts = users.reduce<Record<string, number>>((accumulator, user) => {
-        const roleName = toPrimaryRole(user);
-        accumulator[roleName] = (accumulator[roleName] ?? 0) + 1;
-        return accumulator;
-    }, {});
-
-    return Object.entries(counts)
-        .map(([roleName, count]) => ({
-            roleName,
-            count,
-            percent: Math.round((count / users.length) * 100),
-        }))
-        .sort((left, right) => right.count - left.count);
-}
-
-/** Builds an admin dashboard summary from existing frontend services. */
+/** Builds an admin dashboard summary from a dedicated backend aggregate endpoint. */
 async function getSummary(): Promise<IAdminDashboardSummary> {
-    const [usersResult, languages] = await Promise.all([
-        userService.getAll({
-            skipCount: 0,
-            maxResultCount: 500,
-            sorting: "CreationTime DESC",
-        }),
-        userProfileService.getSupportedLanguages().catch(() => []),
-    ]);
+    return getCachedResource("admin-dashboard:summary", async () => {
+        const response = await apiClient.get<IAbpResponseEnvelope<IAdminDashboardSummaryResponse>>(ADMIN_DASHBOARD_SUMMARY_ENDPOINT);
+        const summary = response.data.result;
+        const inactiveUsers = summary.totalUsers - summary.activeUsers;
 
-    const users = usersResult.items;
-    const activeUsers = users.filter((user) => user.isActive).length;
-    const inactiveUsers = users.length - activeUsers;
-
-    return {
-        metrics: [
-            {
-                key: "total-users",
-                value: formatCount(users.length),
-                label: "Total users",
-                helperText: `${formatCount(activeUsers)} active`,
-            },
-            {
-                key: "active-users",
-                value: formatCount(activeUsers),
-                label: "Active users",
-                helperText: inactiveUsers > 0 ? `${formatCount(inactiveUsers)} inactive` : "No inactive users",
-            },
-            {
-                key: "supported-languages",
-                value: formatCount(languages.length),
-                label: "Supported languages",
-                helperText: languages.length > 0 ? "All the languages supported" : "Language data unavailable",
-            },
-        ],
-        roleDistribution: toRoleDistribution(users),
-    };
+        return {
+            metrics: [
+                {
+                    key: "total-users",
+                    value: formatCount(summary.totalUsers),
+                    label: "Total users",
+                    helperText: `${formatCount(summary.activeUsers)} active`,
+                },
+                {
+                    key: "active-users",
+                    value: formatCount(summary.activeUsers),
+                    label: "Active users",
+                    helperText: inactiveUsers > 0 ? `${formatCount(inactiveUsers)} inactive` : "No inactive users",
+                },
+                {
+                    key: "supported-languages",
+                    value: formatCount(summary.supportedLanguages),
+                    label: "Supported languages",
+                    helperText: summary.supportedLanguages > 0 ? "All the languages supported" : "Language data unavailable",
+                },
+            ],
+            roleDistribution: summary.roleDistribution,
+        };
+    }, 30000);
 }
 
 export const adminDashboardService = {

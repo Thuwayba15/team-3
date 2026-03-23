@@ -108,7 +108,7 @@ export default function AdminUsersPage() {
             .catch(() => {
                 messageApi.error(t("dashboard.admin.users.errorLoadRoles"));
             });
-    }, [messageApi, t]);
+    }, []);
 
     useEffect(() => {
         setLoading(true);
@@ -128,7 +128,7 @@ export default function AdminUsersPage() {
             .then((data) => setUsersResult(data))
             .catch(() => setError(t("dashboard.admin.users.errorLoadUsers")))
             .finally(() => setLoading(false));
-    }, [currentPage, roleFilter, search, statusFilter, t]);
+    }, [currentPage, roleFilter, search, statusFilter]);
 
     const roleOptions = useMemo(() => ([
         { label: t("dashboard.admin.users.allRoles"), value: "" },
@@ -294,8 +294,10 @@ export default function AdminUsersPage() {
                             onChange={(event) => {
                                 const nextValue = event.target.value;
                                 setSearchDraft(nextValue);
-                                setCurrentPage(1);
-                                setSearch(nextValue.trim());
+                                if (nextValue.length === 0) {
+                                    setCurrentPage(1);
+                                    setSearch("");
+                                }
                             }}
                             onSearch={(value) => {
                                 setCurrentPage(1);

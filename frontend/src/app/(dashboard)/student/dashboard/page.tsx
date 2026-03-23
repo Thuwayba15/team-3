@@ -229,11 +229,11 @@ export default function StudentDashboardPage() {
                                             }}
                                         >
                                             {dashboardData.recommendedNextLesson.ruleBasisReason.toLowerCase().includes("review")
-                                                ? "Review lesson"
+                                                ? t("dashboard.student.dashboardPage.reviewLesson")
                                                 : t("dashboard.student.dashboardPage.startLesson")}
                                         </Button>
                                         <span className={styles.durationText}>
-                                            <ClockCircleOutlined /> {dashboardData.recommendedNextLesson.estimatedMinutes} mins
+                                            <ClockCircleOutlined /> {t("dashboard.student.dashboardPage.durationMinutes", { count: dashboardData.recommendedNextLesson.estimatedMinutes })}
                                         </span>
                                     </Flex>
                                 </div>
