@@ -23,10 +23,6 @@ import { UI_COLORS } from "@/constants/uiColors";
 import { useI18nState } from "@/providers/i18n";
 import { useStyles } from "./styles";
 import {
-    selectLessonAssessmentByDifficulty,
-    studentAssessmentGenerationService,
-} from "@/services/student/studentAssessmentGenerationService";
-import {
     studentLearningPathService,
     type IStudentLearningPath,
     type IStudentLearningPathLesson,
@@ -527,24 +523,14 @@ export default function StudentLessonsPage() {
         };
     }, [activeLessonId, currentLanguage, isLanguageUpdating]);
 
-    const resolveLessonQuizAssessmentId = async (
-        lessonId: string,
-        assignedDifficultyLevel: IStudentLearningPathTopic["assignedDifficultyLevel"]
-    ) => {
-        const assessments = await studentAssessmentGenerationService.getLessonAssessments(lessonId);
-        const selectedAssessment = selectLessonAssessmentByDifficulty(assessments, assignedDifficultyLevel);
-        return selectedAssessment?.assessmentId ?? null;
-    };
-
     const openLessonQuiz = async (
-        lessonId: string,
-        assignedDifficultyLevel: IStudentLearningPathTopic["assignedDifficultyLevel"]
+        lesson: IStudentLearningPathLesson
     ) => {
         if (!activeSubjectId) {
             return false;
         }
 
-        const assessmentId = await resolveLessonQuizAssessmentId(lessonId, assignedDifficultyLevel);
+        const assessmentId = lesson.quizAssessmentId;
         if (!assessmentId) {
             return false;
         }
@@ -617,7 +603,7 @@ export default function StudentLessonsPage() {
                         onOpenQuiz={() => {
                             void (async () => {
                                 try {
-                                    const opened = await openLessonQuiz(activeLesson.lessonId, activeTopic.assignedDifficultyLevel);
+                                    const opened = await openLessonQuiz(activeLesson);
                                     if (!opened) {
                                         messageApi.info(t("dashboard.student.lessonsPage.messages.noLessonQuizForLessonYet"));
                                     }

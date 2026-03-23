@@ -17,10 +17,6 @@ import { UI_COLORS } from "@/constants/uiColors";
 import { useI18nState } from "@/providers/i18n";
 import QuizView from "./QuizView";
 import { useStyles } from "./styles";
-import {
-    selectLessonAssessmentByDifficulty,
-    studentAssessmentGenerationService,
-} from "@/services/student/studentAssessmentGenerationService";
 import type { AssessmentType } from "@/services/student/studentAssessmentService";
 import {
     studentLearningPathService,
@@ -339,27 +335,9 @@ export default function StudentLearningPathPage() {
         }
     };
 
-    const resolveLessonQuizAssessmentId = async (
-        lessonId: string,
-        assignedDifficultyLevel: IStudentLearningPathTopic["assignedDifficultyLevel"]
-    ) => {
+    const handleOpenLessonQuiz = async (lesson: IStudentLearningPathLesson) => {
         try {
-            const assessments = await studentAssessmentGenerationService.getLessonAssessments(lessonId);
-            const selectedAssessment = selectLessonAssessmentByDifficulty(assessments, assignedDifficultyLevel);
-            return selectedAssessment?.assessmentId ?? null;
-        } catch (quizError) {
-            const messageText = quizError instanceof Error ? quizError.message : "No lesson quiz is available yet for this lesson.";
-            if (messageText.toLowerCase().includes("no assessments found")) {
-                return null;
-            }
-
-            throw quizError;
-        }
-    };
-
-    const handleOpenLessonQuiz = async (lesson: IStudentLearningPathLesson, topic: IStudentLearningPathTopic) => {
-        try {
-            const assessmentId = await resolveLessonQuizAssessmentId(lesson.lessonId, topic.assignedDifficultyLevel);
+            const assessmentId = lesson.quizAssessmentId;
             if (!assessmentId) {
                 messageApi.info("No lesson quiz is available yet for this lesson.");
                 return;
@@ -373,14 +351,8 @@ export default function StudentLearningPathPage() {
 
     const handleOpenTopicQuiz = async (topic: IStudentLearningPathTopic) => {
         for (const lesson of topic.lessons) {
-            try {
-                const assessmentId = await resolveLessonQuizAssessmentId(lesson.lessonId, topic.assignedDifficultyLevel);
-                if (assessmentId) {
-                    handleOpenAssessment(assessmentId, 2);
-                    return;
-                }
-            } catch (quizError) {
-                messageApi.error(quizError instanceof Error ? quizError.message : "Failed to open the lesson quiz.");
+            if (lesson.quizAssessmentId) {
+                handleOpenAssessment(lesson.quizAssessmentId, 2);
                 return;
             }
         }
@@ -660,8 +632,8 @@ export default function StudentLearningPathPage() {
                                                                             topic={topic}
                                                                             styles={styles}
                                                                             onOpenLesson={handleOpenLesson}
-                                                                            onOpenQuiz={(selectedLesson, selectedTopic) => {
-                                                                                void handleOpenLessonQuiz(selectedLesson, selectedTopic);
+                                                                            onOpenQuiz={(selectedLesson) => {
+                                                                                void handleOpenLessonQuiz(selectedLesson);
                                                                             }}
                                                                         />
                                                                     ))}
